@@ -8,12 +8,12 @@
   </head>
   <body>
     <header class="header">
-      <div class="logo">
+      <div class="logo-container">
         <img src="sheetpilot-icon.png" alt="SheetPilot Logo" class="logo-icon" />
         <span class="logo-text">SheetPilot</span>
       </div>
-      <button class="menu-button" onclick="toggleMenu()">Menu</button>
-      <nav id="dropdown-menu" class="dropdown hidden">
+      <button class="menu-toggle" id="menuToggle">Menu</button>
+      <nav class="nav-menu" id="navMenu">
         <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
         <a href="#contact">Contact</a>
@@ -26,20 +26,20 @@
         <p>Automate your spreadsheets and focus on what matters.</p>
       </section>
 
-      <section id="features" class="features">
+      <section class="features" id="features">
         <div class="feature-box">
           <div class="icon">⚙️</div>
-          <h3>No-Code Workflows</h3>
+          <h2>No-Code Workflows</h2>
           <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
         </div>
         <div class="feature-box">
           <div class="icon">📊</div>
-          <h3>Daily Insights</h3>
+          <h2>Daily Insights</h2>
           <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
         </div>
         <div class="feature-box">
           <div class="icon">👥</div>
-          <h3>Team Dashboards</h3>
+          <h2>Team Dashboards</h2>
           <p>Track and compare productivity across your entire team in real time.</p>
         </div>
       </section>
@@ -56,16 +56,16 @@
     </main>
 
     <script>
-      function toggleMenu() {
-        const menu = document.getElementById('dropdown-menu');
-        menu.classList.toggle('hidden');
-      }
+      const toggle = document.getElementById('menuToggle');
+      const menu = document.getElementById('navMenu');
 
-      document.addEventListener('click', function (event) {
-        const menu = document.getElementById('dropdown-menu');
-        const button = document.querySelector('.menu-button');
-        if (!button.contains(event.target) && !menu.contains(event.target)) {
-          menu.classList.add('hidden');
+      toggle.addEventListener('click', () => {
+        menu.classList.toggle('active');
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!toggle.contains(event.target) && !menu.contains(event.target)) {
+          menu.classList.remove('active');
         }
       });
     </script>
