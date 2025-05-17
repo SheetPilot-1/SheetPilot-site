@@ -7,72 +7,63 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="header">
-    <div class="logo-text">SheetPilot</div>
-    <button class="menu-toggle" id="menuToggle">Menu</button>
-    <nav class="nav-menu" id="navMenu">
+  <header>
+    <div class="logo">SheetPilot</div>
+    <button class="menu-button" onclick="toggleMenu()">Menu</button>
+    <nav id="nav-links">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <section class="hero">
-    <h1>Clean data.<br />Clear insights.<br />Zero coding.</h1>
-    <p>Automate your spreadsheets and focus on what matters.</p>
-  </section>
+  <main>
+    <section class="hero">
+      <h1>Clean data.<br />Clear insights.<br />Zero coding.</h1>
+      <p>Automate your spreadsheets and focus on what matters.</p>
+    </section>
 
-  <section class="section-box" id="features">
-    <img src="gear-icon.png" alt="Gear Icon" class="icon" />
-    <h2>No-Code Workflows</h2>
-    <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
-  </section>
+    <section class="section-box" id="features">
+      <h2>⚙️ No-Code Workflows</h2>
+      <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
+    </section>
 
-  <section class="section-box">
-    <img src="chart-icon.png" alt="Chart Icon" class="icon" />
-    <h2>Daily Insights</h2>
-    <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
-  </section>
+    <section class="section-box">
+      <h2>📊 Daily Insights</h2>
+      <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
+    </section>
 
-  <section class="section-box">
-    <img src="team-icon.png" alt="Team Icon" class="icon" />
-    <h2>Team Dashboards</h2>
-    <p>Track and compare productivity across your entire team in real time.</p>
-  </section>
+    <section class="section-box">
+      <h2>👥 Team Dashboards</h2>
+      <p>Track and compare productivity across your entire team in real time.</p>
+    </section>
 
-  <section class="section-box">
-    <h2>What You Get with SheetPilot</h2>
-    <ul>
-      <li>Save time with intelligent automations</li>
-      <li>Stay focused with instant performance summaries</li>
-      <li>Enhance transparency across your team</li>
-      <li>Eliminate copy/paste chaos</li>
-    </ul>
-  </section>
+    <section class="section-box">
+      <h2>What You Get with SheetPilot</h2>
+      <ul>
+        <li>Save time with intelligent automations</li>
+        <li>Stay focused with instant performance summaries</li>
+        <li>Enhance transparency across your team</li>
+        <li>Eliminate copy/paste chaos</li>
+      </ul>
+    </section>
+  </main>
 
-  <footer class="footer">
+  <footer>
     <nav class="footer-links">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
     </nav>
-    <p>&copy; 2025 SheetPilot. All rights reserved.</p>
+    <p>© 2025 SheetPilot. All rights reserved.</p>
     <p>Email: <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
   </footer>
 
   <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const navMenu = document.getElementById('navMenu');
-
-    menuToggle.addEventListener('click', () => {
-      navMenu.classList.toggle('show');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
-        navMenu.classList.remove('show');
-      }
-    });
+    function toggleMenu() {
+      const nav = document.getElementById('nav-links');
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    }
   </script>
 </body>
 </html>
