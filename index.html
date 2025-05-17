@@ -7,12 +7,10 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <div class="header-container">
-      <h1 class="logo-text">SheetPilot</h1>
-      <button id="menu-toggle" class="menu-button">Menu</button>
-    </div>
-    <nav id="nav-menu" class="nav-links hidden">
+  <header class="header">
+    <div class="logo">SheetPilot</div>
+    <button class="menu-button" id="menuToggle">Menu</button>
+    <nav class="nav-links" id="navMenu">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
@@ -21,30 +19,30 @@
 
   <main>
     <section class="hero">
-      <h2>Clean data.<br />Clear insights.<br />Zero coding.</h2>
+      <h1>Clean data.<br />Clear insights.<br />Zero coding.</h1>
       <p>Automate your spreadsheets and focus on what matters.</p>
     </section>
 
-    <section id="features" class="features-grid">
-      <div class="feature-card">
+    <section class="features" id="features">
+      <div class="feature-box">
         <div class="icon">⚙️</div>
-        <h3>No-Code Workflows</h3>
+        <h2>No-Code Workflows</h2>
         <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-box">
         <div class="icon">📊</div>
-        <h3>Daily Insights</h3>
+        <h2>Daily Insights</h2>
         <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
       </div>
-      <div class="feature-card">
+      <div class="feature-box">
         <div class="icon">👥</div>
-        <h3>Team Dashboards</h3>
+        <h2>Team Dashboards</h2>
         <p>Track and compare productivity across your entire team in real time.</p>
       </div>
     </section>
 
     <section class="benefits">
-      <h3>What You Get with SheetPilot</h3>
+      <h2>What You Get with SheetPilot</h2>
       <ul>
         <li>Save time with intelligent automations</li>
         <li>Stay focused with instant performance summaries</li>
@@ -55,26 +53,26 @@
   </main>
 
   <footer>
-    <div class="footer-container">
-      <nav class="footer-links">
-        <a href="#features">Features</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <p>© 2025 SheetPilot. All rights reserved.</p>
-      <p>Email: <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
-    </div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <p>&copy; 2025 SheetPilot. All rights reserved.</p>
+    <p>Email: <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
   </footer>
 
   <script>
-    const toggle = document.getElementById("menu-toggle");
-    const nav = document.getElementById("nav-menu");
-    toggle.addEventListener("click", () => {
-      nav.classList.toggle("hidden");
+    const toggle = document.getElementById('menuToggle');
+    const menu = document.getElementById('navMenu');
+
+    toggle.addEventListener('click', () => {
+      menu.classList.toggle('active');
     });
-    document.addEventListener("click", (e) => {
-      if (!toggle.contains(e.target) && !nav.contains(e.target)) {
-        nav.classList.add("hidden");
+
+    document.addEventListener('click', (event) => {
+      if (!toggle.contains(event.target) && !menu.contains(event.target)) {
+        menu.classList.remove('active');
       }
     });
   </script>
