@@ -1,128 +1,74 @@
+
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
   background-color: #1F1F2E;
-  color: #EAE5DA;
+  color: #f5f5dc;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-header {
+header, footer {
   text-align: center;
-  padding: 20px 10px 10px;
+  padding: 1rem;
 }
 
-.logo-text {
-  font-size: 32px;
-  font-weight: bold;
-  color: #EAE5DA;
-}
-
-.menu-button {
-  margin-top: 10px;
-  background-color: #00F0FF;
+#menu-toggle {
+  background-color: cyan;
   border: none;
-  color: #1F1F2E;
+  padding: 0.5rem 1rem;
   font-weight: bold;
-  padding: 8px 18px;
-  font-size: 16px;
-  border-radius: 10px;
+  border-radius: 8px;
+  margin: 0.5rem 0;
   cursor: pointer;
 }
 
-#nav-links {
-  display: none;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 10px;
-}
-
-#nav-links a {
-  color: #EAE5DA;
+#menu a {
+  color: #f5f5dc;
+  margin: 0 1rem;
   text-decoration: none;
-  font-size: 16px;
-}
-
-@media(min-width: 768px) {
-  #nav-links {
-    display: flex !important;
-    flex-direction: row;
-    justify-content: center;
-    gap: 30px;
-    margin-top: 15px;
-  }
-
-  .menu-button {
-    display: none;
-  }
-}
-
-main {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
+  font-weight: 500;
 }
 
 .hero {
   text-align: center;
-  margin-bottom: 40px;
+  padding: 2rem 1rem;
 }
 
-.hero h1 {
-  font-size: 32px;
-  line-height: 1.4;
-  font-weight: 700;
-  margin-bottom: 16px;
-  color: #ffffff;
-}
-
-.hero p {
-  font-size: 16px;
-  color: #CCCCCC;
-}
-
-.section-box {
+.card {
   background-color: #2A2A3D;
-  border: 2px solid #00F0FF;
+  border: 2px solid cyan;
   border-radius: 12px;
-  padding: 24px;
-  margin: 20px 0;
-  box-shadow: 0 0 15px rgba(0, 240, 255, 0.25);
+  padding: 1.5rem;
+  margin: 1rem;
+  box-shadow: 0 0 12px cyan;
 }
 
-.section-box h2 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  font-size: 20px;
-  color: #F0EAD6;
+.card h3 {
+  color: #f5f5dc;
+  margin-bottom: 0.5rem;
 }
 
-.section-box p,
-.section-box ul {
-  margin: 0;
-  color: #DDDDDD;
-  font-size: 15px;
+.card p, .card ul {
+  color: #e0e0e0;
 }
 
-.section-box ul {
-  padding-left: 18px;
-  list-style-type: disc;
-}
-
-footer {
-  text-align: center;
-  margin-top: 40px;
-  padding: 30px 10px;
-  font-size: 14px;
-  color: #AAAAAA;
-  border-top: 1px solid #333333;
-}
-
-.footer-links {
-  margin-bottom: 10px;
-}
-
-.footer-links a {
-  margin: 0 15px;
-  color: #00F0FF;
+.button {
+  display: inline-block;
+  background-color: #ddd;
+  color: #1F1F2E;
+  padding: 0.5rem 1.25rem;
+  margin-top: 1rem;
   text-decoration: none;
-  font-weight: 500;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #bbb;
+}
+
+.email-link {
+  color: #89e0ff;
+  text-decoration: underline;
 }
