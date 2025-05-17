@@ -1,32 +1,52 @@
 
 body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
   background-color: #1F1F2E;
   color: #f5f5dc;
-  font-family: 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 0;
+  line-height: 1.6;
 }
 
-header, footer {
-  text-align: center;
+header {
   padding: 1rem;
+  text-align: center;
+  background: none;
 }
 
-#menu-toggle {
+h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+#menu-button {
   background-color: cyan;
+  color: #000;
+  padding: 0.5rem 1.2rem;
   border: none;
-  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
   font-weight: bold;
-  border-radius: 8px;
-  margin: 0.5rem 0;
   cursor: pointer;
 }
 
-#menu a {
+nav ul {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+  gap: 1rem;
+  text-align: center;
+}
+
+nav ul.show {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+nav ul li a {
   color: #f5f5dc;
-  margin: 0 1rem;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: bold;
 }
 
 .hero {
@@ -34,41 +54,69 @@ header, footer {
   padding: 2rem 1rem;
 }
 
-.card {
-  background-color: #2A2A3D;
-  border: 2px solid cyan;
-  border-radius: 12px;
+.hero h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.feature-section {
   padding: 1.5rem;
-  margin: 1rem;
-  box-shadow: 0 0 12px cyan;
+  margin: 1.5rem auto;
+  max-width: 90%;
+  border: 2px solid cyan;
+  border-radius: 10px;
+  background-color: #2b2b3d;
+  box-shadow: 0 0 10px cyan;
 }
 
-.card h3 {
-  color: #f5f5dc;
+.feature-section h3 {
+  font-size: 1.2rem;
   margin-bottom: 0.5rem;
+  color: #fff8dc;
 }
 
-.card p, .card ul {
-  color: #e0e0e0;
+.feature-section ul {
+  padding-left: 1.2rem;
+}
+
+.emoji {
+  margin-right: 0.5rem;
 }
 
 .button {
   display: inline-block;
-  background-color: #ddd;
-  color: #1F1F2E;
-  padding: 0.5rem 1.25rem;
   margin-top: 1rem;
-  text-decoration: none;
-  border-radius: 6px;
+  padding: 0.5rem 1.2rem;
+  background-color: #f5f5dc;
+  color: #000;
   font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.button:hover {
-  background-color: #bbb;
+  text-decoration: none;
+  border-radius: 0.5rem;
 }
 
 .email-link {
-  color: #89e0ff;
-  text-decoration: underline;
+  color: cyan;
+  font-weight: bold;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.9rem;
+  background-color: #1F1F2E;
+}
+
+footer nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1rem;
+}
+
+footer nav ul li a {
+  color: cyan;
+  text-decoration: none;
 }
