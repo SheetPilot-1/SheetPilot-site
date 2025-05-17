@@ -1,58 +1,72 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <header>
-    <div class="logo-container">
-      <img src="sheetpilot-icon.png" alt="SheetPilot Logo" class="logo"/>
-      <h1>SheetPilot</h1>
+  <header class="header">
+    <div class="logo-title">
+      <img src="rocket-icon.png" alt="SheetPilot Rocket Logo" class="logo-icon"/>
+      <h1 class="logo-text">SheetPilot</h1>
     </div>
-    <button id="menuToggle" class="menu-button">Menu</button>
-    <nav id="nav-menu" class="hidden">
+    <button class="menu-button" onclick="toggleMenu()">Menu</button>
+    <nav id="menu" class="menu hidden">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <section class="hero">
-    <h2>Clean data.<br>Clear insights.<br>Zero coding.</h2>
-    <p>Automate your spreadsheets and focus on what matters.</p>
-  </section>
+  <main>
+    <section class="hero">
+      <h2>Clean data.<br/>Clear insights.<br/>Zero coding.</h2>
+      <p>Automate your spreadsheets and focus on what matters.</p>
+    </section>
 
-  <section id="features" class="features-section">
-    <div class="feature-card">
-      <div class="icon">⚙️</div>
-      <h3>No-Code Workflows</h3>
-      <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">📊</div>
-      <h3>Daily Insights</h3>
-      <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
-    </div>
-    <div class="feature-card">
-      <div class="icon">👥</div>
-      <h3>Team Dashboards</h3>
-      <p>Track and compare productivity across your entire team in real time.</p>
-    </div>
-  </section>
+    <section class="features" id="features">
+      <div class="feature-card">
+        <div class="feature-icon">⚙️</div>
+        <h3>No-Code Workflows</h3>
+        <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Daily Insights</h3>
+        <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">👥</div>
+        <h3>Team Dashboards</h3>
+        <p>Track and compare productivity across your entire team in real time.</p>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <h3>What You Get with SheetPilot</h3>
+      <ul class="benefit-list">
+        <li>Save time with intelligent automations</li>
+        <li>Stay focused with instant performance summaries</li>
+        <li>Enhance transparency across your team</li>
+        <li>Eliminate copy/paste chaos</li>
+        <li>Deploy updates with zero tech experience</li>
+      </ul>
+    </section>
+  </main>
 
   <script>
-    const menuToggle = document.getElementById("menuToggle");
-    const navMenu = document.getElementById("nav-menu");
-    menuToggle.addEventListener("click", () => {
-      navMenu.classList.toggle("hidden");
-    });
-    document.addEventListener("click", function(event) {
-      if (!navMenu.contains(event.target) && event.target !== menuToggle) {
-        navMenu.classList.add("hidden");
+    function toggleMenu() {
+      const menu = document.getElementById("menu");
+      menu.classList.toggle("hidden");
+    }
+
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById("menu");
+      const button = document.querySelector('.menu-button');
+      if (!menu.contains(event.target) && !button.contains(event.target)) {
+        menu.classList.add('hidden');
       }
     });
   </script>
