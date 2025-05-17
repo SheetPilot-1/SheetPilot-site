@@ -3,119 +3,68 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SheetPilot</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #1F1F2E;
-      color: #F0F0F0;
-      text-align: center;
-    }
-
-    header {
-      padding: 2rem 1rem 1rem;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .logo img {
-      height: 32px;
-    }
-
-    .menu-button {
-      background-color: #00E5FF;
-      color: #000;
-      border: none;
-      padding: 0.6rem 1.4rem;
-      font-size: 1rem;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-bottom: 2rem;
-    }
-
-    h1 {
-      font-size: 2.2rem;
-      margin: 0.5rem 0;
-    }
-
-    p.subtitle {
-      font-size: 1rem;
-      color: #C0C0C0;
-      margin-bottom: 3rem;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-      padding: 0 1.5rem 3rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .feature-card {
-      background-color: #2B2B3D;
-      border-radius: 12px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-
-    .feature-card h2 {
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
-      color: #FFFFFF;
-    }
-
-    .feature-card p {
-      font-size: 0.95rem;
-      color: #CCCCCC;
-      margin: 0;
-    }
-
-    .feature-icon {
-      font-size: 2rem;
-      margin-bottom: 0.75rem;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header>
-    <div class="logo">
-      <img src="sheetpilot-logo.png" alt="SheetPilot Logo" />
-      <span style="font-size: 1.25rem; font-weight: bold;">SheetPilot</span>
-    </div>
-    <button class="menu-button">Menu</button>
+    <img src="sheetpilot-logo.png" alt="SheetPilot Logo" class="logo" />
+    <button class="menu-button" onclick="toggleMenu()">Menu</button>
+    <nav id="menu" class="menu hidden">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
   </header>
 
-  <main>
-    <h1>Clean data.<br/>Clear insights.<br/>Zero coding.</h1>
-    <p class="subtitle">Automate your spreadsheets and focus on what matters.</p>
+  <section class="hero">
+    <h1>Clean data.<br />Clear insights.<br />Zero coding.</h1>
+    <p>Automate your spreadsheets and focus on what matters.</p>
+  </section>
 
-    <section class="features">
-      <div class="feature-card">
-        <div class="feature-icon">⚙️</div>
-        <h2>No-Code Workflows</h2>
-        <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
+  <section class="features">
+    <div class="feature-card">
+      <h2>No-Code Workflows</h2>
+      <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
+    </div>
+    <div class="feature-card">
+      <h2>Daily Insights</h2>
+      <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
+    </div>
+    <div class="feature-card">
+      <h2>Team Dashboards</h2>
+      <p>Track and compare productivity across your entire team in real time.</p>
+    </div>
+  </section>
+
+  
+<section class="benefits">
+  <div class="benefits-container">
+    <h2 class="benefits-heading">What You Get with SheetPilot</h2>
+    <div class="benefit-list">
+      <div class="benefit-item">
+        <h3>Faster Decisions</h3>
+        <p>Skip the manual sorting. Get to the insights that matter in seconds, not hours.</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">📊</div>
-        <h2>Daily Insights</h2>
-        <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
+      <div class="benefit-item">
+        <h3>Cleaner Data</h3>
+        <p>Reduce spreadsheet errors and gain confidence in your reports.</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">👥</div>
-        <h2>Team Dashboards</h2>
-        <p>Track and compare productivity across your entire team in real time.</p>
+      <div class="benefit-item">
+        <h3>More Time Back</h3>
+        <p>Automate the repetitive stuff so you can focus on what actually moves the needle.</p>
       </div>
-    </section>
-  </main>
+    </div>
+  </div>
+</section>
+
+
+  <script>
+    function toggleMenu() {
+      var menu = document.getElementById("menu");
+      menu.classList.toggle("hidden");
+    }
+  </script>
 </body>
 </html>
