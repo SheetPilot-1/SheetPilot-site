@@ -1,195 +1,72 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #1F1F2E;
-      color: #f4f4f4;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-
-    header {
-      padding: 24px 0 12px;
-    }
-
-    .brand {
-      font-size: 28px;
-      font-weight: bold;
-      color: #f5f5dc;
-    }
-
-    .menu-toggle {
-      margin-top: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: #00f0ff;
-      color: #1F1F2E;
-      border: none;
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-weight: bold;
-    }
-
-    .menu-items {
-      display: none;
-      flex-direction: column;
-      background-color: #1F1F2E;
-      padding: 10px 0;
-    }
-
-    .menu-items a {
-      color: #f5f5dc;
-      padding: 6px;
-      text-decoration: none;
-    }
-
-    .menu-items a:hover {
-      background-color: #333;
-    }
-
-    .hero {
-      margin-top: 36px;
-      padding: 0 20px;
-    }
-
-    .hero h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
-      line-height: 1.4;
-    }
-
-    .hero p {
-      font-size: 15px;
-      color: #bbb;
-    }
-
-    .feature-card {
-      background-color: #2a2a3b;
-      padding: 16px;
-      margin: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 8px #00f0ff44;
-      max-width: 320px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .feature-card h2 {
-      margin: 8px 0;
-      font-size: 18px;
-      color: #f5f5dc;
-    }
-
-    .feature-card p {
-      font-size: 14px;
-      color: #ccc;
-    }
-
-    .section-title {
-      margin-top: 50px;
-      font-size: 20px;
-      color: #f5f5dc;
-    }
-
-    ul.benefits {
-      list-style: disc;
-      padding-left: 40px;
-      max-width: 380px;
-      margin: auto;
-      color: #ccc;
-      font-size: 14px;
-    }
-
-    footer {
-      margin-top: 50px;
-      font-size: 13px;
-      color: #888;
-    }
-
-    footer a {
-      color: #00f0ff;
-      margin: 0 12px;
-      text-decoration: none;
-    }
-
-    footer a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-  <header>
-    <div class="brand">SheetPilot</div>
+  <header class="header">
+    <div class="logo-text">SheetPilot</div>
     <button class="menu-toggle" onclick="toggleMenu()">Menu</button>
-    <div id="menu" class="menu-items">
+    <nav id="menu" class="menu hidden">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
-    </div>
+    </nav>
   </header>
 
-  <main class="hero">
-    <h1>
-      Clean data.<br />
-      Clear insights.<br />
-      Zero coding.
-    </h1>
-    <p>Automate your spreadsheets and focus on what matters.</p>
+  <main>
+    <section class="hero">
+      <h1>Clean data.<br/>Clear insights.<br/>Zero coding.</h1>
+      <p>Automate your spreadsheets and focus on what matters.</p>
+    </section>
+
+    <section class="features-section">
+      <div class="feature-card">
+        <div class="icon">⚙️</div>
+        <h2>No-Code Workflows</h2>
+        <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📊</div>
+        <h2>Daily Insights</h2>
+        <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">👥</div>
+        <h2>Team Dashboards</h2>
+        <p>Track and compare productivity across your entire team in real time.</p>
+      </div>
+    </section>
+
+    <section class="feature-card">
+      <h2>What You Get with SheetPilot</h2>
+      <ul>
+        <li>Save time with intelligent automations</li>
+        <li>Stay focused with instant performance summaries</li>
+        <li>Enhance transparency across your team</li>
+        <li>Eliminate copy/paste chaos</li>
+      </ul>
+    </section>
   </main>
 
-  <section id="features" class="feature-card">
-    <h2>No-Code Workflows</h2>
-    <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
-  </section>
-
-  <section class="feature-card">
-    <h2>Daily Insights</h2>
-    <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
-  </section>
-
-  <section class="feature-card">
-    <h2>Team Dashboards</h2>
-    <p>Track and compare productivity across your entire team in real time.</p>
-  </section>
-
-  <h2 class="section-title">What You Get with SheetPilot</h2>
-  <ul class="benefits">
-    <li>Save time with intelligent automations</li>
-    <li>Stay focused with instant performance summaries</li>
-    <li>Enhance transparency across your team</li>
-    <li>Eliminate copy/paste chaos</li>
-  </ul>
-
-  <footer>
-    <div>
+  <footer class="footer">
+    <nav class="footer-links">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
-    </div>
+    </nav>
     <p>© 2025 SheetPilot. All rights reserved.</p>
     <p>Email: <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
   </footer>
 
   <script>
     function toggleMenu() {
-      const menu = document.getElementById("menu");
-      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      document.getElementById('menu').classList.toggle('hidden');
     }
-
-    document.addEventListener("click", function(event) {
-      const menu = document.getElementById("menu");
-      const toggle = document.querySelector(".menu-toggle");
-      if (!menu.contains(event.target) && !toggle.contains(event.target)) {
-        menu.style.display = "none";
-      }
-    });
   </script>
 </body>
 </html>

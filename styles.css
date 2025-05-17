@@ -89,6 +89,9 @@ nav a:hover {
 }
 
 .feature-box p {
+  font-size: 1.1rem;
+  color: #E0E0E0;
+  font-weight: 400;
   font-size: 0.95rem;
   color: #dcdcdc;
 }
