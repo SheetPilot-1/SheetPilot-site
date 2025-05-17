@@ -1,73 +1,78 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SheetPilot</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="header">
-    <div class="logo">SheetPilot</div>
-    <button class="menu-button" onclick="toggleMenu()">Menu</button>
-    <nav id="nav-menu" class="nav hidden">
+  <header>
+    <h1 class="brand">SheetPilot</h1>
+    <button id="menuButton" class="menu-button">Menu</button>
+    <nav id="navLinks" class="hidden">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <section class="hero">
-    <h1>Clean data.<br>Clear insights.<br>Zero coding.</h1>
-    <p>Automate your spreadsheets and focus on what matters.</p>
-  </section>
+  <main>
+    <section class="hero">
+      <h2>Clean data.<br />Clear insights.<br />Zero coding.</h2>
+      <p>Automate your spreadsheets and focus on what matters.</p>
+    </section>
 
-  <section id="features" class="features">
-    <div class="feature-box">
-      <h2>No-Code Workflows</h2>
-      <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
-    </div>
-    <div class="feature-box">
-      <h2>Daily Insights</h2>
-      <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
-    </div>
-    <div class="feature-box">
-      <h2>Team Dashboards</h2>
-      <p>Track and compare productivity across your entire team in real time.</p>
-    </div>
-    <div class="feature-box">
-      <h2>What You Get with SheetPilot</h2>
+    <section class="feature-boxes" id="features">
+      <div class="feature">
+        <div class="icon">⚙️</div>
+        <h3>No-Code Workflows</h3>
+        <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">📊</div>
+        <h3>Daily Insights</h3>
+        <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
+      </div>
+      <div class="feature">
+        <div class="icon">👥</div>
+        <h3>Team Dashboards</h3>
+        <p>Track and compare productivity across your entire team in real time.</p>
+      </div>
+    </section>
+
+    <section class="feature what-you-get">
+      <h3>What You Get with SheetPilot</h3>
       <ul>
         <li>Save time with intelligent automations</li>
         <li>Stay focused with instant performance summaries</li>
         <li>Enhance transparency across your team</li>
         <li>Eliminate copy/paste chaos</li>
       </ul>
-    </div>
-  </section>
+    </section>
+  </main>
 
-  <footer class="footer">
-    <nav>
+  <footer>
+    <div class="footer-links">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
-    </nav>
+    </div>
     <p>© 2025 SheetPilot. All rights reserved.</p>
     <p>Email: <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
   </footer>
 
   <script>
-    function toggleMenu() {
-      const nav = document.getElementById("nav-menu");
-      nav.classList.toggle("hidden");
-    }
+    const menuButton = document.getElementById("menuButton");
+    const navLinks = document.getElementById("navLinks");
 
-    window.addEventListener("click", function(e) {
-      const menu = document.getElementById("nav-menu");
-      const button = document.querySelector(".menu-button");
-      if (!button.contains(e.target) && !menu.contains(e.target)) {
-        menu.classList.add("hidden");
+    menuButton.addEventListener("click", () => {
+      navLinks.classList.toggle("hidden");
+    });
+
+    window.addEventListener("click", (e) => {
+      if (!menuButton.contains(e.target) && !navLinks.contains(e.target)) {
+        navLinks.classList.add("hidden");
       }
     });
   </script>
