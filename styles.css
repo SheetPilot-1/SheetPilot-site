@@ -1,142 +1,74 @@
+
 body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
   background-color: #1F1F2E;
-  color: #eae6da;
+  color: #f5f5dc;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-header {
+header, footer {
   text-align: center;
-  padding: 2rem 1rem 0.5rem;
+  padding: 1rem;
 }
 
-.logo {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #f5f0e6;
-}
-
-.menu-button {
-  background-color: #00f0ff;
+#menu-toggle {
+  background-color: cyan;
   border: none;
-  color: #1F1F2E;
+  padding: 0.5rem 1rem;
   font-weight: bold;
-  padding: 0.6rem 1.2rem;
   border-radius: 8px;
-  margin-top: 0.8rem;
+  margin: 0.5rem 0;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
-.menu-button:hover {
-  background-color: #0cf;
-}
-
-nav {
-  margin-top: 1rem;
-}
-
-nav a {
-  color: #f5f0e6;
+#menu a {
+  color: #f5f5dc;
   margin: 0 1rem;
   text-decoration: none;
   font-weight: 500;
 }
 
-nav a:hover {
-  text-decoration: underline;
+.hero {
+  text-align: center;
+  padding: 2rem 1rem;
 }
 
-main {
-  padding: 1rem;
-  max-width: 800px;
-  margin: 0 auto;
+.card {
+  background-color: #2A2A3D;
+  border: 2px solid cyan;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem;
+  box-shadow: 0 0 12px cyan;
 }
 
-h1, h2 {
-  color: #f5f0e6;
+.card h3 {
+  color: #f5f5dc;
   margin-bottom: 0.5rem;
 }
 
-.section-heading {
-  color: #f5f0e6;
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
+.card p, .card ul {
+  color: #e0e0e0;
 }
 
-.hero {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.feature-box {
-  background-color: #2a2a3b;
-  border: 2px solid #00f0ff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 0 10px #00f0ff30;
-}
-
-.feature-box h2 {
-  margin-top: 0;
-  color: #f5f0e6;
-}
-
-.feature-box p {
-  color: #eae6da;
-  line-height: 1.5;
-}
-
-.feature-box ul {
-  padding-left: 1.2rem;
-  margin: 1rem 0;
-}
-
-.feature-box li {
-  margin-bottom: 0.4rem;
-}
-
-.feature-box .button {
-  margin-top: 1.5rem;
+.button {
   display: inline-block;
-  background-color: #e6e6f0;
-  color: #000;
-  font-weight: bold;
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  box-shadow: 0 0 5px #00f0ff50;
-  transition: background-color 0.2s ease;
-}
-
-.feature-box .button:hover {
-  background-color: #d0d0ea;
-}
-
-footer {
-  text-align: center;
-  font-size: 0.9rem;
-  margin-top: 3rem;
-  padding-bottom: 2rem;
-  color: #ccc;
-}
-
-footer a {
-  color: #00f0ff;
+  background-color: #ddd;
+  color: #1F1F2E;
+  padding: 0.5rem 1.25rem;
+  margin-top: 1rem;
   text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
-footer a:hover {
+.button:hover {
+  background-color: #bbb;
+}
+
+.email-link {
+  color: #89e0ff;
   text-decoration: underline;
-}
-
-footer nav {
-  margin-bottom: 1rem;
-}
-
-footer nav a {
-  color: #00f0ff;
-  margin: 0 0.75rem;
-  font-weight: 500;
 }
