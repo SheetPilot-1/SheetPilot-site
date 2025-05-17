@@ -18,7 +18,7 @@ a:hover {
 
 header {
   text-align: center;
-  padding: 40px 20px 20px;
+  padding: 40px 20px 10px;
 }
 
 header h1 {
@@ -39,13 +39,28 @@ nav a {
   color: #F5F5DC;
 }
 
+.hero {
+  text-align: center;
+  padding: 50px 20px 30px;
+}
+
+.hero h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  color: #ccc;
+}
+
 section {
   max-width: 700px;
   margin: 40px auto;
   padding: 30px;
   background-color: #2C2C3C;
   border-radius: 10px;
-  box-shadow: 0 0 10px #00ffff;
+  box-shadow: 0 0 20px #00ffff;
 }
 
 h2 {
