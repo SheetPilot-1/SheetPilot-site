@@ -7,72 +7,70 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1 class="brand">SheetPilot</h1>
-    <button id="menuButton" class="menu-button">Menu</button>
-    <nav id="navLinks" class="hidden">
+  <header class="header">
+    <div class="logo-text">SheetPilot</div>
+    <button class="menu-toggle" id="menuToggle">Menu</button>
+    <nav class="nav-menu" id="navMenu">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <main>
-    <section class="hero">
-      <h2>Clean data.<br />Clear insights.<br />Zero coding.</h2>
-      <p>Automate your spreadsheets and focus on what matters.</p>
-    </section>
+  <section class="hero">
+    <h1>Clean data.<br />Clear insights.<br />Zero coding.</h1>
+    <p>Automate your spreadsheets and focus on what matters.</p>
+  </section>
 
-    <section class="feature-boxes" id="features">
-      <div class="feature">
-        <div class="icon">⚙️</div>
-        <h3>No-Code Workflows</h3>
-        <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
-      </div>
-      <div class="feature">
-        <div class="icon">📊</div>
-        <h3>Daily Insights</h3>
-        <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
-      </div>
-      <div class="feature">
-        <div class="icon">👥</div>
-        <h3>Team Dashboards</h3>
-        <p>Track and compare productivity across your entire team in real time.</p>
-      </div>
-    </section>
+  <section class="section-box" id="features">
+    <img src="gear-icon.png" alt="Gear Icon" class="icon" />
+    <h2>No-Code Workflows</h2>
+    <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
+  </section>
 
-    <section class="feature what-you-get">
-      <h3>What You Get with SheetPilot</h3>
-      <ul>
-        <li>Save time with intelligent automations</li>
-        <li>Stay focused with instant performance summaries</li>
-        <li>Enhance transparency across your team</li>
-        <li>Eliminate copy/paste chaos</li>
-      </ul>
-    </section>
-  </main>
+  <section class="section-box">
+    <img src="chart-icon.png" alt="Chart Icon" class="icon" />
+    <h2>Daily Insights</h2>
+    <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
+  </section>
 
-  <footer>
-    <div class="footer-links">
+  <section class="section-box">
+    <img src="team-icon.png" alt="Team Icon" class="icon" />
+    <h2>Team Dashboards</h2>
+    <p>Track and compare productivity across your entire team in real time.</p>
+  </section>
+
+  <section class="section-box">
+    <h2>What You Get with SheetPilot</h2>
+    <ul>
+      <li>Save time with intelligent automations</li>
+      <li>Stay focused with instant performance summaries</li>
+      <li>Enhance transparency across your team</li>
+      <li>Eliminate copy/paste chaos</li>
+    </ul>
+  </section>
+
+  <footer class="footer">
+    <nav class="footer-links">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
-    </div>
-    <p>© 2025 SheetPilot. All rights reserved.</p>
+    </nav>
+    <p>&copy; 2025 SheetPilot. All rights reserved.</p>
     <p>Email: <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
   </footer>
 
   <script>
-    const menuButton = document.getElementById("menuButton");
-    const navLinks = document.getElementById("navLinks");
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
 
-    menuButton.addEventListener("click", () => {
-      navLinks.classList.toggle("hidden");
+    menuToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('show');
     });
 
-    window.addEventListener("click", (e) => {
-      if (!menuButton.contains(e.target) && !navLinks.contains(e.target)) {
-        navLinks.classList.add("hidden");
+    document.addEventListener('click', (e) => {
+      if (!menuToggle.contains(e.target) && !navMenu.contains(e.target)) {
+        navMenu.classList.remove('show');
       }
     });
   </script>
