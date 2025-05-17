@@ -120,3 +120,39 @@ footer nav ul li a {
   color: cyan;
   text-decoration: none;
 }
+.cta-banner {
+  background-color: #2A2A3D;
+  border: 2px solid #00f0ff;
+  border-radius: 12px;
+  text-align: center;
+  padding: 2.5rem 1rem;
+  margin: 2.5rem auto;
+  max-width: 800px;
+  box-shadow: 0 0 15px #00f0ff33;
+}
+
+.cta-banner h2 {
+  color: #f5f5dc;
+  font-size: 1.8rem;
+  margin-bottom: 0.75rem;
+}
+
+.cta-banner p {
+  font-size: 1rem;
+  color: #dddddd;
+  margin-bottom: 1.5rem;
+}
+
+.cta-banner .button {
+  background-color: #f5f5dc;
+  color: #1F1F2E;
+  padding: 0.6rem 1.25rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.cta-banner .button:hover {
+  background-color: #e0e0c8;
+}
