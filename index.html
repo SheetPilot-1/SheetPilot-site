@@ -6,34 +6,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SheetPilot</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #1F1F2E;
+      color: #f4f4f4;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    header {
+      padding: 20px 0 10px;
+    }
+
+    .logo {
+      width: 160px;
+      height: auto;
+    }
+
+    .menu-toggle {
+      margin-top: 10px;
+      font-size: 24px;
+      cursor: pointer;
+      background-color: #00f0ff;
+      color: #1F1F2E;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+    }
+
+    .menu-items {
+      display: none;
+      flex-direction: column;
+      background-color: #1F1F2E;
+      margin-top: 10px;
+    }
+
+    .menu-items a {
+      color: #f4f4f4;
+      padding: 10px;
+      text-decoration: none;
+    }
+
+    .menu-items a:hover {
+      background-color: #333;
+    }
+
+    .hero {
+      margin-top: 40px;
+      padding: 0 20px;
+    }
+
+    .hero h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 16px;
+      color: #bbb;
+    }
+  </style>
 </head>
 <body>
-  <header class="header">
-    <img src="/sheetpilot-logo.png" alt="SheetPilot Logo" class="logo" />
-    <button class="menu-toggle" onclick="toggleMenu()">&#9776;</button>
-    <nav class="nav" id="navMenu">
-      <a href="#">Features</a>
-      <a href="#">Pricing</a>
-      <a href="#">Contact</a>
-    </nav>
+  <header>
+    <img src="sheetpilot-logo.png" alt="SheetPilot Logo" class="logo" />
+    <button class="menu-toggle" onclick="toggleMenu()">Menu</button>
+    <div id="menu" class="menu-items">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </div>
   </header>
 
   <main class="hero">
-    <h1>Clean data.<br />Clear insights.<br /><span class="highlight">Zero coding.</span></h1>
+    <h1>
+      Clean data.<br />
+      Clear insights.<br />
+      Zero coding.
+    </h1>
     <p>Automate your spreadsheets and focus on what matters.</p>
   </main>
 
   <script>
     function toggleMenu() {
-      const nav = document.getElementById('navMenu');
-      nav.classList.toggle('show');
+      const menu = document.getElementById("menu");
+      if (menu.style.display === "flex") {
+        menu.style.display = "none";
+      } else {
+        menu.style.display = "flex";
+      }
     }
 
-    document.addEventListener('click', function(event) {
-      const nav = document.getElementById('navMenu');
-      const button = document.querySelector('.menu-toggle');
-      if (!nav.contains(event.target) && !button.contains(event.target)) {
-        nav.classList.remove('show');
+    // Close menu when clicking outside
+    document.addEventListener("click", function(event) {
+      const menu = document.getElementById("menu");
+      const toggle = document.querySelector(".menu-toggle");
+      if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+        menu.style.display = "none";
       }
     });
   </script>
