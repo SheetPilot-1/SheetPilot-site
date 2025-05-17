@@ -1,20 +1,18 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SheetPilot</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="header">
-    <div class="logo-container">
-      <img src="sheetpilot-icon.png" alt="SheetPilot Logo" class="logo-icon"/>
-      <span class="logo-text">SheetPilot</span>
+  <header>
+    <div class="header-container">
+      <h1 class="logo-text">SheetPilot</h1>
+      <button id="menu-toggle" class="menu-button">Menu</button>
     </div>
-    <button id="menu-button" class="menu-button">Menu</button>
-    <nav id="dropdown" class="dropdown hidden">
+    <nav id="nav-menu" class="nav-links hidden">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
@@ -23,30 +21,30 @@
 
   <main>
     <section class="hero">
-      <h1>Clean data.<br/>Clear insights.<br/>Zero coding.</h1>
+      <h2>Clean data.<br />Clear insights.<br />Zero coding.</h2>
       <p>Automate your spreadsheets and focus on what matters.</p>
     </section>
 
-    <section id="features" class="features">
-      <div class="feature-box">
+    <section id="features" class="features-grid">
+      <div class="feature-card">
         <div class="icon">⚙️</div>
-        <h2>No-Code Workflows</h2>
+        <h3>No-Code Workflows</h3>
         <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
       </div>
-      <div class="feature-box">
+      <div class="feature-card">
         <div class="icon">📊</div>
-        <h2>Daily Insights</h2>
+        <h3>Daily Insights</h3>
         <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
       </div>
-      <div class="feature-box">
+      <div class="feature-card">
         <div class="icon">👥</div>
-        <h2>Team Dashboards</h2>
+        <h3>Team Dashboards</h3>
         <p>Track and compare productivity across your entire team in real time.</p>
       </div>
     </section>
 
-    <section id="benefits" class="benefits">
-      <h2>What You Get with SheetPilot</h2>
+    <section class="benefits">
+      <h3>What You Get with SheetPilot</h3>
       <ul>
         <li>Save time with intelligent automations</li>
         <li>Stay focused with instant performance summaries</li>
@@ -56,15 +54,27 @@
     </section>
   </main>
 
+  <footer>
+    <div class="footer-container">
+      <nav class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <p>© 2025 SheetPilot. All rights reserved.</p>
+      <p>Email: <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
+    </div>
+  </footer>
+
   <script>
-    const menuButton = document.getElementById('menu-button');
-    const dropdown = document.getElementById('dropdown');
-    menuButton.addEventListener('click', () => {
-      dropdown.classList.toggle('hidden');
+    const toggle = document.getElementById("menu-toggle");
+    const nav = document.getElementById("nav-menu");
+    toggle.addEventListener("click", () => {
+      nav.classList.toggle("hidden");
     });
-    window.addEventListener('click', (e) => {
-      if (!menuButton.contains(e.target) && !dropdown.contains(e.target)) {
-        dropdown.classList.add('hidden');
+    document.addEventListener("click", (e) => {
+      if (!toggle.contains(e.target) && !nav.contains(e.target)) {
+        nav.classList.add("hidden");
       }
     });
   </script>
