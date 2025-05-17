@@ -3,58 +3,63 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SheetPilot</title>
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="header">
-    <img src="sheetpilot-icon.png" alt="SheetPilot Logo" class="logo" />
-    <h1 class="brand">SheetPilot</h1>
-    <button class="menu-btn" onclick="toggleMenu()">Menu</button>
-    <nav id="nav-menu" class="nav-menu hidden">
+  <header class="site-header">
+    <div class="logo-container">
+      <img src="sheetpilot-icon.png" alt="SheetPilot Logo" class="logo-icon" />
+      <span class="logo-text">SheetPilot</span>
+    </div>
+    <button id="menuToggle" class="menu-button">Menu</button>
+    <nav id="menu" class="menu hidden">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <main>
+  <main class="main-content">
     <section class="hero">
-      <h2>Clean data.<br>Clear insights.<br>Zero coding.</h2>
+      <h1>Clean data.<br />Clear insights.<br /><strong>Zero coding.</strong></h1>
       <p>Automate your spreadsheets and focus on what matters.</p>
     </section>
 
-    <section id="features" class="features">
+    <section id="features" class="features-section">
       <div class="feature-box">
-        <div class="icon">⚙️</div>
+        <div class="feature-icon">⚙️</div>
         <h3>No-Code Workflows</h3>
         <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
       </div>
       <div class="feature-box">
-        <div class="icon">📊</div>
+        <div class="feature-icon">📊</div>
         <h3>Daily Insights</h3>
         <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
       </div>
       <div class="feature-box">
-        <div class="icon">👥</div>
+        <div class="feature-icon">👥</div>
         <h3>Team Dashboards</h3>
         <p>Track and compare productivity across your entire team in real time.</p>
       </div>
     </section>
+
+    <section class="benefits-section">
+      <h2>What You Get with SheetPilot</h2>
+      <p>SheetPilot eliminates the tedious tasks in your workflow, giving you back hours of your day. It's not just automation — it's clarity, accuracy, and consistency in every spreadsheet.</p>
+    </section>
   </main>
 
   <script>
-    function toggleMenu() {
-      const nav = document.getElementById('nav-menu');
-      nav.classList.toggle('hidden');
-    }
-
-    document.addEventListener('click', function(event) {
-      const nav = document.getElementById('nav-menu');
-      const menuBtn = document.querySelector('.menu-btn');
-      if (!nav.contains(event.target) && !menuBtn.contains(event.target)) {
-        nav.classList.add('hidden');
+    const menuToggle = document.getElementById("menuToggle");
+    const menu = document.getElementById("menu");
+    menuToggle.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+    document.addEventListener("click", function(event) {
+      if (!menu.contains(event.target) && event.target !== menuToggle) {
+        menu.classList.add("hidden");
       }
     });
   </script>
