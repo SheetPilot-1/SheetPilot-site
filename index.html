@@ -2,118 +2,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SheetPilot</title>
-  <link rel="stylesheet" href="styles.css" />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #1F1F2E;
-      color: #f4f4f4;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
-
-    header {
-      padding: 20px 0 10px;
-    }
-
-    .logo {
-      width: 160px;
-      height: auto;
-    }
-
-    .menu-toggle {
-      margin-top: 10px;
-      font-size: 24px;
-      cursor: pointer;
-      background-color: #00f0ff;
-      color: #1F1F2E;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
-    }
-
-    .menu-items {
-      display: none;
-      flex-direction: column;
-      background-color: #1F1F2E;
-      margin-top: 10px;
-    }
-
-    .menu-items a {
-      color: #f4f4f4;
-      padding: 10px;
-      text-decoration: none;
-    }
-
-    .menu-items a:hover {
-      background-color: #333;
-    }
-
-    .hero {
-      margin-top: 40px;
-      padding: 0 20px;
-    }
-
-    .hero h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      font-size: 16px;
-      color: #bbb;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SheetPilot</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #1F1F2E;
+            color: #f4f4f4;
+            text-align: center;
+        }
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .logo span {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .menu-btn {
+            margin: 20px auto;
+            background-color: #00eaff;
+            color: black;
+            font-weight: bold;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .menu-items {
+            display: none;
+            margin-bottom: 30px;
+        }
+        .menu-items a {
+            display: block;
+            color: #ccc;
+            text-decoration: none;
+            margin: 10px 0;
+        }
+        .headline {
+            font-size: 32px;
+            font-weight: 800;
+            margin: 40px 0 10px;
+        }
+        .subhead {
+            margin-bottom: 30px;
+        }
+        .features-section {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 30px 20px;
+        }
+        .feature-box {
+            background-color: #2A2A3B;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+        }
+        .feature-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .feature-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .feature-desc {
+            font-size: 15px;
+            color: #bbb;
+        }
+        .what-you-get {
+            margin-top: 40px;
+        }
+    </style>
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('menu-items');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+        window.onclick = function(e) {
+            if (!e.target.matches('.menu-btn')) {
+                document.getElementById('menu-items').style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
-  <header>
-    <img src="sheetpilot-logo.png" alt="SheetPilot Logo" class="logo" />
-    <button class="menu-toggle" onclick="toggleMenu()">Menu</button>
-    <div id="menu" class="menu-items">
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#contact">Contact</a>
+    <div class="logo">
+        <img src="sheetpilot-logo.png" alt="SheetPilot Logo">
+        <span>SheetPilot</span>
     </div>
-  </header>
+    <button class="menu-btn" onclick="toggleMenu()">Menu</button>
+    <div id="menu-items" class="menu-items">
+        <a href="#">Features</a>
+        <a href="#">Pricing</a>
+        <a href="#">Contact</a>
+    </div>
+    <h1 class="headline">Clean data.<br>Clear insights.<br>Zero coding.</h1>
+    <p class="subhead">Automate your spreadsheets and focus on what matters.</p>
 
-  <main class="hero">
-    <h1>
-      Clean data.<br />
-      Clear insights.<br />
-      Zero coding.
-    </h1>
-    <p>Automate your spreadsheets and focus on what matters.</p>
-  </main>
+    <div class="features-section">
+        <div class="feature-box">
+            <div class="feature-icon">⚙️</div>
+            <div class="feature-title">No-Code Workflows</div>
+            <div class="feature-desc">Automate routine tasks in your spreadsheets without writing a single line of code.</div>
+        </div>
+        <div class="feature-box">
+            <div class="feature-icon">📊</div>
+            <div class="feature-title">Daily Insights</div>
+            <div class="feature-desc">Receive auto-generated performance summaries delivered straight from your sheets.</div>
+        </div>
+        <div class="feature-box">
+            <div class="feature-icon">👥</div>
+            <div class="feature-title">Team Dashboards</div>
+            <div class="feature-desc">Track and compare productivity across your entire team in real time.</div>
+        </div>
+    </div>
 
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById("menu");
-      if (menu.style.display === "flex") {
-        menu.style.display = "none";
-      } else {
-        menu.style.display = "flex";
-      }
-    }
-
-    // Close menu when clicking outside
-    document.addEventListener("click", function(event) {
-      const menu = document.getElementById("menu");
-      const toggle = document.querySelector(".menu-toggle");
-      if (!menu.contains(event.target) && !toggle.contains(event.target)) {
-        menu.style.display = "none";
-      }
-    });
-  </script>
+    <div class="features-section what-you-get">
+        <div class="feature-box">
+            <div class="feature-icon">✅</div>
+            <div class="feature-title">What You Get with SheetPilot</div>
+            <div class="feature-desc">
+                SheetPilot eliminates the tedious tasks in your workflow, giving you back hours of your day.
+                It’s not just automation—it’s clarity, accuracy, and consistency in every spreadsheet.
+            </div>
+        </div>
+    </div>
 </body>
 </html>
-<section class="value-section">
-  <div class="value-heading">What You Get with SheetPilot</div>
-  <p class="value-subtext">
-    SheetPilot eliminates the tedious tasks in your workflow, giving you back hours of your day. It’s not just automation—it’s clarity, accuracy, and consistency in every spreadsheet.
-  </p>
-</section>
-
