@@ -1,132 +1,107 @@
+
+/* Base Styles */
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   background-color: #1F1F2E;
-  color: #ffffff;
+  color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
 
 header {
-  text-align: center;
-  padding: 2rem 1rem 1rem;
-}
-
-.header-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 1rem 0;
+  background-color: #1F1F2E;
 }
 
 .logo-text {
   font-size: 2rem;
   font-weight: bold;
-  color: #ffffff;
-  margin-bottom: 1rem;
+  color: white;
 }
 
 .menu-button {
-  background-color: #00f0ff;
-  color: #000;
-  border: none;
-  padding: 0.5rem 1.25rem;
-  border-radius: 8px;
+  background-color: #00F0FF;
+  color: #1F1F2E;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
   font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  margin: 0.5rem 0;
   cursor: pointer;
-  margin-bottom: 0.5rem;
 }
 
-.nav-links {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 0.5rem;
+nav {
+  margin-top: 0.5rem;
 }
 
-.nav-links a {
-  color: #c5bdf7;
+nav a {
+  color: #cfc0ff;
+  margin: 0 1rem;
   text-decoration: none;
+  font-weight: 500;
 }
 
-.nav-links a:hover {
+nav a:hover {
   text-decoration: underline;
 }
 
-.hidden {
-  display: none;
-}
-
+/* Hero Section */
 .hero {
-  text-align: center;
-  padding: 2rem 1rem;
+  margin: 2rem 0;
 }
 
-.hero h2 {
+.hero h1 {
   font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
+  margin: 0.5rem 0;
 }
 
 .hero p {
   font-size: 1rem;
-  color: #c0c0c0;
+  max-width: 600px;
+  margin: 0 auto;
+  color: #d0d0d0;
 }
 
-.features-grid {
+/* Feature Boxes */
+.features {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
   padding: 2rem 1rem;
-  gap: 1.5rem;
 }
 
-.feature-card {
-  background-color: #2a2a3c;
-  border-radius: 12px;
+.feature-box {
+  background-color: #2A2A3D;
+  border-radius: 10px;
   padding: 1.5rem;
-  width: 100%;
-  max-width: 320px;
+  max-width: 350px;
+  width: 90%;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
-  text-align: center;
 }
 
-.icon {
-  font-size: 2rem;
-  margin-bottom: 0.75rem;
+.feature-box h2 {
+  margin-top: 0.5rem;
+  font-size: 1.25rem;
+  color: white;
 }
 
-.benefits {
-  padding: 2rem 1rem;
-  max-width: 640px;
-  margin: 0 auto;
+.feature-box p {
+  font-size: 0.95rem;
+  color: #dcdcdc;
 }
 
-.benefits h3 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.benefits ul {
-  list-style: disc;
-  padding-left: 1.5rem;
-  color: #c0c0c0;
-}
-
+/* Footer */
 footer {
-  background-color: #1F1F2E;
-  text-align: center;
-  padding: 2rem 1rem;
-  border-top: 1px solid #333;
+  margin-top: 3rem;
+  padding: 2rem;
   font-size: 0.9rem;
-  color: #888;
+  color: #aaa;
 }
 
-.footer-links {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
-}
-
-.footer-links a {
-  color: #c5bdf7;
+footer a {
+  color: #00F0FF;
   text-decoration: none;
 }
