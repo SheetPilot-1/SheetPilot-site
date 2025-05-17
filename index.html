@@ -1,144 +1,63 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>SheetPilot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet"/>
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Inter', sans-serif;
-            background-color: #1F1F2E;
-            color: #f4f4f4;
-            text-align: center;
-        }
-        .logo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 30px;
-        }
-        .logo img {
-            height: 40px;
-            margin-right: 10px;
-        }
-        .logo span {
-            font-size: 24px;
-            font-weight: 600;
-        }
-        .menu-btn {
-            margin: 20px auto;
-            background-color: #00eaff;
-            color: black;
-            font-weight: bold;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 18px;
-        }
-        .menu-items {
-            display: none;
-            margin-bottom: 30px;
-        }
-        .menu-items a {
-            display: block;
-            color: #ccc;
-            text-decoration: none;
-            margin: 10px 0;
-        }
-        .headline {
-            font-size: 32px;
-            font-weight: 800;
-            margin: 40px 0 10px;
-        }
-        .subhead {
-            margin-bottom: 30px;
-        }
-        .features-section {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 20px;
-            padding: 30px 20px;
-        }
-        .feature-box {
-            background-color: #2A2A3B;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-        }
-        .feature-icon {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        .feature-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .feature-desc {
-            font-size: 15px;
-            color: #bbb;
-        }
-        .what-you-get {
-            margin-top: 40px;
-        }
-    </style>
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('menu-items');
-            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-        }
-        window.onclick = function(e) {
-            if (!e.target.matches('.menu-btn')) {
-                document.getElementById('menu-items').style.display = 'none';
-            }
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SheetPilot</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <div class="logo">
-        <img src="sheetpilot-logo.png" alt="SheetPilot Logo">
-        <span>SheetPilot</span>
+  <header class="header">
+    <div class="logo-container">
+      <img src="sheetpilot-icon.png" alt="SheetPilot Rocket Icon" class="logo-icon" />
+      <span class="logo-text">SheetPilot</span>
     </div>
-    <button class="menu-btn" onclick="toggleMenu()">Menu</button>
-    <div id="menu-items" class="menu-items">
-        <a href="#">Features</a>
-        <a href="#">Pricing</a>
-        <a href="#">Contact</a>
-    </div>
-    <h1 class="headline">Clean data.<br>Clear insights.<br>Zero coding.</h1>
-    <p class="subhead">Automate your spreadsheets and focus on what matters.</p>
+    <button class="menu-button" onclick="toggleMenu()">Menu</button>
+    <nav id="navMenu" class="nav-menu">
+      <a href="#features">Features</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
 
-    <div class="features-section">
-        <div class="feature-box">
-            <div class="feature-icon">⚙️</div>
-            <div class="feature-title">No-Code Workflows</div>
-            <div class="feature-desc">Automate routine tasks in your spreadsheets without writing a single line of code.</div>
-        </div>
-        <div class="feature-box">
-            <div class="feature-icon">📊</div>
-            <div class="feature-title">Daily Insights</div>
-            <div class="feature-desc">Receive auto-generated performance summaries delivered straight from your sheets.</div>
-        </div>
-        <div class="feature-box">
-            <div class="feature-icon">👥</div>
-            <div class="feature-title">Team Dashboards</div>
-            <div class="feature-desc">Track and compare productivity across your entire team in real time.</div>
-        </div>
-    </div>
+  <main>
+    <section class="hero">
+      <h1>Clean data.<br />Clear insights.<br />Zero coding.</h1>
+      <p>Automate your spreadsheets and focus on what matters.</p>
+    </section>
 
-    <div class="features-section what-you-get">
-        <div class="feature-box">
-            <div class="feature-icon">✅</div>
-            <div class="feature-title">What You Get with SheetPilot</div>
-            <div class="feature-desc">
-                SheetPilot eliminates the tedious tasks in your workflow, giving you back hours of your day.
-                It’s not just automation—it’s clarity, accuracy, and consistency in every spreadsheet.
-            </div>
-        </div>
-    </div>
+    <section id="features" class="features">
+      <div class="feature-card">
+        <div class="icon">⚙️</div>
+        <h3>No-Code Workflows</h3>
+        <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">📊</div>
+        <h3>Daily Insights</h3>
+        <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">👥</div>
+        <h3>Team Dashboards</h3>
+        <p>Track and compare productivity across your entire team in real time.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      const nav = document.getElementById("navMenu");
+      nav.style.display = nav.style.display === "block" ? "none" : "block";
+    }
+
+    window.addEventListener("click", function (event) {
+      const nav = document.getElementById("navMenu");
+      const menuBtn = document.querySelector(".menu-button");
+      if (!menuBtn.contains(event.target) && !nav.contains(event.target)) {
+        nav.style.display = "none";
+      }
+    });
+  </script>
 </body>
 </html>
