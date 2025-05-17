@@ -3,80 +3,97 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot</title>
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
   <header>
     <h1>SheetPilot</h1>
-    <button id="menu-toggle">Menu</button>
-    <nav id="menu">
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#contact">Contact</a>
+    <button id="menu-button">Menu</button>
+    <nav>
+      <ul id="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
   </header>
 
-  <main>
-    <section class="hero">
-      <h2>Clean data.<br>Clear insights.<br>Zero coding.</h2>
-      <p>Automate your spreadsheets and focus on what matters.</p>
-    </section>
+  <section class="hero">
+    <h2>Clean data.<br/>Clear insights.<br/>Zero coding.</h2>
+    <p>Automate your spreadsheets and focus on what matters.</p>
+  </section>
 
-    <section class="card">
-      <h3>⚙️ No-Code Workflows</h3>
-      <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
-    </section>
+  <section id="features" class="feature-section box">
+    <h3><span class="emoji">⚙️</span> No-Code Workflows</h3>
+    <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
+  </section>
 
-    <section class="card">
-      <h3>📊 Daily Insights</h3>
-      <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
-    </section>
+  <section class="feature-section box">
+    <h3><span class="emoji">📊</span> Daily Insights</h3>
+    <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
+  </section>
 
-    <section class="card">
-      <h3>👥 Team Dashboards</h3>
-      <p>Track and compare productivity across your entire team in real time.</p>
-    </section>
+  <section class="feature-section box">
+    <h3><span class="emoji">👥</span> Team Dashboards</h3>
+    <p>Track and compare productivity across your entire team in real time.</p>
+  </section>
 
-    <section class="card">
-      <h3>What You Get with SheetPilot</h3>
-      <ul>
-        <li>Save time with intelligent automations</li>
-        <li>Stay focused with instant performance summaries</li>
-        <li>Enhance transparency across your team</li>
-        <li>Eliminate copy/paste chaos</li>
-      </ul>
-    </section>
+  <section class="feature-section box">
+    <h3>What You Get with SheetPilot</h3>
+    <ul>
+      <li>Save time with intelligent automations</li>
+      <li>Stay focused with instant performance summaries</li>
+      <li>Enhance transparency across your team</li>
+      <li>Eliminate copy/paste chaos</li>
+    </ul>
+  </section>
 
-    <section class="card" id="pricing">
-      <h3>Simple Pricing</h3>
-      <p>Choose the plan that fits your team's size and needs.</p>
-      <ul>
-        <li><strong>Starter:</strong> $29/month — For individuals and small teams</li>
-        <li><strong>Pro:</strong> $79/month — Full access + priority support</li>
-        <li><strong>Enterprise:</strong> Custom pricing — Tailored automations for large orgs</li>
-      </ul>
-      <a href="#" class="button">Start Free Trial</a>
-    </section>
+  <section id="pricing" class="feature-section box">
+    <h3>Simple Pricing</h3>
+    <p>Choose the plan that fits your team's size and needs.</p>
+    <ul>
+      <li><strong>Starter:</strong> $29/month — For individuals and small teams</li>
+      <li><strong>Pro:</strong> $79/month — Full access + priority support</li>
+      <li><strong>Enterprise:</strong> Custom pricing — Tailored automations for large orgs</li>
+    </ul>
+    <a href="#" class="button">Start Free Trial</a>
+  </section>
 
-    <section class="card" id="contact">
-      <h3>Contact Us</h3>
-      <p>Have questions or want to discuss how SheetPilot can support your team? We’re here to help.</p>
-      <p><strong>Email:</strong> <a href="mailto:sheetpilotapp@gmail.com" class="email-link">sheetpilotapp@gmail.com</a></p>
-      <p><strong>Support Hours:</strong> Monday–Friday, 9am–5pm ET</p>
-      <a href="#" class="button">Send Us a Message</a>
-    </section>
-  </main>
+  <section id="contact" class="feature-section box">
+    <h3>Contact Us</h3>
+    <p>Have questions or want to discuss how SheetPilot can support your team? We’re here to help.</p>
+    <p>Email: <a href="mailto:sheetpilotapp@gmail.com" class="email-link">sheetpilotapp@gmail.com</a></p>
+    <p>Support Hours: Monday–Friday, 9am–5pm ET</p>
+    <a href="mailto:sheetpilotapp@gmail.com" class="button">Send Us a Message</a>
+  </section>
 
   <footer>
     <nav>
-      <a href="#features">Features</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#contact">Contact</a>
+      <ul>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
     <p>© 2025 SheetPilot. All rights reserved.</p>
     <p>Email: <a href="mailto:sheetpilotapp@gmail.com" class="email-link">sheetpilotapp@gmail.com</a></p>
   </footer>
+
+  <script>
+    const menuButton = document.getElementById('menu-button');
+    const navLinks = document.getElementById('nav-links');
+
+    menuButton.addEventListener('click', () => {
+      navLinks.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menuButton.contains(e.target) && !navLinks.contains(e.target)) {
+        navLinks.classList.remove('show');
+      }
+    });
+  </script>
 </body>
-</html>
+</html>p
