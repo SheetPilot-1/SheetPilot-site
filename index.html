@@ -8,39 +8,53 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
-  <header>
-    <h1>SheetPilot</h1>
-    <button id="menu-button">Menu</button>
-    <nav id="main-menu" style="display: none;">
+  <header class="header">
+    <h1 class="logo">SheetPilot</h1>
+    <button id="menuToggle" class="menu-toggle">Menu</button>
+    <nav id="mainMenu" class="menu">
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
 
-  <div class="hero">
+  <section class="hero">
     <h2>Clean data.<br>Clear insights.<br>Zero coding.</h2>
     <p>Automate your spreadsheets and focus on what matters.</p>
-  </div>
+  </section>
 
-  <section id="features">
-    <h2>⚙️ No-Code Workflows</h2>
+  <section class="section feature-box">
+    <h3>Step 1: Create Your Free Account</h3>
+    <p>Sign up in seconds — no credit card required.</p>
+  </section>
+
+  <section class="section feature-box">
+    <h3>Step 2: Connect Your Spreadsheet</h3>
+    <p>Securely link the Google Sheet you want SheetPilot to monitor.</p>
+  </section>
+
+  <section class="section feature-box">
+    <h3>Step 3: Automate Your Workflow</h3>
+    <p>Start receiving clean dashboards and daily summaries instantly.</p>
+  </section>
+
+  <section id="features" class="section feature-box">
+    <h3>⚙️ No-Code Workflows</h3>
     <p>Automate routine tasks in your spreadsheets without writing a single line of code.</p>
   </section>
 
-  <section>
-    <h2>📊 Daily Insights</h2>
+  <section class="section feature-box">
+    <h3>📊 Daily Insights</h3>
     <p>Receive auto-generated performance summaries delivered straight from your sheets.</p>
   </section>
 
-  <section>
-    <h2>👥 Team Dashboards</h2>
+  <section class="section feature-box">
+    <h3>👥 Team Dashboards</h3>
     <p>Track and compare productivity across your entire team in real time.</p>
   </section>
 
-  <section>
-    <h2>What You Get with SheetPilot</h2>
+  <section class="section feature-box">
+    <h3>What You Get with SheetPilot</h3>
     <ul>
       <li>Save time with intelligent automations</li>
       <li>Stay focused with instant performance summaries</li>
@@ -49,32 +63,32 @@
     </ul>
   </section>
 
-  <section id="pricing">
-    <h2>Simple Pricing</h2>
+  <section id="pricing" class="section feature-box">
+    <h3>Simple Pricing</h3>
     <p>Choose the plan that fits your team's size and needs.</p>
     <ul>
       <li><strong>Starter:</strong> $29/month — For individuals and small teams</li>
       <li><strong>Pro:</strong> $79/month — Full access + priority support</li>
-      <li><strong>Enterprise:</strong> Custom pricing — Tailored automations for large orgs</li>
+      <li><strong>Enterprise:</strong> Starting at $249/month — Includes tailored automations, onboarding, and dedicated support</li>
     </ul>
-    <a href="https://tally.so/r/nrpvzo" class="cta-button">Start Free Trial</a>
+    <a href="https://tally.so/r/nrpvzo" class="button">Start Free Trial</a>
   </section>
 
-  <section id="contact">
-    <h2>Contact Us</h2>
+  <section id="contact" class="section feature-box">
+    <h3>Contact Us</h3>
     <p>Have questions or want to discuss how SheetPilot can support your team? We’re here to help.</p>
-    <p>Email: <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
+    <p>Email: <a href="mailto:sheetpilotapp@gmail.com" class="email-link">sheetpilotapp@gmail.com</a></p>
     <p>Support Hours: Monday–Friday, 9am–5pm ET</p>
-    <a href="mailto:sheetpilotapp@gmail.com" class="cta-button">Send Us a Message</a>
+    <a href="mailto:sheetpilotapp@gmail.com" class="button">Send Us a Message</a>
   </section>
 
-  <section>
-    <h2>Ready to take flight?</h2>
+  <section class="section feature-box">
+    <h3>Ready to take flight?</h3>
     <p>SheetPilot helps you automate your spreadsheets and unlock daily insights—no code required.</p>
-    <a href="https://tally.so/r/nrpvzo" class="cta-button">Start Your Free Trial</a>
+    <a href="https://tally.so/r/nrpvzo" class="button">Start Your Free Trial</a>
   </section>
 
-  <footer>
+  <footer class="footer">
     <nav>
       <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
@@ -85,17 +99,8 @@
   </footer>
 
   <script>
-    const menuBtn = document.getElementById('menu-button');
-    const menu = document.getElementById('main-menu');
-
-    menuBtn.addEventListener('click', () => {
-      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!menu.contains(e.target) && e.target !== menuBtn) {
-        menu.style.display = 'none';
-      }
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      document.getElementById('mainMenu').classList.toggle('show');
     });
   </script>
 </body>
