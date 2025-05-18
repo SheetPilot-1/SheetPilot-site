@@ -104,34 +104,34 @@
   </footer>
  
 <script>
-  const toggleBtn = document.querySelector(".menu-toggle");
-  const navLinks = document.querySelector(".nav-links");
-  const navItems = document.querySelectorAll(".nav-links a");
+  document.addEventListener("DOMContentLoaded", () => {
+    const toggleBtn = document.querySelector(".menu-toggle");
+    const navLinks = document.querySelector(".nav-links");
+    const navItems = document.querySelectorAll(".nav-links a");
 
-  let menuOpen = false;
+    let menuOpen = false;
 
-  toggleBtn.addEventListener("click", () => {
-    menuOpen = !menuOpen;
-    navLinks.classList.toggle("visible", menuOpen);
-  });
+    toggleBtn.addEventListener("click", () => {
+      menuOpen = !menuOpen;
+      navLinks.classList.toggle("visible", menuOpen);
+    });
 
-  // Close menu when clicking outside
-  document.addEventListener("click", (e) => {
-    if (
-      !toggleBtn.contains(e.target) &&
-      !navLinks.contains(e.target) &&
-      menuOpen
-    ) {
-      navLinks.classList.remove("visible");
-      menuOpen = false;
-    }
-  });
+    document.addEventListener("click", (e) => {
+      if (
+        !toggleBtn.contains(e.target) &&
+        !navLinks.contains(e.target) &&
+        menuOpen
+      ) {
+        navLinks.classList.remove("visible");
+        menuOpen = false;
+      }
+    });
 
-  // Close menu when clicking any nav link
-  navItems.forEach((link) => {
-    link.addEventListener("click", () => {
-      navLinks.classList.remove("visible");
-      menuOpen = false;
+    navItems.forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("visible");
+        menuOpen = false;
+      });
     });
   });
 </script>
