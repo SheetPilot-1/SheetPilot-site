@@ -141,6 +141,12 @@ a:hover {
   margin-top: 0.8rem;
 }
 
+.onboarding-icon {
+  display: block;
+  margin: 1.25rem auto 0;
+  width: 60px;
+  height: auto;
+}
 /* Call-to-action buttons */
 .cta-button {
   display: inline-block;
