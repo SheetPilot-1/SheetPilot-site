@@ -51,15 +51,11 @@ a:hover {
 }
 
 .nav-links {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  flex-wrap: wrap;
-}
-
-.nav-links a {
-  font-weight: 500;
-  color: #f5f2e7;
+  display: none;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+  text-align: center;
 }
 
 .nav-links.visible {
