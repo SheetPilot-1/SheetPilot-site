@@ -104,12 +104,25 @@
   </footer>
  
   <script>
-    function toggleMenu() {
-      const nav = document.getElementById(\"navLinks\");
-      nav.classList.toggle(\"visible\");
+  const toggleBtn = document.querySelector(".menu-toggle");
+  const navLinks = document.querySelector(".nav-links");
+
+  let menuOpen = false;
+
+  toggleBtn.addEventListener("click", () => {
+    menuOpen = !menuOpen;
+    navLinks.classList.toggle("visible", menuOpen);
+  });
+
+  // Close the menu when clicking outside of it
+  document.addEventListener("click", (e) => {
+    if (
+      !toggleBtn.contains(e.target) &&
+      !navLinks.contains(e.target) &&
+      menuOpen
+    ) {
+      navLinks.classList.remove("visible");
+      menuOpen = false;
     }
-  </script>
-</body>
-</html>
-
-
+  });
+</script>
