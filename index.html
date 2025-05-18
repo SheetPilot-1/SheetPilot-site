@@ -103,9 +103,10 @@
     <p>Email: <a href="mailto:sheetpilotapp@gmail.com" class="highlight">sheetpilotapp@gmail.com</a></p>
   </footer>
  
-  <script>
+<script>
   const toggleBtn = document.querySelector(".menu-toggle");
   const navLinks = document.querySelector(".nav-links");
+  const navItems = document.querySelectorAll(".nav-links a");
 
   let menuOpen = false;
 
@@ -114,7 +115,7 @@
     navLinks.classList.toggle("visible", menuOpen);
   });
 
-  // Close the menu when clicking outside of it
+  // Close menu when clicking outside
   document.addEventListener("click", (e) => {
     if (
       !toggleBtn.contains(e.target) &&
@@ -124,5 +125,13 @@
       navLinks.classList.remove("visible");
       menuOpen = false;
     }
+  });
+
+  // Close menu when clicking any nav link
+  navItems.forEach((link) => {
+    link.addEventListener("click", () => {
+      navLinks.classList.remove("visible");
+      menuOpen = false;
+    });
   });
 </script>
