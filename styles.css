@@ -1,104 +1,60 @@
-
-/* General Reset */
 body {
   margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #1F1F2E;
-  color: #F5F2E7;
+  font-family: Arial, sans-serif;
+  background: #1F1F2E;
+  color: #FDF7E2;
 }
 
-/* Logo and Hero Section */
 header {
   text-align: center;
-  padding: 2rem 1rem 1rem;
+  padding: 20px;
 }
 
-header h1 {
-  font-size: 2.75rem;
-  margin-bottom: 1rem;
-  color: #F5F2E7;
+h1 {
+  font-size: 2.5rem;
 }
 
-.menu-button {
-  background-color: #DCD6C8;
-  border: none;
-  padding: 0.5rem 1rem;
-  font-weight: bold;
-  border-radius: 0.5rem;
-  cursor: pointer;
-  margin-bottom: 1rem;
-}
-
-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
+nav {
+  margin-top: 10px;
 }
 
 nav a {
+  margin: 0 10px;
+  color: #FDF7E2;
   text-decoration: none;
-  color: #F5F2E7;
-  font-weight: 500;
 }
 
-nav a:hover {
-  color: #00FFFF;
+nav.hidden {
+  display: none;
 }
 
-section {
-  padding: 2rem 1rem;
-  margin: 2rem auto;
-  max-width: 720px;
-  border-radius: 12px;
-  background-color: #272738;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
-  border: 2px solid #00FFFF;
-}
-
-/* Hero should not be boxed */
-.hero-section {
-  background-color: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-/* Buttons */
-button,
-.cta-button,
-.tally-button {
-  background-color: #F5F2E7;
-  color: #1F1F2E;
-  border: none;
-  border-radius: 8px;
-  padding: 0.6rem 1.4rem;
-  font-weight: bold;
-  cursor: pointer;
-  margin-top: 1rem;
-  transition: background-color 0.3s ease;
-}
-
-button:hover,
-.cta-button:hover,
-.tally-button:hover {
-  background-color: #e0dacc;
-}
-
-.footer {
+.hero-section.no-box {
+  padding: 60px 20px 40px;
   text-align: center;
-  padding: 2rem 1rem;
-  font-size: 0.875rem;
-  color: #A5A5B3;
+  border: none;
 }
 
-.footer a {
-  color: #00FFFF;
+.section-box {
+  border: 2px solid cyan;
+  margin: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #2A2A3C;
+  box-shadow: 0 0 12px cyan;
+}
+
+.button {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 24px;
+  background-color: #FDF7E2;
+  color: #1F1F2E;
+  border-radius: 8px;
   text-decoration: none;
+  font-weight: bold;
 }
 
-.footer a:hover {
+.email-link {
+  color: cyan;
   text-decoration: underline;
 }
