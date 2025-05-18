@@ -113,6 +113,34 @@ a:hover {
   margin-bottom: 0.4rem;
 }
 
+.feature-section {
+  background-color: #1F1F2E;
+  color: #f3f1e7;
+  border: 2px solid #00ffff;
+  padding: 2rem;
+  margin: 2rem auto;
+  border-radius: 12px;
+  box-shadow: 0 0 18px rgba(0, 255, 255, 0.4);
+  max-width: 768px;
+  text-align: center;
+}
+
+.feature-section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.8rem;
+  color: #fefae0;
+}
+
+.feature-section p {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.feature-section .icon {
+  font-size: 2.5rem;
+  margin-top: 0.8rem;
+}
+
 /* Call-to-action buttons */
 .cta-button {
   display: inline-block;
