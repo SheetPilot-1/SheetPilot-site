@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SheetPilot Preview</title>
+  <style>
+    body {
+      background-color: #1F1F2E;
+      color: #F5F5DC;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #00FFFF;
+    }
+
+    input[type="file"] {
+      margin: 20px auto;
+      display: block;
+      padding: 10px;
+      background-color: #2E2E3E;
+      color: #F5F5DC;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+
+    table {
+      margin-top: 30px;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #2E2E3E;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #444;
+      text-align: left;
+    }
+
+    th {
+      background-color: #00FFFF;
+      color: #1F1F2E;
+    }
+
+    tr:nth-child(even) {
+      background-color: #3A3A4A;
+    }
+  </style>
+</head>
+<body>
+  <h1>Step 1: Preview Your Data</h1>
+  <input type="file" id="fileInput" accept=".xlsx,.xls,.csv"/>
+  <div id="tablePreview"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    document.getElementById('fileInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, {type: 'array'});
+        const firstSheetName = workbook.SheetNames[0];
+        const firstSheet = workbook.Sheets[firstSheetName];
+        const htmlString = XLSX.utils.sheet_to_html(firstSheet, { header: '' });
+
+        document.getElementById('tablePreview').innerHTML = htmlString;
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  </script>
+</body>
+</html>
