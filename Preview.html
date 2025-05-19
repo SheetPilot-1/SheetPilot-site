@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot Preview</title>
+  <title>Preview File - SheetPilot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       background-color: #1F1F2E;
@@ -15,16 +15,6 @@
 
     h1 {
       color: #00FFFF;
-    }
-
-    input[type="file"] {
-      margin: 20px auto;
-      display: block;
-      padding: 10px;
-      background-color: #2E2E3E;
-      color: #F5F5DC;
-      border: 1px solid #555;
-      border-radius: 4px;
     }
 
     table {
@@ -55,23 +45,25 @@
 </head>
 <body>
   <h1>Step 1: Preview Your Data</h1>
-  <input type="file" id="fileInput" accept=".xlsx,.xls,.csv"/>
   <div id="tablePreview"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script>
-  const fileData = sessionStorage.getItem('uploadedFile');
-  if (!fileData) {
-    document.getElementById('tablePreview').innerHTML = '<p style="color:red;">No file found. Please go back and upload again.</p>';
-  } else {
-    fetch(fileData)
-      .then(res => res.arrayBuffer())
-      .then(buffer => {
-        const workbook = XLSX.read(buffer, {type: 'array'});
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const html = XLSX.utils.sheet_to_html(sheet, { header: '' });
-        document.getElementById('tablePreview').innerHTML = html;
-      });
-  }
-</script>
+  <script>
+    const fileData = sessionStorage.getItem('uploadedFile');
+
+    if (!fileData) {
+      document.getElementById('tablePreview').innerHTML = '<p style="color:red;">No file found. Please go back and upload again.</p>';
+    } else {
+      fetch(fileData)
+        .then(res => res.arrayBuffer())
+        .then(buffer => {
+          const workbook = XLSX.read(buffer, {type: 'array'});
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+          const html = XLSX.utils.sheet_to_html(sheet, { header: '' });
+          document.getElementById('tablePreview').innerHTML = html;
+        });
+    }
+  </script>
+</body>
+</html>
