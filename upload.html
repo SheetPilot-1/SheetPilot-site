@@ -118,3 +118,17 @@
   </script>
 </body>
 </html>
+<script>
+  document.getElementById('fileInput').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      sessionStorage.setItem('uploadedFile', e.target.result);
+      sessionStorage.setItem('fileName', file.name);
+      window.location.href = 'preview.html';
+    };
+    reader.readAsDataURL(file); // We'll convert the file to base64 for transfer
+  });
+</script>
