@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Preview File - SheetPilot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-color: #1F1F2E;
+      color: #F5F5DC;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #00FFFF;
+    }
+
+    table {
+      margin-top: 30px;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 1000px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #2E2E3E;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #444;
+      text-align: left;
+    }
+
+    th {
+      background-color: #00FFFF;
+      color: #1F1F2E;
+    }
+
+    tr:nth-child(even) {
+      background-color: #3A3A4A;
+    }
+  </style>
+</head>
+<body>
+  <h1>Step 1: Preview Your Data</h1>
+  <div id="tablePreview"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    const fileData = sessionStorage.getItem('uploadedFile');
+
+    if (!fileData) {
+      document.getElementById('tablePreview').innerHTML = '<p style="color:red;">No file found. Please go back and upload again.</p>';
+    } else {
+      fetch(fileData)
+        .then(res => res.arrayBuffer())
+        .then(buffer => {
+          const workbook = XLSX.read(buffer, {type: 'array'});
+          const sheetName = workbook.SheetNames[0];
+          const sheet = workbook.Sheets[sheetName];
+          const html = XLSX.utils.sheet_to_html(sheet, { header: '' });
+          document.getElementById('tablePreview').innerHTML = html;
+        });
+    }
+  </script>
+</body>
+</html>
