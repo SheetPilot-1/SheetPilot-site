@@ -59,23 +59,19 @@
   <div id="tablePreview"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script>
-    document.getElementById('fileInput').addEventListener('change', function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, {type: 'array'});
-        const firstSheetName = workbook.SheetNames[0];
-        const firstSheet = workbook.Sheets[firstSheetName];
-        const htmlString = XLSX.utils.sheet_to_html(firstSheet, { header: '' });
-
-        document.getElementById('tablePreview').innerHTML = htmlString;
-      };
-      reader.readAsArrayBuffer(file);
-    });
-  </script>
-</body>
-</html>
+<script>
+  const fileData = sessionStorage.getItem('uploadedFile');
+  if (!fileData) {
+    document.getElementById('tablePreview').innerHTML = '<p style="color:red;">No file found. Please go back and upload again.</p>';
+  } else {
+    fetch(fileData)
+      .then(res => res.arrayBuffer())
+      .then(buffer => {
+        const workbook = XLSX.read(buffer, {type: 'array'});
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        const html = XLSX.utils.sheet_to_html(sheet, { header: '' });
+        document.getElementById('tablePreview').innerHTML = html;
+      });
+  }
+</script>
