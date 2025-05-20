@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Step 3: Process & Export - SheetPilot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-color: #1F1F2E;
+      color: #F5F5DC;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #00FFFF;
+      margin-bottom: 20px;
+    }
+
+    table {
+      margin: auto;
+      margin-top: 30px;
+      border-collapse: collapse;
+      width: 100%;
+      max-width: 1000px;
+      background-color: #2E2E3E;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #444;
+      text-align: left;
+      color: #F5F5DC;
+    }
+
+    th {
+      background-color: #00FFFF;
+      color: #1F1F2E;
+    }
+
+    tr:nth-child(even) {
+      background-color: #3A3A4A;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #00FFFF;
+      color: #1F1F2E;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00dede;
+    }
+
+    #downloadBtn {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Step 3: Process & Export</h1>
+  <p>Here’s a final preview of your labeled data. You can download your clean file when ready.</p>
+
+  <div id="dataPreview"></div>
+  <button id="downloadBtn">Download as CSV</button>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    const uploadedData = sessionStorage.getItem('uploadedFile');
+    const finalLabels = JSON.parse(sessionStorage.getItem('finalLabels') || '[]');
+    const previewDiv = document.getElementById('dataPreview');
+    const downloadBtn = document.getElementById('downloadBtn');
+
+    if (!uploadedData || finalLabels.length === 0) {
+      previewDiv.innerHTML = "<p style='color:red;'>Missing uploaded data or labels. Please go back and finish previous steps.</p>";
+      downloadBtn.style.display = 'none';
+    } else {
+      fetch(uploadedData)
+        .then(res => res.arrayBuffer())
+        .then(buffer => {
+          const workbook = XLSX.read(buffer, { type: 'array' });
+          const sheetName = workbook.SheetNames[0];
+          const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
+          const rows = sheet.slice(1);
+          const labeledData = [finalLabels, ...rows];
+
+          let html = "<table><thead><tr>";
+          finalLabels.forEach(label => html += `<th>${label}</th>`);
+          html += "</tr></thead><tbody>";
+          rows.forEach(row => {
+            html += "<tr>";
+            finalLabels.forEach((_, i) => {
+              html += `<td>${row[i] || ""}</td>`;
+            });
+            html += "</tr>";
+          });
+          html += "</tbody></table>";
+          previewDiv.innerHTML = html;
+
+          downloadBtn.addEventListener('click', () => {
+            const ws = XLSX.utils.aoa_to_sheet(labeledData);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+            XLSX.writeFile(wb, 'sheetpilot_processed_data.xlsx');
+          });
+        });
+    }
+  </script>
+</body>
+</html>
