@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Start Setup - SheetPilot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      background-color: #1F1F2E;
+      color: #F5F5DC;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #00FFFF;
+    }
+
+    label, select, input {
+      display: block;
+      margin: 20px auto;
+      font-size: 1rem;
+    }
+
+    select, input[type="text"] {
+      padding: 10px;
+      width: 80%;
+      max-width: 400px;
+      background-color: #2E2E3E;
+      color: #F5F5DC;
+      border: 1px solid #555;
+      border-radius: 4px;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #00FFFF;
+      color: #1F1F2E;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00dede;
+    }
+
+    .divider {
+      margin: 40px auto 20px;
+      border-top: 1px solid #444;
+      width: 60%;
+    }
+  </style>
+</head>
+<body>
+  <h1>Let’s Set Up Your Spreadsheet</h1>
+
+  <label for="industry">Choose Your Industry:</label>
+  <select id="industry">
+    <option value="">-- Select an industry --</option>
+    <option value="ministry">Ministry / Church</option>
+    <option value="real_estate">Real Estate</option>
+    <option value="law">Law / Legal Services</option>
+    <option value="small_business">Small Business</option>
+    <option value="education">Education</option>
+    <option value="manual">I’ll enter everything myself</option>
+  </select>
+
+  <div id="subcategoryContainer" style="display:none;">
+    <label for="subcategory">What type of business?</label>
+    <select id="subcategory">
+      <option value="">-- Select a type --</option>
+      <option value="ecommerce">Ecommerce</option>
+      <option value="landscaping">Landscaping</option>
+      <option value="coffee">Coffee Shop</option>
+      <option value="construction">Construction</option>
+      <option value="freelance">Freelance Services</option>
+      <option value="custom">Other / Not Listed</option>
+    </select>
+  </div>
+
+  <div class="divider"></div>
+
+  <label for="customInput">Or describe your business in your own words:</label>
+  <input type="text" id="customInput" placeholder="e.g. Mobile detailing in Dallas" />
+
+  <button onclick="continueToUpload()">Continue</button>
+
+  <script>
+    const industrySelect = document.getElementById('industry');
+    const subcategoryContainer = document.getElementById('subcategoryContainer');
+
+    industrySelect.addEventListener('change', () => {
+      if (industrySelect.value === 'small_business') {
+        subcategoryContainer.style.display = 'block';
+      } else {
+        subcategoryContainer.style.display = 'none';
+      }
+    });
+
+    function continueToUpload() {
+      const industry = document.getElementById('industry').value;
+      const subcategory = document.getElementById('subcategory').value;
+      const custom = document.getElementById('customInput').value;
+
+      const setupData = {
+        industry,
+        subcategory,
+        custom
+      };
+
+      sessionStorage.setItem('sheetpilotSetup', JSON.stringify(setupData));
+      window.location.href = 'upload.html';
+    }
+  </script>
+</body>
+</html>
