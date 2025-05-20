@@ -18,6 +18,18 @@
       color: #00FFFF;
     }
 
+    #industrySelector {
+      margin: 20px auto;
+      padding: 10px;
+      font-size: 1rem;
+      background-color: #2E2E3E;
+      color: #F5F5DC;
+      border: 1px solid #555;
+      border-radius: 4px;
+      width: 80%;
+      max-width: 400px;
+    }
+
     #tableContainer {
       margin-top: 30px;
       overflow-x: auto;
@@ -81,6 +93,15 @@
 </head>
 <body>
   <h1>Step 2: Label Your Columns</h1>
+  <select id="industrySelector">
+    <option value="default">-- Select Industry --</option>
+    <option value="ministry">Ministry / Church</option>
+    <option value="real_estate">Real Estate</option>
+    <option value="law">Law / Legal Services</option>
+    <option value="small_business">Small Business</option>
+    <option value="education">Education</option>
+  </select>
+
   <div id="tableContainer"></div>
   <button onclick="confirmLabels()">Confirm and Continue</button>
 
@@ -88,7 +109,8 @@
   <script>
     const uploadedData = sessionStorage.getItem('uploadedFile');
     const setup = JSON.parse(sessionStorage.getItem('sheetpilotSetup') || '{}');
-
+    const tableContainer = document.getElementById('tableContainer');
+    const industrySelector = document.getElementById('industrySelector');
     const labelPresets = {
       ministry: ["Ignore", "Member Name", "Donation Amount", "Ministry Area", "Event Date", "Contact Info"],
       real_estate: ["Ignore", "Client Name", "Agent Name", "Property Address", "Closing Date", "Commission", "Contact Info"],
@@ -98,28 +120,63 @@
       default: ["Ignore", "Column 1", "Column 2", "Column 3", "Column 4", "Column 5"]
     };
 
-    function getLabelOptions() {
-      if (!setup.industry) return labelPresets.default;
-      const key = setup.industry.toLowerCase();
-      return labelPresets[key] || labelPresets.default;
+    let headers = [], rows = [], labelSelectors = [], customInputs = [];
+
+    function getLabelOptions(industry) {
+      return labelPresets[industry] || labelPresets.default;
+    }
+
+    function buildLabelRow(industry) {
+      const options = getLabelOptions(industry);
+      return headers.map((_, i) => {
+        const prevCustom = customInputs[i]?.value || "";
+        const prevSelect = labelSelectors[i]?.value || "";
+        const selectHTML = `<select class="column-label">${options.map(opt =>
+          `<option value="${opt}"${opt === prevSelect ? " selected" : ""}>${opt}</option>`
+        ).join("")}</select>`;
+        const inputHTML = `<input type="text" class="column-custom" placeholder="Or type custom label..." value="${prevCustom}"/>`;
+        return `<th><div class="label-container">${selectHTML}${inputHTML}</div></th>`;
+      }).join("");
+    }
+
+    function renderTable(industry) {
+      if (!headers.length || !rows.length) return;
+
+      const labelRow = buildLabelRow(industry);
+      let html = "<table><thead><tr>";
+      headers.forEach(header => html += `<th>${header}</th>`);
+      html += `</tr><tr>${labelRow}</tr></thead><tbody>`;
+      rows.slice(0, 5).forEach(row => {
+        html += "<tr>";
+        headers.forEach((_, i) => html += `<td>${row[i] || ""}</td>`);
+        html += "</tr>";
+      });
+      html += "</tbody></table>";
+      tableContainer.innerHTML = html;
+
+      // Refresh references
+      labelSelectors = document.querySelectorAll("select.column-label");
+      customInputs = document.querySelectorAll("input.column-custom");
     }
 
     function confirmLabels() {
-      const selects = document.querySelectorAll("select.column-label");
-      const customs = document.querySelectorAll("input.column-custom");
       const finalLabels = [];
-
-      selects.forEach((sel, i) => {
-        const customVal = customs[i].value.trim();
+      labelSelectors.forEach((sel, i) => {
+        const customVal = customInputs[i].value.trim();
         finalLabels.push(customVal || sel.value);
       });
-
       sessionStorage.setItem("finalLabels", JSON.stringify(finalLabels));
       alert("Labels confirmed! (This is where you’d continue to the processing step.)");
     }
 
+    if (setup.industry) industrySelector.value = setup.industry;
+
+    industrySelector.addEventListener("change", () => {
+      renderTable(industrySelector.value);
+    });
+
     if (!uploadedData) {
-      document.getElementById("tableContainer").innerHTML = "<p style='color:red;'>No file uploaded. Please go back and upload again.</p>";
+      tableContainer.innerHTML = "<p style='color:red;'>No file uploaded. Please go back and upload again.</p>";
     } else {
       fetch(uploadedData)
         .then(res => res.arrayBuffer())
@@ -127,32 +184,9 @@
           const workbook = XLSX.read(buffer, {type: 'array'});
           const sheetName = workbook.SheetNames[0];
           const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {header: 1});
-          const headers = sheet[0];
-          const rows = sheet.slice(1);
-          const options = getLabelOptions();
-
-          let html = "<table><thead><tr>";
-          headers.forEach(header => {
-            html += `<th>${header}</th>`;
-          });
-          html += "</tr><tr>";
-          headers.forEach((_, i) => {
-            html += `<th><div class="label-container">
-              <select class="column-label">${options.map(opt => `<option value="${opt}">${opt}</option>`).join("")}</select>
-              <input type="text" class="column-custom" placeholder="Or type custom label..." />
-            </div></th>`;
-          });
-          html += "</tr></thead><tbody>";
-          rows.slice(0, 5).forEach(row => {
-            html += "<tr>";
-            headers.forEach((_, i) => {
-              html += `<td>${row[i] || ""}</td>`;
-            });
-            html += "</tr>";
-          });
-          html += "</tbody></table>";
-
-          document.getElementById("tableContainer").innerHTML = html;
+          headers = sheet[0];
+          rows = sheet.slice(1);
+          renderTable(industrySelector.value || "default");
         });
     }
   </script>
