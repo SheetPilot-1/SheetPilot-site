@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +41,7 @@
       reader.onload = function(e) {
         sessionStorage.setItem('uploadedFile', e.target.result);
         sessionStorage.setItem('fileName', file.name);
-        window.location.href = 'preview.html';
+        window.location.href = 'label.html'; // Redirect to labeling instead of preview
       };
       reader.readAsDataURL(file);
     });
