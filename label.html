@@ -47,13 +47,14 @@
       background-color: #3A3A4A;
     }
 
-    select {
+    select, input[type="text"] {
       width: 100%;
       padding: 6px;
       background-color: #2E2E3E;
       color: #F5F5DC;
       border: 1px solid #555;
       border-radius: 4px;
+      margin-bottom: 4px;
     }
 
     button {
@@ -70,6 +71,12 @@
     button:hover {
       background-color: #00dede;
     }
+
+    .label-container {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
   </style>
 </head>
 <body>
@@ -81,32 +88,33 @@
   <script>
     const uploadedData = sessionStorage.getItem('uploadedFile');
     const setup = JSON.parse(sessionStorage.getItem('sheetpilotSetup') || '{}');
-    const labelOptions = [
-      "Ignore", "Agent Name", "Department", "Sales", "Enrollment Date",
-      "User ID", "Product Type", "Client Name", "Service Date", "Price", "Location", "Contact Info"
-    ];
 
-    function suggestLabel(header) {
-      if (!setup || !setup.industry) return "Ignore";
-      const text = (setup.subcategory || setup.custom || setup.industry || "").toLowerCase();
+    const labelPresets = {
+      ministry: ["Ignore", "Member Name", "Donation Amount", "Ministry Area", "Event Date", "Contact Info"],
+      real_estate: ["Ignore", "Client Name", "Agent Name", "Property Address", "Closing Date", "Commission", "Contact Info"],
+      law: ["Ignore", "Client Name", "Case Number", "Attorney", "Case Type", "Billable Hours", "Contact Info"],
+      small_business: ["Ignore", "Client Name", "Service Date", "Service Type", "Price", "Location", "Contact Info"],
+      education: ["Ignore", "Student Name", "Grade", "Subject", "Teacher", "Test Score", "Contact Info"],
+      default: ["Ignore", "Column 1", "Column 2", "Column 3", "Column 4", "Column 5"]
+    };
 
-      if (text.includes("church") || text.includes("ministry")) {
-        if (header.includes("name")) return "Client Name";
-        if (header.includes("donation") || header.includes("amount")) return "Sales";
-      } else if (text.includes("real estate")) {
-        if (header.includes("agent")) return "Agent Name";
-        if (header.includes("sale") || header.includes("commission")) return "Sales";
-      } else if (text.includes("coffee") || text.includes("shop")) {
-        if (header.includes("item") || header.includes("product")) return "Product Type";
-        if (header.includes("price")) return "Price";
-      } else if (text.includes("detail") || text.includes("service")) {
-        if (header.includes("date")) return "Service Date";
-        if (header.includes("price")) return "Price";
-      }
-      return "Ignore";
+    function getLabelOptions() {
+      if (!setup.industry) return labelPresets.default;
+      const key = setup.industry.toLowerCase();
+      return labelPresets[key] || labelPresets.default;
     }
 
     function confirmLabels() {
+      const selects = document.querySelectorAll("select.column-label");
+      const customs = document.querySelectorAll("input.column-custom");
+      const finalLabels = [];
+
+      selects.forEach((sel, i) => {
+        const customVal = customs[i].value.trim();
+        finalLabels.push(customVal || sel.value);
+      });
+
+      sessionStorage.setItem("finalLabels", JSON.stringify(finalLabels));
       alert("Labels confirmed! (This is where you’d continue to the processing step.)");
     }
 
@@ -121,15 +129,18 @@
           const sheet = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], {header: 1});
           const headers = sheet[0];
           const rows = sheet.slice(1);
+          const options = getLabelOptions();
 
           let html = "<table><thead><tr>";
           headers.forEach(header => {
             html += `<th>${header}</th>`;
           });
           html += "</tr><tr>";
-          headers.forEach(header => {
-            const suggested = suggestLabel(header.toLowerCase());
-            html += `<th><select>${labelOptions.map(opt => `<option${opt === suggested ? " selected" : ""}>${opt}</option>`).join("")}</select></th>`;
+          headers.forEach((_, i) => {
+            html += `<th><div class="label-container">
+              <select class="column-label">${options.map(opt => `<option value="${opt}">${opt}</option>`).join("")}</select>
+              <input type="text" class="column-custom" placeholder="Or type custom label..." />
+            </div></th>`;
           });
           html += "</tr></thead><tbody>";
           rows.slice(0, 5).forEach(row => {
