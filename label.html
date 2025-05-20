@@ -126,37 +126,49 @@
       return labelPresets[industry] || labelPresets.default;
     }
 
-    function buildLabelRow(industry) {
-      const options = getLabelOptions(industry);
-      return headers.map((_, i) => {
-        const prevCustom = customInputs[i]?.value || "";
-        const prevSelect = labelSelectors[i]?.value || "";
-        const selectHTML = `<select class="column-label">${options.map(opt =>
-          `<option value="${opt}"${opt === prevSelect ? " selected" : ""}>${opt}</option>`
-        ).join("")}</select>`;
-        const inputHTML = `<input type="text" class="column-custom" placeholder="Or type custom label..." value="${prevCustom}"/>`;
-        return `<th><div class="label-container">${selectHTML}${inputHTML}</div></th>`;
-      }).join("");
-    }
-
     function renderTable(industry) {
-      if (!headers.length || !rows.length) return;
+      const options = getLabelOptions(industry);
 
-      const labelRow = buildLabelRow(industry);
       let html = "<table><thead><tr>";
-      headers.forEach(header => html += `<th>${header}</th>`);
-      html += `</tr><tr>${labelRow}</tr></thead><tbody>`;
+      headers.forEach((_, i) => {
+        html += `<th id="header-label-${i}">${options[i % options.length]}</th>`;
+      });
+      html += "</tr><tr>";
+      headers.forEach((_, i) => {
+        const selectHTML = `<select class="column-label" data-index="${i}">${options.map(opt =>
+          `<option value="${opt}">${opt}</option>`).join("")}</select>`;
+        const inputHTML = `<input type="text" class="column-custom" placeholder="Or type custom label..." data-index="${i}" />`;
+        html += `<th><div class="label-container">${selectHTML}${inputHTML}</div></th>`;
+      });
+      html += "</tr></thead><tbody>";
       rows.slice(0, 5).forEach(row => {
         html += "<tr>";
-        headers.forEach((_, i) => html += `<td>${row[i] || ""}</td>`);
+        headers.forEach((_, i) => {
+          html += `<td>${row[i] || ""}</td>`;
+        });
         html += "</tr>";
       });
       html += "</tbody></table>";
-      tableContainer.innerHTML = html;
 
-      // Refresh references
+      tableContainer.innerHTML = html;
       labelSelectors = document.querySelectorAll("select.column-label");
       customInputs = document.querySelectorAll("input.column-custom");
+
+      labelSelectors.forEach(sel => {
+        sel.addEventListener("change", updateHeader);
+      });
+
+      customInputs.forEach(input => {
+        input.addEventListener("input", updateHeader);
+      });
+    }
+
+    function updateHeader(event) {
+      const index = event.target.getAttribute("data-index");
+      const customVal = customInputs[index].value.trim();
+      const selectVal = labelSelectors[index].value;
+      const headerCell = document.getElementById(`header-label-${index}`);
+      headerCell.textContent = customVal || selectVal;
     }
 
     function confirmLabels() {
