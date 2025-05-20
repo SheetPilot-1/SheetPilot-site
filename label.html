@@ -10,16 +10,17 @@
       background-color: #1F1F2E;
       color: #F5F5DC;
       font-family: Arial, sans-serif;
-      padding: 40px;
+      padding: 20px;
       text-align: center;
     }
 
     h1 {
       color: #00FFFF;
+      margin-bottom: 20px;
     }
 
-    #industrySelector {
-      margin: 20px auto;
+    #industrySelector, #modeToggle {
+      margin: 10px auto;
       padding: 10px;
       font-size: 1rem;
       background-color: #2E2E3E;
@@ -33,14 +34,16 @@
     #tableContainer {
       margin-top: 30px;
       overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     table {
       border-collapse: collapse;
-      width: 100%;
-      max-width: 1000px;
+      width: max-content;
+      max-width: 100%;
       margin: auto;
       background-color: #2E2E3E;
+      table-layout: fixed;
     }
 
     th, td {
@@ -48,11 +51,17 @@
       border: 1px solid #444;
       text-align: left;
       color: #F5F5DC;
+      min-width: 150px;
+      max-width: 200px;
+      overflow-wrap: break-word;
     }
 
-    th {
+    th.sticky {
+      position: sticky;
+      top: 0;
       background-color: #00FFFF;
       color: #1F1F2E;
+      z-index: 1;
     }
 
     tr:nth-child(even) {
@@ -67,6 +76,7 @@
       border: 1px solid #555;
       border-radius: 4px;
       margin-bottom: 4px;
+      font-size: 0.95rem;
     }
 
     button {
@@ -89,6 +99,28 @@
       flex-direction: column;
       gap: 4px;
     }
+
+    .column-mode-container {
+      display: none;
+      text-align: left;
+      margin: 30px auto;
+      max-width: 500px;
+    }
+
+    .column-mode-container.active {
+      display: block;
+    }
+
+    .column-mode-container label {
+      display: block;
+      margin: 8px 0 4px;
+      color: #F5F5DC;
+      font-weight: bold;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -102,7 +134,13 @@
     <option value="education">Education</option>
   </select>
 
+  <select id="modeToggle">
+    <option value="table">Full Table View</option>
+    <option value="column">Column-by-Column Mode</option>
+  </select>
+
   <div id="tableContainer"></div>
+  <div id="columnModeContainer" class="column-mode-container"></div>
   <button onclick="confirmLabels()">Confirm and Continue</button>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -110,7 +148,10 @@
     const uploadedData = sessionStorage.getItem('uploadedFile');
     const setup = JSON.parse(sessionStorage.getItem('sheetpilotSetup') || '{}');
     const tableContainer = document.getElementById('tableContainer');
+    const columnModeContainer = document.getElementById('columnModeContainer');
     const industrySelector = document.getElementById('industrySelector');
+    const modeToggle = document.getElementById('modeToggle');
+
     const labelPresets = {
       ministry: ["Ignore", "Member Name", "Donation Amount", "Ministry Area", "Event Date", "Contact Info"],
       real_estate: ["Ignore", "Client Name", "Agent Name", "Property Address", "Closing Date", "Commission", "Contact Info"],
@@ -128,10 +169,9 @@
 
     function renderTable(industry) {
       const options = getLabelOptions(industry);
-
       let html = "<table><thead><tr>";
       headers.forEach((_, i) => {
-        html += `<th id="header-label-${i}">${options[i % options.length]}</th>`;
+        html += `<th class="sticky" id="header-label-${i}">${options[i % options.length]}</th>`;
       });
       html += "</tr><tr>";
       headers.forEach((_, i) => {
@@ -154,13 +194,26 @@
       labelSelectors = document.querySelectorAll("select.column-label");
       customInputs = document.querySelectorAll("input.column-custom");
 
-      labelSelectors.forEach(sel => {
-        sel.addEventListener("change", updateHeader);
-      });
+      labelSelectors.forEach(sel => sel.addEventListener("change", updateHeader));
+      customInputs.forEach(input => input.addEventListener("input", updateHeader));
+    }
 
-      customInputs.forEach(input => {
-        input.addEventListener("input", updateHeader);
+    function renderColumnMode(industry) {
+      const options = getLabelOptions(industry);
+      let html = "";
+      headers.forEach((_, i) => {
+        html += `<label>Column ${i + 1} Label:</label>
+          <select class="column-label" data-index="${i}">${options.map(opt =>
+            `<option value="${opt}">${opt}</option>`).join("")}</select>
+          <input type="text" class="column-custom" placeholder="Or type custom label..." data-index="${i}" />`;
       });
+      columnModeContainer.innerHTML = html;
+
+      labelSelectors = document.querySelectorAll("select.column-label");
+      customInputs = document.querySelectorAll("input.column-custom");
+
+      labelSelectors.forEach(sel => sel.addEventListener("change", updateHeader));
+      customInputs.forEach(input => input.addEventListener("input", updateHeader));
     }
 
     function updateHeader(event) {
@@ -168,7 +221,7 @@
       const customVal = customInputs[index].value.trim();
       const selectVal = labelSelectors[index].value;
       const headerCell = document.getElementById(`header-label-${index}`);
-      headerCell.textContent = customVal || selectVal;
+      if (headerCell) headerCell.textContent = customVal || selectVal;
     }
 
     function confirmLabels() {
@@ -184,7 +237,21 @@
     if (setup.industry) industrySelector.value = setup.industry;
 
     industrySelector.addEventListener("change", () => {
-      renderTable(industrySelector.value);
+      if (modeToggle.value === "table") {
+        renderTable(industrySelector.value);
+      } else {
+        renderColumnMode(industrySelector.value);
+      }
+    });
+
+    modeToggle.addEventListener("change", () => {
+      tableContainer.classList.toggle("hidden", modeToggle.value !== "table");
+      columnModeContainer.classList.toggle("active", modeToggle.value === "column");
+      if (modeToggle.value === "table") {
+        renderTable(industrySelector.value);
+      } else {
+        renderColumnMode(industrySelector.value);
+      }
     });
 
     if (!uploadedData) {
