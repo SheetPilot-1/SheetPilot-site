@@ -3,66 +3,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SheetPilot</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #101020; color: #f5f5dc; padding: 20px; }
-    h1, h2 { color: #f5f5dc; text-align: center; }
-    .highlight { color: #f5f5dc; font-size: 2.2rem; font-weight: bold; }
-    section { margin-bottom: 40px; }
-    label, select, input, button { margin-top: 10px; display: block; }
-    table { width: 100%; margin-top: 15px; border-collapse: collapse; }
-    th, td { border: 1px solid #444; padding: 8px; text-align: left; }
-    th { background: #00ffff; color: black; }
-    .btn { background: #00ffff; color: black; padding: 10px 20px; border: none; cursor: pointer; margin-top: 15px; }
-    .hidden { display: none; }
+    body {
+      background-color: #0c0c1e;
+      color: #f5f5dc;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      color: #f5f5dc;
+    }
+    section {
+      background-color: #1a1a2e;
+      margin-bottom: 1.5rem;
+      padding: 1.25rem;
+      border-radius: 0.5rem;
+    }
+    button {
+      background-color: #00ffff;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+    }
+    input, select {
+      margin: 0.5rem 0;
+      padding: 0.4rem;
+      border-radius: 0.3rem;
+      border: 1px solid #ccc;
+    }
   </style>
 </head>
 <body>
-  <h1 class="highlight">SheetPilot</h1>
+  <h1>SheetPilot</h1>
 
   <section>
     <h2>Step 1: Choose Your Industry</h2>
     <select>
-      <option>Ministry</option>
-      <option>Real Estate</option>
-      <option>Law Firm</option>
+      <option>-- Choose Industry --</option>
       <option>Small Business</option>
+      <option>Real Estate</option>
+      <option>Law / Legal Services</option>
     </select>
-    <input type="text" placeholder="Or enter your business name..." />
+    <br />
+    <input type="text" placeholder="Or enter your business name" />
   </section>
 
   <section>
     <h2>Step 2: Upload Your Spreadsheet</h2>
-    <input type="file" accept=".xlsx,.xls,.csv" />
-    <button class="btn">Load File</button>
+    <input type="file" />
+    <br />
+    <button>Load File</button>
   </section>
 
   <section>
     <h2>Step 3: Label Your Columns</h2>
-    <div id="labelSelectors">[Labeling interface here]</div>
-    <button class="btn">Confirm and Continue</button>
+    <p>[Labeling interface here]</p>
   </section>
 
   <section>
-    <h2>Step 4: Clean Up & Sort Your Data</h2>
-    <label>Remove rows missing info in:</label>
-    <select><option>Choose column...</option></select>
-
-    <label>Only show rows where this matches:</label>
-    <select><option>Choose column...</option></select>
-    <input type="text" placeholder="Enter matching value" />
-
-    <label>Sort your data by:</label>
-    <select><option>Choose column...</option></select>
-    <select>
-      <option>A → Z</option>
-      <option>Z → A</option>
-    </select>
-
-    <button class="btn">Preview Cleaned Table</button>
-    <button class="btn">Download as XLSX</button>
-    <button class="btn">Download as CSV</button>
+    <h2>Step 4: Cleanup & Sort</h2>
+    <p>[Filtering and sorting interface here]</p>
+    <button>Download as XLSX</button>
   </section>
 </body>
 </html>
