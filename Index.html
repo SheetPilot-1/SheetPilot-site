@@ -4,10 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot: All-in-One</title>
+  <title>SheetPilot</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #101020; color: white; padding: 20px; }
-    h1, h2 { color: #00ffff; }
+    body { font-family: Arial, sans-serif; background: #101020; color: #f5f5dc; padding: 20px; }
+    h1, h2 { color: #f5f5dc; text-align: center; }
+    .highlight { color: #f5f5dc; font-size: 2.2rem; font-weight: bold; }
     section { margin-bottom: 40px; }
     label, select, input, button { margin-top: 10px; display: block; }
     table { width: 100%; margin-top: 15px; border-collapse: collapse; }
@@ -15,14 +16,11 @@
     th { background: #00ffff; color: black; }
     .btn { background: #00ffff; color: black; padding: 10px 20px; border: none; cursor: pointer; margin-top: 15px; }
     .hidden { display: none; }
-    .toggle-link { cursor: pointer; color: #00ffff; margin-top: 10px; display: inline-block; }
-    .advanced-section { margin-top: 20px; padding: 10px; background: #1e1e2e; border: 1px solid #444; border-radius: 6px; }
   </style>
 </head>
 <body>
-  <h1>SheetPilot: All-in-One</h1>
+  <h1 class="highlight">SheetPilot</h1>
 
-  <!-- Step 1 -->
   <section>
     <h2>Step 1: Choose Your Industry</h2>
     <select>
@@ -34,25 +32,20 @@
     <input type="text" placeholder="Or enter your business name..." />
   </section>
 
-  <!-- Step 2 -->
   <section>
     <h2>Step 2: Upload Your Spreadsheet</h2>
     <input type="file" accept=".xlsx,.xls,.csv" />
     <button class="btn">Load File</button>
   </section>
 
-  <!-- Step 3 -->
   <section>
     <h2>Step 3: Label Your Columns</h2>
     <div id="labelSelectors">[Labeling interface here]</div>
     <button class="btn">Confirm and Continue</button>
   </section>
 
-  <!-- Step 4 -->
   <section>
     <h2>Step 4: Clean Up & Sort Your Data</h2>
-
-    <!-- Simplified Filter View -->
     <label>Remove rows missing info in:</label>
     <select><option>Choose column...</option></select>
 
@@ -70,28 +63,6 @@
     <button class="btn">Preview Cleaned Table</button>
     <button class="btn">Download as XLSX</button>
     <button class="btn">Download as CSV</button>
-
-    <!-- Advanced Filter Toggle -->
-    <div class="toggle-link" onclick="toggleAdvanced()">Show Advanced Filtering</div>
-
-    <!-- Advanced Filter Section -->
-    <div id="advancedFilters" class="advanced-section hidden">
-      <h3>Advanced Filtering Options</h3>
-      <label>Exclude rows where column contains:</label>
-      <select><option>Choose column...</option></select>
-      <input type="text" placeholder="e.g. 'Test', 'N/A'" />
-
-      <label>Keep only rows where value starts with:</label>
-      <select><option>Choose column...</option></select>
-      <input type="text" placeholder="e.g. '2024'" />
-    </div>
   </section>
-
-  <script>
-    function toggleAdvanced() {
-      const adv = document.getElementById('advancedFilters');
-      adv.classList.toggle('hidden');
-    }
-  </script>
 </body>
 </html>
