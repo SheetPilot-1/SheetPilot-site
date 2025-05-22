@@ -42,8 +42,13 @@
       color: black;
       padding: 10px 20px;
       border: none;
+      border-radius: 8px;
       cursor: pointer;
       margin-top: 15px;
+      transition: background 0.2s ease;
+    }
+    .btn:hover {
+      background: #00dddd;
     }
     .hidden {
       display: none;
@@ -53,8 +58,8 @@
 <body>
   <h1>SheetPilot</h1>
 
-  <section id="step1">
-    <h2>Step 1: Choose Your Industry</h2>
+  <section>
+    <h2>Choose Your Industry</h2>
     <label for="industrySelect">Select Industry:</label>
     <select id="industrySelect" onchange="handleIndustryChange()">
       <option value="">-- Select Industry --</option>
@@ -62,6 +67,12 @@
       <option value="Real Estate">Real Estate</option>
       <option value="Law Firm">Law Firm</option>
       <option value="Ministry">Ministry</option>
+      <option value="Education">Education</option>
+      <option value="Healthcare">Healthcare</option>
+      <option value="E-commerce">E-commerce</option>
+      <option value="Consulting">Consulting</option>
+      <option value="Finance">Finance</option>
+      <option value="Marketing">Marketing</option>
     </select>
 
     <div id="subcategoryContainer" class="hidden">
@@ -73,19 +84,21 @@
   </section>
 
   <section>
-    <h2>Step 2: Upload Spreadsheet</h2>
+    <h2>Upload Your Spreadsheet</h2>
     <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" />
-    <button class="btn">Load File</button>
+    <button class="btn" onclick="loadFile()">Load File</button>
+    <p id="error" style="color:red;"></p>
+  </section>
+
+  <section id="step3" class="hidden">
+    <h2>Label Your Columns</h2>
+    <p>Review the first row of your data and assign a label to each column.</p>
+    <div id="labelSelectors"></div>
+    <button class="btn" onclick="confirmLabels()">Confirm and Continue</button>
   </section>
 
   <section>
-    <h2>Step 3: Label Your Columns</h2>
-    <div id="labelSelectors">[Labeling interface here]</div>
-    <button class="btn">Confirm and Continue</button>
-  </section>
-
-  <section>
-    <h2>Step 4: Cleanup & Sort</h2>
+    <h2>Clean Up and Export</h2>
     <label>Remove rows missing info in:</label>
     <select><option>Choose column...</option></select>
 
@@ -105,17 +118,26 @@
     <button class="btn">Download as CSV</button>
   </section>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
+    let rawData = [], headers = [];
+
     function handleIndustryChange() {
       const industry = document.getElementById("industrySelect").value;
       const subcategoryContainer = document.getElementById("subcategoryContainer");
       const subcategorySelect = document.getElementById("subcategorySelect");
 
       const subcategories = {
-        "Small Business": ["Coffee Shop", "Boutique Retail", "Cleaning Service", "Landscaping", "Fitness Trainer", "Auto Repair"],
+        "Small Business": ["Coffee Shop", "Boutique Retail", "Cleaning Service", "Landscaping", "Fitness Trainer", "Auto Repair", "Barber Shop", "Home Renovation", "Mobile Detailing", "Photography"],
         "Real Estate": ["Residential Agent", "Commercial Broker", "Property Manager"],
         "Law Firm": ["Criminal Defense", "Family Law", "Corporate Law"],
-        "Ministry": ["Church", "Nonprofit Outreach", "Faith-Based Counseling"]
+        "Ministry": ["Church", "Nonprofit Outreach", "Faith-Based Counseling"],
+        "Education": ["Tutor", "Online Course Creator", "Private School"],
+        "Healthcare": ["Chiropractor", "Home Health", "Therapist"],
+        "E-commerce": ["Product Seller", "Dropshipping", "Custom Merch"],
+        "Consulting": ["Business Strategy", "Tech Consulting", "Operations"],
+        "Finance": ["Tax Preparer", "Bookkeeping", "Financial Coach"],
+        "Marketing": ["Social Media Manager", "Copywriter", "Brand Consultant"]
       };
 
       if (subcategorySelect && subcategories[industry]) {
@@ -130,6 +152,45 @@
       } else {
         subcategoryContainer.classList.add("hidden");
       }
+    }
+
+    function loadFile() {
+      const input = document.getElementById('fileInput');
+      const error = document.getElementById('error');
+      error.textContent = '';
+      if (!input.files.length) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
+          rawData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+          headers = rawData[0];
+          if (!headers || headers.length === 0) throw new Error("Empty or unreadable file.");
+          document.getElementById('step3').classList.remove('hidden');
+          populateLabelSelectors();
+        } catch (err) {
+          error.textContent = "Error reading file. Please upload a valid spreadsheet.";
+        }
+      };
+      reader.readAsArrayBuffer(input.files[0]);
+    }
+
+    function populateLabelSelectors() {
+      const container = document.getElementById('labelSelectors');
+      container.innerHTML = '';
+      headers.forEach((header, i) => {
+        container.innerHTML += `
+          <label>${header}</label>
+          <input type="text" data-col="${i}" placeholder="Enter label for ${header}" />
+        `;
+      });
+    }
+
+    function confirmLabels() {
+      alert("Labels confirmed! (Placeholder logic)");
     }
   </script>
 </body>
