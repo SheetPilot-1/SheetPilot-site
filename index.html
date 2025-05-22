@@ -6,53 +6,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot</title>
   <style>
-    body {
-      background-color: #232338;
-      color: #fdf5e6;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
-    h1, h2 {
-      color: #fdf5e6;
-    }
-    section {
-      margin-bottom: 40px;
-    }
-    label, select, input, button {
-      margin-top: 10px;
-      display: block;
-    }
-    table {
-      width: 100%;
-      margin-top: 15px;
-      border-collapse: collapse;
-    }
-    th, td {
-      border: 1px solid #444;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background: #00ffff;
-      color: black;
-    }
+    body { background-color: #232338; color: #fdf5e6; font-family: Arial, sans-serif; padding: 20px; }
+    h1, h2 { color: #fdf5e6; }
+    section { margin-bottom: 40px; }
+    label, select, input, button { margin-top: 10px; display: block; }
+    table { width: 100%; margin-top: 15px; border-collapse: collapse; }
+    th, td { border: 1px solid #444; padding: 8px; text-align: left; }
+    th { background: #00ffff; color: black; }
     .btn {
-      background: #00ffff;
+      background-color: #00ffff;
       color: black;
       padding: 10px 20px;
       border: none;
       border-radius: 8px;
       cursor: pointer;
       margin-top: 15px;
-      transition: background 0.2s ease;
     }
-    .btn:hover {
-      background: #00dddd;
-    }
-    .hidden {
-      display: none;
-    }
+    .btn:hover { background-color: #00dddd; }
+    .hidden { display: none; }
+    .advanced-toggle { color: #00ffff; cursor: pointer; margin-top: 15px; }
+    .filter-block { background: #1e1e2e; padding: 10px; border-radius: 6px; margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -60,27 +33,13 @@
 
   <section>
     <h2>Choose Your Industry</h2>
-    <label for="industrySelect">Select Industry:</label>
     <select id="industrySelect" onchange="handleIndustryChange()">
       <option value="">-- Select Industry --</option>
       <option value="Small Business">Small Business</option>
       <option value="Real Estate">Real Estate</option>
       <option value="Law Firm">Law Firm</option>
       <option value="Ministry">Ministry</option>
-      <option value="Education">Education</option>
-      <option value="Healthcare">Healthcare</option>
-      <option value="E-commerce">E-commerce</option>
-      <option value="Consulting">Consulting</option>
-      <option value="Finance">Finance</option>
-      <option value="Marketing">Marketing</option>
     </select>
-
-    <div id="subcategoryContainer" class="hidden">
-      <label for="subcategorySelect">Select Business Type:</label>
-      <select id="subcategorySelect">
-        <option value="">-- Select Subcategory --</option>
-      </select>
-    </div>
   </section>
 
   <section>
@@ -92,13 +51,13 @@
 
   <section id="step3" class="hidden">
     <h2>Label Your Columns</h2>
-    <p>Review the first row of your data and assign a label to each column.</p>
     <div id="labelSelectors"></div>
     <button class="btn" onclick="confirmLabels()">Confirm and Continue</button>
   </section>
 
   <section>
     <h2>Clean Up and Export</h2>
+
     <label>Remove rows missing info in:</label>
     <select><option>Choose column...</option></select>
 
@@ -113,6 +72,21 @@
       <option>Z → A</option>
     </select>
 
+    <div class="advanced-toggle" onclick="toggleAdvanced()">Show Advanced Filters</div>
+
+    <div id="advancedFilters" class="filter-block hidden">
+      <label>Remove rows where column contains:</label>
+      <select><option>Choose column...</option></select>
+      <input type="text" placeholder="e.g. 'test', 'N/A'" />
+
+      <label>Keep only rows where column starts with:</label>
+      <select><option>Choose column...</option></select>
+      <input type="text" placeholder="e.g. '2024'" />
+
+      <label>Custom rule:</label>
+      <input type="text" placeholder="e.g. Column A contains 'test' and Column B is blank" />
+    </div>
+
     <button class="btn">Preview Cleaned Table</button>
     <button class="btn">Download as XLSX</button>
     <button class="btn">Download as CSV</button>
@@ -121,37 +95,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
     let rawData = [], headers = [];
+    const recommendedHeaders = {
+      "Small Business": ["Customer Name", "Email", "Phone", "Service Type", "Price", "Date"],
+      "Real Estate": ["Client", "Property Type", "Address", "Agent", "Commission", "Close Date"],
+      "Law Firm": ["Client Name", "Case Type", "Attorney", "Fee", "Court Date"],
+      "Ministry": ["Name", "Email", "Event", "Donation", "Date"]
+    };
 
     function handleIndustryChange() {
-      const industry = document.getElementById("industrySelect").value;
-      const subcategoryContainer = document.getElementById("subcategoryContainer");
-      const subcategorySelect = document.getElementById("subcategorySelect");
-
-      const subcategories = {
-        "Small Business": ["Coffee Shop", "Boutique Retail", "Cleaning Service", "Landscaping", "Fitness Trainer", "Auto Repair", "Barber Shop", "Home Renovation", "Mobile Detailing", "Photography"],
-        "Real Estate": ["Residential Agent", "Commercial Broker", "Property Manager"],
-        "Law Firm": ["Criminal Defense", "Family Law", "Corporate Law"],
-        "Ministry": ["Church", "Nonprofit Outreach", "Faith-Based Counseling"],
-        "Education": ["Tutor", "Online Course Creator", "Private School"],
-        "Healthcare": ["Chiropractor", "Home Health", "Therapist"],
-        "E-commerce": ["Product Seller", "Dropshipping", "Custom Merch"],
-        "Consulting": ["Business Strategy", "Tech Consulting", "Operations"],
-        "Finance": ["Tax Preparer", "Bookkeeping", "Financial Coach"],
-        "Marketing": ["Social Media Manager", "Copywriter", "Brand Consultant"]
-      };
-
-      if (subcategorySelect && subcategories[industry]) {
-        subcategorySelect.innerHTML = '<option value="">-- Select Subcategory --</option>';
-        subcategories[industry].forEach(sub => {
-          const option = document.createElement("option");
-          option.value = sub;
-          option.textContent = sub;
-          subcategorySelect.appendChild(option);
-        });
-        subcategoryContainer.classList.remove("hidden");
-      } else {
-        subcategoryContainer.classList.add("hidden");
-      }
+      document.getElementById('step3').classList.add('hidden');
     }
 
     function loadFile() {
@@ -179,18 +131,27 @@
     }
 
     function populateLabelSelectors() {
+      const industry = document.getElementById('industrySelect').value;
       const container = document.getElementById('labelSelectors');
       container.innerHTML = '';
+
       headers.forEach((header, i) => {
+        const suggestions = recommendedHeaders[industry] || [];
+        const dropdown = suggestions.map(opt => `<option value="${opt}">${opt}</option>`).join('');
         container.innerHTML += `
           <label>${header}</label>
-          <input type="text" data-col="${i}" placeholder="Enter label for ${header}" />
+          <select><option value="">-- Choose label --</option>${dropdown}</select>
+          <input type="text" placeholder="Or enter custom label" />
         `;
       });
     }
 
     function confirmLabels() {
-      alert("Labels confirmed! (Placeholder logic)");
+      alert("Labels confirmed!");
+    }
+
+    function toggleAdvanced() {
+      document.getElementById("advancedFilters").classList.toggle("hidden");
     }
   </script>
 </body>
