@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SheetPilot: All-in-One</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { background-color: #1F1F2E; color: #F5F5DC; font-family: Arial, sans-serif; padding: 20px; margin: 0; }
+    h1, h2 { color: #00FFFF; text-align: center; }
+    section { padding: 20px; margin: 20px auto; max-width: 1000px; background-color: #2E2E3E;
+              border-radius: 8px; border: 1px solid #444; }
+    label, select, input[type="file"], input[type="text"] {
+      display: block; margin: 10px auto; padding: 10px; font-size: 1rem;
+      border: 1px solid #555; border-radius: 4px; background-color: #1F1F2E; color: #F5F5DC;
+    }
+    button {
+      margin: 15px auto; padding: 12px 24px; font-size: 1rem;
+      background-color: #00FFFF; color: #1F1F2E; border: none;
+      border-radius: 4px; cursor: pointer; display: block;
+    }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #444; }
+    th { background-color: #00FFFF; color: #1F1F2E; }
+    .scroll-x { overflow-x: auto; }
+  </style>
+</head>
+<body>
+
+<h1>SheetPilot: All-in-One</h1>
+
+<section id="setupSection">
+  <h2>Step 1: Select Industry</h2>
+  <select id="industrySelect">
+    <option value="default">-- Choose Industry --</option>
+    <option value="ministry">Ministry / Church</option>
+    <option value="real_estate">Real Estate</option>
+    <option value="law">Law / Legal</option>
+    <option value="small_business">Small Business</option>
+    <option value="education">Education</option>
+  </select>
+  <input type="text" id="businessNameInput" placeholder="Or enter your business name..." />
+</section>
+
+<section id="uploadSection">
+  <h2>Step 2: Upload Spreadsheet</h2>
+  <input type="file" id="fileUpload" accept=".xlsx,.xls,.csv" />
+</section>
+
+<section id="labelSection">
+  <h2>Step 3: Label Your Columns</h2>
+  <div class="scroll-x"><div id="labelTableContainer"></div></div>
+</section>
+
+<section id="cleanupSection">
+  <h2>Step 4: Cleanup & Sort</h2>
+  <div id="cleanupControls"></div>
+  <div class="scroll-x"><div id="previewTableContainer"></div></div>
+  <button onclick="downloadFile('xlsx')">Download as XLSX</button>
+  <button onclick="downloadFile('csv')">Download as CSV</button>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+  const fileInput = document.getElementById('fileUpload');
+  const labelContainer = document.getElementById('labelTableContainer');
+  const previewContainer = document.getElementById('previewTableContainer');
+  const cleanupControls = document.getElementById('cleanupControls');
+  const labelPresets = {
+    ministry: ["Ignore", "Member Name", "Donation", "Ministry Area", "Event Date", "Contact"],
+    real_estate: ["Ignore", "Client Name", "Agent", "Property", "Closing Date", "Commission"],
+    law: ["Ignore", "Client Name", "Case Number", "Attorney", "Case Type", "Billable Hours"],
+    small_business: ["Ignore", "Customer", "Service Date", "Service Type", "Amount", "Status"],
+    education: ["Ignore", "Student", "Grade", "Subject", "Teacher", "Score"],
+    default: ["Ignore", "Column A", "Column B", "Column C"]
+  };
+
+  let rawData = [], headers = [], finalLabels = [];
+
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    const buffer = await file.arrayBuffer();
+    const wb = XLSX.read(buffer, { type: 'buffer' });
+    const sheet = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1 });
+    headers = sheet[0];
+    rawData = sheet.slice(1);
+    showLabeling(headers);
+  });
+
+  function showLabeling(headers) {
+    const industry = document.getElementById('industrySelect').value;
+    const options = labelPresets[industry] || labelPresets.default;
+
+    let html = "<table><thead><tr>";
+    headers.forEach(h => html += `<th>${h}</th>`);
+    html += "</tr><tr>";
+    headers.forEach((_, i) => {
+      html += `<th>
+        <select data-index="${i}" onchange="updateLabel(this)">
+          ${options.map(opt => `<option value="${opt}">${opt}</option>`).join('')}
+        </select>
+        <input type="text" data-index="${i}" placeholder="Or type custom..." oninput="updateLabel(this)" />
+      </th>`;
+    });
+    html += "</tr></thead></table>";
+    labelContainer.innerHTML = html;
+    finalLabels = [...headers];
+    buildCleanupControls();
+    renderPreview(rawData);
+  }
+
+  function updateLabel(el) {
+    const index = el.dataset.index;
+    const selects = document.querySelectorAll("select[data-index]");
+    const inputs = document.querySelectorAll("input[data-index]");
+    finalLabels = Array.from(selects).map((sel, i) =>
+      inputs[i].value.trim() || sel.value
+    );
+    buildCleanupControls();
+    renderPreview(rawData);
+  }
+
+  function buildCleanupControls() {
+    const visibleHeaders = finalLabels.filter(h => h !== "Ignore");
+    let html = `
+      <label>Remove rows where column is blank:</label>
+      <select id="blankCol">${visibleHeaders.map((h, i) => `<option value="${i}">${h}</option>`).join('')}</select>
+
+      <label>Keep only rows where column equals:</label>
+      <select id="filterCol">${visibleHeaders.map((h, i) => `<option value="${i}">${h}</option>`).join('')}</select>
+      <input type="text" id="filterVal" placeholder="Match value..." />
+
+      <label>Sort by column:</label>
+      <select id="sortCol">${visibleHeaders.map((h, i) => `<option value="${i}">${h}</option>`).join('')}</select>
+      <select id="sortDir">
+        <option value="asc">A → Z</option>
+        <option value="desc">Z → A</option>
+      </select>
+
+      <button onclick="renderPreview(rawData)">Preview Cleaned Data</button>
+    `;
+    cleanupControls.innerHTML = html;
+  }
+
+  function renderPreview(data) {
+    const blankCol = parseInt(document.getElementById('blankCol')?.value || 0);
+    const filterCol = parseInt(document.getElementById('filterCol')?.value || 0);
+    const filterVal = document.getElementById('filterVal')?.value.toLowerCase().trim() || "";
+    const sortCol = parseInt(document.getElementById('sortCol')?.value || 0);
+    const sortDir = document.getElementById('sortDir')?.value || "asc";
+
+    let result = data
+      .filter(row => row[blankCol] !== undefined && row[blankCol].toString().trim() !== "")
+      .filter(row => !filterVal || (row[filterCol] && row[filterCol].toString().toLowerCase().includes(filterVal)))
+      .map(row => row.map(cell => typeof cell === "string" ? cell.trim() : cell))
+      .sort((a, b) => {
+        const A = (a[sortCol] || "").toString().toLowerCase();
+        const B = (b[sortCol] || "").toString().toLowerCase();
+        return sortDir === "asc" ? A.localeCompare(B) : B.localeCompare(A);
+      });
+
+    let html = "<table><thead><tr>";
+    finalLabels.forEach((label, i) => {
+      if (label !== "Ignore") html += `<th>${label}</th>`;
+    });
+    html += "</tr></thead><tbody>";
+    result.slice(0, 50).forEach(row => {
+      html += "<tr>";
+      finalLabels.forEach((label, i) => {
+        if (label !== "Ignore") html += `<td>${row[i] || ""}</td>`;
+      });
+      html += "</tr>";
+    });
+    html += "</tbody></table>";
+    previewContainer.innerHTML = html;
+  }
+
+  function downloadFile(type) {
+    const visibleHeaders = finalLabels.filter(label => label !== "Ignore");
+    const exportRows = Array.from(previewContainer.querySelectorAll("tbody tr")).map(tr =>
+      Array.from(tr.querySelectorAll("td")).map(td => td.textContent)
+    );
+    const wsData = [visibleHeaders, ...exportRows];
+    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.writeFile(wb, `sheetpilot_export.${type}`);
+  }
+</script>
+
+</body>
+</html>
