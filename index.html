@@ -1,28 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot</title>
   <style>
-    body { background-color: #1C1C2A; color: #fdf5e6; font-family: Arial, sans-serif; margin: 0; padding: 20px; }
-    h1, h2 { color: #fdf5e6; }
-    label, select, input, button { display: block; margin-top: 10px; }
-    .btn {
-      background: #00ffff; color: black; padding: 10px 20px;
-      border: none; border-radius: 8px; cursor: pointer;
-      margin-top: 15px;
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #1C1C2A;
+      color: #f5f5dc;
+      margin: 0;
+      padding: 2rem;
     }
-    .btn:hover { background: #00dddd; }
-    .hidden { display: none; }
-    .filter-block { background: #2A2A3D; padding: 15px; border-radius: 8px; margin-top: 20px; }
-    table { width: 100%; margin-top: 20px; border-collapse: collapse; }
-    th, td { border: 1px solid #444; padding: 8px; text-align: left; }
-    th { background: #00ffff; color: black; }
+
+    h1 {
+      font-size: 2.5rem;
+      color: #f5f5dc;
+      margin-bottom: 1rem;
+    }
+
+    section {
+      margin-bottom: 2rem;
+    }
+
+    label, select, input, button {
+      display: block;
+      margin: 0.5rem 0;
+      font-size: 1rem;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #00ffff;
+      color: #000;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background-color: #00e6e6;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 0.75rem;
+      border: 1px solid #444;
+      text-align: left;
+      background-color: #2a2a3a;
+      color: white;
+    }
+
+    th {
+      background-color: #00ffff;
+      color: #000;
+    }
+
+    .row {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .column {
+      flex: 1;
+      min-width: 200px;
+    }
   </style>
 </head>
 <body>
+
   <h1>SheetPilot</h1>
-  <p>This is the final version of the SheetPilot interface. Upload a file to begin testing.</p>
+  <section>
+    <p>This is the final version of the SheetPilot test tool. Upload a spreadsheet to begin testing.</p>
+    <input type="file" id="upload" />
+  </section>
+
+  <section id="labelSection" style="display:none;">
+    <h2>Label Columns</h2>
+    <div id="labelContainer" class="row"></div>
+    <button onclick="confirmLabels()">Confirm Labels</button>
+  </section>
+
+  <section id="filterSection" style="display:none;">
+    <h2>Clean & Sort</h2>
+    <div class="row">
+      <div class="column">
+        <label>Remove rows missing info in:</label>
+        <select id="blankColumnSelect"></select>
+      </div>
+      <div class="column">
+        <label>Only show rows where this matches:</label>
+        <select id="matchColumnSelect"></select>
+        <input type="text" id="matchValue" placeholder="e.g. Smith, Complete" />
+      </div>
+      <div class="column">
+        <label>Sort your data by:</label>
+        <select id="sortColumnSelect"></select>
+        <select id="sortOrder">
+          <option value="asc">A → Z</option>
+          <option value="desc">Z → A</option>
+        </select>
+      </div>
+    </div>
+    <button onclick="applyCleanup()">Preview Cleaned Table</button>
+    <button onclick="exportData('xlsx')">Download as XLSX</button>
+    <button onclick="exportData('csv')">Download as CSV</button>
+    <div id="previewTable"></div>
+  </section>
+
+  <script>
+    let rawData = [];
+    let headers = [];
+
+    document.getElementById('upload').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const rows = e.target.result.split(/\r?\n/).map(r => r.split(","));
+        headers = rows[0];
+        rawData = rows.slice(1);
+        showLabeling(headers);
+      };
+      reader.readAsText(file);
+    });
+
+    function showLabeling(columns) {
+      const container = document.getElementById('labelContainer');
+      container.innerHTML = '';
+      columns.forEach((col, i) => {
+        const label = document.createElement('label');
+        label.innerText = col;
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.placeholder = 'Enter label...';
+        input.dataset.index = i;
+
+        const div = document.createElement('div');
+        div.classList.add('column');
+        div.appendChild(label);
+        div.appendChild(input);
+        container.appendChild(div);
+      });
+      document.getElementById('labelSection').style.display = 'block';
+    }
+
+    function confirmLabels() {
+      const inputs = document.querySelectorAll('#labelContainer input');
+      headers = Array.from(inputs).map(input => input.value || headers[input.dataset.index]);
+      populateFilterOptions();
+      document.getElementById('filterSection').style.display = 'block';
+    }
+
+    function populateFilterOptions() {
+      const selects = ['blankColumnSelect', 'matchColumnSelect', 'sortColumnSelect'];
+      selects.forEach(id => {
+        const select = document.getElementById(id);
+        select.innerHTML = '';
+        headers.forEach(header => {
+          const opt = document.createElement('option');
+          opt.value = header;
+          opt.textContent = header;
+          select.appendChild(opt);
+        });
+      });
+    }
+
+    function applyCleanup() {
+      const blankCol = document.getElementById('blankColumnSelect').value;
+      const matchCol = document.getElementById('matchColumnSelect').value;
+      const matchVal = document.getElementById('matchValue').value;
+      const sortCol = document.getElementById('sortColumnSelect').value;
+      const sortOrder = document.getElementById('sortOrder').value;
+
+      let tableData = rawData.filter(row => {
+        const index = headers.indexOf(blankCol);
+        return row[index]?.trim() !== '';
+      });
+
+      if (matchVal) {
+        const mIndex = headers.indexOf(matchCol);
+        tableData = tableData.filter(row => row[mIndex]?.toLowerCase() === matchVal.toLowerCase());
+      }
+
+      const sIndex = headers.indexOf(sortCol);
+      tableData.sort((a, b) => {
+        const valA = a[sIndex] || '';
+        const valB = b[sIndex] || '';
+        return sortOrder === 'asc'
+          ? valA.localeCompare(valB)
+          : valB.localeCompare(valA);
+      });
+
+      const tableHTML = `<table><thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${tableData.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+      document.getElementById('previewTable').innerHTML = tableHTML;
+    }
+
+    function exportData(type) {
+      alert(`Export as ${type.toUpperCase()} is not implemented in this test build.`);
+    }
+  </script>
 </body>
 </html>
