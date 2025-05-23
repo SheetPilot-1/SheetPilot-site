@@ -2,230 +2,214 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       background-color: #1C1C2A;
-      color: #f5f2e8;
-      padding: 30px;
+      font-family: 'Segoe UI', sans-serif;
+      color: #f5f2e7;
+      padding: 20px;
     }
-    h1, h2 {
-      color: #f5f2e8;
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.2em;
+      color: #f5f2e7;
     }
-    select, input[type="text"], input[type="file"], button {
+    h2 {
+      font-size: 1.2em;
+      margin-top: 1.8em;
+      margin-bottom: 0.4em;
+    }
+    select, input[type="text"] {
       padding: 10px;
-      margin: 5px 0;
-      font-size: 16px;
+      margin-top: 6px;
+      margin-bottom: 12px;
       border-radius: 6px;
       border: none;
       width: 100%;
-    }
-    .section {
-      margin-bottom: 40px;
-    }
-    .dropdown-label {
-      font-weight: bold;
-      margin-top: 20px;
+      max-width: 500px;
+      font-size: 1em;
     }
     button {
-      background-color: #00f7ff;
+      background-color: #00e5ff;
       color: #000;
-      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1em;
+      margin-top: 10px;
       cursor: pointer;
     }
-    button:hover {
-      background-color: #00d2db;
-    }
     table {
+      margin-top: 20px;
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
+      background-color: #26263a;
+      color: white;
     }
-    table th, table td {
-      border: 1px solid #444;
-      padding: 8px;
+    th, td {
+      border: 1px solid #333;
+      padding: 10px;
       text-align: left;
     }
-    table th {
-      background-color: #00f7ff;
-      color: #000;
+    th {
+      background-color: #00e5ff;
+      color: black;
     }
   </style>
 </head>
 <body>
+
   <h1>SheetPilot</h1>
 
-  <div class="section">
-    <label class="dropdown-label">Select Industry</label>
-    <select id="industrySelect" onchange="populateSubcategories()">
-      <option value="">-- Select Industry --</option>
-      <option value="Small Business">Small Business</option>
-      <option value="Real Estate">Real Estate</option>
-      <option value="Healthcare">Healthcare</option>
-      <option value="Education">Education</option>
-      <option value="Construction">Construction</option>
-      <option value="E-commerce">E-commerce</option>
-      <option value="Manufacturing">Manufacturing</option>
-      <option value="Logistics">Logistics</option>
-      <option value="IT Services">IT Services</option>
-      <option value="Marketing">Marketing</option>
-      <option value="Finance">Finance</option>
-      <option value="Legal">Legal</option>
-      <option value="Retail">Retail</option>
-      <option value="Hospitality">Hospitality</option>
-      <option value="Nonprofit">Nonprofit</option>
-      <option value="Government">Government</option>
-      <option value="Automotive">Automotive</option>
-      <option value="Agriculture">Agriculture</option>
-      <option value="Energy">Energy</option>
-      <option value="Security">Security</option>
-    </select>
+  <h2>Select Industry</h2>
+  <select id="industry">
+    <option value="">-- Select Industry --</option>
+    <option value="Small Business">Small Business</option>
+    <option value="Construction">Construction</option>
+    <option value="Healthcare">Healthcare</option>
+    <option value="Real Estate">Real Estate</option>
+    <option value="Retail">Retail</option>
+    <option value="Logistics">Logistics</option>
+    <option value="Freelancer">Freelancer</option>
+    <option value="Tech">Tech Startup</option>
+  </select>
 
-    <select id="subcategorySelect">
-      <option value="">-- Select Subcategory --</option>
-    </select>
+  <select id="subcategory">
+    <option value="">-- Select Subcategory --</option>
+  </select>
 
-    <input type="text" placeholder="Or enter your business type..." id="customIndustryInput" />
-  </div>
+  <input type="text" id="customBusiness" placeholder="Or enter your business type..." />
 
-  <div class="section">
-    <label class="dropdown-label">Upload Your File</label>
-    <input type="file" id="fileInput" accept=".xlsx" />
-  </div>
+  <h2>Upload Your File</h2>
+  <input type="file" id="fileInput" accept=".xlsx,.xls" />
+  <button onclick="loadFile()">Load File</button>
 
-  <div class="section" id="headerSection" style="display: none;">
-    <h2>Label Columns</h2>
-    <div id="labelContainer"></div>
-    <button onclick="confirmLabels()">Confirm Labels</button>
-  </div>
+  <h2>Label Columns</h2>
+  <div id="columnLabels"></div>
+
+  <h2>Filter & Sort</h2>
+  <label>Remove rows with blank in:</label>
+  <select id="blankColumn"></select><br/>
+
+  <label>Only show rows where column matches:</label>
+  <select id="matchColumn"></select>
+  <input type="text" id="matchValue" placeholder="Enter value to match..." /><br/>
+
+  <label>Sort your data by:</label>
+  <select id="sortColumn"></select>
+  <select id="sortDirection">
+    <option value="asc">A → Z</option>
+    <option value="desc">Z → A</option>
+  </select><br/>
+
+  <button onclick="previewTable()">Preview Table</button>
+
+  <div id="tablePreview"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
-    const subcategories = {
-      "Small Business": ["Lawn Care", "Cleaning Services", "Freelance", "Pet Services", "Handyman", "Tutoring", "Personal Training"],
-      "Real Estate": ["Agents", "Property Management", "Appraisers"],
-      "Healthcare": ["Clinics", "Private Practice", "Therapists", "Home Care"],
-      "Construction": ["General Contracting", "Roofing", "Electrical", "HVAC", "Plumbing"],
-      "E-commerce": ["Online Retailer", "Dropshipping", "Handmade Goods"],
-      "Education": ["Tutoring", "Test Prep", "Online Courses"],
-      "Logistics": ["Trucking", "Courier Services", "Fleet Management"],
-      "IT Services": ["Consulting", "Software Support", "Cybersecurity"],
-      "Retail": ["Boutique", "Grocery", "Mobile Vendor"],
-      "Hospitality": ["Event Planning", "Catering", "Vacation Rentals"],
-      "Automotive": ["Detailing", "Repair", "Dealerships"]
+    const suggestedHeaders = {
+      "Small Business": ["Customer", "Service", "Price", "Status", "Notes"],
+      "Construction": ["Client", "Project", "Start Date", "Status", "Budget"],
+      "Healthcare": ["Patient", "Appointment Date", "Treatment", "Provider", "Status"],
+      "Real Estate": ["Client", "Property", "Closing Date", "Agent", "Offer"],
+      "Retail": ["Customer", "Purchase Date", "Product", "Price", "Payment Type"],
+      "Logistics": ["Client", "Shipment ID", "Delivery Date", "Carrier", "Status"],
+      "Freelancer": ["Client", "Service", "Rate", "Due Date", "Invoice Status"],
+      "Tech": ["Customer", "Feature", "Ticket #", "Priority", "Status"]
     };
 
-    function populateSubcategories() {
-      const industry = document.getElementById("industrySelect").value;
-      const subSelect = document.getElementById("subcategorySelect");
-      subSelect.innerHTML = '<option value="">-- Select Subcategory --</option>';
-      if (subcategories[industry]) {
-        subcategories[industry].forEach(sc => {
-          const opt = document.createElement("option");
-          opt.value = sc;
-          opt.innerText = sc;
-          subSelect.appendChild(opt);
+    document.getElementById("industry").addEventListener("change", function () {
+      const sub = document.getElementById("subcategory");
+      sub.innerHTML = `<option value="">-- Select Subcategory --</option>`;
+      const val = this.value;
+
+      if (val === "Small Business") {
+        ["Lawn Care", "Handyman", "Cleaning Services", "Dog Grooming", "Notary", "Catering", "Event Planner"].forEach(opt => {
+          sub.innerHTML += `<option value="${opt}">${opt}</option>`;
         });
       }
-    }
-
-    let rawData = [], headers = [];
-
-    document.getElementById('fileInput').addEventListener('change', function(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-        const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-        headers = rows[0];
-        rawData = rows.slice(1);
-        showLabelSelectors(headers);
-      };
-      reader.readAsArrayBuffer(file);
     });
 
-    function showLabelSelectors(columns) {
-      const container = document.getElementById("labelContainer");
-      container.innerHTML = '';
-      columns.forEach((header, i) => {
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("section");
+    let workbookData = [];
+    function loadFile() {
+      const file = document.getElementById("fileInput").files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const wb = XLSX.read(data, { type: "array" });
+        const sheet = wb.Sheets[wb.SheetNames[0]];
+        workbookData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+        showColumnLabels();
+      };
+      reader.readAsArrayBuffer(file);
+    }
 
-        const label = document.createElement("label");
-        label.innerText = `Original Column: ${header}`;
+    function showColumnLabels() {
+      const headers = workbookData[0];
+      const div = document.getElementById("columnLabels");
+      div.innerHTML = "";
 
-        const input = document.createElement("input");
-        input.type = "text";
-        input.placeholder = "Enter new column label";
-        input.dataset.index = i;
+      const industry = document.getElementById("industry").value;
+      const suggestions = suggestedHeaders[industry] || [];
 
-        wrapper.appendChild(label);
-        wrapper.appendChild(input);
-        container.appendChild(wrapper);
+      headers.forEach((header, i) => {
+        const labelHTML = `
+          <label>Original Column: ${header}</label>
+          <select id="label-${i}">
+            <option value="">-- Suggested Label --</option>
+            ${suggestions.map(s => `<option value="${s}">${s}</option>`).join("")}
+          </select>
+          <input type="text" id="custom-${i}" placeholder="Enter new column label" /><br/>
+        `;
+        div.innerHTML += labelHTML;
       });
 
-      document.getElementById("headerSection").style.display = "block";
-    }
-
-    function confirmLabels() {
-      const inputs = document.querySelectorAll("#labelContainer input");
-      const labels = Array.from(inputs).map(input => ({
-        label: input.value.trim(),
-        index: parseInt(input.dataset.index)
-      })).filter(entry => entry.label);
-
-      const selectedIndices = labels.map(l => l.index);
-      const filteredHeaders = labels.map(l => l.label);
-      const filteredData = rawData.map(row =>
-        labels.map(l => formatValue(row[l.index]))
-      );
-
-      displayTable(filteredHeaders, filteredData);
-    }
-
-    function formatValue(value) {
-      if (typeof value === "string" && Date.parse(value)) {
-        const date = new Date(value);
-        return date.toLocaleDateString("en-US");
-      }
-      return value ?? "";
-    }
-
-    function displayTable(headers, data) {
-      const tableContainer = document.getElementById("headerSection");
-      const tableWrapper = document.createElement("div");
-      const table = document.createElement("table");
-
-      const thead = document.createElement("thead");
-      const headRow = document.createElement("tr");
-      headers.forEach(h => {
-        const th = document.createElement("th");
-        th.innerText = h;
-        headRow.appendChild(th);
+      const dropdowns = [document.getElementById("blankColumn"), document.getElementById("matchColumn"), document.getElementById("sortColumn")];
+      dropdowns.forEach(d => {
+        d.innerHTML = `<option value="">-- Select Column --</option>`;
+        headers.forEach((h, i) => d.innerHTML += `<option value="${i}">${h}</option>`);
       });
-      thead.appendChild(headRow);
+    }
 
-      const tbody = document.createElement("tbody");
-      data.forEach(row => {
-        const tr = document.createElement("tr");
-        row.forEach(cell => {
-          const td = document.createElement("td");
-          td.innerText = cell;
-          tr.appendChild(td);
+    function previewTable() {
+      const labelMap = {};
+      workbookData[0].forEach((_, i) => {
+        const dropVal = document.getElementById(`label-${i}`).value;
+        const customVal = document.getElementById(`custom-${i}`).value;
+        const label = customVal || dropVal;
+        if (label) labelMap[i] = label;
+      });
+
+      const blankIndex = parseInt(document.getElementById("blankColumn").value);
+      const matchIndex = parseInt(document.getElementById("matchColumn").value);
+      const matchVal = document.getElementById("matchValue").value.trim();
+      const sortIndex = parseInt(document.getElementById("sortColumn").value);
+      const sortDir = document.getElementById("sortDirection").value;
+
+      const body = workbookData.slice(1)
+        .filter(row => row.length && (isNaN(blankIndex) || row[blankIndex]))
+        .filter(row => !matchVal || (row[matchIndex] && row[matchIndex].toString().includes(matchVal)))
+        .sort((a, b) => {
+          const aVal = a[sortIndex] || "";
+          const bVal = b[sortIndex] || "";
+          return sortDir === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
         });
-        tbody.appendChild(tr);
-      });
 
-      table.appendChild(thead);
-      table.appendChild(tbody);
-      tableWrapper.innerHTML = "<h2>Preview Cleaned Table</h2>";
-      tableWrapper.appendChild(table);
-      tableContainer.appendChild(tableWrapper);
+      let html = `<table><tr>`;
+      Object.values(labelMap).forEach(label => html += `<th>${label}</th>`);
+      html += `</tr>`;
+
+      body.forEach(row => {
+        html += `<tr>`;
+        Object.keys(labelMap).forEach(i => html += `<td>${row[i] || ""}</td>`);
+        html += `</tr>`;
+      });
+      html += `</table>`;
+      document.getElementById("tablePreview").innerHTML = html;
     }
   </script>
 </body>
-</ 
+</html>
