@@ -64,7 +64,7 @@
   <h1>SheetPilot</h1>
 
   <h2>Select Industry</h2>
-  <select id="industry">
+  <select id="industry" onchange="handleIndustryChange()">
     <option value="">-- Select Industry --</option>
     <option value="Small Business">Small Business</option>
     <option value="Construction">Construction</option>
@@ -74,13 +74,17 @@
     <option value="Logistics">Logistics</option>
     <option value="Freelancer">Freelancer</option>
     <option value="Tech">Tech Startup</option>
+    <option value="HVAC">HVAC</option>
+    <option value="Plumbing">Plumbing</option>
+    <option value="Electrical">Electrical</option>
+    <option value="Auto Services">Auto Services</option>
   </select>
 
   <select id="subcategory">
     <option value="">-- Select Subcategory --</option>
   </select>
 
-  <input type="text" id="customBusiness" placeholder="Or enter your business type..." />
+  <input type="text" id="customBusiness" placeholder="Or enter your business type..." oninput="disableSubcategory()" />
 
   <h2>Upload Your File</h2>
   <input type="file" id="fileInput" accept=".xlsx,.xls" />
@@ -89,51 +93,61 @@
   <h2>Label Columns</h2>
   <div id="columnLabels"></div>
 
-  <h2>Filter & Sort</h2>
-  <label>Remove rows with blank in:</label>
-  <select id="blankColumn"></select><br/>
-
-  <label>Only show rows where column matches:</label>
-  <select id="matchColumn"></select>
-  <input type="text" id="matchValue" placeholder="Enter value to match..." /><br/>
-
-  <label>Sort your data by:</label>
-  <select id="sortColumn"></select>
-  <select id="sortDirection">
-    <option value="asc">A → Z</option>
-    <option value="desc">Z → A</option>
-  </select><br/>
-
   <button onclick="previewTable()">Preview Table</button>
-
   <div id="tablePreview"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
-    const suggestedHeaders = {
-      "Small Business": ["Customer", "Service", "Price", "Status", "Notes"],
-      "Construction": ["Client", "Project", "Start Date", "Status", "Budget"],
-      "Healthcare": ["Patient", "Appointment Date", "Treatment", "Provider", "Status"],
-      "Real Estate": ["Client", "Property", "Closing Date", "Agent", "Offer"],
-      "Retail": ["Customer", "Purchase Date", "Product", "Price", "Payment Type"],
-      "Logistics": ["Client", "Shipment ID", "Delivery Date", "Carrier", "Status"],
-      "Freelancer": ["Client", "Service", "Rate", "Due Date", "Invoice Status"],
-      "Tech": ["Customer", "Feature", "Ticket #", "Priority", "Status"]
+    const subcategories = {
+      "Small Business": ["Lawn Care", "Cleaning Services", "Handyman", "Pet Services", "Tutoring"],
+      "Construction": ["Residential", "Commercial", "Roofing", "HVAC", "Landscaping"],
+      "Healthcare": ["Private Practice", "Therapist", "Home Care", "Dental"],
+      "Real Estate": ["Residential", "Commercial", "Appraiser", "Broker"],
+      "Retail": ["Grocery", "Clothing", "Electronics", "Mobile Sales"],
+      "Logistics": ["Freight", "Courier", "Warehouse"],
+      "Freelancer": ["Writer", "Designer", "Developer", "Photographer"],
+      "Tech": ["App Developer", "SaaS", "AI Tool", "Web Platform"],
+      "HVAC": ["Residential", "Commercial", "Service Plans"],
+      "Plumbing": ["Repairs", "Installation", "Emergency Services"],
+      "Electrical": ["Residential Wiring", "Industrial", "Low Voltage"],
+      "Auto Services": ["Detailing", "Repair", "Oil Change", "Mobile Mechanic"]
     };
 
-    document.getElementById("industry").addEventListener("change", function () {
+    const suggestedHeaders = {
+      "Small Business": ["Customer", "Service", "Price", "Status"],
+      "Construction": ["Client", "Project", "Start Date", "Status", "Budget"],
+      "Healthcare": ["Patient", "Appointment Date", "Treatment", "Provider"],
+      "Real Estate": ["Client", "Property", "Closing Date", "Agent"],
+      "Retail": ["Customer", "Purchase Date", "Product", "Amount"],
+      "Logistics": ["Client", "Shipment ID", "Delivery Date", "Carrier"],
+      "Freelancer": ["Client", "Service", "Rate", "Due Date"],
+      "Tech": ["Customer", "Feature", "Ticket ID", "Status"]
+    };
+
+    function handleIndustryChange() {
+      const industry = document.getElementById("industry").value;
       const sub = document.getElementById("subcategory");
       sub.innerHTML = `<option value="">-- Select Subcategory --</option>`;
-      const val = this.value;
-
-      if (val === "Small Business") {
-        ["Lawn Care", "Handyman", "Cleaning Services", "Dog Grooming", "Notary", "Catering", "Event Planner"].forEach(opt => {
-          sub.innerHTML += `<option value="${opt}">${opt}</option>`;
+      if (subcategories[industry]) {
+        subcategories[industry].forEach(sc => {
+          sub.innerHTML += `<option value="${sc}">${sc}</option>`;
         });
+        sub.disabled = false;
       }
-    });
+    }
+
+    function disableSubcategory() {
+      const sub = document.getElementById("subcategory");
+      if (document.getElementById("customBusiness").value.trim()) {
+        sub.disabled = true;
+        sub.value = "";
+      } else {
+        sub.disabled = false;
+      }
+    }
 
     let workbookData = [];
+
     function loadFile() {
       const file = document.getElementById("fileInput").files[0];
       const reader = new FileReader();
@@ -156,58 +170,31 @@
       const suggestions = suggestedHeaders[industry] || [];
 
       headers.forEach((header, i) => {
-        const labelHTML = `
+        div.innerHTML += `
           <label>Original Column: ${header}</label>
           <select id="label-${i}">
             <option value="">-- Suggested Label --</option>
             ${suggestions.map(s => `<option value="${s}">${s}</option>`).join("")}
           </select>
-          <input type="text" id="custom-${i}" placeholder="Enter new column label" /><br/>
+          <input type="text" id="custom-${i}" placeholder="Or enter custom label" /><br/>
         `;
-        div.innerHTML += labelHTML;
-      });
-
-      const dropdowns = [document.getElementById("blankColumn"), document.getElementById("matchColumn"), document.getElementById("sortColumn")];
-      dropdowns.forEach(d => {
-        d.innerHTML = `<option value="">-- Select Column --</option>`;
-        headers.forEach((h, i) => d.innerHTML += `<option value="${i}">${h}</option>`);
       });
     }
 
     function previewTable() {
-      const labelMap = {};
-      workbookData[0].forEach((_, i) => {
-        const dropVal = document.getElementById(`label-${i}`).value;
-        const customVal = document.getElementById(`custom-${i}`).value;
-        const label = customVal || dropVal;
-        if (label) labelMap[i] = label;
+      const map = {};
+      const headers = workbookData[0];
+      headers.forEach((_, i) => {
+        const label = document.getElementById(`custom-${i}`).value || document.getElementById(`label-${i}`).value;
+        if (label) map[i] = label;
       });
 
-      const blankIndex = parseInt(document.getElementById("blankColumn").value);
-      const matchIndex = parseInt(document.getElementById("matchColumn").value);
-      const matchVal = document.getElementById("matchValue").value.trim();
-      const sortIndex = parseInt(document.getElementById("sortColumn").value);
-      const sortDir = document.getElementById("sortDirection").value;
-
-      const body = workbookData.slice(1)
-        .filter(row => row.length && (isNaN(blankIndex) || row[blankIndex]))
-        .filter(row => !matchVal || (row[matchIndex] && row[matchIndex].toString().includes(matchVal)))
-        .sort((a, b) => {
-          const aVal = a[sortIndex] || "";
-          const bVal = b[sortIndex] || "";
-          return sortDir === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
-        });
-
-      let html = `<table><tr>`;
-      Object.values(labelMap).forEach(label => html += `<th>${label}</th>`);
-      html += `</tr>`;
-
-      body.forEach(row => {
-        html += `<tr>`;
-        Object.keys(labelMap).forEach(i => html += `<td>${row[i] || ""}</td>`);
-        html += `</tr>`;
+      const rows = workbookData.slice(1);
+      let html = `<table><tr>${Object.values(map).map(h => `<th>${h}</th>`).join("")}</tr>`;
+      rows.forEach(row => {
+        html += `<tr>${Object.keys(map).map(i => `<td>${row[i] || ""}</td>`).join("")}</tr>`;
       });
-      html += `</table>`;
+      html += "</table>";
       document.getElementById("tablePreview").innerHTML = html;
     }
   </script>
