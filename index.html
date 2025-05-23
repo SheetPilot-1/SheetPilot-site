@@ -13,15 +13,14 @@
     }
     h1 {
       font-size: 2.5em;
-      margin-bottom: 0.2em;
       color: #f5f2e7;
     }
     h2 {
       font-size: 1.2em;
       margin-top: 1.8em;
-      margin-bottom: 0.4em;
+      color: #f5f2e7;
     }
-    select, input[type="text"] {
+    select, input[type="text"], input[type="file"] {
       padding: 10px;
       margin-top: 6px;
       margin-bottom: 12px;
@@ -39,6 +38,7 @@
       padding: 10px 20px;
       font-size: 1em;
       margin-top: 10px;
+      margin-right: 10px;
       cursor: pointer;
     }
     table {
@@ -60,7 +60,6 @@
   </style>
 </head>
 <body>
-
   <h1>SheetPilot</h1>
 
   <h2>Select Industry</h2>
@@ -74,26 +73,40 @@
     <option value="Logistics">Logistics</option>
     <option value="Freelancer">Freelancer</option>
     <option value="Tech">Tech Startup</option>
-    <option value="HVAC">HVAC</option>
-    <option value="Plumbing">Plumbing</option>
-    <option value="Electrical">Electrical</option>
-    <option value="Auto Services">Auto Services</option>
   </select>
 
-  <select id="subcategory">
-    <option value="">-- Select Subcategory --</option>
-  </select>
+  <select id="subcategory"></select>
+  <input type="text" id="customBusiness" placeholder="Or enter your business type..." oninput="toggleCustomSub()"/>
+  <input type="text" id="customSubcategory" placeholder="Enter your own subcategory (optional)" style="display: none;"/>
 
-  <input type="text" id="customBusiness" placeholder="Or enter your business type..." oninput="disableSubcategory()" />
-
-  <h2>Upload Your File</h2>
+  <h2>Upload File</h2>
   <input type="file" id="fileInput" accept=".xlsx,.xls" />
   <button onclick="loadFile()">Load File</button>
 
   <h2>Label Columns</h2>
   <div id="columnLabels"></div>
 
-  <button onclick="previewTable()">Preview Table</button>
+  <h2>Filters & Sorting</h2>
+  <label>Remove rows where column is blank:</label>
+  <select id="filterBlankCol"></select><br/>
+
+  <label>Only keep rows where column equals:</label>
+  <select id="filterMatchCol"></select>
+  <input type="text" id="filterMatchVal" placeholder="Enter match value" /><br/>
+
+  <label>Which column would you like to sort by?</label>
+  <select id="sortCol"></select>
+  <select id="sortDir">
+    <option value="asc">A → Z</option>
+    <option value="desc">Z → A</option>
+  </select>
+
+  <div>
+    <button onclick="previewTable()">Preview Table</button>
+    <button onclick="downloadCSV()">Download CSV</button>
+    <button onclick="downloadXLSX()">Download XLSX</button>
+  </div>
+
   <div id="tablePreview"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -106,47 +119,30 @@
       "Retail": ["Grocery", "Clothing", "Electronics", "Mobile Sales"],
       "Logistics": ["Freight", "Courier", "Warehouse"],
       "Freelancer": ["Writer", "Designer", "Developer", "Photographer"],
-      "Tech": ["App Developer", "SaaS", "AI Tool", "Web Platform"],
-      "HVAC": ["Residential", "Commercial", "Service Plans"],
-      "Plumbing": ["Repairs", "Installation", "Emergency Services"],
-      "Electrical": ["Residential Wiring", "Industrial", "Low Voltage"],
-      "Auto Services": ["Detailing", "Repair", "Oil Change", "Mobile Mechanic"]
+      "Tech": ["App Developer", "SaaS", "AI Tool", "Web Platform"]
     };
 
-    const suggestedHeaders = {
-      "Small Business": ["Customer", "Service", "Price", "Status"],
-      "Construction": ["Client", "Project", "Start Date", "Status", "Budget"],
-      "Healthcare": ["Patient", "Appointment Date", "Treatment", "Provider"],
-      "Real Estate": ["Client", "Property", "Closing Date", "Agent"],
-      "Retail": ["Customer", "Purchase Date", "Product", "Amount"],
-      "Logistics": ["Client", "Shipment ID", "Delivery Date", "Carrier"],
-      "Freelancer": ["Client", "Service", "Rate", "Due Date"],
-      "Tech": ["Customer", "Feature", "Ticket ID", "Status"]
-    };
+    let workbookData = [];
 
     function handleIndustryChange() {
       const industry = document.getElementById("industry").value;
       const sub = document.getElementById("subcategory");
-      sub.innerHTML = `<option value="">-- Select Subcategory --</option>`;
+      sub.innerHTML = "<option value=''>-- Select Subcategory --</option>";
       if (subcategories[industry]) {
         subcategories[industry].forEach(sc => {
           sub.innerHTML += `<option value="${sc}">${sc}</option>`;
         });
-        sub.disabled = false;
-      }
-    }
-
-    function disableSubcategory() {
-      const sub = document.getElementById("subcategory");
-      if (document.getElementById("customBusiness").value.trim()) {
-        sub.disabled = true;
-        sub.value = "";
+        sub.style.display = "block";
       } else {
-        sub.disabled = false;
+        sub.style.display = "none";
       }
     }
 
-    let workbookData = [];
+    function toggleCustomSub() {
+      const text = document.getElementById("customBusiness").value.trim();
+      document.getElementById("customSubcategory").style.display = text ? "block" : "none";
+      document.getElementById("subcategory").style.display = text ? "none" : "block";
+    }
 
     function loadFile() {
       const file = document.getElementById("fileInput").files[0];
@@ -165,37 +161,83 @@
       const headers = workbookData[0];
       const div = document.getElementById("columnLabels");
       div.innerHTML = "";
-
-      const industry = document.getElementById("industry").value;
-      const suggestions = suggestedHeaders[industry] || [];
-
       headers.forEach((header, i) => {
-        div.innerHTML += `
-          <label>Original Column: ${header}</label>
-          <select id="label-${i}">
-            <option value="">-- Suggested Label --</option>
-            ${suggestions.map(s => `<option value="${s}">${s}</option>`).join("")}
-          </select>
-          <input type="text" id="custom-${i}" placeholder="Or enter custom label" /><br/>
-        `;
+        div.innerHTML += `<label>${header}</label>
+          <input type="text" id="label-${i}" placeholder="Enter label for this column" /><br/>`;
+      });
+
+      ["filterBlankCol", "filterMatchCol", "sortCol"].forEach(id => {
+        const el = document.getElementById(id);
+        el.innerHTML = "<option value=''>-- Select --</option>";
+        headers.forEach((h, i) => {
+          el.innerHTML += `<option value="${i}">${h}</option>`;
+        });
       });
     }
 
     function previewTable() {
-      const map = {};
       const headers = workbookData[0];
+      const labelMap = {};
       headers.forEach((_, i) => {
-        const label = document.getElementById(`custom-${i}`).value || document.getElementById(`label-${i}`).value;
-        if (label) map[i] = label;
+        const val = document.getElementById(`label-${i}`).value.trim();
+        if (val) labelMap[i] = val;
       });
 
-      const rows = workbookData.slice(1);
-      let html = `<table><tr>${Object.values(map).map(h => `<th>${h}</th>`).join("")}</tr>`;
+      const blankCol = parseInt(document.getElementById("filterBlankCol").value);
+      const matchCol = parseInt(document.getElementById("filterMatchCol").value);
+      const matchVal = document.getElementById("filterMatchVal").value.trim();
+      const sortCol = parseInt(document.getElementById("sortCol").value);
+      const sortDir = document.getElementById("sortDir").value;
+
+      let rows = workbookData.slice(1).filter(row => {
+        if (!isNaN(blankCol) && !row[blankCol]) return false;
+        if (!isNaN(matchCol) && matchVal && row[matchCol]?.toString().toLowerCase() !== matchVal.toLowerCase()) return false;
+        return true;
+      });
+
+      if (!isNaN(sortCol)) {
+        rows.sort((a, b) => {
+          const aVal = (a[sortCol] || "").toString();
+          const bVal = (b[sortCol] || "").toString();
+          return sortDir === "asc" ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+        });
+      }
+
+      let html = "<table><tr>";
+      Object.values(labelMap).forEach(l => html += `<th>${l}</th>`);
+      html += "</tr>";
       rows.forEach(row => {
-        html += `<tr>${Object.keys(map).map(i => `<td>${row[i] || ""}</td>`).join("")}</tr>`;
+        html += "<tr>";
+        Object.keys(labelMap).forEach(i => html += `<td>${row[i] || ""}</td>`);
+        html += "</tr>";
       });
       html += "</table>";
       document.getElementById("tablePreview").innerHTML = html;
+    }
+
+    function downloadCSV() {
+      const rows = document.querySelectorAll("table tr");
+      let csv = "";
+      rows.forEach(row => {
+        const cols = Array.from(row.querySelectorAll("th, td")).map(td => `"${td.innerText}"`);
+        csv += cols.join(",") + "\\n";
+      });
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "sheetpilot_output.csv";
+      link.click();
+    }
+
+    function downloadXLSX() {
+      const headers = Array.from(document.querySelectorAll("table th")).map(th => th.innerText);
+      const data = Array.from(document.querySelectorAll("table tr"))
+        .slice(1)
+        .map(row => Array.from(row.querySelectorAll("td")).map(td => td.innerText));
+      const ws = XLSX.utils.aoa_to_sheet([headers, ...data]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "SheetPilot Preview");
+      XLSX.writeFile(wb, "sheetpilot_output.xlsx");
     }
   </script>
 </body>
