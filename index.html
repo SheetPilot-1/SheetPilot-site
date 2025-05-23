@@ -30,14 +30,13 @@
 
   <section>
     <h2>Choose Your Industry</h2>
-    <select id="industrySelect" onchange="populateSubcategories()">
+    <select id="industrySelect" onchange="handleIndustryChange()">
       <option value="">-- Select Industry --</option>
       <option value="Small Business">Small Business</option>
       <option value="Real Estate">Real Estate</option>
       <option value="Law Firm">Law Firm</option>
       <option value="Ministry">Ministry</option>
     </select>
-    <select id="subcategorySelect" class="hidden"></select>
   </section>
 
   <section>
@@ -83,40 +82,33 @@
       <input type="text" placeholder="e.g. Column A contains 'test' and Column B is blank">
     </div>
 
-    <button class="btn">Preview Cleaned Table</button>
+    <button class="btn" onclick="previewData()">Preview Cleaned Table</button>
     <button class="btn">Download as XLSX</button>
     <button class="btn">Download as CSV</button>
+
+    <div id="previewTableContainer"></div>
   </section>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
     let rawData = [], headers = [];
 
-    const subcategories = {
-      "Small Business": ["Coffee Shop", "Cleaning Service", "Auto Repair", "Barber Shop", "Landscaping"],
-      "Real Estate": ["Residential Agent", "Commercial Broker"],
-      "Law Firm": ["Criminal Defense", "Family Law"],
-      "Ministry": ["Church", "Nonprofit"]
+    const headerSuggestions = {
+      "Small Business": ["Customer Name", "Phone", "Email", "Service", "Price", "Date"],
+      "Real Estate": ["Client", "Property Address", "Agent", "Commission", "Close Date"],
+      "Law Firm": ["Client Name", "Case Type", "Attorney", "Fee", "Court Date"],
+      "Ministry": ["Name", "Event", "Donation", "Contact", "Date"]
     };
 
-    function populateSubcategories() {
-      const industry = document.getElementById("industrySelect").value;
-      const subcat = document.getElementById("subcategorySelect");
-      subcat.innerHTML = "";
-      if (subcategories[industry]) {
-        subcat.classList.remove("hidden");
-        subcategories[industry].forEach(opt => {
-          const option = document.createElement("option");
-          option.textContent = opt;
-          subcat.appendChild(option);
-        });
-      } else {
-        subcat.classList.add("hidden");
-      }
+    function handleIndustryChange() {
+      document.getElementById('step3').classList.add('hidden');
     }
 
     function loadFile() {
       const input = document.getElementById('fileInput');
+      const error = document.getElementById('error');
+      if (!input.files.length) return;
+
       const reader = new FileReader();
       reader.onload = function(e) {
         const data = new Uint8Array(e.target.result);
@@ -131,23 +123,28 @@
     }
 
     function populateLabelSelectors() {
-      const container = document.getElementById("labelSelectors");
-      container.innerHTML = "";
-      headers.forEach(h => {
+      const industry = document.getElementById('industrySelect').value;
+      const suggestions = headerSuggestions[industry] || [];
+      const container = document.getElementById('labelSelectors');
+      container.innerHTML = '';
+
+      headers.forEach((header, i) => {
+        const options = suggestions.map(opt => `<option value="${opt}">${opt}</option>`).join('');
         container.innerHTML += `
-          <label>${h}</label>
-          <input type="text" placeholder="Enter label for ${h}">
+          <label>${header}</label>
+          <select><option value="">-- Choose label --</option>${options}</select>
+          <input type="text" placeholder="Or enter custom label">
         `;
       });
     }
 
     function confirmLabels() {
-      populateDropdowns("blankCol");
-      populateDropdowns("matchCol");
-      populateDropdowns("sortCol");
+      populateDropdown("blankCol");
+      populateDropdown("matchCol");
+      populateDropdown("sortCol");
     }
 
-    function populateDropdowns(id) {
+    function populateDropdown(id) {
       const dropdown = document.getElementById(id);
       dropdown.innerHTML = "";
       headers.forEach((h, i) => {
@@ -156,6 +153,27 @@
         option.textContent = h;
         dropdown.appendChild(option);
       });
+    }
+
+    function previewData() {
+      const matchCol = parseInt(document.getElementById("matchCol").value);
+      const matchVal = document.getElementById("matchVal").value.trim().toLowerCase();
+
+      const filtered = rawData.slice(1).filter(row =>
+        !matchVal || (row[matchCol] && row[matchCol].toString().toLowerCase().includes(matchVal))
+      );
+
+      const table = document.createElement("table");
+      const headerRow = table.insertRow();
+      headers.forEach(h => headerRow.insertCell().textContent = h);
+      filtered.forEach(row => {
+        const tr = table.insertRow();
+        headers.forEach((_, i) => tr.insertCell().textContent = row[i] || "");
+      });
+
+      const container = document.getElementById("previewTableContainer");
+      container.innerHTML = "";
+      container.appendChild(table);
     }
 
     function toggleAdvanced() {
