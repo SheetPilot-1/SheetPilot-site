@@ -8,15 +8,13 @@
     body {
       font-family: 'Segoe UI', sans-serif;
       background-color: #1C1C2A;
-      color: #f5f5dc;
+      color: #fdf5e6;
       margin: 0;
       padding: 2rem;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      color: #f5f5dc;
-      margin-bottom: 1rem;
+    h1, h2 {
+      color: #fdf5e6;
     }
 
     section {
@@ -25,7 +23,7 @@
 
     label, select, input, button {
       display: block;
-      margin: 0.5rem 0;
+      margin-top: 0.75rem;
       font-size: 1rem;
     }
 
@@ -40,7 +38,7 @@
       background-color: #00ffff;
       color: #000;
       border: none;
-      padding: 0.6rem 1rem;
+      padding: 0.6rem 1.2rem;
       border-radius: 8px;
       cursor: pointer;
       margin-top: 1rem;
@@ -79,139 +77,255 @@
       flex: 1;
       min-width: 200px;
     }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
-
   <h1>SheetPilot</h1>
+
   <section>
-    <p>This is the final version of the SheetPilot test tool. Upload a spreadsheet to begin testing.</p>
-    <input type="file" id="upload" />
+    <h2>Select Industry</h2>
+    <select id="industrySelect" onchange="populateSubcategories(); suggestHeaders();">
+      <option value="">-- Choose Industry --</option>
+      <option value="Small Business">Small Business</option>
+      <option value="Real Estate">Real Estate</option>
+      <option value="Healthcare">Healthcare</option>
+      <option value="Ministry">Ministry</option>
+      <option value="Logistics">Logistics</option>
+      <option value="Education">Education</option>
+      <option value="Legal">Legal</option>
+      <option value="Consulting">Consulting</option>
+    </select>
+
+    <select id="subcategorySelect" class="hidden"></select>
   </section>
 
-  <section id="labelSection" style="display:none;">
+  <section>
+    <h2>Upload Your File</h2>
+    <input type="file" id="upload" accept=".csv,.xlsx" />
+    <p id="uploadError" style="color:red;"></p>
+  </section>
+
+  <section id="labelSection" class="hidden">
     <h2>Label Columns</h2>
     <div id="labelContainer" class="row"></div>
     <button onclick="confirmLabels()">Confirm Labels</button>
   </section>
 
-  <section id="filterSection" style="display:none;">
-    <h2>Clean & Sort</h2>
+  <section id="filterSection" class="hidden">
+    <h2>Clean & Preview</h2>
     <div class="row">
       <div class="column">
-        <label>Remove rows missing info in:</label>
-        <select id="blankColumnSelect"></select>
+        <label>Remove rows with blank in:</label>
+        <select id="blankColSelect"></select>
       </div>
       <div class="column">
-        <label>Only show rows where this matches:</label>
-        <select id="matchColumnSelect"></select>
-        <input type="text" id="matchValue" placeholder="e.g. Smith, Complete" />
+        <label>Only show rows where column matches:</label>
+        <select id="matchColSelect"></select>
+        <input type="text" id="matchValue" />
       </div>
       <div class="column">
-        <label>Sort your data by:</label>
-        <select id="sortColumnSelect"></select>
-        <select id="sortOrder">
+        <label>Sort by column:</label>
+        <select id="sortColSelect"></select>
+        <select id="sortDir">
           <option value="asc">A → Z</option>
           <option value="desc">Z → A</option>
         </select>
       </div>
     </div>
-    <button onclick="applyCleanup()">Preview Cleaned Table</button>
-    <button onclick="exportData('xlsx')">Download as XLSX</button>
-    <button onclick="exportData('csv')">Download as CSV</button>
+    <button onclick="applyFilters()">Preview Table</button>
     <div id="previewTable"></div>
   </section>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
-    let rawData = [];
-    let headers = [];
+    let rawData = [], headers = [], customHeaders = [];
+    const industrySuggestions = {
+      "Small Business": ["Customer", "Service", "Price", "Date", "Status"],
+      "Real Estate": ["Client", "Property", "Agent", "Commission", "Close Date"],
+      "Healthcare": ["Patient", "Visit Date", "Procedure", "Cost", "Provider"],
+      "Ministry": ["Donor", "Event", "Amount", "Contact", "Date"],
+      "Logistics": ["Carrier", "Shipment ID", "Status", "Pickup", "Delivery"],
+      "Education": ["Student", "Course", "Instructor", "Grade", "Term"],
+      "Legal": ["Client", "Case Type", "Attorney", "Court Date", "Fee"],
+      "Consulting": ["Client", "Project", "Rate", "Hours", "Deadline"]
+    };
 
-    document.getElementById('upload').addEventListener('change', function(event) {
+        const subcategories = {
+      "Small Business": ["Cleaning", "Lawn Care", "Auto Repair", "Bakery", "Retail"],
+      "Real Estate": ["Residential", "Commercial", "Appraisal", "Property Management"],
+      "Ministry": ["Church", "Outreach", "Counseling"],
+      "Healthcare": ["Primary Care", "Specialty", "Dental"],
+      "Education": ["K-12", "University", "Tutoring"]
+    };
+
+    function populateSubcategories() {
+      const industry = document.getElementById("industrySelect").value;
+      const sub = document.getElementById("subcategorySelect");
+      if (subcategories[industry]) {
+        sub.innerHTML = "";
+        subcategories[industry].forEach(opt => {
+          const o = document.createElement("option");
+          o.textContent = opt;
+          sub.appendChild(o);
+        });
+        sub.classList.remove("hidden");
+      } else {
+        sub.classList.add("hidden");
+      }
+    }
+
+    function suggestHeaders() {
+      const industry = document.getElementById("industrySelect").value;
+      return industrySuggestions[industry] || [];
+    }
+
+    document.getElementById("upload").addEventListener("change", function(event) {
       const file = event.target.files[0];
       const reader = new FileReader();
       reader.onload = function(e) {
-        const rows = e.target.result.split(/\r?\n/).map(r => r.split(","));
-        headers = rows[0];
-        rawData = rows.slice(1);
-        showLabeling(headers);
+        try {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: 'array' });
+          const sheet = workbook.Sheets[workbook.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+          headers = rows[0];
+          rawData = rows.slice(1);
+          showLabeling(headers);
+        } catch (err) {
+          document.getElementById("uploadError").innerText = "File could not be read. Try using a .CSV file.";
+        }
       };
-      reader.readAsText(file);
+      reader.readAsArrayBuffer(file);
     });
 
     function showLabeling(columns) {
-      const container = document.getElementById('labelContainer');
-      container.innerHTML = '';
+      const container = document.getElementById("labelContainer");
+      container.innerHTML = "";
+      const suggestions = suggestHeaders();
+
       columns.forEach((col, i) => {
-        const label = document.createElement('label');
+        const div = document.createElement("div");
+        div.classList.add("column");
+
+        const label = document.createElement("label");
         label.innerText = col;
 
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.placeholder = 'Enter label...';
-        input.dataset.index = i;
+        const select = document.createElement("select");
+        select.id = "suggest_" + i;
+        select.innerHTML = `<option value="">-- Suggested Label --</option>`;
+        suggestions.forEach(s => {
+          const opt = document.createElement("option");
+          opt.value = s;
+          opt.textContent = s;
+          select.appendChild(opt);
+        });
 
-        const div = document.createElement('div');
-        div.classList.add('column');
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "Or enter custom label";
+        input.id = "manual_" + i;
+
         div.appendChild(label);
+        div.appendChild(select);
         div.appendChild(input);
         container.appendChild(div);
       });
-      document.getElementById('labelSection').style.display = 'block';
+
+      document.getElementById("labelSection").classList.remove("hidden");
     }
 
-    function confirmLabels() {
-      const inputs = document.querySelectorAll('#labelContainer input');
-      headers = Array.from(inputs).map(input => input.value || headers[input.dataset.index]);
-      populateFilterOptions();
-      document.getElementById('filterSection').style.display = 'block';
+        function confirmLabels() {
+      customHeaders = headers.map((_, i) => {
+        const suggestion = document.getElementById("suggest_" + i).value;
+        const manual = document.getElementById("manual_" + i).value;
+        return manual || suggestion || headers[i];
+      });
+
+      populateFilterDropdowns();
+      document.getElementById("filterSection").classList.remove("hidden");
     }
 
-    function populateFilterOptions() {
-      const selects = ['blankColumnSelect', 'matchColumnSelect', 'sortColumnSelect'];
-      selects.forEach(id => {
-        const select = document.getElementById(id);
-        select.innerHTML = '';
-        headers.forEach(header => {
-          const opt = document.createElement('option');
-          opt.value = header;
-          opt.textContent = header;
-          select.appendChild(opt);
+    function populateFilterDropdowns() {
+      const blank = document.getElementById("blankColSelect");
+      const match = document.getElementById("matchColSelect");
+      const sort = document.getElementById("sortColSelect");
+
+      [blank, match, sort].forEach(sel => {
+        sel.innerHTML = "";
+        customHeaders.forEach(h => {
+          const opt = document.createElement("option");
+          opt.value = h;
+          opt.textContent = h;
+          sel.appendChild(opt);
         });
       });
     }
 
-    function applyCleanup() {
-      const blankCol = document.getElementById('blankColumnSelect').value;
-      const matchCol = document.getElementById('matchColumnSelect').value;
-      const matchVal = document.getElementById('matchValue').value;
-      const sortCol = document.getElementById('sortColumnSelect').value;
-      const sortOrder = document.getElementById('sortOrder').value;
+    function applyFilters() {
+      const blankField = document.getElementById("blankColSelect").value;
+      const matchField = document.getElementById("matchColSelect").value;
+      const matchValue = document.getElementById("matchValue").value.trim().toLowerCase();
+      const sortField = document.getElementById("sortColSelect").value;
+      const sortDir = document.getElementById("sortDir").value;
 
-      let tableData = rawData.filter(row => {
-        const index = headers.indexOf(blankCol);
-        return row[index]?.trim() !== '';
-      });
+      const bIndex = customHeaders.indexOf(blankField);
+      const mIndex = customHeaders.indexOf(matchField);
+      const sIndex = customHeaders.indexOf(sortField);
 
-      if (matchVal) {
-        const mIndex = headers.indexOf(matchCol);
-        tableData = tableData.filter(row => row[mIndex]?.toLowerCase() === matchVal.toLowerCase());
+      let filtered = rawData.filter(row => row[bIndex]?.toString().trim() !== "");
+
+      if (matchValue && mIndex !== -1) {
+        filtered = filtered.filter(row =>
+          row[mIndex] && row[mIndex].toString().toLowerCase().includes(matchValue)
+        );
       }
 
-      const sIndex = headers.indexOf(sortCol);
-      tableData.sort((a, b) => {
-        const valA = a[sIndex] || '';
-        const valB = b[sIndex] || '';
-        return sortOrder === 'asc'
-          ? valA.localeCompare(valB)
-          : valB.localeCompare(valA);
-      });
+      if (sIndex !== -1) {
+        filtered.sort((a, b) => {
+          const valA = a[sIndex] ? a[sIndex].toString() : "";
+          const valB = b[sIndex] ? b[sIndex].toString() : "";
+          return sortDir === "asc"
+            ? valA.localeCompare(valB)
+            : valB.localeCompare(valA);
+        });
+      }
 
-      const tableHTML = `<table><thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${tableData.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
-      document.getElementById('previewTable').innerHTML = tableHTML;
+      displayTable(filtered);
     }
 
-    function exportData(type) {
-      alert(`Export as ${type.toUpperCase()} is not implemented in this test build.`);
+    function displayTable(data) {
+      const container = document.getElementById("previewTable");
+      container.innerHTML = "";
+
+      const table = document.createElement("table");
+      const thead = document.createElement("thead");
+      const tbody = document.createElement("tbody");
+
+      const headerRow = document.createElement("tr");
+      customHeaders.forEach(h => {
+        const th = document.createElement("th");
+        th.textContent = h;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        customHeaders.forEach((_, i) => {
+          const td = document.createElement("td");
+          td.textContent = row[i] || "";
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      container.appendChild(table);
     }
   </script>
 </body>
