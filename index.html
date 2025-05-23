@@ -2,322 +2,219 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
+      font-family: Arial, sans-serif;
       background-color: #1C1C2A;
-      color: #fdf5e6;
-      margin: 0;
-      padding: 2rem;
+      color: #f5f2e8;
+      padding: 30px;
     }
-
     h1, h2 {
-      color: #fdf5e6;
+      color: #f5f2e8;
     }
-
-    section {
-      margin-bottom: 2rem;
-    }
-
-    label, select, input, button {
-      display: block;
-      margin-top: 0.75rem;
-      font-size: 1rem;
-    }
-
-    select, input[type="text"] {
-      width: 100%;
-      padding: 0.5rem;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-    }
-
-    button {
-      background-color: #00ffff;
-      color: #000;
+    select, input[type="text"], input[type="file"], button {
+      padding: 10px;
+      margin: 5px 0;
+      font-size: 16px;
+      border-radius: 6px;
       border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 8px;
+      width: 100%;
+    }
+    .section {
+      margin-bottom: 40px;
+    }
+    .dropdown-label {
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    button {
+      background-color: #00f7ff;
+      color: #000;
+      font-weight: bold;
       cursor: pointer;
-      margin-top: 1rem;
     }
-
     button:hover {
-      background-color: #00e6e6;
+      background-color: #00d2db;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1rem;
+      margin-top: 20px;
     }
-
-    th, td {
-      padding: 0.75rem;
+    table th, table td {
       border: 1px solid #444;
+      padding: 8px;
       text-align: left;
-      background-color: #2a2a3a;
-      color: white;
     }
-
-    th {
-      background-color: #00ffff;
+    table th {
+      background-color: #00f7ff;
       color: #000;
-    }
-
-    .row {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .column {
-      flex: 1;
-      min-width: 200px;
-    }
-
-    .hidden {
-      display: none;
     }
   </style>
 </head>
 <body>
   <h1>SheetPilot</h1>
 
-  <section>
-    <h2>Select Industry</h2>
-    <select id="industrySelect" onchange="populateSubcategories(); suggestHeaders();">
-      <option value="">-- Choose Industry --</option>
+  <div class="section">
+    <label class="dropdown-label">Select Industry</label>
+    <select id="industrySelect" onchange="populateSubcategories()">
+      <option value="">-- Select Industry --</option>
       <option value="Small Business">Small Business</option>
       <option value="Real Estate">Real Estate</option>
       <option value="Healthcare">Healthcare</option>
-      <option value="Ministry">Ministry</option>
-      <option value="Logistics">Logistics</option>
       <option value="Education">Education</option>
+      <option value="Construction">Construction</option>
+      <option value="E-commerce">E-commerce</option>
+      <option value="Manufacturing">Manufacturing</option>
+      <option value="Logistics">Logistics</option>
+      <option value="IT Services">IT Services</option>
+      <option value="Marketing">Marketing</option>
+      <option value="Finance">Finance</option>
       <option value="Legal">Legal</option>
-      <option value="Consulting">Consulting</option>
+      <option value="Retail">Retail</option>
+      <option value="Hospitality">Hospitality</option>
+      <option value="Nonprofit">Nonprofit</option>
+      <option value="Government">Government</option>
+      <option value="Automotive">Automotive</option>
+      <option value="Agriculture">Agriculture</option>
+      <option value="Energy">Energy</option>
+      <option value="Security">Security</option>
     </select>
 
-    <select id="subcategorySelect" class="hidden"></select>
-  </section>
+    <select id="subcategorySelect">
+      <option value="">-- Select Subcategory --</option>
+    </select>
 
-  <section>
-    <h2>Upload Your File</h2>
-    <input type="file" id="upload" accept=".csv,.xlsx" />
-    <p id="uploadError" style="color:red;"></p>
-  </section>
+    <input type="text" placeholder="Or enter your business type..." id="customIndustryInput" />
+  </div>
 
-  <section id="labelSection" class="hidden">
+  <div class="section">
+    <label class="dropdown-label">Upload Your File</label>
+    <input type="file" id="fileInput" accept=".xlsx" />
+  </div>
+
+  <div class="section" id="headerSection" style="display: none;">
     <h2>Label Columns</h2>
-    <div id="labelContainer" class="row"></div>
+    <div id="labelContainer"></div>
     <button onclick="confirmLabels()">Confirm Labels</button>
-  </section>
-
-  <section id="filterSection" class="hidden">
-    <h2>Clean & Preview</h2>
-    <div class="row">
-      <div class="column">
-        <label>Remove rows with blank in:</label>
-        <select id="blankColSelect"></select>
-      </div>
-      <div class="column">
-        <label>Only show rows where column matches:</label>
-        <select id="matchColSelect"></select>
-        <input type="text" id="matchValue" />
-      </div>
-      <div class="column">
-        <label>Sort by column:</label>
-        <select id="sortColSelect"></select>
-        <select id="sortDir">
-          <option value="asc">A → Z</option>
-          <option value="desc">Z → A</option>
-        </select>
-      </div>
-    </div>
-    <button onclick="applyFilters()">Preview Table</button>
-    <div id="previewTable"></div>
-  </section>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
-    let rawData = [], headers = [], customHeaders = [];
-    const industrySuggestions = {
-      "Small Business": ["Customer", "Service", "Price", "Date", "Status"],
-      "Real Estate": ["Client", "Property", "Agent", "Commission", "Close Date"],
-      "Healthcare": ["Patient", "Visit Date", "Procedure", "Cost", "Provider"],
-      "Ministry": ["Donor", "Event", "Amount", "Contact", "Date"],
-      "Logistics": ["Carrier", "Shipment ID", "Status", "Pickup", "Delivery"],
-      "Education": ["Student", "Course", "Instructor", "Grade", "Term"],
-      "Legal": ["Client", "Case Type", "Attorney", "Court Date", "Fee"],
-      "Consulting": ["Client", "Project", "Rate", "Hours", "Deadline"]
-    };
-
-        const subcategories = {
-      "Small Business": ["Cleaning", "Lawn Care", "Auto Repair", "Bakery", "Retail"],
-      "Real Estate": ["Residential", "Commercial", "Appraisal", "Property Management"],
-      "Ministry": ["Church", "Outreach", "Counseling"],
-      "Healthcare": ["Primary Care", "Specialty", "Dental"],
-      "Education": ["K-12", "University", "Tutoring"]
+    const subcategories = {
+      "Small Business": ["Lawn Care", "Cleaning Services", "Freelance", "Pet Services", "Handyman", "Tutoring", "Personal Training"],
+      "Real Estate": ["Agents", "Property Management", "Appraisers"],
+      "Healthcare": ["Clinics", "Private Practice", "Therapists", "Home Care"],
+      "Construction": ["General Contracting", "Roofing", "Electrical", "HVAC", "Plumbing"],
+      "E-commerce": ["Online Retailer", "Dropshipping", "Handmade Goods"],
+      "Education": ["Tutoring", "Test Prep", "Online Courses"],
+      "Logistics": ["Trucking", "Courier Services", "Fleet Management"],
+      "IT Services": ["Consulting", "Software Support", "Cybersecurity"],
+      "Retail": ["Boutique", "Grocery", "Mobile Vendor"],
+      "Hospitality": ["Event Planning", "Catering", "Vacation Rentals"],
+      "Automotive": ["Detailing", "Repair", "Dealerships"]
     };
 
     function populateSubcategories() {
       const industry = document.getElementById("industrySelect").value;
-      const sub = document.getElementById("subcategorySelect");
+      const subSelect = document.getElementById("subcategorySelect");
+      subSelect.innerHTML = '<option value="">-- Select Subcategory --</option>';
       if (subcategories[industry]) {
-        sub.innerHTML = "";
-        subcategories[industry].forEach(opt => {
-          const o = document.createElement("option");
-          o.textContent = opt;
-          sub.appendChild(o);
+        subcategories[industry].forEach(sc => {
+          const opt = document.createElement("option");
+          opt.value = sc;
+          opt.innerText = sc;
+          subSelect.appendChild(opt);
         });
-        sub.classList.remove("hidden");
-      } else {
-        sub.classList.add("hidden");
       }
     }
 
-    function suggestHeaders() {
-      const industry = document.getElementById("industrySelect").value;
-      return industrySuggestions[industry] || [];
-    }
+    let rawData = [], headers = [];
 
-    document.getElementById("upload").addEventListener("change", function(event) {
+    document.getElementById('fileInput').addEventListener('change', function(event) {
       const file = event.target.files[0];
+      if (!file) return;
       const reader = new FileReader();
       reader.onload = function(e) {
-        try {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const sheet = workbook.Sheets[workbook.SheetNames[0]];
-          const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-          headers = rows[0];
-          rawData = rows.slice(1);
-          showLabeling(headers);
-        } catch (err) {
-          document.getElementById("uploadError").innerText = "File could not be read. Try using a .CSV file.";
-        }
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+        headers = rows[0];
+        rawData = rows.slice(1);
+        showLabelSelectors(headers);
       };
       reader.readAsArrayBuffer(file);
     });
 
-    function showLabeling(columns) {
+    function showLabelSelectors(columns) {
       const container = document.getElementById("labelContainer");
-      container.innerHTML = "";
-      const suggestions = suggestHeaders();
-
-      columns.forEach((col, i) => {
-        const div = document.createElement("div");
-        div.classList.add("column");
+      container.innerHTML = '';
+      columns.forEach((header, i) => {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("section");
 
         const label = document.createElement("label");
-        label.innerText = col;
-
-        const select = document.createElement("select");
-        select.id = "suggest_" + i;
-        select.innerHTML = `<option value="">-- Suggested Label --</option>`;
-        suggestions.forEach(s => {
-          const opt = document.createElement("option");
-          opt.value = s;
-          opt.textContent = s;
-          select.appendChild(opt);
-        });
+        label.innerText = `Original Column: ${header}`;
 
         const input = document.createElement("input");
         input.type = "text";
-        input.placeholder = "Or enter custom label";
-        input.id = "manual_" + i;
+        input.placeholder = "Enter new column label";
+        input.dataset.index = i;
 
-        div.appendChild(label);
-        div.appendChild(select);
-        div.appendChild(input);
-        container.appendChild(div);
+        wrapper.appendChild(label);
+        wrapper.appendChild(input);
+        container.appendChild(wrapper);
       });
 
-      document.getElementById("labelSection").classList.remove("hidden");
+      document.getElementById("headerSection").style.display = "block";
     }
 
-        function confirmLabels() {
-      customHeaders = headers.map((_, i) => {
-        const suggestion = document.getElementById("suggest_" + i).value;
-        const manual = document.getElementById("manual_" + i).value;
-        return manual || suggestion || headers[i];
-      });
+    function confirmLabels() {
+      const inputs = document.querySelectorAll("#labelContainer input");
+      const labels = Array.from(inputs).map(input => ({
+        label: input.value.trim(),
+        index: parseInt(input.dataset.index)
+      })).filter(entry => entry.label);
 
-      populateFilterDropdowns();
-      document.getElementById("filterSection").classList.remove("hidden");
+      const selectedIndices = labels.map(l => l.index);
+      const filteredHeaders = labels.map(l => l.label);
+      const filteredData = rawData.map(row =>
+        labels.map(l => formatValue(row[l.index]))
+      );
+
+      displayTable(filteredHeaders, filteredData);
     }
 
-    function populateFilterDropdowns() {
-      const blank = document.getElementById("blankColSelect");
-      const match = document.getElementById("matchColSelect");
-      const sort = document.getElementById("sortColSelect");
-
-      [blank, match, sort].forEach(sel => {
-        sel.innerHTML = "";
-        customHeaders.forEach(h => {
-          const opt = document.createElement("option");
-          opt.value = h;
-          opt.textContent = h;
-          sel.appendChild(opt);
-        });
-      });
-    }
-
-    function applyFilters() {
-      const blankField = document.getElementById("blankColSelect").value;
-      const matchField = document.getElementById("matchColSelect").value;
-      const matchValue = document.getElementById("matchValue").value.trim().toLowerCase();
-      const sortField = document.getElementById("sortColSelect").value;
-      const sortDir = document.getElementById("sortDir").value;
-
-      const bIndex = customHeaders.indexOf(blankField);
-      const mIndex = customHeaders.indexOf(matchField);
-      const sIndex = customHeaders.indexOf(sortField);
-
-      let filtered = rawData.filter(row => row[bIndex]?.toString().trim() !== "");
-
-      if (matchValue && mIndex !== -1) {
-        filtered = filtered.filter(row =>
-          row[mIndex] && row[mIndex].toString().toLowerCase().includes(matchValue)
-        );
+    function formatValue(value) {
+      if (typeof value === "string" && Date.parse(value)) {
+        const date = new Date(value);
+        return date.toLocaleDateString("en-US");
       }
-
-      if (sIndex !== -1) {
-        filtered.sort((a, b) => {
-          const valA = a[sIndex] ? a[sIndex].toString() : "";
-          const valB = b[sIndex] ? b[sIndex].toString() : "";
-          return sortDir === "asc"
-            ? valA.localeCompare(valB)
-            : valB.localeCompare(valA);
-        });
-      }
-
-      displayTable(filtered);
+      return value ?? "";
     }
 
-    function displayTable(data) {
-      const container = document.getElementById("previewTable");
-      container.innerHTML = "";
-
+    function displayTable(headers, data) {
+      const tableContainer = document.getElementById("headerSection");
+      const tableWrapper = document.createElement("div");
       const table = document.createElement("table");
+
       const thead = document.createElement("thead");
-      const tbody = document.createElement("tbody");
-
-      const headerRow = document.createElement("tr");
-      customHeaders.forEach(h => {
+      const headRow = document.createElement("tr");
+      headers.forEach(h => {
         const th = document.createElement("th");
-        th.textContent = h;
-        headerRow.appendChild(th);
+        th.innerText = h;
+        headRow.appendChild(th);
       });
-      thead.appendChild(headerRow);
+      thead.appendChild(headRow);
 
+      const tbody = document.createElement("tbody");
       data.forEach(row => {
         const tr = document.createElement("tr");
-        customHeaders.forEach((_, i) => {
+        row.forEach(cell => {
           const td = document.createElement("td");
-          td.textContent = row[i] || "";
+          td.innerText = cell;
           tr.appendChild(td);
         });
         tbody.appendChild(tr);
@@ -325,8 +222,10 @@
 
       table.appendChild(thead);
       table.appendChild(tbody);
-      container.appendChild(table);
+      tableWrapper.innerHTML = "<h2>Preview Cleaned Table</h2>";
+      tableWrapper.appendChild(table);
+      tableContainer.appendChild(tableWrapper);
     }
   </script>
 </body>
-</html>
+</ 
