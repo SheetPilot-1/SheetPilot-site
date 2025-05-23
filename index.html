@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SheetPilot</title>
   <style>
-    body { background-color: #232338; color: #fdf5e6; font-family: Arial, sans-serif; padding: 20px; }
+    body { background: #232338; color: #fdf5e6; font-family: Arial, sans-serif; padding: 20px; }
     h1, h2 { color: #fdf5e6; }
     section { margin-bottom: 40px; }
     label, select, input, button { margin-top: 10px; display: block; }
@@ -14,15 +14,12 @@
     th, td { border: 1px solid #444; padding: 8px; text-align: left; }
     th { background: #00ffff; color: black; }
     .btn {
-      background-color: #00ffff;
-      color: black;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      background-color: #00ffff; color: black;
+      padding: 10px 20px; border: none;
+      border-radius: 8px; cursor: pointer;
       margin-top: 15px;
     }
-    .btn:hover { background-color: #00dddd; }
+    .btn:hover { background: #00dddd; }
     .hidden { display: none; }
     .advanced-toggle { color: #00ffff; cursor: pointer; margin-top: 15px; }
     .filter-block { background: #1e1e2e; padding: 10px; border-radius: 6px; margin-top: 20px; }
@@ -33,18 +30,19 @@
 
   <section>
     <h2>Choose Your Industry</h2>
-    <select id="industrySelect" onchange="handleIndustryChange()">
+    <select id="industrySelect" onchange="populateSubcategories()">
       <option value="">-- Select Industry --</option>
       <option value="Small Business">Small Business</option>
       <option value="Real Estate">Real Estate</option>
       <option value="Law Firm">Law Firm</option>
       <option value="Ministry">Ministry</option>
     </select>
+    <select id="subcategorySelect" class="hidden"></select>
   </section>
 
   <section>
     <h2>Upload Your Spreadsheet</h2>
-    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" />
+    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv">
     <button class="btn" onclick="loadFile()">Load File</button>
     <p id="error" style="color:red;"></p>
   </section>
@@ -57,34 +55,32 @@
 
   <section>
     <h2>Clean Up and Export</h2>
-
     <label>Remove rows missing info in:</label>
-    <select><option>Choose column...</option></select>
+    <select id="blankCol"><option>Choose column...</option></select>
 
     <label>Only show rows where this matches:</label>
-    <select><option>Choose column...</option></select>
-    <input type="text" placeholder="Enter matching value" />
+    <select id="matchCol"><option>Choose column...</option></select>
+    <input type="text" id="matchVal" placeholder="Enter matching value">
 
     <label>Sort your data by:</label>
-    <select><option>Choose column...</option></select>
-    <select>
-      <option>A → Z</option>
-      <option>Z → A</option>
+    <select id="sortCol"><option>Choose column...</option></select>
+    <select id="sortDir">
+      <option value="asc">A → Z</option>
+      <option value="desc">Z → A</option>
     </select>
 
     <div class="advanced-toggle" onclick="toggleAdvanced()">Show Advanced Filters</div>
-
     <div id="advancedFilters" class="filter-block hidden">
       <label>Remove rows where column contains:</label>
       <select><option>Choose column...</option></select>
-      <input type="text" placeholder="e.g. 'test', 'N/A'" />
+      <input type="text" placeholder="e.g. 'test', 'N/A'">
 
       <label>Keep only rows where column starts with:</label>
       <select><option>Choose column...</option></select>
-      <input type="text" placeholder="e.g. '2024'" />
+      <input type="text" placeholder="e.g. '2024'">
 
       <label>Custom rule:</label>
-      <input type="text" placeholder="e.g. Column A contains 'test' and Column B is blank" />
+      <input type="text" placeholder="e.g. Column A contains 'test' and Column B is blank">
     </div>
 
     <button class="btn">Preview Cleaned Table</button>
@@ -95,59 +91,71 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
     let rawData = [], headers = [];
-    const recommendedHeaders = {
-      "Small Business": ["Customer Name", "Email", "Phone", "Service Type", "Price", "Date"],
-      "Real Estate": ["Client", "Property Type", "Address", "Agent", "Commission", "Close Date"],
-      "Law Firm": ["Client Name", "Case Type", "Attorney", "Fee", "Court Date"],
-      "Ministry": ["Name", "Email", "Event", "Donation", "Date"]
+
+    const subcategories = {
+      "Small Business": ["Coffee Shop", "Cleaning Service", "Auto Repair", "Barber Shop", "Landscaping"],
+      "Real Estate": ["Residential Agent", "Commercial Broker"],
+      "Law Firm": ["Criminal Defense", "Family Law"],
+      "Ministry": ["Church", "Nonprofit"]
     };
 
-    function handleIndustryChange() {
-      document.getElementById('step3').classList.add('hidden');
+    function populateSubcategories() {
+      const industry = document.getElementById("industrySelect").value;
+      const subcat = document.getElementById("subcategorySelect");
+      subcat.innerHTML = "";
+      if (subcategories[industry]) {
+        subcat.classList.remove("hidden");
+        subcategories[industry].forEach(opt => {
+          const option = document.createElement("option");
+          option.textContent = opt;
+          subcat.appendChild(option);
+        });
+      } else {
+        subcat.classList.add("hidden");
+      }
     }
 
     function loadFile() {
       const input = document.getElementById('fileInput');
-      const error = document.getElementById('error');
-      error.textContent = '';
-      if (!input.files.length) return;
-
       const reader = new FileReader();
       reader.onload = function(e) {
-        try {
-          const data = new Uint8Array(e.target.result);
-          const workbook = XLSX.read(data, { type: 'array' });
-          const sheet = workbook.Sheets[workbook.SheetNames[0]];
-          rawData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-          headers = rawData[0];
-          if (!headers || headers.length === 0) throw new Error("Empty or unreadable file.");
-          document.getElementById('step3').classList.remove('hidden');
-          populateLabelSelectors();
-        } catch (err) {
-          error.textContent = "Error reading file. Please upload a valid spreadsheet.";
-        }
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        rawData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+        headers = rawData[0];
+        populateLabelSelectors();
+        document.getElementById('step3').classList.remove('hidden');
       };
       reader.readAsArrayBuffer(input.files[0]);
     }
 
     function populateLabelSelectors() {
-      const industry = document.getElementById('industrySelect').value;
-      const container = document.getElementById('labelSelectors');
-      container.innerHTML = '';
-
-      headers.forEach((header, i) => {
-        const suggestions = recommendedHeaders[industry] || [];
-        const dropdown = suggestions.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+      const container = document.getElementById("labelSelectors");
+      container.innerHTML = "";
+      headers.forEach(h => {
         container.innerHTML += `
-          <label>${header}</label>
-          <select><option value="">-- Choose label --</option>${dropdown}</select>
-          <input type="text" placeholder="Or enter custom label" />
+          <label>${h}</label>
+          <input type="text" placeholder="Enter label for ${h}">
         `;
       });
     }
 
     function confirmLabels() {
-      alert("Labels confirmed!");
+      populateDropdowns("blankCol");
+      populateDropdowns("matchCol");
+      populateDropdowns("sortCol");
+    }
+
+    function populateDropdowns(id) {
+      const dropdown = document.getElementById(id);
+      dropdown.innerHTML = "";
+      headers.forEach((h, i) => {
+        const option = document.createElement("option");
+        option.value = i;
+        option.textContent = h;
+        dropdown.appendChild(option);
+      });
     }
 
     function toggleAdvanced() {
