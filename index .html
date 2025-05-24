@@ -1,0 +1,138 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SheetPilot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1C1C2A;
+      color: #f5f5dc;
+      padding: 20px;
+    }
+    h1, h2 {
+      color: #f5f5dc;
+    }
+    .section {
+      margin-bottom: 30px;
+    }
+    label, select, input {
+      display: block;
+      margin: 10px 0;
+      width: 100%;
+      padding: 8px;
+    }
+    .button {
+      background-color: #00ffff;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th {
+      background-color: #00ffff;
+      color: #000;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <h1>SheetPilot</h1>
+
+  <div class="section">
+    <h2>Select Your Industry</h2>
+    <select id="industry">
+      <option>Small Business</option>
+      <option>Legal</option>
+      <option>Transportation</option>
+      <option>Healthcare</option>
+      <option>Real Estate</option>
+    </select>
+    <select id="subcategory">
+      <option>-- Choose Subcategory --</option>
+      <option>Lawn Care</option>
+      <option>Truck Dispatcher</option>
+      <option>Attorney Office</option>
+    </select>
+    <input type="text" placeholder="Or enter your business type">
+  </div>
+
+  <div class="section">
+    <h2>Upload Your File</h2>
+    <input type="file" id="fileUpload">
+  </div>
+
+  <div class="section">
+    <h2>Set Column Headers</h2>
+    <input type="text" placeholder="Client Name">
+    <input type="text" placeholder="Service Date">
+    <input type="text" placeholder="Amount">
+    <input type="text" placeholder="Status">
+    <input type="text" placeholder="Notes">
+  </div>
+
+  <div class="section">
+    <h2>Advanced Filters (optional)</h2>
+    <select>
+      <option>Client Name</option>
+      <option>Amount</option>
+    </select>
+    <input type="text" placeholder="Match value...">
+    <button class="button">Apply Filter</button>
+  </div>
+
+  <div class="section">
+    <h2>Sort Options</h2>
+    <select>
+      <option>Client Name</option>
+      <option>Amount</option>
+    </select>
+    <select>
+      <option>A → Z</option>
+      <option>Z → A</option>
+    </select>
+    <button class="button">Sort</button>
+  </div>
+
+  <div class="section">
+    <h2>Download</h2>
+    <button class="button">Download as XLSX</button>
+    <button class="button">Download as CSV</button>
+  </div>
+
+  <div class="section">
+    <h2>Preview Table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Client Name</th>
+          <th>Service Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>John Smith</td>
+          <td>03/13/2024</td>
+          <td>250.50</td>
+          <td>Approved</td>
+          <td>Needs callback</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
