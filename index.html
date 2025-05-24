@@ -1,196 +1,220 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js">
   <style>
     body {
       background-color: #1C1C2A;
-      color: #f5f5dc;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 2rem;
+      color: #f3f3e6;
+      font-family: Arial, sans-serif;
+      padding: 20px;
     }
-    h1 { font-size: 2rem; margin-bottom: 1rem; }
-    select, input[type="text"] {
-      width: 100%; padding: 0.5rem; margin: 0.5rem 0;
-      background: #fff; border: none; border-radius: 5px;
+    h1 {
+      font-size: 2em;
+      color: #f3f3e6;
+    }
+    select, input, button {
+      margin: 8px 0;
+      padding: 8px;
+      font-size: 1em;
+      border-radius: 6px;
+      border: none;
+    }
+    select, input {
+      width: 100%;
     }
     button {
-      background: #00ffff; color: black; font-weight: bold;
-      border: none; padding: 0.75rem 1.5rem; border-radius: 8px;
-      margin: 1rem 0; cursor: pointer;
+      background-color: #00eaff;
+      color: #000;
+      font-weight: bold;
     }
     table {
-      margin-top: 2rem; width: 100%; border-collapse: collapse;
+      width: 100%;
+      margin-top: 16px;
+      border-collapse: collapse;
     }
     th, td {
-      border: 1px solid #000; padding: 0.5rem; text-align: left;
+      padding: 10px;
+      border: 1px solid #000;
     }
     th {
-      background-color: #00ffff; color: #000;
+      background-color: #00eaff;
+      color: #000;
     }
   </style>
 </head>
 <body>
   <h1>SheetPilot</h1>
 
-  <label for="industry">Select Your Industry</label>
+  <label>Select Your Industry</label>
   <select id="industry">
-    <option>Small Business</option>
-    <option>Legal</option>
-    <option>Transportation</option>
-    <option>Construction</option>
-    <option>Cleaning Services</option>
-    <option>Healthcare</option>
-    <option>Finance</option>
-    <option>Education</option>
-    <option>Freelancer</option>
-    <option>Retail</option>
+    <option value="Small Business">Small Business</option>
+    <option value="Transportation">Transportation</option>
+    <option value="Cleaning Services">Cleaning Services</option>
+    <option value="Lawn Care">Lawn Care</option>
+    <option value="Legal">Legal</option>
   </select>
 
-  <label for="subcategory">Subcategory</label>
+  <label>Subcategory</label>
   <select id="subcategory">
-    <option>-- Choose Subcategory --</option>
-    <option>Real Estate</option>
-    <option>Lawn Care</option>
-    <option>Mobile Detailing</option>
-    <option>Plumbing</option>
-    <option>Paralegal</option>
-    <option>Truck Dispatcher</option>
+    <option value="">-- Choose Subcategory --</option>
+    <option value="Truck Dispatcher">Truck Dispatcher</option>
+    <option value="Window Cleaning">Window Cleaning</option>
+    <option value="Paralegal">Paralegal</option>
   </select>
 
-  <label>Or enter your business type:</label>
-  <input type="text" placeholder="Custom business type" />
-
-  <br><br>
-
-  <label for="fileInput">Upload Your File</label>
+  <br />
   <input type="file" id="fileInput" />
+  <button onclick="loadFile()">Load File</button>
 
-  <div id="headersSection"></div>
+  <div id="columnHeaders"></div>
 
-  <div style="margin-top: 2rem;">
+  <div id="filters" style="margin-top: 20px;">
     <label>Advanced Filters (optional)</label>
     <select id="filterColumn"></select>
     <input type="text" id="filterValue" placeholder="Match value..." />
-    <button onclick="filterTable()">Apply Filter</button>
-  </div>
+    <button onclick="applyFilter()">Apply Filter</button>
 
-  <div style="margin-top: 1rem;">
+    <br/>
     <label>Sort by column:</label>
     <select id="sortColumn"></select>
-    <select id="sortOrder">
+    <select id="sortDirection">
       <option value="asc">A → Z</option>
       <option value="desc">Z → A</option>
     </select>
-    <button onclick="sortTable()">Sort</button>
+    <button onclick="applySort()">Sort</button>
   </div>
 
-  <button onclick="downloadXLSX()">Download as XLSX</button>
-  <button onclick="downloadCSV()">Download as CSV</button>
+  <div>
+    <button onclick="downloadFile('xlsx')">Download as XLSX</button>
+    <button onclick="downloadFile('csv')">Download as CSV</button>
+  </div>
 
-  <div id="output"></div>
+  <table id="previewTable"></table>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
-    let tableData = [];
-    const output = document.getElementById("output");
+    let rawData = [];
+    let headers = [];
 
-    document.getElementById('fileInput').addEventListener("change", handleFile, false);
+    function loadFile() {
+      const file = document.getElementById("fileInput").files[0];
+      if (!file) return;
 
-    function handleFile(e) {
-      const file = e.target.files[0];
       const reader = new FileReader();
       reader.onload = function (e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-        tableData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-        buildHeaders(tableData[0]);
-        populateDropdowns(tableData[0]);
-        renderTable(tableData);
+        const text = e.target.result;
+        const rows = text.split(/\r?\n/).map(row => row.split(/\t|,/));
+        rawData = rows;
+        renderHeaders();
+        updateDropdowns();
       };
-      reader.readAsArrayBuffer(file);
+      reader.readAsText(file);
     }
 
-    function buildHeaders(headers) {
-      const section = document.getElementById("headersSection");
-      section.innerHTML = "<h3>Set Column Headers</h3>";
-      headers.forEach((header, index) => {
-        section.innerHTML += `
-          <label>Column ${index + 1}</label>
-          <input type="text" placeholder="Enter or select a header" value="${header}" />
-        `;
+    function renderHeaders() {
+      const container = document.getElementById("columnHeaders");
+      container.innerHTML = "<h3>Set Column Headers</h3>";
+      headers = [];
+
+      if (rawData.length === 0) return;
+
+      const firstRow = rawData[0];
+      firstRow.forEach((_, index) => {
+        const input = document.createElement("input");
+        input.placeholder = `Column ${index + 1}`;
+        input.onchange = () => {
+          headers[index] = input.value;
+        };
+        container.appendChild(input);
+        headers.push("");
       });
     }
 
-    function populateDropdowns(headers) {
-      const sortDropdown = document.getElementById("sortColumn");
-      const filterDropdown = document.getElementById("filterColumn");
-      sortDropdown.innerHTML = "";
-      filterDropdown.innerHTML = "";
+    function updateDropdowns() {
+      const filterColumn = document.getElementById("filterColumn");
+      const sortColumn = document.getElementById("sortColumn");
+      filterColumn.innerHTML = "";
+      sortColumn.innerHTML = "";
 
-      headers.forEach((header, index) => {
-        const opt = `<option value="${index}">${header}</option>`;
-        sortDropdown.innerHTML += opt;
-        filterDropdown.innerHTML += opt;
+      headers.forEach((label, index) => {
+        const opt1 = document.createElement("option");
+        opt1.text = label || `Column ${index + 1}`;
+        opt1.value = index;
+        filterColumn.add(opt1);
+
+        const opt2 = document.createElement("option");
+        opt2.text = label || `Column ${index + 1}`;
+        opt2.value = index;
+        sortColumn.add(opt2);
       });
     }
 
-    function renderTable(data) {
-      let html = "<table><thead><tr>";
-      data[0].forEach(header => html += `<th>${header}</th>`);
-      html += "</tr></thead><tbody>";
+    function applyFilter() {
+      const col = parseInt(document.getElementById("filterColumn").value);
+      const val = document.getElementById("filterValue").value.toLowerCase();
 
-      for (let i = 1; i < data.length; i++) {
-        html += "<tr>";
-        data[i].forEach(cell => {
-          html += `<td>${cell ?? ""}</td>`;
-        });
-        html += "</tr>";
-      }
-
-      html += "</tbody></table>";
-      output.innerHTML = html;
-    }
-
-    function filterTable() {
-      const colIndex = parseInt(document.getElementById("filterColumn").value);
-      const match = document.getElementById("filterValue").value.trim();
-      const filtered = [tableData[0], ...tableData.slice(1).filter(row => row[colIndex]?.toString().includes(match))];
+      const filtered = rawData.slice(1).filter(row =>
+        (row[col] || "").toLowerCase().includes(val)
+      );
       renderTable(filtered);
     }
 
-    function sortTable() {
-      const colIndex = parseInt(document.getElementById("sortColumn").value);
-      const order = document.getElementById("sortOrder").value;
-      const sorted = [...tableData];
-      sorted.splice(1, sorted.length - 1, ...sorted.slice(1).sort((a, b) => {
-        const valA = a[colIndex] ?? "";
-        const valB = b[colIndex] ?? "";
-        return order === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
-      }));
+    function applySort() {
+      const col = parseInt(document.getElementById("sortColumn").value);
+      const dir = document.getElementById("sortDirection").value;
+
+      const sorted = rawData.slice(1).sort((a, b) => {
+        const valA = a[col] || "";
+        const valB = b[col] || "";
+        return dir === "asc"
+          ? valA.localeCompare(valB)
+          : valB.localeCompare(valA);
+      });
       renderTable(sorted);
     }
 
-    function downloadXLSX() {
-      const ws = XLSX.utils.aoa_to_sheet(tableData);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "SheetPilot");
-      XLSX.writeFile(wb, "SheetPilot_Cleaned.xlsx");
+    function renderTable(data = rawData.slice(1)) {
+      const table = document.getElementById("previewTable");
+      table.innerHTML = "";
+
+      if (!rawData.length) return;
+
+      const headerRow = document.createElement("tr");
+      headers.forEach(h => {
+        const th = document.createElement("th");
+        th.textContent = h;
+        headerRow.appendChild(th);
+      });
+      table.appendChild(headerRow);
+
+      data.forEach(row => {
+        const tr = document.createElement("tr");
+        headers.forEach((_, i) => {
+          const td = document.createElement("td");
+          td.textContent = row[i] || "";
+          tr.appendChild(td);
+        });
+        table.appendChild(tr);
+      });
     }
 
-    function downloadCSV() {
-      const csv = tableData.map(row => row.map(cell => `"${cell}"`).join(",")).join("\n");
-      const blob = new Blob([csv], { type: "text/csv" });
+    function downloadFile(type) {
+      let content = headers.join(",") + "\n";
+      rawData.slice(1).forEach(row => {
+        content += headers.map((_, i) => `"${row[i] || ""}"`).join(",") + "\n";
+      });
+
+      const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "SheetPilot_Cleaned.csv";
-      a.click();
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", `sheetpilot_export.${type === "xlsx" ? "xlsx" : "csv"}`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   </script>
 </body>
