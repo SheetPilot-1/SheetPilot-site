@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,215 +6,132 @@
   <title>SheetPilot</title>
   <style>
     body {
-      background-color: #1C1C2A;
-      color: #f3f3e6;
       font-family: Arial, sans-serif;
+      background-color: #1C1C2A;
+      color: #f5f5dc;
       padding: 20px;
     }
-    h1 {
-      font-size: 2em;
-      color: #f3f3e6;
+    h1, h2 {
+      color: #f5f5dc;
     }
-    select, input, button {
-      margin: 8px 0;
-      padding: 8px;
-      font-size: 1em;
-      border-radius: 6px;
-      border: none;
+    .section {
+      margin-bottom: 30px;
     }
-    select, input {
+    label, select, input {
+      display: block;
+      margin: 10px 0;
       width: 100%;
+      padding: 8px;
     }
-    button {
-      background-color: #00eaff;
+    .button {
+      background-color: #00ffff;
       color: #000;
-      font-weight: bold;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
     }
     table {
       width: 100%;
-      margin-top: 16px;
       border-collapse: collapse;
-    }
-    th, td {
-      padding: 10px;
-      border: 1px solid #000;
+      margin-top: 20px;
     }
     th {
-      background-color: #00eaff;
+      background-color: #00ffff;
       color: #000;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: left;
     }
   </style>
 </head>
 <body>
   <h1>SheetPilot</h1>
 
-  <label>Select Your Industry</label>
-  <select id="industry">
-    <option value="Small Business">Small Business</option>
-    <option value="Transportation">Transportation</option>
-    <option value="Cleaning Services">Cleaning Services</option>
-    <option value="Lawn Care">Lawn Care</option>
-    <option value="Legal">Legal</option>
-  </select>
-
-  <label>Subcategory</label>
-  <select id="subcategory">
-    <option value="">-- Choose Subcategory --</option>
-    <option value="Truck Dispatcher">Truck Dispatcher</option>
-    <option value="Window Cleaning">Window Cleaning</option>
-    <option value="Paralegal">Paralegal</option>
-  </select>
-
-  <br />
-  <input type="file" id="fileInput" />
-  <button onclick="loadFile()">Load File</button>
-
-  <div id="columnHeaders"></div>
-
-  <div id="filters" style="margin-top: 20px;">
-    <label>Advanced Filters (optional)</label>
-    <select id="filterColumn"></select>
-    <input type="text" id="filterValue" placeholder="Match value..." />
-    <button onclick="applyFilter()">Apply Filter</button>
-
-    <br/>
-    <label>Sort by column:</label>
-    <select id="sortColumn"></select>
-    <select id="sortDirection">
-      <option value="asc">A → Z</option>
-      <option value="desc">Z → A</option>
+  <div class="section">
+    <h2>Select Your Industry</h2>
+    <select id="industry">
+      <option>Small Business</option>
+      <option>Legal</option>
+      <option>Transportation</option>
+      <option>Healthcare</option>
+      <option>Real Estate</option>
     </select>
-    <button onclick="applySort()">Sort</button>
+    <select id="subcategory">
+      <option>-- Choose Subcategory --</option>
+      <option>Lawn Care</option>
+      <option>Truck Dispatcher</option>
+      <option>Attorney Office</option>
+    </select>
+    <input type="text" placeholder="Or enter your business type">
   </div>
 
-  <div>
-    <button onclick="downloadFile('xlsx')">Download as XLSX</button>
-    <button onclick="downloadFile('csv')">Download as CSV</button>
+  <div class="section">
+    <h2>Upload Your File</h2>
+    <input type="file" id="fileUpload">
   </div>
 
-  <table id="previewTable"></table>
+  <div class="section">
+    <h2>Set Column Headers</h2>
+    <input type="text" placeholder="Client Name">
+    <input type="text" placeholder="Service Date">
+    <input type="text" placeholder="Amount">
+    <input type="text" placeholder="Status">
+    <input type="text" placeholder="Notes">
+  </div>
 
-  <script>
-    let rawData = [];
-    let headers = [];
+  <div class="section">
+    <h2>Advanced Filters (optional)</h2>
+    <select>
+      <option>Client Name</option>
+      <option>Amount</option>
+    </select>
+    <input type="text" placeholder="Match value...">
+    <button class="button">Apply Filter</button>
+  </div>
 
-    function loadFile() {
-      const file = document.getElementById("fileInput").files[0];
-      if (!file) return;
+  <div class="section">
+    <h2>Sort Options</h2>
+    <select>
+      <option>Client Name</option>
+      <option>Amount</option>
+    </select>
+    <select>
+      <option>A → Z</option>
+      <option>Z → A</option>
+    </select>
+    <button class="button">Sort</button>
+  </div>
 
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const text = e.target.result;
-        const rows = text.split(/\r?\n/).map(row => row.split(/\t|,/));
-        rawData = rows;
-        renderHeaders();
-        updateDropdowns();
-      };
-      reader.readAsText(file);
-    }
+  <div class="section">
+    <h2>Download</h2>
+    <button class="button">Download as XLSX</button>
+    <button class="button">Download as CSV</button>
+  </div>
 
-    function renderHeaders() {
-      const container = document.getElementById("columnHeaders");
-      container.innerHTML = "<h3>Set Column Headers</h3>";
-      headers = [];
-
-      if (rawData.length === 0) return;
-
-      const firstRow = rawData[0];
-      firstRow.forEach((_, index) => {
-        const input = document.createElement("input");
-        input.placeholder = `Column ${index + 1}`;
-        input.onchange = () => {
-          headers[index] = input.value;
-        };
-        container.appendChild(input);
-        headers.push("");
-      });
-    }
-
-    function updateDropdowns() {
-      const filterColumn = document.getElementById("filterColumn");
-      const sortColumn = document.getElementById("sortColumn");
-      filterColumn.innerHTML = "";
-      sortColumn.innerHTML = "";
-
-      headers.forEach((label, index) => {
-        const opt1 = document.createElement("option");
-        opt1.text = label || `Column ${index + 1}`;
-        opt1.value = index;
-        filterColumn.add(opt1);
-
-        const opt2 = document.createElement("option");
-        opt2.text = label || `Column ${index + 1}`;
-        opt2.value = index;
-        sortColumn.add(opt2);
-      });
-    }
-
-    function applyFilter() {
-      const col = parseInt(document.getElementById("filterColumn").value);
-      const val = document.getElementById("filterValue").value.toLowerCase();
-
-      const filtered = rawData.slice(1).filter(row =>
-        (row[col] || "").toLowerCase().includes(val)
-      );
-      renderTable(filtered);
-    }
-
-    function applySort() {
-      const col = parseInt(document.getElementById("sortColumn").value);
-      const dir = document.getElementById("sortDirection").value;
-
-      const sorted = rawData.slice(1).sort((a, b) => {
-        const valA = a[col] || "";
-        const valB = b[col] || "";
-        return dir === "asc"
-          ? valA.localeCompare(valB)
-          : valB.localeCompare(valA);
-      });
-      renderTable(sorted);
-    }
-
-    function renderTable(data = rawData.slice(1)) {
-      const table = document.getElementById("previewTable");
-      table.innerHTML = "";
-
-      if (!rawData.length) return;
-
-      const headerRow = document.createElement("tr");
-      headers.forEach(h => {
-        const th = document.createElement("th");
-        th.textContent = h;
-        headerRow.appendChild(th);
-      });
-      table.appendChild(headerRow);
-
-      data.forEach(row => {
-        const tr = document.createElement("tr");
-        headers.forEach((_, i) => {
-          const td = document.createElement("td");
-          td.textContent = row[i] || "";
-          tr.appendChild(td);
-        });
-        table.appendChild(tr);
-      });
-    }
-
-    function downloadFile(type) {
-      let content = headers.join(",") + "\n";
-      rawData.slice(1).forEach(row => {
-        content += headers.map((_, i) => `"${row[i] || ""}"`).join(",") + "\n";
-      });
-
-      const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", `sheetpilot_export.${type === "xlsx" ? "xlsx" : "csv"}`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  </script>
+  <div class="section">
+    <h2>Preview Table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Client Name</th>
+          <th>Service Date</th>
+          <th>Amount</th>
+          <th>Status</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>John Smith</td>
+          <td>03/13/2024</td>
+          <td>250.50</td>
+          <td>Approved</td>
+          <td>Needs callback</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>
