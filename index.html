@@ -302,73 +302,72 @@
   }
 
   function showHeaderMapping(headers) {
-    const container = document.getElementById("headerFields");
-    container.innerHTML = "";
+  const container = document.getElementById("headerFields");
+  container.innerHTML = "";
 
-    const suggestions = suggestedHeaders[industryPicked] || [];
+  const suggestions = suggestedHeaders[industryPicked] || [];
 
-    headers.forEach((header, i) => {
-      const wrapper = document.createElement("div");
-      wrapper.style.marginBottom = "15px";
+  headers.forEach((header, i) => {
+    const wrapper = document.createElement("div");
+    wrapper.style.marginBottom = "15px";
 
-      const label = document.createElement("label");
-      label.textContent = `Column ${i + 1} (${header || "Unnamed"})`;
+    const label = document.createElement("label");
+    label.textContent = `Column ${i + 1}`;
 
-      const select = document.createElement("select");
-      select.style.width = "100%";
-      select.style.padding = "10px";
-      select.style.borderRadius = "6px";
-      select.dataset.index = i;
+    const select = document.createElement("select");
+    select.style.width = "100%";
+    select.style.padding = "10px";
+    select.style.borderRadius = "6px";
+    select.dataset.index = i;
 
-      const blank = document.createElement("option");
-      blank.value = "";
-      blank.textContent = "-- Choose or type your own --";
-      select.appendChild(blank);
+    const blank = document.createElement("option");
+    blank.value = "";
+    blank.textContent = "-- Choose or type your own --";
+    select.appendChild(blank);
 
-      suggestions.forEach(s => {
-        const option = document.createElement("option");
-        option.value = s;
-        option.textContent = s;
-        select.appendChild(option);
-      });
-
-      const manualInput = document.createElement("input");
-      manualInput.type = "text";
-      manualInput.placeholder = "Or enter a custom label";
-      manualInput.style.marginTop = "6px";
-      manualInput.style.width = "100%";
-      manualInput.dataset.index = i;
-
-      const includeBox = document.createElement("input");
-      includeBox.type = "checkbox";
-      includeBox.checked = true;
-      includeBox.id = `include-${i}`;
-
-      const includeLabel = document.createElement("label");
-      includeLabel.textContent = " Include this column";
-      includeLabel.style.marginLeft = "6px";
-      includeLabel.style.fontWeight = "bold";
-      includeLabel.style.display = "block";
-
-      const helper = document.createElement("div");
-      helper.textContent = "Uncheck this to exclude this column from the table and export.";
-      helper.style.color = "gray";
-      helper.style.fontSize = "0.85em";
-      helper.style.marginTop = "3px";
-
-      wrapper.appendChild(label);
-      wrapper.appendChild(select);
-      wrapper.appendChild(manualInput);
-      wrapper.appendChild(includeBox);
-      wrapper.appendChild(includeLabel);
-      wrapper.appendChild(helper);
-
-      container.appendChild(wrapper);
+    suggestions.forEach(s => {
+      const option = document.createElement("option");
+      option.value = s;
+      option.textContent = s;
+      select.appendChild(option);
     });
 
-    document.getElementById("headerMappingSection").style.display = "block";
-  }
+    const manualInput = document.createElement("input");
+    manualInput.type = "text";
+    manualInput.placeholder = "Or enter a custom label";
+    manualInput.style.marginTop = "6px";
+    manualInput.style.width = "100%";
+    manualInput.dataset.index = i;
 
+    const includeBox = document.createElement("input");
+    includeBox.type = "checkbox";
+    includeBox.checked = true;
+    includeBox.id = `include-${i}`;
+
+    const includeLabel = document.createElement("label");
+    includeLabel.textContent = " Include this column";
+    includeLabel.style.marginLeft = "6px";
+    includeLabel.style.fontWeight = "bold";
+    includeLabel.style.display = "block";
+
+    const helper = document.createElement("div");
+    helper.textContent = "Uncheck this to exclude this column from the table and export.";
+    helper.style.color = "gray";
+    helper.style.fontSize = "0.85em";
+    helper.style.marginTop = "3px";
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(select);
+    wrapper.appendChild(manualInput);
+    wrapper.appendChild(includeBox);
+    wrapper.appendChild(includeLabel);
+    wrapper.appendChild(helper);
+
+    container.appendChild(wrapper);
+  });
+
+  document.getElementById("headerMappingSection").style.display = "block";
+}
   function previewTable() {
     const selects = document.querySelectorAll("#headerFields select");
     const inputs = document.querySelectorAll("#headerFields input[type='text']");
