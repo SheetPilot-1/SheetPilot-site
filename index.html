@@ -203,9 +203,7 @@
   <h2>Set Column Headers</h2>
   <div id="headerFields"></div>
   <button class="button" onclick="previewTable()">Preview Table</button>
-  <p style="color: #aaa; font-size: 0.85em; margin-top: 6px;">
-    * If you update column labels or checkboxes above, press "Preview Table" again to see changes reflected below.
-  </p>
+  <p style="font-size: 0.85em; color: gray; margin-top: 6px;">Make any changes above, then click "Preview Table" again to see them reflected below.</p>
 </div>
 
 <div id="tablePreview" style="margin-top: 40px; display: none;">
@@ -222,8 +220,7 @@
     "Real Estate": ["Client Name", "Property Address", "Agent", "Contract Type", "Closing Date", "Commission"],
     "Healthcare": ["Patient Name", "DOB", "Service Date", "Procedure", "Billing Code", "Amount"],
     "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"],
-    "Retail": ["Product", "Quantity", "Unit Price", "Total", "Date Sold", "Location", "Salesperson"]
-    // You can add more as needed
+    // Add more as needed
   };
 
   let originalHeaders = [];
@@ -231,7 +228,7 @@
   let industryPicked = "";
 
   document.getElementById('fileUpload').addEventListener('change', handleFile);
-  document.getElementById('industry').addEventListener('change', function () {
+  document.getElementById('industry').addEventListener('change', function() {
     industryPicked = this.value;
   });
 
@@ -240,7 +237,7 @@
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = function (evt) {
+    reader.onload = function(evt) {
       const data = new Uint8Array(evt.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -266,7 +263,7 @@
 
     headers.forEach((header, i) => {
       const wrapper = document.createElement("div");
-      wrapper.style.marginBottom = "20px";
+      wrapper.style.marginBottom = "15px";
 
       const label = document.createElement("label");
       label.textContent = `Column ${i + 1} (${header || "Unnamed"})`;
@@ -300,24 +297,18 @@
       includeBox.type = "checkbox";
       includeBox.checked = true;
       includeBox.id = `include-${i}`;
-      includeBox.style.marginTop = "10px";
 
       const includeLabel = document.createElement("label");
       includeLabel.textContent = " Include this column";
       includeLabel.style.marginLeft = "6px";
-
-      const helpText = document.createElement("div");
-      helpText.textContent = "Uncheck this to exclude this column from the table and export.";
-      helpText.style.fontSize = "0.8em";
-      helpText.style.color = "#AAA";
-      helpText.style.marginTop = "4px";
+      includeLabel.style.fontSize = "0.9em";
+      includeLabel.style.color = "#ccc";
 
       wrapper.appendChild(label);
       wrapper.appendChild(select);
       wrapper.appendChild(manualInput);
       wrapper.appendChild(includeBox);
       wrapper.appendChild(includeLabel);
-      wrapper.appendChild(helpText);
 
       container.appendChild(wrapper);
     });
@@ -349,7 +340,6 @@
     table.style.backgroundColor = "#1C1C2A";
     table.style.color = "#F5F5DC";
     table.style.fontSize = "0.95em";
-    table.style.minWidth = "700px";
 
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
