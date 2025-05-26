@@ -202,8 +202,10 @@
 <div id="headerMappingSection" style="display: none; margin-top: 40px;">
   <h2>Set Column Headers</h2>
   <div id="headerFields"></div>
-  <button class="button" onclick="resetMappings()">Reset & Remap</button>
-  <p style="color: gray; font-size: 0.9em;">Tip: Use this to reset your column mappings if you switch industry or subcategory.</p>
+  <button class="button" onclick="resetMapping()">Reset Mapping</button>
+  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
+    Use this to reset the header mapping if you change your industry or subcategory.
+  </p>
   <button class="button" onclick="previewTable()">Preview Table</button>
 </div>
 
@@ -212,6 +214,7 @@
   <div id="previewContainer" style="overflow-x: auto;"></div>
 </div>
 
+<!-- Load XLSX library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script>
@@ -220,19 +223,24 @@
     "Real Estate": ["Client Name", "Property Address", "Agent", "Contract Type", "Closing Date", "Commission"],
     "Healthcare": ["Patient Name", "DOB", "Service Date", "Procedure", "Billing Code", "Amount"],
     "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"],
-    "Finance": ["Client", "Service", "Invoice Date", "Amount", "Payment Status", "Notes"],
-    "Publishing": ["Author", "Title", "Genre", "Word Count", "Editor", "Status"]
-    // Add more industries here
+    "Retail": ["Product Name", "SKU", "Price", "Quantity", "Category"],
+    "Consulting": ["Client", "Service", "Rate", "Date", "Duration"],
+    "Publishing": ["Author", "Title", "Category", "Publish Date", "Editor"],
+    "Finance": ["Client", "Account Type", "Balance", "Transaction Date", "Amount"],
+    "Education": ["Student Name", "Grade", "Subject", "Teacher", "Score"],
+    "Transportation": ["Driver", "Vehicle", "Route", "Date", "Distance"],
+    // Add more if needed
   };
 
   let originalHeaders = [];
   let tableData = [];
   let industryPicked = "";
 
-  document.getElementById('fileUpload').addEventListener('change', handleFile);
   document.getElementById('industry').addEventListener('change', function () {
     industryPicked = this.value;
   });
+
+  document.getElementById('fileUpload').addEventListener('change', handleFile);
 
   function handleFile(e) {
     const file = e.target.files[0];
@@ -255,6 +263,15 @@
       showHeaderMapping(originalHeaders);
     };
     reader.readAsArrayBuffer(file);
+  }
+
+  function resetMapping() {
+    document.getElementById("headerMappingSection").style.display = "none";
+    document.getElementById("tablePreview").style.display = "none";
+    document.getElementById("previewContainer").innerHTML = "";
+    document.getElementById("headerFields").innerHTML = "";
+    originalHeaders = [];
+    tableData = [];
   }
 
   function showHeaderMapping(headers) {
@@ -299,37 +316,30 @@
       includeBox.type = "checkbox";
       includeBox.checked = true;
       includeBox.id = `include-${i}`;
-      includeBox.style.marginTop = "10px";
 
       const includeLabel = document.createElement("label");
       includeLabel.textContent = " Include this column";
       includeLabel.style.marginLeft = "6px";
       includeLabel.style.fontWeight = "bold";
+      includeLabel.style.display = "block";
 
-      const hint = document.createElement("p");
-      hint.style.color = "gray";
-      hint.style.margin = "4px 0 10px 0";
-      hint.style.fontSize = "0.85em";
-      hint.textContent = "Uncheck this to exclude this column from the table and export.";
+      const helper = document.createElement("div");
+      helper.textContent = "Uncheck this to exclude this column from the table and export.";
+      helper.style.color = "gray";
+      helper.style.fontSize = "0.85em";
+      helper.style.marginTop = "3px";
 
       wrapper.appendChild(label);
       wrapper.appendChild(select);
       wrapper.appendChild(manualInput);
       wrapper.appendChild(includeBox);
       wrapper.appendChild(includeLabel);
-      wrapper.appendChild(hint);
+      wrapper.appendChild(helper);
 
       container.appendChild(wrapper);
     });
 
     document.getElementById("headerMappingSection").style.display = "block";
-  }
-
-  function resetMappings() {
-    if (!originalHeaders.length) return;
-    showHeaderMapping(originalHeaders);
-    document.getElementById("tablePreview").style.display = "none";
-    document.getElementById("previewContainer").innerHTML = "";
   }
 
   function previewTable() {
