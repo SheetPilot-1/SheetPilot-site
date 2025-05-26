@@ -227,7 +227,7 @@
   let industryPicked = "";
 
   document.getElementById('fileUpload').addEventListener('change', handleFile);
-  document.getElementById('industry').addEventListener('change', function() {
+  document.getElementById('industry').addEventListener('change', function () {
     industryPicked = this.value;
   });
 
@@ -236,7 +236,7 @@
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = function(evt) {
+    reader.onload = function (evt) {
       const data = new Uint8Array(evt.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -262,7 +262,7 @@
 
     headers.forEach((header, i) => {
       const wrapper = document.createElement("div");
-      wrapper.style.marginBottom = "15px";
+      wrapper.style.marginBottom = "20px";
 
       const label = document.createElement("label");
       label.textContent = `Column ${i + 1} (${header || "Unnamed"})`;
@@ -296,16 +296,24 @@
       includeBox.type = "checkbox";
       includeBox.checked = true;
       includeBox.id = `include-${i}`;
+      includeBox.style.marginTop = "10px";
 
       const includeLabel = document.createElement("label");
       includeLabel.textContent = " Include this column";
       includeLabel.style.marginLeft = "6px";
+
+      const helpText = document.createElement("div");
+      helpText.textContent = "Uncheck this to exclude this column from the table and export.";
+      helpText.style.fontSize = "0.8em";
+      helpText.style.color = "#AAA";
+      helpText.style.marginTop = "4px";
 
       wrapper.appendChild(label);
       wrapper.appendChild(select);
       wrapper.appendChild(manualInput);
       wrapper.appendChild(includeBox);
       wrapper.appendChild(includeLabel);
+      wrapper.appendChild(helpText);
 
       container.appendChild(wrapper);
     });
@@ -337,6 +345,7 @@
     table.style.backgroundColor = "#1C1C2A";
     table.style.color = "#F5F5DC";
     table.style.fontSize = "0.95em";
+    table.style.minWidth = "700px";
 
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
