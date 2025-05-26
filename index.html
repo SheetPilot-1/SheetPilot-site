@@ -202,8 +202,10 @@
 <div id="headerMappingSection" style="display: none; margin-top: 40px;">
   <h2>Set Column Headers</h2>
   <div id="headerFields"></div>
-  <p style="font-size: 0.9em; color: #aaa;">Tip: If you make changes, click "Preview Table" again to see the update.</p>
   <button class="button" onclick="previewTable()">Preview Table</button>
+  <p style="color: #ccc; font-size: 0.9em; margin-top: 10px;">
+    Tip: If you make changes, click "Preview Table" again to see them reflected.
+  </p>
 </div>
 
 <div id="tablePreview" style="margin-top: 40px; display: none;">
@@ -211,7 +213,6 @@
   <div id="previewContainer" style="overflow-x: auto;"></div>
 </div>
 
-<!-- Load XLSX library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
 <script>
@@ -220,8 +221,8 @@
     "Real Estate": ["Client Name", "Property Address", "Agent", "Contract Type", "Closing Date", "Commission"],
     "Healthcare": ["Patient Name", "DOB", "Service Date", "Procedure", "Billing Code", "Amount"],
     "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"],
-    "Publishing": ["Author", "Title", "Genre", "Word Count", "Status", "Due Date"],
-    "Retail": ["Product", "SKU", "Category", "Price", "Stock", "Reorder Level"]
+    "Publishing": ["Author", "Title", "Editor", "Genre", "Publish Date", "ISBN"],
+    "Retail": ["Item Name", "SKU", "Price", "Quantity", "Category", "Supplier"],
     // Add more as needed
   };
 
@@ -230,7 +231,7 @@
   let industryPicked = "";
 
   document.getElementById('fileUpload').addEventListener('change', handleFile);
-  document.getElementById('industry').addEventListener('change', function() {
+  document.getElementById('industry').addEventListener('change', function () {
     industryPicked = this.value;
   });
 
@@ -239,7 +240,7 @@
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = function(evt) {
+    reader.onload = function (evt) {
       const data = new Uint8Array(evt.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -265,7 +266,7 @@
 
     headers.forEach((header, i) => {
       const wrapper = document.createElement("div");
-      wrapper.style.marginBottom = "15px";
+      wrapper.style.marginBottom = "20px";
 
       const label = document.createElement("label");
       label.textContent = `Column ${i + 1} (${header || "Unnamed"})`;
@@ -299,19 +300,26 @@
       includeBox.type = "checkbox";
       includeBox.checked = true;
       includeBox.id = `include-${i}`;
+      includeBox.style.marginTop = "10px";
 
       const includeLabel = document.createElement("label");
       includeLabel.textContent = " Include this column";
       includeLabel.style.marginLeft = "6px";
       includeLabel.style.display = "inline-block";
-      includeLabel.style.color = "#ccc";
-      includeLabel.style.fontSize = "0.9em";
+      includeLabel.style.fontWeight = "bold";
+
+      const explanation = document.createElement("p");
+      explanation.style.color = "#bbb";
+      explanation.style.fontSize = "0.85em";
+      explanation.style.marginTop = "4px";
+      explanation.textContent = "Uncheck this to exclude this column from the table and export.";
 
       wrapper.appendChild(label);
       wrapper.appendChild(select);
       wrapper.appendChild(manualInput);
       wrapper.appendChild(includeBox);
       wrapper.appendChild(includeLabel);
+      wrapper.appendChild(explanation);
 
       container.appendChild(wrapper);
     });
