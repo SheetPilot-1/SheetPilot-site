@@ -1,220 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>SheetPilot</title>
-  <style>
-    body {
-      background-color: #1C1C2A;
-      color: #F5F5DC;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 30px;
-      margin: 0;
-    }
-
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
-      color: #F5F5DC;
-    }
-
-    label {
-      font-weight: bold;
-      margin-top: 20px;
-      display: block;
-    }
-
-    select, input[type="text"], input[type="file"] {
-      width: 100%;
-      max-width: 380px;
-      padding: 12px;
-      margin-top: 6px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1em;
-      box-sizing: border-box;
-      display: block;
-    }
-
-    button {
-      background-color: #00E5FF;
-      color: #000;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #00cce0;
-    }
-  </style>
-</head>
-<body>
-  <h1>SheetPilot</h1>
-
-  <label for="industry">Select Your Industry</label>
-  <select id="industry" onchange="updateSubcategories()">
-    <option value="">-- Choose Industry --</option>
-    <option>Small Business</option>
-    <option>Transportation</option>
-    <option>Healthcare</option>
-    <option>Construction</option>
-    <option>Real Estate</option>
-    <option>Retail</option>
-    <option>Finance</option>
-    <option>Education</option>
-    <option>Legal</option>
-    <option>Hospitality</option>
-    <option>Manufacturing</option>
-    <option>Cleaning Services</option>
-    <option>Beauty & Wellness</option>
-    <option>Consulting</option>
-    <option>Insurance</option>
-    <option>Home Services</option>
-    <option>Marketing & Advertising</option>
-    <option>Non-Profit</option>
-    <option>Entertainment</option>
-    <option>Agriculture</option>
-    <option>Technology</option>
-    <option>Food & Beverage</option>
-    <option>Fitness</option>
-    <option>Childcare</option>
-    <option>Landscaping</option>
-    <option>E-commerce</option>
-    <option>Plumbing</option>
-    <option>Electrician</option>
-    <option>Auto Repair</option>
-    <option>Moving & Storage</option>
-    <option>Tutoring</option>
-    <option>Security Services</option>
-    <option>Courier Services</option>
-    <option>Barber/Salon</option>
-    <option>Photography</option>
-    <option>Event Planning</option>
-    <option>Accounting</option>
-    <option>Veterinary</option>
-    <option>HR Services</option>
-    <option>Publishing</option>
-    <option>Travel Services</option>
-    <option>Copywriting</option>
-    <option>Interior Design</option>
-    <option>IT Support</option>
-    <option>Printing Services</option>
-    <option>Pet Grooming</option>
-    <option>Roofing</option>
-    <option>HVAC</option>
-    <option>Painting</option>
-  </select>
-
-  <label for="subcategory">Subcategory</label>
-  <select id="subcategory">
-    <option value="">-- Choose Subcategory --</option>
-  </select>
-
-  <input type="text" id="customIndustry" placeholder="Or enter your business type" />
-
-  <label for="fileUpload">Upload Your File</label>
-  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
-
-  <button onclick="alert('Next step: load file logic here')">Load File</button>
-
-  <script>
-    const subcategoryOptions = {
-      "Small Business": ["Lawn Care", "Cleaning Services", "Consulting", "Handyman", "Tutoring"],
-      "Transportation": ["Logistics", "Trucking", "Fleet Management", "Dispatcher"],
-      "Healthcare": ["Home Care", "Nursing", "Dental Office", "Physical Therapy"],
-      "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
-      "Real Estate": ["Property Manager", "Agent", "Broker", "Leasing"],
-      "Retail": ["Clothing", "Electronics", "Convenience Store"],
-      "Finance": ["Bookkeeping", "CPA", "Advisory Services"],
-      "Education": ["Tutor", "Private Instructor", "Online School"],
-      "Legal": ["Attorney", "Paralegal", "Notary"],
-      "Hospitality": ["Hotel", "BnB Host", "Event Host"],
-      "Manufacturing": ["Parts", "Assembly", "Private Label"],
-      "Cleaning Services": ["Residential", "Commercial", "Move-out"],
-      "Beauty & Wellness": ["Salon", "Spa", "Massage Therapist", "Esthetician"],
-      "Consulting": ["Business Strategy", "Sales Training", "Operations"],
-      "Insurance": ["Agent", "Broker", "Claims Adjuster"],
-      "Home Services": ["Plumbing", "HVAC", "Electrician", "Carpentry"],
-      "Marketing & Advertising": ["SEO", "Social Media", "Graphic Design"],
-      "Non-Profit": ["Community Org", "Faith-based", "Foundation"],
-      "Entertainment": ["Performer", "DJ", "Event Production"],
-      "Agriculture": ["Farming", "Produce", "Equipment"],
-      "Technology": ["Web Dev", "App Dev", "IT Support"],
-      "Food & Beverage": ["Catering", "Food Truck", "Bakery"],
-      "Fitness": ["Personal Trainer", "Yoga", "Gym Owner"],
-      "Childcare": ["Babysitting", "Daycare", "After School"],
-      "Landscaping": ["Maintenance", "Design", "Tree Service"],
-      "E-commerce": ["Dropshipping", "Reseller", "Print-on-Demand"],
-      "Plumbing": ["Residential", "Commercial"],
-      "Electrician": ["Industrial", "Residential"],
-      "Auto Repair": ["Mobile Mechanic", "Garage"],
-      "Moving & Storage": ["Movers", "U-Haul Operator"],
-      "Tutoring": ["K–12", "College Prep", "Test Prep"],
-      "Security Services": ["Patrol", "Alarm Setup", "Event Security"],
-      "Courier Services": ["Same-day", "Medical Courier", "Fleet"],
-      "Barber/Salon": ["Barber", "Stylist", "Color Specialist"],
-      "Photography": ["Wedding", "Portrait", "Product"],
-      "Event Planning": ["Weddings", "Corporate Events", "Birthdays"],
-      "Accounting": ["Tax Prep", "Small Business", "Freelance"],
-      "Veterinary": ["Clinic", "Mobile Vet"],
-      "HR Services": ["Recruiting", "Onboarding", "Benefits"],
-      "Publishing": ["Blog", "Magazine", "Self-Publishing"],
-      "Travel Services": ["Travel Agent", "Group Tours"],
-      "Copywriting": ["Marketing", "Web", "Brand"],
-      "Interior Design": ["Residential", "Commercial"],
-      "IT Support": ["Remote", "On-site", "Helpdesk"],
-      "Printing Services": ["Digital", "Signage", "Labels"],
-      "Pet Grooming": ["Mobile Grooming", "Salon"],
-      "Roofing": ["Installation", "Repair"],
-      "HVAC": ["Installation", "Maintenance"],
-      "Painting": ["Interior", "Exterior"]
-    };
-
-    function updateSubcategories() {
-      const industry = document.getElementById("industry").value;
-      const subcategory = document.getElementById("subcategory");
-      subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-
-      if (subcategoryOptions[industry]) {
-        subcategoryOptions[industry].forEach(option => {
-          const el = document.createElement("option");
-          el.value = option;
-          el.textContent = option;
-          subcategory.appendChild(el);
-        });
-      } else {
-        subcategory.innerHTML = '<option value="General">General</option>';
-      }
-    }
-  </script>
-</body>
-</html>
-
 <!-- Phase 2: Header Mapping + Preview -->
 <div id="headerMappingSection" style="display: none; margin-top: 40px;">
   <h2>Set Column Headers</h2>
   <div id="headerFields"></div>
   <button class="button" onclick="resetMapping()">Reset Mapping</button>
-  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
+  <div style="font-size: 0.85em; color: #aaa; margin-top: 4px; margin-bottom: 20px;">
     Use this to reset the header mapping if you change your industry or subcategory.
-  </p>
+  </div>
   <button class="button" onclick="previewTable()">Preview Table</button>
   <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
     Tip: If you uncheck or change any column headers, click “Preview Table” again to refresh the table below.
+  </p>
+  <button class="button" onclick="triggerLoadOptions()">Load File</button>
+  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
+    Use this to upload another file with similar data under the same industry setup.
   </p>
 </div>
 
 <div id="tablePreview" style="margin-top: 40px; display: none;">
   <h2>Preview Table</h2>
   <div id="previewContainer" style="overflow-x: auto;"></div>
+</div>
+
+<!-- Modal -->
+<div id="loadModal" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -30%); background: #1C1C2A; color: #F5F5DC; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.5); z-index: 1000;">
+  <h3>Upload Another File</h3>
+  <p>How do you want to handle the new file?</p>
+  <input type="file" id="additionalFile" accept=".xlsx, .csv" style="margin-bottom: 10px;" />
+  <div style="margin-top: 10px;">
+    <button class="button" onclick="handleAdditionalFile('append')">Append to Current Table</button>
+    <button class="button" onclick="handleAdditionalFile('replace')">Start New Table</button>
+    <button class="button" onclick="document.getElementById('loadModal').style.display='none'">Cancel</button>
+  </div>
 </div>
 
 <!-- Load XLSX library -->
@@ -225,13 +41,7 @@
     "Small Business": ["Customer Name", "Phone", "Email", "Service Type", "Amount", "Date", "Notes"],
     "Real Estate": ["Client Name", "Property Address", "Agent", "Contract Type", "Closing Date", "Commission"],
     "Healthcare": ["Patient Name", "DOB", "Service Date", "Procedure", "Billing Code", "Amount"],
-    "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"],
-    "Retail": ["Product Name", "SKU", "Price", "Quantity", "Category"],
-    "Consulting": ["Client", "Service", "Rate", "Date", "Duration"],
-    "Publishing": ["Author", "Title", "Category", "Publish Date", "Editor"],
-    "Finance": ["Client", "Account Type", "Balance", "Transaction Date", "Amount"],
-    "Education": ["Student Name", "Grade", "Subject", "Teacher", "Score"],
-    "Transportation": ["Driver", "Vehicle", "Route", "Date", "Distance"]
+    "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"]
   };
 
   let originalHeaders = [];
@@ -242,14 +52,25 @@
     industryPicked = this.value;
   });
 
-  document.getElementById('fileUpload').addEventListener('change', handleFile);
+  function triggerLoadOptions() {
+    document.getElementById('loadModal').style.display = 'block';
+  }
 
-  function handleFile(e) {
-    const file = e.target.files[0];
+  function resetMapping() {
+    document.getElementById("headerMappingSection").style.display = "none";
+    document.getElementById("tablePreview").style.display = "none";
+    document.getElementById("previewContainer").innerHTML = "";
+    document.getElementById("headerFields").innerHTML = "";
+    originalHeaders = [];
+    tableData = [];
+  }
+
+  function handleAdditionalFile(mode) {
+    const file = document.getElementById("additionalFile").files[0];
     if (!file) return;
 
     const reader = new FileReader();
-    reader.onload = function (evt) {
+    reader.onload = function(evt) {
       const data = new Uint8Array(evt.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
       const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -260,20 +81,21 @@
         return;
       }
 
-      originalHeaders = json[0];
-      tableData = json.slice(1).filter(row => row.join("").trim() !== "");
-      showHeaderMapping(originalHeaders);
+      const newHeaders = json[0];
+      const newData = json.slice(1).filter(row => row.join("").trim() !== "");
+
+      if (mode === 'replace') {
+        originalHeaders = newHeaders;
+        tableData = newData;
+        showHeaderMapping(newHeaders);
+      } else if (mode === 'append') {
+        tableData = tableData.concat(newData);
+        previewTable(); // just re-renders
+      }
+
+      document.getElementById("loadModal").style.display = "none";
     };
     reader.readAsArrayBuffer(file);
-  }
-
-  function resetMapping() {
-    document.getElementById("headerMappingSection").style.display = "none";
-    document.getElementById("tablePreview").style.display = "none";
-    document.getElementById("previewContainer").innerHTML = "";
-    document.getElementById("headerFields").innerHTML = "";
-    originalHeaders = [];
-    tableData = [];
   }
 
   function showHeaderMapping(headers) {
