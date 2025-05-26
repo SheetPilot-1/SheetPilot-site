@@ -27,16 +27,23 @@
       border-radius: 8px;
       border: none;
       font-size: 1em;
+      max-height: 200px;
+      overflow-y: auto;
     }
     .button {
       background-color: #00E5FF;
       color: #000;
       border: none;
       padding: 12px 20px;
-      border-radius: 8px;
+      border-radius: 10px;
       margin-top: 20px;
-      cursor: pointer;
       font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+      transition: background-color 0.3s ease;
+    }
+    .button:hover {
+      background-color: #00cce0;
     }
   </style>
 </head>
@@ -46,54 +53,55 @@
   <label for="industry">Select Your Industry</label>
   <select id="industry" onchange="updateSubcategories()">
     <option value="">-- Choose Industry --</option>
-    <option value="Transportation">Transportation</option>
-    <option value="Healthcare">Healthcare</option>
-    <option value="Construction">Construction</option>
-    <option value="Real Estate">Real Estate</option>
-    <option value="Retail">Retail</option>
-    <option value="Finance">Finance</option>
-    <option value="Education">Education</option>
-    <option value="Legal">Legal</option>
-    <option value="Hospitality">Hospitality</option>
-    <option value="Manufacturing">Manufacturing</option>
-    <option value="Cleaning Services">Cleaning Services</option>
-    <option value="Beauty & Wellness">Beauty & Wellness</option>
-    <option value="Consulting">Consulting</option>
-    <option value="Insurance">Insurance</option>
-    <option value="Home Services">Home Services</option>
-    <option value="Marketing & Advertising">Marketing & Advertising</option>
-    <option value="Non-Profit">Non-Profit</option>
-    <option value="Entertainment">Entertainment</option>
-    <option value="Agriculture">Agriculture</option>
-    <option value="Technology">Technology</option>
-    <option value="Food & Beverage">Food & Beverage</option>
-    <option value="Fitness">Fitness</option>
-    <option value="Childcare">Childcare</option>
-    <option value="Landscaping">Landscaping</option>
-    <option value="E-commerce">E-commerce</option>
-    <option value="Plumbing">Plumbing</option>
-    <option value="Electrician">Electrician</option>
-    <option value="Auto Repair">Auto Repair</option>
-    <option value="Moving & Storage">Moving & Storage</option>
-    <option value="Tutoring">Tutoring</option>
-    <option value="Security Services">Security Services</option>
-    <option value="Courier Services">Courier Services</option>
-    <option value="Barber/Salon">Barber/Salon</option>
-    <option value="Photography">Photography</option>
-    <option value="Event Planning">Event Planning</option>
-    <option value="Accounting">Accounting</option>
-    <option value="Veterinary">Veterinary</option>
-    <option value="HR Services">HR Services</option>
-    <option value="Publishing">Publishing</option>
-    <option value="Travel Services">Travel Services</option>
-    <option value="Copywriting">Copywriting</option>
-    <option value="Interior Design">Interior Design</option>
-    <option value="IT Support">IT Support</option>
-    <option value="Printing Services">Printing Services</option>
-    <option value="Pet Grooming">Pet Grooming</option>
-    <option value="Roofing">Roofing</option>
-    <option value="HVAC">HVAC</option>
-    <option value="Painting">Painting</option>
+    <option>Small Business</option>
+    <option>Transportation</option>
+    <option>Healthcare</option>
+    <option>Construction</option>
+    <option>Real Estate</option>
+    <option>Retail</option>
+    <option>Finance</option>
+    <option>Education</option>
+    <option>Legal</option>
+    <option>Hospitality</option>
+    <option>Manufacturing</option>
+    <option>Cleaning Services</option>
+    <option>Beauty & Wellness</option>
+    <option>Consulting</option>
+    <option>Insurance</option>
+    <option>Home Services</option>
+    <option>Marketing & Advertising</option>
+    <option>Non-Profit</option>
+    <option>Entertainment</option>
+    <option>Agriculture</option>
+    <option>Technology</option>
+    <option>Food & Beverage</option>
+    <option>Fitness</option>
+    <option>Childcare</option>
+    <option>Landscaping</option>
+    <option>E-commerce</option>
+    <option>Plumbing</option>
+    <option>Electrician</option>
+    <option>Auto Repair</option>
+    <option>Moving & Storage</option>
+    <option>Tutoring</option>
+    <option>Security Services</option>
+    <option>Courier Services</option>
+    <option>Barber/Salon</option>
+    <option>Photography</option>
+    <option>Event Planning</option>
+    <option>Accounting</option>
+    <option>Veterinary</option>
+    <option>HR Services</option>
+    <option>Publishing</option>
+    <option>Travel Services</option>
+    <option>Copywriting</option>
+    <option>Interior Design</option>
+    <option>IT Support</option>
+    <option>Printing Services</option>
+    <option>Pet Grooming</option>
+    <option>Roofing</option>
+    <option>HVAC</option>
+    <option>Painting</option>
   </select>
 
   <label for="subcategory">Subcategory</label>
@@ -104,22 +112,61 @@
   <input type="text" id="customIndustry" placeholder="Or enter your business type" />
 
   <label for="fileUpload">Upload Your File</label>
-  <input type="file" id="fileUpload" accept=".xlsx" />
+  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
 
-  <button class="button" onclick="alert('Load file logic goes here')">Load File</button>
+  <button class="button" onclick="alert('Next step: load file logic here')">Load File</button>
 
   <script>
     const subcategoryOptions = {
+      "Small Business": ["Lawn Care", "Cleaning Services", "Consulting", "Handyman", "Tutoring"],
       "Transportation": ["Logistics", "Trucking", "Fleet Management", "Dispatcher"],
       "Healthcare": ["Home Care", "Nursing", "Dental Office", "Physical Therapy"],
       "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
       "Real Estate": ["Property Manager", "Agent", "Broker", "Leasing"],
-      "Retail": ["Clothing", "Electronics", "Convenience", "Pop-up Shop"],
-      "Cleaning Services": ["Residential", "Commercial", "Specialty"],
-      "Technology": ["IT Support", "Web Development", "App Design"],
+      "Retail": ["Clothing", "Electronics", "Convenience Store"],
+      "Finance": ["Bookkeeping", "CPA", "Advisory Services"],
+      "Education": ["Tutor", "Private Instructor", "Online School"],
+      "Legal": ["Attorney", "Paralegal", "Notary"],
+      "Hospitality": ["Hotel", "BnB Host", "Event Host"],
+      "Manufacturing": ["Parts", "Assembly", "Private Label"],
+      "Cleaning Services": ["Residential", "Commercial", "Move-out"],
       "Beauty & Wellness": ["Salon", "Spa", "Massage Therapist", "Esthetician"],
-      "Home Services": ["Plumbing", "HVAC", "Electrician", "Handyman"],
-      // Add more as needed
+      "Consulting": ["Business Strategy", "Sales Training", "Operations"],
+      "Insurance": ["Agent", "Broker", "Claims Adjuster"],
+      "Home Services": ["Plumbing", "HVAC", "Electrician", "Carpentry"],
+      "Marketing & Advertising": ["SEO", "Social Media", "Graphic Design"],
+      "Non-Profit": ["Community Org", "Faith-based", "Foundation"],
+      "Entertainment": ["Performer", "DJ", "Event Production"],
+      "Agriculture": ["Farming", "Produce", "Equipment"],
+      "Technology": ["Web Dev", "App Dev", "IT Support"],
+      "Food & Beverage": ["Catering", "Food Truck", "Bakery"],
+      "Fitness": ["Personal Trainer", "Yoga", "Gym Owner"],
+      "Childcare": ["Babysitting", "Daycare", "After School"],
+      "Landscaping": ["Maintenance", "Design", "Tree Service"],
+      "E-commerce": ["Dropshipping", "Reseller", "Print-on-Demand"],
+      "Plumbing": ["Residential", "Commercial"],
+      "Electrician": ["Industrial", "Residential"],
+      "Auto Repair": ["Mobile Mechanic", "Garage"],
+      "Moving & Storage": ["Movers", "U-Haul Operator"],
+      "Tutoring": ["K–12", "College Prep", "Test Prep"],
+      "Security Services": ["Patrol", "Alarm Setup", "Event Security"],
+      "Courier Services": ["Same-day", "Medical Courier", "Fleet"],
+      "Barber/Salon": ["Barber", "Stylist", "Color Specialist"],
+      "Photography": ["Wedding", "Portrait", "Product"],
+      "Event Planning": ["Weddings", "Corporate Events", "Birthdays"],
+      "Accounting": ["Tax Prep", "Small Business", "Freelance"],
+      "Veterinary": ["Clinic", "Mobile Vet"],
+      "HR Services": ["Recruiting", "Onboarding", "Benefits"],
+      "Publishing": ["Blog", "Magazine", "Self-Publishing"],
+      "Travel Services": ["Travel Agent", "Group Tours"],
+      "Copywriting": ["Marketing", "Web", "Brand"],
+      "Interior Design": ["Residential", "Commercial"],
+      "IT Support": ["Remote", "On-site", "Helpdesk"],
+      "Printing Services": ["Digital", "Signage", "Labels"],
+      "Pet Grooming": ["Mobile Grooming", "Salon"],
+      "Roofing": ["Installation", "Repair"],
+      "HVAC": ["Installation", "Maintenance"],
+      "Painting": ["Interior", "Exterior"]
     };
 
     function updateSubcategories() {
@@ -134,6 +181,8 @@
           el.textContent = option;
           subcategory.appendChild(el);
         });
+      } else {
+        subcategory.innerHTML = '<option value="General">General</option>';
       }
     }
   </script>
