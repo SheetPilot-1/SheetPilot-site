@@ -207,6 +207,9 @@
     Use this to reset the header mapping if you change your industry or subcategory.
   </p>
   <button class="button" onclick="previewTable()">Preview Table</button>
+  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
+    Tip: If you uncheck or change any column headers, click “Preview Table” again to refresh the table below.
+  </p>
 </div>
 
 <div id="tablePreview" style="margin-top: 40px; display: none;">
@@ -228,8 +231,7 @@
     "Publishing": ["Author", "Title", "Category", "Publish Date", "Editor"],
     "Finance": ["Client", "Account Type", "Balance", "Transaction Date", "Amount"],
     "Education": ["Student Name", "Grade", "Subject", "Teacher", "Score"],
-    "Transportation": ["Driver", "Vehicle", "Route", "Date", "Distance"],
-    // Add more if needed
+    "Transportation": ["Driver", "Vehicle", "Route", "Date", "Distance"]
   };
 
   let originalHeaders = [];
