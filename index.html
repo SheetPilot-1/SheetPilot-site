@@ -203,6 +203,9 @@
   <h2>Set Column Headers</h2>
   <div id="headerFields"></div>
   <button class="button" onclick="previewTable()">Preview Table</button>
+  <p style="color: #aaa; font-size: 0.85em; margin-top: 6px;">
+    * If you update column labels or checkboxes above, press "Preview Table" again to see changes reflected below.
+  </p>
 </div>
 
 <div id="tablePreview" style="margin-top: 40px; display: none;">
@@ -219,7 +222,8 @@
     "Real Estate": ["Client Name", "Property Address", "Agent", "Contract Type", "Closing Date", "Commission"],
     "Healthcare": ["Patient Name", "DOB", "Service Date", "Procedure", "Billing Code", "Amount"],
     "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"],
-    // Add more as needed
+    "Retail": ["Product", "Quantity", "Unit Price", "Total", "Date Sold", "Location", "Salesperson"]
+    // You can add more as needed
   };
 
   let originalHeaders = [];
