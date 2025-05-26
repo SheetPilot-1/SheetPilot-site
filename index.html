@@ -11,210 +11,9 @@
       padding: 30px;
       margin: 0;
     }
-
     h1 {
       font-size: 2.5em;
       margin-bottom: 20px;
-      color: #F5F5DC;
-    }
-
-    label {
-      font-weight: bold;
-      margin-top: 20px;
-      display: block;
-    }
-
-    select, input[type="text"], input[type="file"] {
-      width: 100%;
-      max-width: 380px;
-      padding: 12px;
-      margin-top: 6px;
-      margin-bottom: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1em;
-      box-sizing: border-box;
-      display: block;
-    }
-
-    button {
-      background-color: #00E5FF;
-      color: #000;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      margin-top: 20px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #00cce0;
-    }
-  </style>
-</head>
-<body>
-  <h1>SheetPilot</h1>
-
-  <label for="industry">Select Your Industry</label>
-  <select id="industry" onchange="updateSubcategories()">
-    <option value="">-- Choose Industry --</option>
-    <option>Small Business</option>
-    <option>Transportation</option>
-    <option>Healthcare</option>
-    <option>Construction</option>
-    <option>Real Estate</option>
-    <option>Retail</option>
-    <option>Finance</option>
-    <option>Education</option>
-    <option>Legal</option>
-    <option>Hospitality</option>
-    <option>Manufacturing</option>
-    <option>Cleaning Services</option>
-    <option>Beauty & Wellness</option>
-    <option>Consulting</option>
-    <option>Insurance</option>
-    <option>Home Services</option>
-    <option>Marketing & Advertising</option>
-    <option>Non-Profit</option>
-    <option>Entertainment</option>
-    <option>Agriculture</option>
-    <option>Technology</option>
-    <option>Food & Beverage</option>
-    <option>Fitness</option>
-    <option>Childcare</option>
-    <option>Landscaping</option>
-    <option>E-commerce</option>
-    <option>Plumbing</option>
-    <option>Electrician</option>
-    <option>Auto Repair</option>
-    <option>Moving & Storage</option>
-    <option>Tutoring</option>
-    <option>Security Services</option>
-    <option>Courier Services</option>
-    <option>Barber/Salon</option>
-    <option>Photography</option>
-    <option>Event Planning</option>
-    <option>Accounting</option>
-    <option>Veterinary</option>
-    <option>HR Services</option>
-    <option>Publishing</option>
-    <option>Travel Services</option>
-    <option>Copywriting</option>
-    <option>Interior Design</option>
-    <option>IT Support</option>
-    <option>Printing Services</option>
-    <option>Pet Grooming</option>
-    <option>Roofing</option>
-    <option>HVAC</option>
-    <option>Painting</option>
-  </select>
-
-  <label for="subcategory">Subcategory</label>
-  <select id="subcategory">
-    <option value="">-- Choose Subcategory --</option>
-  </select>
-
-  <input type="text" id="customIndustry" placeholder="Or enter your business type" />
-
-  <label for="fileUpload">Upload Your File</label>
-  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
-
-  <button onclick="alert('Next step: load file logic here')">Load File</button>
-
-  <script>
-    const subcategoryOptions = {
-      "Small Business": ["Lawn Care", "Cleaning Services", "Consulting", "Handyman", "Tutoring"],
-      "Transportation": ["Logistics", "Trucking", "Fleet Management", "Dispatcher"],
-      "Healthcare": ["Home Care", "Nursing", "Dental Office", "Physical Therapy"],
-      "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
-      "Real Estate": ["Property Manager", "Agent", "Broker", "Leasing"],
-      "Retail": ["Clothing", "Electronics", "Convenience Store"],
-      "Finance": ["Bookkeeping", "CPA", "Advisory Services"],
-      "Education": ["Tutor", "Private Instructor", "Online School"],
-      "Legal": ["Attorney", "Paralegal", "Notary"],
-      "Hospitality": ["Hotel", "BnB Host", "Event Host"],
-      "Manufacturing": ["Parts", "Assembly", "Private Label"],
-      "Cleaning Services": ["Residential", "Commercial", "Move-out"],
-      "Beauty & Wellness": ["Salon", "Spa", "Massage Therapist", "Esthetician"],
-      "Consulting": ["Business Strategy", "Sales Training", "Operations"],
-      "Insurance": ["Agent", "Broker", "Claims Adjuster"],
-      "Home Services": ["Plumbing", "HVAC", "Electrician", "Carpentry"],
-      "Marketing & Advertising": ["SEO", "Social Media", "Graphic Design"],
-      "Non-Profit": ["Community Org", "Faith-based", "Foundation"],
-      "Entertainment": ["Performer", "DJ", "Event Production"],
-      "Agriculture": ["Farming", "Produce", "Equipment"],
-      "Technology": ["Web Dev", "App Dev", "IT Support"],
-      "Food & Beverage": ["Catering", "Food Truck", "Bakery"],
-      "Fitness": ["Personal Trainer", "Yoga", "Gym Owner"],
-      "Childcare": ["Babysitting", "Daycare", "After School"],
-      "Landscaping": ["Maintenance", "Design", "Tree Service"],
-      "E-commerce": ["Dropshipping", "Reseller", "Print-on-Demand"],
-      "Plumbing": ["Residential", "Commercial"],
-      "Electrician": ["Industrial", "Residential"],
-      "Auto Repair": ["Mobile Mechanic", "Garage"],
-      "Moving & Storage": ["Movers", "U-Haul Operator"],
-      "Tutoring": ["K–12", "College Prep", "Test Prep"],
-      "Security Services": ["Patrol", "Alarm Setup", "Event Security"],
-      "Courier Services": ["Same-day", "Medical Courier", "Fleet"],
-      "Barber/Salon": ["Barber", "Stylist", "Color Specialist"],
-      "Photography": ["Wedding", "Portrait", "Product"],
-      "Event Planning": ["Weddings", "Corporate Events", "Birthdays"],
-      "Accounting": ["Tax Prep", "Small Business", "Freelance"],
-      "Veterinary": ["Clinic", "Mobile Vet"],
-      "HR Services": ["Recruiting", "Onboarding", "Benefits"],
-      "Publishing": ["Blog", "Magazine", "Self-Publishing"],
-      "Travel Services": ["Travel Agent", "Group Tours"],
-      "Copywriting": ["Marketing", "Web", "Brand"],
-      "Interior Design": ["Residential", "Commercial"],
-      "IT Support": ["Remote", "On-site", "Helpdesk"],
-      "Printing Services": ["Digital", "Signage", "Labels"],
-      "Pet Grooming": ["Mobile Grooming", "Salon"],
-      "Roofing": ["Installation", "Repair"],
-      "HVAC": ["Installation", "Maintenance"],
-      "Painting": ["Interior", "Exterior"]
-    };
-
-    function updateSubcategories() {
-      const industry = document.getElementById("industry").value;
-      const subcategory = document.getElementById("subcategory");
-      subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-
-      if (subcategoryOptions[industry]) {
-        subcategoryOptions[industry].forEach(option => {
-          const el = document.createElement("option");
-          el.value = option;
-          el.textContent = option;
-          subcategory.appendChild(el);
-        });
-      } else {
-        subcategory.innerHTML = '<option value="General">General</option>';
-      }
-    }
-  </script>
-</body>
-</
-
-  <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>SheetPilot</title>
-  <style>
-    body {
-      background-color: #1C1C2A;
-      color: #F5F5DC;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 30px;
-      margin: 0;
-    }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 20px;
-      color: #F5F5DC;
     }
     label {
       font-weight: bold;
@@ -230,7 +29,7 @@
       border: none;
       font-size: 1em;
     }
-    button {
+    .button {
       background-color: #00E5FF;
       color: #000;
       border: none;
@@ -243,72 +42,29 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
       transition: background-color 0.3s ease;
     }
-    button:hover {
+    .button:hover {
       background-color: #00cce0;
     }
-    small {
-      display: block;
-      margin-top: 5px;
-      color: #aaa;
-      font-size: 0.85rem;
+    .tip {
+      color: #ccc;
+      font-size: 0.85em;
+      margin-top: 4px;
     }
   </style>
 </head>
 <body>
   <h1>SheetPilot</h1>
 
+  <!-- PHASE 1 -->
   <label for="industry">Select Your Industry</label>
   <select id="industry" onchange="updateSubcategories()">
     <option value="">-- Choose Industry --</option>
-    <option>Small Business</option>
-    <option>Transportation</option>
-    <option>Healthcare</option>
-    <option>Construction</option>
-    <option>Real Estate</option>
-    <option>Retail</option>
     <option>Finance</option>
-    <option>Education</option>
-    <option>Legal</option>
-    <option>Hospitality</option>
-    <option>Manufacturing</option>
-    <option>Cleaning Services</option>
-    <option>Beauty & Wellness</option>
-    <option>Consulting</option>
-    <option>Insurance</option>
-    <option>Home Services</option>
-    <option>Marketing & Advertising</option>
-    <option>Non-Profit</option>
-    <option>Entertainment</option>
-    <option>Agriculture</option>
-    <option>Technology</option>
-    <option>Food & Beverage</option>
-    <option>Fitness</option>
-    <option>Childcare</option>
-    <option>Landscaping</option>
-    <option>E-commerce</option>
-    <option>Plumbing</option>
-    <option>Electrician</option>
-    <option>Auto Repair</option>
-    <option>Moving & Storage</option>
-    <option>Tutoring</option>
-    <option>Security Services</option>
-    <option>Courier Services</option>
-    <option>Barber/Salon</option>
-    <option>Photography</option>
-    <option>Event Planning</option>
-    <option>Accounting</option>
-    <option>Veterinary</option>
-    <option>HR Services</option>
+    <option>Construction</option>
+    <option>Healthcare</option>
+    <option>Retail</option>
     <option>Publishing</option>
-    <option>Travel Services</option>
-    <option>Copywriting</option>
-    <option>Interior Design</option>
-    <option>IT Support</option>
-    <option>Printing Services</option>
-    <option>Pet Grooming</option>
-    <option>Roofing</option>
-    <option>HVAC</option>
-    <option>Painting</option>
+    <!-- Add all industries you want -->
   </select>
 
   <label for="subcategory">Subcategory</label>
@@ -321,64 +77,212 @@
   <label for="fileUpload">Upload Your File</label>
   <input type="file" id="fileUpload" accept=".xlsx, .csv" />
 
-  <button onclick="showAppendOptions()">Load File</button>
-  <small>Use this to upload additional data to the current table.</small>
+  <button class="button" onclick="handleLoad()">Load File</button>
+  <div class="tip">Use this to upload additional data to the current table.</div>
 
-  <!-- Append/Replace Modal -->
-  <div id="fileOptionsModal" style="display:none; background:#000000cc; position:fixed; top:0; left:0; right:0; bottom:0; align-items:center; justify-content:center;">
-    <div style="background:#fff; padding:20px; border-radius:10px; max-width:300px; margin:auto; color:#000;">
-      <h3>How would you like to handle the file?</h3>
-      <button onclick="loadFileData('replace')">Replace Current Table</button>
-      <button onclick="loadFileData('append')">Append to Current Table</button>
-      <button onclick="closeModal()">Cancel</button>
-    </div>
+  <!-- PHASE 2 -->
+  <div id="headerMappingSection" style="display: none; margin-top: 40px;">
+    <h2>Set Column Headers</h2>
+    <div id="headerFields"></div>
+    <button class="button" onclick="previewTable()">Preview Table</button>
+    <div class="tip">Tip: If you make changes, click "Preview Table" again to see the update.</div>
   </div>
 
-  <!-- Include your Phase 2 mapping + preview script logic here -->
-  <!-- Make sure your existing `handleFile()` becomes `loadFileData(mode)` and supports both 'replace' and 'append' logic -->
+  <div id="tablePreview" style="margin-top: 40px; display: none;">
+    <h2>Preview Table</h2>
+    <div id="previewContainer" style="overflow-x: auto;"></div>
+  </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script>
     const subcategoryOptions = {
-      "Small Business": ["Lawn Care", "Cleaning Services", "Consulting", "Handyman", "Tutoring"],
-      "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
-      "Retail": ["Clothing", "Electronics", "Convenience Store"],
       "Finance": ["Bookkeeping", "CPA", "Advisory Services"],
-      "Healthcare": ["Home Care", "Nursing", "Dental Office", "Physical Therapy"],
-      "Consulting": ["Business Strategy", "Sales Training", "Operations"],
-      // Add more as needed...
+      "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
+      "Healthcare": ["Home Care", "Nursing", "Dental Office"],
+      "Retail": ["Clothing", "Electronics"],
+      "Publishing": ["Blog", "Magazine"]
+    };
+
+    const suggestedHeaders = {
+      "Finance": ["Client", "Amount", "Invoice", "Due Date"],
+      "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"],
+      "Healthcare": ["Patient Name", "Service", "Date", "Amount"],
+      "Retail": ["Product", "Price", "Quantity", "Date Sold"],
+      "Publishing": ["Author", "Title", "Date", "Category"]
     };
 
     function updateSubcategories() {
       const industry = document.getElementById("industry").value;
-      const subcategory = document.getElementById("subcategory");
-      subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-
+      const sub = document.getElementById("subcategory");
+      sub.innerHTML = '<option value="">-- Choose Subcategory --</option>';
       if (subcategoryOptions[industry]) {
-        subcategoryOptions[industry].forEach(option => {
-          const el = document.createElement("option");
-          el.value = option;
-          el.textContent = option;
-          subcategory.appendChild(el);
+        subcategoryOptions[industry].forEach(s => {
+          const o = document.createElement("option");
+          o.value = s;
+          o.textContent = s;
+          sub.appendChild(o);
         });
-      } else {
-        subcategory.innerHTML = '<option value="General">General</option>';
       }
     }
 
-    function showAppendOptions() {
-      const file = document.getElementById("fileUpload").files[0];
-      if (!file) return alert("Please select a file first.");
-      document.getElementById("fileOptionsModal").style.display = "flex";
+    let originalHeaders = [];
+    let tableData = [];
+    let industryPicked = "";
+
+    document.getElementById('industry').addEventListener('change', function () {
+      industryPicked = this.value;
+    });
+
+    document.getElementById('fileUpload').addEventListener('change', handleFile);
+
+    function handleLoad() {
+      if (tableData.length > 0) {
+        const append = confirm("Would you like to add this data to the current table?");
+        if (!append) {
+          originalHeaders = [];
+          tableData = [];
+          document.getElementById("previewContainer").innerHTML = "";
+        }
+      }
     }
 
-    function closeModal() {
-      document.getElementById("fileOptionsModal").style.display = "none";
+    function handleFile(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const data = new Uint8Array(evt.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheet = workbook.Sheets[workbook.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+        if (!json.length) return alert("Empty sheet.");
+        originalHeaders = json[0];
+        const rows = json.slice(1).filter(row => row.join("").trim() !== "");
+        tableData = tableData.concat(rows);
+        showHeaderMapping(originalHeaders);
+      };
+      reader.readAsArrayBuffer(file);
     }
 
-    function loadFileData(mode) {
-      closeModal();
-      alert("Logic to " + mode + " data goes here (Phase 3)!");
-      // In Phase 3, this function will handle file reading + appending vs replacing tableData
+    function showHeaderMapping(headers) {
+      const container = document.getElementById("headerFields");
+      container.innerHTML = "";
+      const suggestions = suggestedHeaders[industryPicked] || [];
+
+      headers.forEach((header, i) => {
+        const wrapper = document.createElement("div");
+        wrapper.style.marginBottom = "15px";
+
+        const label = document.createElement("label");
+        label.textContent = `Column ${i + 1} (${header || "Unnamed"})`;
+
+        const select = document.createElement("select");
+        select.style.width = "100%";
+        select.style.padding = "10px";
+        select.style.borderRadius = "6px";
+        select.dataset.index = i;
+
+        const blank = document.createElement("option");
+        blank.value = "";
+        blank.textContent = "-- Choose or type your own --";
+        select.appendChild(blank);
+
+        suggestions.forEach(s => {
+          const option = document.createElement("option");
+          option.value = s;
+          option.textContent = s;
+          select.appendChild(option);
+        });
+
+        const manualInput = document.createElement("input");
+        manualInput.type = "text";
+        manualInput.placeholder = "Or enter a custom label";
+        manualInput.style.marginTop = "6px";
+        manualInput.style.width = "100%";
+        manualInput.dataset.index = i;
+
+        const includeBox = document.createElement("input");
+        includeBox.type = "checkbox";
+        includeBox.checked = true;
+        includeBox.id = `include-${i}`;
+        includeBox.style.marginTop = "10px";
+
+        const includeLabel = document.createElement("label");
+        includeLabel.innerHTML = "<strong> Include this column</strong><br><span style='font-size: 0.85em; color: #ccc;'>Uncheck this to exclude this column from the table and export.</span>";
+        includeLabel.style.marginLeft = "6px";
+
+        wrapper.appendChild(label);
+        wrapper.appendChild(select);
+        wrapper.appendChild(manualInput);
+        wrapper.appendChild(includeBox);
+        wrapper.appendChild(includeLabel);
+        container.appendChild(wrapper);
+      });
+
+      document.getElementById("headerMappingSection").style.display = "block";
+    }
+
+    function previewTable() {
+      const selects = document.querySelectorAll("#headerFields select");
+      const inputs = document.querySelectorAll("#headerFields input[type='text']");
+      const checkboxes = document.querySelectorAll("#headerFields input[type='checkbox']");
+
+      const headers = [];
+      const includedIndexes = [];
+
+      selects.forEach((select, i) => {
+        const manualValue = inputs[i].value.trim();
+        if (!checkboxes[i].checked) return;
+        includedIndexes.push(i);
+        headers.push(manualValue || select.value || `Column ${i + 1}`);
+      });
+
+      const table = document.createElement("table");
+      table.style.width = "100%";
+      table.style.borderCollapse = "collapse";
+      table.style.backgroundColor = "#1C1C2A";
+      table.style.color = "#F5F5DC";
+      table.style.fontSize = "0.95em";
+
+      const thead = document.createElement("thead");
+      const headerRow = document.createElement("tr");
+
+      headers.forEach(h => {
+        const th = document.createElement("th");
+        th.textContent = h;
+        th.style.backgroundColor = "#00E5FF";
+        th.style.color = "#000";
+        th.style.padding = "10px";
+        headerRow.appendChild(th);
+      });
+
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+
+      tableData.forEach((row, rIndex) => {
+        const tr = document.createElement("tr");
+        tr.style.backgroundColor = rIndex % 2 === 0 ? "#232338" : "#1C1C2A";
+
+        includedIndexes.forEach(i => {
+          const td = document.createElement("td");
+          td.textContent = row[i] ?? "";
+          td.style.padding = "8px";
+          td.style.wordBreak = "break-word";
+          td.style.borderTop = "1px solid #444";
+          tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(tbody);
+
+      const container = document.getElementById("previewContainer");
+      container.innerHTML = "";
+      container.appendChild(table);
+      document.getElementById("tablePreview").style.display = "block";
     }
   </script>
 </body>
