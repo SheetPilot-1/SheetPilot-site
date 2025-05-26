@@ -198,237 +198,188 @@
 </body>
 </html>
 
-<!-- Phase 2: Header Mapping + Preview -->
-<div id="headerMappingSection" style="display: none; margin-top: 40px;">
-  <h2>Set Column Headers</h2>
-  <div id="headerFields"></div>
-  <button class="button" onclick="resetMapping()">Reset Mapping</button>
-  <div style="font-size: 0.85em; color: #aaa; margin-top: 4px; margin-bottom: 20px;">
-    Use this to reset the header mapping if you change your industry or subcategory.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SheetPilot</title>
+  <style>
+    body {
+      background-color: #1C1C2A;
+      color: #F5F5DC;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
+      margin: 0;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #F5F5DC;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 20px;
+      display: block;
+    }
+    select, input[type="text"], input[type="file"] {
+      width: 100%;
+      max-width: 420px;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1em;
+    }
+    button {
+      background-color: #00E5FF;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #00cce0;
+    }
+    small {
+      display: block;
+      margin-top: 5px;
+      color: #aaa;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>SheetPilot</h1>
+
+  <label for="industry">Select Your Industry</label>
+  <select id="industry" onchange="updateSubcategories()">
+    <option value="">-- Choose Industry --</option>
+    <option>Small Business</option>
+    <option>Transportation</option>
+    <option>Healthcare</option>
+    <option>Construction</option>
+    <option>Real Estate</option>
+    <option>Retail</option>
+    <option>Finance</option>
+    <option>Education</option>
+    <option>Legal</option>
+    <option>Hospitality</option>
+    <option>Manufacturing</option>
+    <option>Cleaning Services</option>
+    <option>Beauty & Wellness</option>
+    <option>Consulting</option>
+    <option>Insurance</option>
+    <option>Home Services</option>
+    <option>Marketing & Advertising</option>
+    <option>Non-Profit</option>
+    <option>Entertainment</option>
+    <option>Agriculture</option>
+    <option>Technology</option>
+    <option>Food & Beverage</option>
+    <option>Fitness</option>
+    <option>Childcare</option>
+    <option>Landscaping</option>
+    <option>E-commerce</option>
+    <option>Plumbing</option>
+    <option>Electrician</option>
+    <option>Auto Repair</option>
+    <option>Moving & Storage</option>
+    <option>Tutoring</option>
+    <option>Security Services</option>
+    <option>Courier Services</option>
+    <option>Barber/Salon</option>
+    <option>Photography</option>
+    <option>Event Planning</option>
+    <option>Accounting</option>
+    <option>Veterinary</option>
+    <option>HR Services</option>
+    <option>Publishing</option>
+    <option>Travel Services</option>
+    <option>Copywriting</option>
+    <option>Interior Design</option>
+    <option>IT Support</option>
+    <option>Printing Services</option>
+    <option>Pet Grooming</option>
+    <option>Roofing</option>
+    <option>HVAC</option>
+    <option>Painting</option>
+  </select>
+
+  <label for="subcategory">Subcategory</label>
+  <select id="subcategory">
+    <option value="">-- Choose Subcategory --</option>
+  </select>
+
+  <input type="text" id="customIndustry" placeholder="Or enter your business type" />
+
+  <label for="fileUpload">Upload Your File</label>
+  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
+
+  <button onclick="showAppendOptions()">Load File</button>
+  <small>Use this to upload additional data to the current table.</small>
+
+  <!-- Append/Replace Modal -->
+  <div id="fileOptionsModal" style="display:none; background:#000000cc; position:fixed; top:0; left:0; right:0; bottom:0; align-items:center; justify-content:center;">
+    <div style="background:#fff; padding:20px; border-radius:10px; max-width:300px; margin:auto; color:#000;">
+      <h3>How would you like to handle the file?</h3>
+      <button onclick="loadFileData('replace')">Replace Current Table</button>
+      <button onclick="loadFileData('append')">Append to Current Table</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
   </div>
-  <button class="button" onclick="previewTable()">Preview Table</button>
-  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
-    Tip: If you uncheck or change any column headers, click “Preview Table” again to refresh the table below.
-  </p>
-  <button class="button" onclick="triggerLoadOptions()">Load File</button>
-  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
-    Use this to upload another file with similar data under the same industry setup.
-  </p>
-</div>
 
-<div id="tablePreview" style="margin-top: 40px; display: none;">
-  <h2>Preview Table</h2>
-  <div id="previewContainer" style="overflow-x: auto;"></div>
-</div>
+  <!-- Include your Phase 2 mapping + preview script logic here -->
+  <!-- Make sure your existing `handleFile()` becomes `loadFileData(mode)` and supports both 'replace' and 'append' logic -->
 
-<!-- Modal -->
-<div id="loadModal" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -30%); background: #1C1C2A; color: #F5F5DC; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.5); z-index: 1000;">
-  <h3>Upload Another File</h3>
-  <p>How do you want to handle the new file?</p>
-  <input type="file" id="additionalFile" accept=".xlsx, .csv" style="margin-bottom: 10px;" />
-  <div style="margin-top: 10px;">
-    <button class="button" onclick="handleAdditionalFile('append')">Append to Current Table</button>
-    <button class="button" onclick="handleAdditionalFile('replace')">Start New Table</button>
-    <button class="button" onclick="document.getElementById('loadModal').style.display='none'">Cancel</button>
-  </div>
-</div>
-
-<!-- Load XLSX library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-<script>
-  const suggestedHeaders = {
-    "Small Business": ["Customer Name", "Phone", "Email", "Service Type", "Amount", "Date", "Notes"],
-    "Real Estate": ["Client Name", "Property Address", "Agent", "Contract Type", "Closing Date", "Commission"],
-    "Healthcare": ["Patient Name", "DOB", "Service Date", "Procedure", "Billing Code", "Amount"],
-    "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"]
-  };
-
-  let originalHeaders = [];
-  let tableData = [];
-  let industryPicked = "";
-
-  document.getElementById('industry').addEventListener('change', function () {
-    industryPicked = this.value;
-  });
-
-  function triggerLoadOptions() {
-    document.getElementById('loadModal').style.display = 'block';
-  }
-
-  function resetMapping() {
-    document.getElementById("headerMappingSection").style.display = "none";
-    document.getElementById("tablePreview").style.display = "none";
-    document.getElementById("previewContainer").innerHTML = "";
-    document.getElementById("headerFields").innerHTML = "";
-    originalHeaders = [];
-    tableData = [];
-  }
-
-  function handleAdditionalFile(mode) {
-    const file = document.getElementById("additionalFile").files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function(evt) {
-      const data = new Uint8Array(evt.target.result);
-      const workbook = XLSX.read(data, { type: 'array' });
-      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-      const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-      if (json.length === 0) {
-        alert("Empty sheet.");
-        return;
-      }
-
-      const newHeaders = json[0];
-      const newData = json.slice(1).filter(row => row.join("").trim() !== "");
-
-      if (mode === 'replace') {
-        originalHeaders = newHeaders;
-        tableData = newData;
-        showHeaderMapping(newHeaders);
-      } else if (mode === 'append') {
-        tableData = tableData.concat(newData);
-        previewTable(); // just re-renders
-      }
-
-      document.getElementById("loadModal").style.display = "none";
+  <script>
+    const subcategoryOptions = {
+      "Small Business": ["Lawn Care", "Cleaning Services", "Consulting", "Handyman", "Tutoring"],
+      "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
+      "Retail": ["Clothing", "Electronics", "Convenience Store"],
+      "Finance": ["Bookkeeping", "CPA", "Advisory Services"],
+      "Healthcare": ["Home Care", "Nursing", "Dental Office", "Physical Therapy"],
+      "Consulting": ["Business Strategy", "Sales Training", "Operations"],
+      // Add more as needed...
     };
-    reader.readAsArrayBuffer(file);
-  }
 
-  function showHeaderMapping(headers) {
-    const container = document.getElementById("headerFields");
-    container.innerHTML = "";
+    function updateSubcategories() {
+      const industry = document.getElementById("industry").value;
+      const subcategory = document.getElementById("subcategory");
+      subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
 
-    const suggestions = suggestedHeaders[industryPicked] || [];
+      if (subcategoryOptions[industry]) {
+        subcategoryOptions[industry].forEach(option => {
+          const el = document.createElement("option");
+          el.value = option;
+          el.textContent = option;
+          subcategory.appendChild(el);
+        });
+      } else {
+        subcategory.innerHTML = '<option value="General">General</option>';
+      }
+    }
 
-    headers.forEach((header, i) => {
-      const wrapper = document.createElement("div");
-      wrapper.style.marginBottom = "15px";
+    function showAppendOptions() {
+      const file = document.getElementById("fileUpload").files[0];
+      if (!file) return alert("Please select a file first.");
+      document.getElementById("fileOptionsModal").style.display = "flex";
+    }
 
-      const label = document.createElement("label");
-      label.textContent = `Column ${i + 1} (${header || "Unnamed"})`;
+    function closeModal() {
+      document.getElementById("fileOptionsModal").style.display = "none";
+    }
 
-      const select = document.createElement("select");
-      select.style.width = "100%";
-      select.style.padding = "10px";
-      select.style.borderRadius = "6px";
-      select.dataset.index = i;
-
-      const blank = document.createElement("option");
-      blank.value = "";
-      blank.textContent = "-- Choose or type your own --";
-      select.appendChild(blank);
-
-      suggestions.forEach(s => {
-        const option = document.createElement("option");
-        option.value = s;
-        option.textContent = s;
-        select.appendChild(option);
-      });
-
-      const manualInput = document.createElement("input");
-      manualInput.type = "text";
-      manualInput.placeholder = "Or enter a custom label";
-      manualInput.style.marginTop = "6px";
-      manualInput.style.width = "100%";
-      manualInput.dataset.index = i;
-
-      const includeBox = document.createElement("input");
-      includeBox.type = "checkbox";
-      includeBox.checked = true;
-      includeBox.id = `include-${i}`;
-
-      const includeLabel = document.createElement("label");
-      includeLabel.textContent = " Include this column";
-      includeLabel.style.marginLeft = "6px";
-      includeLabel.style.fontWeight = "bold";
-      includeLabel.style.display = "block";
-
-      const helper = document.createElement("div");
-      helper.textContent = "Uncheck this to exclude this column from the table and export.";
-      helper.style.color = "gray";
-      helper.style.fontSize = "0.85em";
-      helper.style.marginTop = "3px";
-
-      wrapper.appendChild(label);
-      wrapper.appendChild(select);
-      wrapper.appendChild(manualInput);
-      wrapper.appendChild(includeBox);
-      wrapper.appendChild(includeLabel);
-      wrapper.appendChild(helper);
-
-      container.appendChild(wrapper);
-    });
-
-    document.getElementById("headerMappingSection").style.display = "block";
-  }
-
-  function previewTable() {
-    const selects = document.querySelectorAll("#headerFields select");
-    const inputs = document.querySelectorAll("#headerFields input[type='text']");
-    const checkboxes = document.querySelectorAll("#headerFields input[type='checkbox']");
-
-    const headers = [];
-    const includedIndexes = [];
-
-    selects.forEach((select, i) => {
-      const manualValue = inputs[i].value.trim();
-      const useColumn = checkboxes[i].checked;
-
-      if (!useColumn) return;
-
-      includedIndexes.push(i);
-      headers.push(manualValue || select.value || `Column ${i + 1}`);
-    });
-
-    const table = document.createElement("table");
-    table.style.width = "100%";
-    table.style.borderCollapse = "collapse";
-    table.style.backgroundColor = "#1C1C2A";
-    table.style.color = "#F5F5DC";
-    table.style.fontSize = "0.95em";
-
-    const thead = document.createElement("thead");
-    const headerRow = document.createElement("tr");
-
-    headers.forEach(h => {
-      const th = document.createElement("th");
-      th.textContent = h;
-      th.style.backgroundColor = "#00E5FF";
-      th.style.color = "#000";
-      th.style.padding = "10px";
-      headerRow.appendChild(th);
-    });
-
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    const tbody = document.createElement("tbody");
-
-    tableData.forEach((row, rIndex) => {
-      const tr = document.createElement("tr");
-      tr.style.backgroundColor = rIndex % 2 === 0 ? "#232338" : "#1C1C2A";
-
-      includedIndexes.forEach(i => {
-        const td = document.createElement("td");
-        td.textContent = row[i] ?? "";
-        td.style.padding = "8px";
-        td.style.wordBreak = "break-word";
-        td.style.borderTop = "1px solid #444";
-        tr.appendChild(td);
-      });
-
-      tbody.appendChild(tr);
-    });
-
-    table.appendChild(tbody);
-
-    const container = document.getElementById("previewContainer");
-    container.innerHTML = "";
-    container.appendChild(table);
-    document.getElementById("tablePreview").style.display = "block";
-  }
-</script>
+    function loadFileData(mode) {
+      closeModal();
+      alert("Logic to " + mode + " data goes here (Phase 3)!");
+      // In Phase 3, this function will handle file reading + appending vs replacing tableData
+    }
+  </script>
+</body>
+</html>
