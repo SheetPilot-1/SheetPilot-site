@@ -202,10 +202,9 @@
 <div id="headerMappingSection" style="display: none; margin-top: 40px;">
   <h2>Set Column Headers</h2>
   <div id="headerFields"></div>
+  <button class="button" onclick="resetMappings()">Reset & Remap</button>
+  <p style="color: gray; font-size: 0.9em;">Tip: Use this to reset your column mappings if you switch industry or subcategory.</p>
   <button class="button" onclick="previewTable()">Preview Table</button>
-  <p style="color: #ccc; font-size: 0.9em; margin-top: 10px;">
-    Tip: If you make changes, click "Preview Table" again to see them reflected.
-  </p>
 </div>
 
 <div id="tablePreview" style="margin-top: 40px; display: none;">
@@ -221,9 +220,9 @@
     "Real Estate": ["Client Name", "Property Address", "Agent", "Contract Type", "Closing Date", "Commission"],
     "Healthcare": ["Patient Name", "DOB", "Service Date", "Procedure", "Billing Code", "Amount"],
     "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"],
-    "Publishing": ["Author", "Title", "Editor", "Genre", "Publish Date", "ISBN"],
-    "Retail": ["Item Name", "SKU", "Price", "Quantity", "Category", "Supplier"],
-    // Add more as needed
+    "Finance": ["Client", "Service", "Invoice Date", "Amount", "Payment Status", "Notes"],
+    "Publishing": ["Author", "Title", "Genre", "Word Count", "Editor", "Status"]
+    // Add more industries here
   };
 
   let originalHeaders = [];
@@ -266,7 +265,7 @@
 
     headers.forEach((header, i) => {
       const wrapper = document.createElement("div");
-      wrapper.style.marginBottom = "20px";
+      wrapper.style.marginBottom = "15px";
 
       const label = document.createElement("label");
       label.textContent = `Column ${i + 1} (${header || "Unnamed"})`;
@@ -305,26 +304,32 @@
       const includeLabel = document.createElement("label");
       includeLabel.textContent = " Include this column";
       includeLabel.style.marginLeft = "6px";
-      includeLabel.style.display = "inline-block";
       includeLabel.style.fontWeight = "bold";
 
-      const explanation = document.createElement("p");
-      explanation.style.color = "#bbb";
-      explanation.style.fontSize = "0.85em";
-      explanation.style.marginTop = "4px";
-      explanation.textContent = "Uncheck this to exclude this column from the table and export.";
+      const hint = document.createElement("p");
+      hint.style.color = "gray";
+      hint.style.margin = "4px 0 10px 0";
+      hint.style.fontSize = "0.85em";
+      hint.textContent = "Uncheck this to exclude this column from the table and export.";
 
       wrapper.appendChild(label);
       wrapper.appendChild(select);
       wrapper.appendChild(manualInput);
       wrapper.appendChild(includeBox);
       wrapper.appendChild(includeLabel);
-      wrapper.appendChild(explanation);
+      wrapper.appendChild(hint);
 
       container.appendChild(wrapper);
     });
 
     document.getElementById("headerMappingSection").style.display = "block";
+  }
+
+  function resetMappings() {
+    if (!originalHeaders.length) return;
+    showHeaderMapping(originalHeaders);
+    document.getElementById("tablePreview").style.display = "none";
+    document.getElementById("previewContainer").innerHTML = "";
   }
 
   function previewTable() {
