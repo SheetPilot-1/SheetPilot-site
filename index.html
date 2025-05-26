@@ -2,53 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot</title>
   <style>
     body {
       background-color: #1C1C2A;
+      color: #F5F5DC;
       font-family: 'Segoe UI', sans-serif;
-      color: #f5f5dc;
+      padding: 30px;
       margin: 0;
-      padding: 2rem;
     }
 
     h1 {
-      color: #f5f5dc;
-      font-size: 2.2rem;
-      margin-bottom: 1.5rem;
+      font-size: 2.5em;
+      margin-bottom: 20px;
+      color: #F5F5DC;
     }
 
     label {
-      display: block;
-      margin-top: 1.2rem;
-      margin-bottom: 0.5rem;
       font-weight: bold;
+      margin-top: 20px;
+      display: block;
     }
 
-    select, input[type="text"] {
+    select, input[type="text"], input[type="file"] {
       width: 100%;
       max-width: 420px;
-      padding: 0.6rem;
+      padding: 10px;
+      margin-top: 5px;
       border-radius: 8px;
       border: none;
-      font-size: 1rem;
+      font-size: 1em;
+      max-height: 200px;
+      overflow-y: auto;
     }
 
     button {
-      margin-top: 1.5rem;
-      padding: 0.7rem 1.5rem;
-      border-radius: 10px;
-      border: none;
-      background-color: #00e6f6;
+      background-color: #00E5FF;
       color: #000;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 10px;
+      margin-top: 20px;
       font-weight: bold;
       font-size: 1rem;
       cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
-      background-color: #00c2d4;
+      background-color: #00cce0;
     }
   </style>
 </head>
@@ -56,63 +59,57 @@
   <h1>SheetPilot</h1>
 
   <label for="industry">Select Your Industry</label>
-  <select id="industry">
+  <select id="industry" onchange="updateSubcategories()">
     <option value="">-- Choose Industry --</option>
-    <option>Accounting</option>
-    <option>Advertising</option>
-    <option>Agriculture</option>
-    <option>Architecture</option>
-    <option>Automotive</option>
-    <option>Beauty & Wellness</option>
-    <option>Childcare</option>
-    <option>Cleaning Services</option>
-    <option>Construction</option>
-    <option>Consulting</option>
-    <option>Creative Services</option>
-    <option>Customer Service</option>
-    <option>Delivery & Logistics</option>
-    <option>Design</option>
-    <option>E-commerce</option>
-    <option>Education</option>
-    <option>Entertainment</option>
-    <option>Event Planning</option>
-    <option>Financial Services</option>
-    <option>Fitness & Personal Training</option>
-    <option>Food & Beverage</option>
-    <option>Freelancing</option>
-    <option>Healthcare</option>
-    <option>Home Repair</option>
-    <option>HVAC</option>
-    <option>IT & Software</option>
-    <option>Janitorial</option>
-    <option>Landscaping</option>
-    <option>Legal</option>
-    <option>Manufacturing</option>
-    <option>Marketing</option>
-    <option>Mechanic / Auto Repair</option>
-    <option>Moving Services</option>
-    <option>Nonprofit</option>
-    <option>Pest Control</option>
-    <option>Pet Services</option>
-    <option>Photography</option>
-    <option>Plumbing</option>
-    <option>Property Management</option>
-    <option>Real Estate</option>
-    <option>Recruiting & Staffing</option>
-    <option>Retail</option>
-    <option>Roofing</option>
-    <option>Salon / Barber</option>
-    <option>Security Services</option>
     <option>Small Business</option>
-    <option>Social Media / Creator</option>
-    <option>Software Development</option>
-    <option>Technology</option>
-    <option>Trades (General)</option>
     <option>Transportation</option>
-    <option>Truck Dispatcher</option>
+    <option>Healthcare</option>
+    <option>Construction</option>
+    <option>Real Estate</option>
+    <option>Retail</option>
+    <option>Finance</option>
+    <option>Education</option>
+    <option>Legal</option>
+    <option>Hospitality</option>
+    <option>Manufacturing</option>
+    <option>Cleaning Services</option>
+    <option>Beauty & Wellness</option>
+    <option>Consulting</option>
+    <option>Insurance</option>
+    <option>Home Services</option>
+    <option>Marketing & Advertising</option>
+    <option>Non-Profit</option>
+    <option>Entertainment</option>
+    <option>Agriculture</option>
+    <option>Technology</option>
+    <option>Food & Beverage</option>
+    <option>Fitness</option>
+    <option>Childcare</option>
+    <option>Landscaping</option>
+    <option>E-commerce</option>
+    <option>Plumbing</option>
+    <option>Electrician</option>
+    <option>Auto Repair</option>
+    <option>Moving & Storage</option>
     <option>Tutoring</option>
-    <option>Waste Management</option>
-    <option>Web Development</option>
+    <option>Security Services</option>
+    <option>Courier Services</option>
+    <option>Barber/Salon</option>
+    <option>Photography</option>
+    <option>Event Planning</option>
+    <option>Accounting</option>
+    <option>Veterinary</option>
+    <option>HR Services</option>
+    <option>Publishing</option>
+    <option>Travel Services</option>
+    <option>Copywriting</option>
+    <option>Interior Design</option>
+    <option>IT Support</option>
+    <option>Printing Services</option>
+    <option>Pet Grooming</option>
+    <option>Roofing</option>
+    <option>HVAC</option>
+    <option>Painting</option>
   </select>
 
   <label for="subcategory">Subcategory</label>
@@ -120,11 +117,82 @@
     <option value="">-- Choose Subcategory --</option>
   </select>
 
-  <input type="text" id="customBusinessType" placeholder="Or enter your business type" />
+  <input type="text" id="customIndustry" placeholder="Or enter your business type" />
 
   <label for="fileUpload">Upload Your File</label>
-  <input type="file" id="fileUpload" />
+  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
 
-  <button id="loadFileBtn">Load File</button>
+  <button onclick="alert('Next step: load file logic here')">Load File</button>
+
+  <script>
+    const subcategoryOptions = {
+      "Small Business": ["Lawn Care", "Cleaning Services", "Consulting", "Handyman", "Tutoring"],
+      "Transportation": ["Logistics", "Trucking", "Fleet Management", "Dispatcher"],
+      "Healthcare": ["Home Care", "Nursing", "Dental Office", "Physical Therapy"],
+      "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
+      "Real Estate": ["Property Manager", "Agent", "Broker", "Leasing"],
+      "Retail": ["Clothing", "Electronics", "Convenience Store"],
+      "Finance": ["Bookkeeping", "CPA", "Advisory Services"],
+      "Education": ["Tutor", "Private Instructor", "Online School"],
+      "Legal": ["Attorney", "Paralegal", "Notary"],
+      "Hospitality": ["Hotel", "BnB Host", "Event Host"],
+      "Manufacturing": ["Parts", "Assembly", "Private Label"],
+      "Cleaning Services": ["Residential", "Commercial", "Move-out"],
+      "Beauty & Wellness": ["Salon", "Spa", "Massage Therapist", "Esthetician"],
+      "Consulting": ["Business Strategy", "Sales Training", "Operations"],
+      "Insurance": ["Agent", "Broker", "Claims Adjuster"],
+      "Home Services": ["Plumbing", "HVAC", "Electrician", "Carpentry"],
+      "Marketing & Advertising": ["SEO", "Social Media", "Graphic Design"],
+      "Non-Profit": ["Community Org", "Faith-based", "Foundation"],
+      "Entertainment": ["Performer", "DJ", "Event Production"],
+      "Agriculture": ["Farming", "Produce", "Equipment"],
+      "Technology": ["Web Dev", "App Dev", "IT Support"],
+      "Food & Beverage": ["Catering", "Food Truck", "Bakery"],
+      "Fitness": ["Personal Trainer", "Yoga", "Gym Owner"],
+      "Childcare": ["Babysitting", "Daycare", "After School"],
+      "Landscaping": ["Maintenance", "Design", "Tree Service"],
+      "E-commerce": ["Dropshipping", "Reseller", "Print-on-Demand"],
+      "Plumbing": ["Residential", "Commercial"],
+      "Electrician": ["Industrial", "Residential"],
+      "Auto Repair": ["Mobile Mechanic", "Garage"],
+      "Moving & Storage": ["Movers", "U-Haul Operator"],
+      "Tutoring": ["K–12", "College Prep", "Test Prep"],
+      "Security Services": ["Patrol", "Alarm Setup", "Event Security"],
+      "Courier Services": ["Same-day", "Medical Courier", "Fleet"],
+      "Barber/Salon": ["Barber", "Stylist", "Color Specialist"],
+      "Photography": ["Wedding", "Portrait", "Product"],
+      "Event Planning": ["Weddings", "Corporate Events", "Birthdays"],
+      "Accounting": ["Tax Prep", "Small Business", "Freelance"],
+      "Veterinary": ["Clinic", "Mobile Vet"],
+      "HR Services": ["Recruiting", "Onboarding", "Benefits"],
+      "Publishing": ["Blog", "Magazine", "Self-Publishing"],
+      "Travel Services": ["Travel Agent", "Group Tours"],
+      "Copywriting": ["Marketing", "Web", "Brand"],
+      "Interior Design": ["Residential", "Commercial"],
+      "IT Support": ["Remote", "On-site", "Helpdesk"],
+      "Printing Services": ["Digital", "Signage", "Labels"],
+      "Pet Grooming": ["Mobile Grooming", "Salon"],
+      "Roofing": ["Installation", "Repair"],
+      "HVAC": ["Installation", "Maintenance"],
+      "Painting": ["Interior", "Exterior"]
+    };
+
+    function updateSubcategories() {
+      const industry = document.getElementById("industry").value;
+      const subcategory = document.getElementById("subcategory");
+      subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
+
+      if (subcategoryOptions[industry]) {
+        subcategoryOptions[industry].forEach(option => {
+          const el = document.createElement("option");
+          el.value = option;
+          el.textContent = option;
+          subcategory.appendChild(el);
+        });
+      } else {
+        subcategory.innerHTML = '<option value="General">General</option>';
+      }
+    }
+  </script>
 </body>
 </html>
