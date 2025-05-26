@@ -2,252 +2,139 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot</title>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     body {
-      background-color: #121223;
-      color: #fffbe7;
-      font-family: Arial, sans-serif;
-      padding: 2rem;
+      background-color: #1C1C2A;
+      color: #F5F5DC;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
+      margin: 0;
     }
     h1 {
-      font-size: 2rem;
-      color: #fffbe7;
+      font-size: 2.5em;
+      margin-bottom: 10px;
     }
-    select, input, button {
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      font-size: 1rem;
+    label {
+      font-weight: bold;
+      margin-top: 20px;
+      display: block;
     }
-    .dropdown, .section {
-      margin-bottom: 1rem;
-    }
-    table {
-      border-collapse: collapse;
+    select, input[type="text"], input[type="file"] {
       width: 100%;
-      margin-top: 1rem;
-    }
-    th, td {
-      border: 1px solid #333;
-      padding: 0.5rem;
-      text-align: left;
-    }
-    th {
-      background-color: #00dfff;
-      color: #000;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1em;
     }
     .button {
-      background-color: #00dfff;
+      background-color: #00E5FF;
       color: #000;
       border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      margin-top: 20px;
       cursor: pointer;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <h1>SheetPilot</h1>
 
-  <div class="section">
-    <label for="industry">Select Your Industry</label><br/>
-    <select id="industry" onchange="populateSubcategories()">
-      <option>Small Business</option>
-      <option>Real Estate</option>
-      <option>Transportation</option>
-      <option>Property Management</option>
-      <option>Cleaning Services</option>
-      <option>Legal</option>
-    </select><br/>
-    <select id="subcategory">
-      <option>-- Choose Subcategory --</option>
-    </select><br/>
-    <input type="text" id="customBusiness" placeholder="Or enter your business type..." />
-  </div>
+  <label for="industry">Select Your Industry</label>
+  <select id="industry" onchange="updateSubcategories()">
+    <option value="">-- Choose Industry --</option>
+    <option value="Transportation">Transportation</option>
+    <option value="Healthcare">Healthcare</option>
+    <option value="Construction">Construction</option>
+    <option value="Real Estate">Real Estate</option>
+    <option value="Retail">Retail</option>
+    <option value="Finance">Finance</option>
+    <option value="Education">Education</option>
+    <option value="Legal">Legal</option>
+    <option value="Hospitality">Hospitality</option>
+    <option value="Manufacturing">Manufacturing</option>
+    <option value="Cleaning Services">Cleaning Services</option>
+    <option value="Beauty & Wellness">Beauty & Wellness</option>
+    <option value="Consulting">Consulting</option>
+    <option value="Insurance">Insurance</option>
+    <option value="Home Services">Home Services</option>
+    <option value="Marketing & Advertising">Marketing & Advertising</option>
+    <option value="Non-Profit">Non-Profit</option>
+    <option value="Entertainment">Entertainment</option>
+    <option value="Agriculture">Agriculture</option>
+    <option value="Technology">Technology</option>
+    <option value="Food & Beverage">Food & Beverage</option>
+    <option value="Fitness">Fitness</option>
+    <option value="Childcare">Childcare</option>
+    <option value="Landscaping">Landscaping</option>
+    <option value="E-commerce">E-commerce</option>
+    <option value="Plumbing">Plumbing</option>
+    <option value="Electrician">Electrician</option>
+    <option value="Auto Repair">Auto Repair</option>
+    <option value="Moving & Storage">Moving & Storage</option>
+    <option value="Tutoring">Tutoring</option>
+    <option value="Security Services">Security Services</option>
+    <option value="Courier Services">Courier Services</option>
+    <option value="Barber/Salon">Barber/Salon</option>
+    <option value="Photography">Photography</option>
+    <option value="Event Planning">Event Planning</option>
+    <option value="Accounting">Accounting</option>
+    <option value="Veterinary">Veterinary</option>
+    <option value="HR Services">HR Services</option>
+    <option value="Publishing">Publishing</option>
+    <option value="Travel Services">Travel Services</option>
+    <option value="Copywriting">Copywriting</option>
+    <option value="Interior Design">Interior Design</option>
+    <option value="IT Support">IT Support</option>
+    <option value="Printing Services">Printing Services</option>
+    <option value="Pet Grooming">Pet Grooming</option>
+    <option value="Roofing">Roofing</option>
+    <option value="HVAC">HVAC</option>
+    <option value="Painting">Painting</option>
+  </select>
 
-  <div class="section">
-    <label for="file">Upload Your File</label><br/>
-    <input type="file" id="file" />
-    <button class="button" onclick="loadFile()">Load File</button>
-  </div>
+  <label for="subcategory">Subcategory</label>
+  <select id="subcategory">
+    <option value="">-- Choose Subcategory --</option>
+  </select>
 
-  <div id="headerSection" class="section"></div>
+  <input type="text" id="customIndustry" placeholder="Or enter your business type" />
 
-  <div id="controls" class="section" style="display:none;">
-    <h3>Advanced Filters (optional)</h3>
-    <select id="filterColumn"></select>
-    <input type="text" id="filterValue" placeholder="Match value..." />
-    <button class="button" onclick="applyFilter()">Apply Filter</button>
+  <label for="fileUpload">Upload Your File</label>
+  <input type="file" id="fileUpload" accept=".xlsx" />
 
-    <h3>Sort</h3>
-    <select id="sortColumn"></select>
-    <select id="sortDirection">
-      <option value="asc">A → Z</option>
-      <option value="desc">Z → A</option>
-    </select>
-    <button class="button" onclick="sortTable()">Sort</button>
-
-    <h3>Download</h3>
-    <button class="button" onclick="downloadXLSX()">Download as XLSX</button>
-    <button class="button" onclick="downloadCSV()">Download as CSV</button>
-  </div>
-
-  <div id="tableContainer" class="section"></div>
+  <button class="button" onclick="alert('Load file logic goes here')">Load File</button>
 
   <script>
-    const subcategories = {
-      "Small Business": ["Lawn Care", "Cleaning Services", "Truck Dispatcher", "Property Manager"],
-      "Real Estate": ["Agent", "Broker", "Property Manager"],
-      "Transportation": ["Truck Dispatcher", "Logistics", "Fleet Operator"],
-      "Property Management": ["Leasing", "Maintenance", "HOA Manager"],
-      "Cleaning Services": ["Residential", "Commercial", "Window Washing"],
-      "Legal": ["Attorney", "Paralegal", "Notary"]
+    const subcategoryOptions = {
+      "Transportation": ["Logistics", "Trucking", "Fleet Management", "Dispatcher"],
+      "Healthcare": ["Home Care", "Nursing", "Dental Office", "Physical Therapy"],
+      "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
+      "Real Estate": ["Property Manager", "Agent", "Broker", "Leasing"],
+      "Retail": ["Clothing", "Electronics", "Convenience", "Pop-up Shop"],
+      "Cleaning Services": ["Residential", "Commercial", "Specialty"],
+      "Technology": ["IT Support", "Web Development", "App Design"],
+      "Beauty & Wellness": ["Salon", "Spa", "Massage Therapist", "Esthetician"],
+      "Home Services": ["Plumbing", "HVAC", "Electrician", "Handyman"],
+      // Add more as needed
     };
 
-    function populateSubcategories() {
-      const industry = document.getElementById('industry').value;
-      const subcat = document.getElementById('subcategory');
-      subcat.innerHTML = '';
-      if (subcategories[industry]) {
-        subcategories[industry].forEach(sc => {
-          const option = document.createElement('option');
-          option.textContent = sc;
-          subcat.appendChild(option);
+    function updateSubcategories() {
+      const industry = document.getElementById("industry").value;
+      const subcategory = document.getElementById("subcategory");
+      subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
+
+      if (subcategoryOptions[industry]) {
+        subcategoryOptions[industry].forEach(option => {
+          const el = document.createElement("option");
+          el.value = option;
+          el.textContent = option;
+          subcategory.appendChild(el);
         });
       }
-    }
-
-    let rawData = [];
-    let headers = [];
-
-    function loadFile() {
-      const fileInput = document.getElementById('file');
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        renderHeaderInputs();
-      };
-      reader.readAsArrayBuffer(fileInput.files[0]);
-    }
-
-    function renderHeaderInputs() {
-      const container = document.getElementById('headerSection');
-      container.innerHTML = '<h3>Set Column Headers</h3>';
-      headers = rawData[0];
-      headers.forEach((_, idx) => {
-        const input = document.createElement('input');
-        input.placeholder = `Column ${idx + 1}`;
-        input.id = `headerInput${idx}`;
-        container.appendChild(input);
-        container.appendChild(document.createElement('br'));
-      });
-      const previewBtn = document.createElement('button');
-      previewBtn.textContent = "Preview Table";
-      previewBtn.className = "button";
-      previewBtn.onclick = generateTable;
-      container.appendChild(previewBtn);
-    }
-
-    function generateTable() {
-      const inputHeaders = [];
-      for (let i = 0; i < rawData[0].length; i++) {
-        inputHeaders.push(document.getElementById(`headerInput${i}`).value || `Column ${i + 1}`);
-      }
-
-      const tableData = rawData.slice(1).map(row => {
-        const obj = {};
-        inputHeaders.forEach((header, i) => {
-          obj[header] = row[i] || '';
-        });
-        return obj;
-      });
-
-      renderTable(inputHeaders, tableData);
-    }
-
-    function renderTable(headers, data) {
-      const container = document.getElementById('tableContainer');
-      const table = document.createElement('table');
-      const thead = table.insertRow();
-      headers.forEach(h => {
-        const th = document.createElement('th');
-        th.textContent = h;
-        thead.appendChild(th);
-      });
-
-      data.forEach(row => {
-        const tr = table.insertRow();
-        headers.forEach(h => {
-          const td = tr.insertCell();
-          td.textContent = row[h];
-        });
-      });
-
-      container.innerHTML = '';
-      container.appendChild(table);
-      document.getElementById('controls').style.display = 'block';
-
-      populateFilterSort(headers, data);
-      window.sheetData = { headers, data };
-    }
-
-    function populateFilterSort(headers, data) {
-      const filterColumn = document.getElementById('filterColumn');
-      const sortColumn = document.getElementById('sortColumn');
-      filterColumn.innerHTML = '';
-      sortColumn.innerHTML = '';
-      headers.forEach(h => {
-        const option1 = document.createElement('option');
-        option1.textContent = h;
-        const option2 = option1.cloneNode(true);
-        filterColumn.appendChild(option1);
-        sortColumn.appendChild(option2);
-      });
-    }
-
-    function applyFilter() {
-      const col = document.getElementById('filterColumn').value;
-      const val = document.getElementById('filterValue').value.toLowerCase();
-      const filtered = window.sheetData.data.filter(row =>
-        row[col].toString().toLowerCase().includes(val)
-      );
-      renderTable(window.sheetData.headers, filtered);
-    }
-
-    function sortTable() {
-      const col = document.getElementById('sortColumn').value;
-      const dir = document.getElementById('sortDirection').value;
-      const sorted = [...window.sheetData.data].sort((a, b) => {
-        const valA = a[col] || '';
-        const valB = b[col] || '';
-        return dir === 'asc'
-          ? valA.toString().localeCompare(valB)
-          : valB.toString().localeCompare(valA);
-      });
-      renderTable(window.sheetData.headers, sorted);
-    }
-
-    function downloadXLSX() {
-      const ws = XLSX.utils.json_to_sheet(window.sheetData.data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "SheetPilot");
-      XLSX.writeFile(wb, "sheetpilot_data.xlsx");
-    }
-
-    function downloadCSV() {
-      const ws = XLSX.utils.json_to_sheet(window.sheetData.data);
-      const csv = XLSX.utils.sheet_to_csv(ws);
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "sheetpilot_data.csv";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
     }
   </script>
 </body>
