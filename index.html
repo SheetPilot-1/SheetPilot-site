@@ -123,7 +123,7 @@
   <label for="fileUpload">Upload Your File</label>
   <input type="file" id="fileUpload" accept=".xlsx, .csv" />
 
-  <button class="button">Load File</button>
+<button class="button" onclick="triggerFileReload()">Load File</button>
 <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
   Use this to upload additional data to the current table.
 </p>
@@ -434,4 +434,15 @@
     container.appendChild(table);
     document.getElementById("tablePreview").style.display = "block";
   }
+  function triggerFileReload() {
+  const fileInput = document.getElementById('fileUpload');
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Please select a file first.");
+    return;
+  }
+
+  handleFile({ target: { files: [file] } });
+}
 </script>
