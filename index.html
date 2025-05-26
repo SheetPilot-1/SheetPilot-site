@@ -443,6 +443,35 @@
     return;
   }
 
-  handleFile({ target: { files: [file] } });
+  const append = confirm("Would you like to append this data to your current table?\nClick OK to append, Cancel to replace it.");
+  const reader = new FileReader();
+  reader.onload = function (evt) {
+    const data = new Uint8Array(evt.target.result);
+    const workbook = XLSX.read(data, { type: 'array' });
+    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+    const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+    if (json.length === 0) {
+      alert("Empty sheet.");
+      return;
+    }
+
+    const newHeaders = json[0];
+    const newData = json.slice(1).filter(row => row.join("").trim() !== "");
+
+    if (append) {
+      tableData = [...tableData, ...newData];
+    } else {
+      originalHeaders = newHeaders;
+      tableData = newData;
+    }
+
+    showHeaderMapping(originalHeaders);
+  };
+  reader.readAsArrayBuffer(file);
+
+  // Allow user to re-upload same file
+  fileInput.value = "";
+ document.getElementById('fileUpload').value = "";
 }
 </script>
