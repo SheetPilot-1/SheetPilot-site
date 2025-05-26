@@ -197,3 +197,185 @@
   </script>
 </body>
 </html>
+
+<!-- Phase 2: Header Mapping + Preview -->
+<div id="headerMappingSection" style="display: none; margin-top: 40px;">
+  <h2>Set Column Headers</h2>
+  <div id="headerFields"></div>
+  <button class="button" onclick="previewTable()">Preview Table</button>
+</div>
+
+<div id="tablePreview" style="margin-top: 40px; display: none;">
+  <h2>Preview Table</h2>
+  <div id="previewContainer" style="overflow-x: auto;"></div>
+</div>
+
+<!-- Load XLSX library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+<script>
+  const suggestedHeaders = {
+    "Small Business": ["Customer Name", "Phone", "Email", "Service Type", "Amount", "Date", "Notes"],
+    "Real Estate": ["Client Name", "Property Address", "Agent", "Contract Type", "Closing Date", "Commission"],
+    "Healthcare": ["Patient Name", "DOB", "Service Date", "Procedure", "Billing Code", "Amount"],
+    "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"],
+    // Add more as needed
+  };
+
+  let originalHeaders = [];
+  let tableData = [];
+  let industryPicked = "";
+
+  document.getElementById('fileUpload').addEventListener('change', handleFile);
+  document.getElementById('industry').addEventListener('change', function() {
+    industryPicked = this.value;
+  });
+
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      const data = new Uint8Array(evt.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+      if (json.length === 0) {
+        alert("Empty sheet.");
+        return;
+      }
+
+      originalHeaders = json[0];
+      tableData = json.slice(1).filter(row => row.join("").trim() !== "");
+      showHeaderMapping(originalHeaders);
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  function showHeaderMapping(headers) {
+    const container = document.getElementById("headerFields");
+    container.innerHTML = "";
+
+    const suggestions = suggestedHeaders[industryPicked] || [];
+
+    headers.forEach((header, i) => {
+      const wrapper = document.createElement("div");
+      wrapper.style.marginBottom = "15px";
+
+      const label = document.createElement("label");
+      label.textContent = `Column ${i + 1} (${header || "Unnamed"})`;
+
+      const select = document.createElement("select");
+      select.style.width = "100%";
+      select.style.padding = "10px";
+      select.style.borderRadius = "6px";
+      select.dataset.index = i;
+
+      const blank = document.createElement("option");
+      blank.value = "";
+      blank.textContent = "-- Choose or type your own --";
+      select.appendChild(blank);
+
+      suggestions.forEach(s => {
+        const option = document.createElement("option");
+        option.value = s;
+        option.textContent = s;
+        select.appendChild(option);
+      });
+
+      const manualInput = document.createElement("input");
+      manualInput.type = "text";
+      manualInput.placeholder = "Or enter a custom label";
+      manualInput.style.marginTop = "6px";
+      manualInput.style.width = "100%";
+      manualInput.dataset.index = i;
+
+      const includeBox = document.createElement("input");
+      includeBox.type = "checkbox";
+      includeBox.checked = true;
+      includeBox.id = `include-${i}`;
+
+      const includeLabel = document.createElement("label");
+      includeLabel.textContent = " Include this column";
+      includeLabel.style.marginLeft = "6px";
+
+      wrapper.appendChild(label);
+      wrapper.appendChild(select);
+      wrapper.appendChild(manualInput);
+      wrapper.appendChild(includeBox);
+      wrapper.appendChild(includeLabel);
+
+      container.appendChild(wrapper);
+    });
+
+    document.getElementById("headerMappingSection").style.display = "block";
+  }
+
+  function previewTable() {
+    const selects = document.querySelectorAll("#headerFields select");
+    const inputs = document.querySelectorAll("#headerFields input[type='text']");
+    const checkboxes = document.querySelectorAll("#headerFields input[type='checkbox']");
+
+    const headers = [];
+    const includedIndexes = [];
+
+    selects.forEach((select, i) => {
+      const manualValue = inputs[i].value.trim();
+      const useColumn = checkboxes[i].checked;
+
+      if (!useColumn) return;
+
+      includedIndexes.push(i);
+      headers.push(manualValue || select.value || `Column ${i + 1}`);
+    });
+
+    const table = document.createElement("table");
+    table.style.width = "100%";
+    table.style.borderCollapse = "collapse";
+    table.style.backgroundColor = "#1C1C2A";
+    table.style.color = "#F5F5DC";
+    table.style.fontSize = "0.95em";
+
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+
+    headers.forEach(h => {
+      const th = document.createElement("th");
+      th.textContent = h;
+      th.style.backgroundColor = "#00E5FF";
+      th.style.color = "#000";
+      th.style.padding = "10px";
+      headerRow.appendChild(th);
+    });
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+
+    tableData.forEach((row, rIndex) => {
+      const tr = document.createElement("tr");
+      tr.style.backgroundColor = rIndex % 2 === 0 ? "#232338" : "#1C1C2A";
+
+      includedIndexes.forEach(i => {
+        const td = document.createElement("td");
+        td.textContent = row[i] ?? "";
+        td.style.padding = "8px";
+        td.style.wordBreak = "break-word";
+        td.style.borderTop = "1px solid #444";
+        tr.appendChild(td);
+      });
+
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+
+    const container = document.getElementById("previewContainer");
+    container.innerHTML = "";
+    container.appendChild(table);
+    document.getElementById("tablePreview").style.display = "block";
+  }
+</script>
