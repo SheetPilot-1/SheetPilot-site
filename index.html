@@ -202,8 +202,8 @@
 <div id="headerMappingSection" style="display: none; margin-top: 40px;">
   <h2>Set Column Headers</h2>
   <div id="headerFields"></div>
+  <p style="font-size: 0.9em; color: #aaa;">Tip: If you make changes, click "Preview Table" again to see the update.</p>
   <button class="button" onclick="previewTable()">Preview Table</button>
-  <p style="font-size: 0.85em; color: gray; margin-top: 6px;">Make any changes above, then click "Preview Table" again to see them reflected below.</p>
 </div>
 
 <div id="tablePreview" style="margin-top: 40px; display: none;">
@@ -220,6 +220,8 @@
     "Real Estate": ["Client Name", "Property Address", "Agent", "Contract Type", "Closing Date", "Commission"],
     "Healthcare": ["Patient Name", "DOB", "Service Date", "Procedure", "Billing Code", "Amount"],
     "Construction": ["Project", "Location", "Foreman", "Start Date", "End Date", "Total Cost"],
+    "Publishing": ["Author", "Title", "Genre", "Word Count", "Status", "Due Date"],
+    "Retail": ["Product", "SKU", "Category", "Price", "Stock", "Reorder Level"]
     // Add more as needed
   };
 
@@ -301,8 +303,9 @@
       const includeLabel = document.createElement("label");
       includeLabel.textContent = " Include this column";
       includeLabel.style.marginLeft = "6px";
-      includeLabel.style.fontSize = "0.9em";
+      includeLabel.style.display = "inline-block";
       includeLabel.style.color = "#ccc";
+      includeLabel.style.fontSize = "0.9em";
 
       wrapper.appendChild(label);
       wrapper.appendChild(select);
