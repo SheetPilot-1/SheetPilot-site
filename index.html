@@ -432,6 +432,8 @@
     container.innerHTML = "";
     container.appendChild(table);
     document.getElementById("tablePreview").style.display = "block";
+    document.getElementById("cleanupSection").style.display = "block";
+    populateFilterDropdowns(headers); // This ensures dropdowns pull in your current columns
   }
   function triggerFileReload() {
   const fileInput = document.getElementById('fileUpload');
