@@ -474,3 +474,166 @@
  document.getElementById('fileUpload').value = "";
 }
 </script>
+
+<!-- Phase 3: Sorting & Cleanup -->
+<div id="cleanupSection" style="display: none; margin-top: 40px;">
+  <h2>Clean Up & Sort Your Data</h2>
+
+  <div style="margin-bottom: 20px;">
+    <label><input type="checkbox" id="removeBlanks"> Remove empty rows</label>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <label>
+      Keep only rows where
+      <select id="filledColumn" style="margin-left: 5px; padding: 6px; border-radius: 6px;">
+        <option value="">-- Select Column --</option>
+      </select>
+      is filled in
+    </label>
+  </div>
+
+  <div style="margin-bottom: 20px;">
+    <label>
+      Sort by
+      <select id="sortColumn" style="margin-left: 5px; padding: 6px; border-radius: 6px;">
+        <option value="">-- Select Column --</option>
+      </select>
+      <select id="sortDirection" style="margin-left: 5px; padding: 6px; border-radius: 6px;">
+        <option value="asc">A–Z</option>
+        <option value="desc">Z–A</option>
+      </select>
+    </label>
+  </div>
+
+  <button class="button" onclick="applySimpleFilters()">Preview Cleaned Table</button>
+
+  <p style="color: gray; font-size: 0.9em; margin-top: 10px;">
+    These filters are optional — use them to organize or clean your data before downloading.
+  </p>
+
+  <div style="margin-top: 30px;">
+    <label style="font-weight: bold;">Need more control?</label>
+    <button class="button" onclick="toggleAdvancedFilters()">Show Advanced Options</button>
+    <div id="advancedFilters" style="display: none; margin-top: 20px;">
+      <p style="color: gray;">Advanced filtering will go here...</p>
+    </div>
+  </div>
+
+  <div id="cleanPreviewContainer" style="margin-top: 40px;"></div>
+</div>
+
+<script>
+  function populateFilterDropdowns(headers) {
+    const filledColumn = document.getElementById("filledColumn");
+    const sortColumn = document.getElementById("sortColumn");
+
+    filledColumn.innerHTML = '<option value="">-- Select Column --</option>';
+    sortColumn.innerHTML = '<option value="">-- Select Column --</option>';
+
+    headers.forEach(h => {
+      const opt1 = document.createElement("option");
+      const opt2 = document.createElement("option");
+      opt1.textContent = opt1.value = h;
+      opt2.textContent = opt2.value = h;
+      filledColumn.appendChild(opt1);
+      sortColumn.appendChild(opt2);
+    });
+  }
+
+  function applySimpleFilters() {
+    let data = [...tableData]; // use original tableData from Phase 2
+    const headers = [];
+
+    const selects = document.querySelectorAll("#headerFields select");
+    const inputs = document.querySelectorAll("#headerFields input[type='text']");
+    const checkboxes = document.querySelectorAll("#headerFields input[type='checkbox']");
+
+    const includedIndexes = [];
+
+    selects.forEach((select, i) => {
+      const manualValue = inputs[i].value.trim();
+      const useColumn = checkboxes[i].checked;
+      if (!useColumn) return;
+      includedIndexes.push(i);
+      headers.push(manualValue || select.value || `Column ${i + 1}`);
+    });
+
+    // Remove blanks
+    if (document.getElementById("removeBlanks").checked) {
+      data = data.filter(row => row.join("").trim() !== "");
+    }
+
+    // Filter by filled column
+    const filled = document.getElementById("filledColumn").value;
+    if (filled) {
+      const idx = headers.indexOf(filled);
+      if (idx !== -1) {
+        data = data.filter(row => (row[includedIndexes[idx]] || "").toString().trim() !== "");
+      }
+    }
+
+    // Sort by column
+    const sortCol = document.getElementById("sortColumn").value;
+    const sortDir = document.getElementById("sortDirection").value;
+    if (sortCol) {
+      const idx = headers.indexOf(sortCol);
+      if (idx !== -1) {
+        data.sort((a, b) => {
+          const valA = (a[includedIndexes[idx]] || "").toString().toLowerCase();
+          const valB = (b[includedIndexes[idx]] || "").toString().toLowerCase();
+          return sortDir === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+        });
+      }
+    }
+
+    renderCleanedTable(headers, data, includedIndexes);
+  }
+
+  function renderCleanedTable(headers, rows, indexes) {
+    const table = document.createElement("table");
+    table.style.width = "100%";
+    table.style.borderCollapse = "collapse";
+    table.style.backgroundColor = "#1C1C2A";
+    table.style.color = "#F5F5DC";
+    table.style.fontSize = "0.95em";
+
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+    headers.forEach(h => {
+      const th = document.createElement("th");
+      th.textContent = h;
+      th.style.backgroundColor = "#00E5FF";
+      th.style.color = "#000";
+      th.style.padding = "10px";
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    rows.forEach((row, rIndex) => {
+      const tr = document.createElement("tr");
+      tr.style.backgroundColor = rIndex % 2 === 0 ? "#232338" : "#1C1C2A";
+      indexes.forEach(i => {
+        const td = document.createElement("td");
+        td.textContent = row[i] ?? "";
+        td.style.padding = "8px";
+        td.style.wordBreak = "break-word";
+        td.style.borderTop = "1px solid #444";
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+    const container = document.getElementById("cleanPreviewContainer");
+    container.innerHTML = "";
+    container.appendChild(table);
+  }
+
+  function toggleAdvancedFilters() {
+    const advanced = document.getElementById("advancedFilters");
+    advanced.style.display = advanced.style.display === "none" ? "block" : "none";
+  }
+</script>
