@@ -13,21 +13,21 @@
     }
 
     h2 {
-      font-size: 1.8em;
-      margin-bottom: 10px;
+      font-size: 2em;
+      margin-bottom: 25px;
       color: #F5F5DC;
     }
 
     label {
       font-weight: bold;
-      margin-top: 20px;
+      margin-top: 25px;
       display: block;
     }
 
-    select, input[type="text"] {
+    select, input[type="text"], input[type="file"] {
       width: 100%;
       max-width: 400px;
-      padding: 10px;
+      padding: 12px;
       margin-top: 6px;
       margin-bottom: 15px;
       border-radius: 6px;
@@ -46,10 +46,17 @@
       font-size: 1rem;
       cursor: pointer;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+      margin-top: 10px;
     }
 
     .button:hover {
       background-color: #00cce0;
+    }
+
+    .note {
+      font-size: 0.9em;
+      color: gray;
+      margin-top: 5px;
     }
   </style>
 </head>
@@ -71,6 +78,12 @@
 
   <label for="manualSubcategory">Or enter subcategory manually:</label>
   <input type="text" id="manualSubcategory" placeholder="Custom Subcategory" />
+
+  <label for="fileUpload">Upload Your File:</label>
+  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
+
+  <button class="button" onclick="alert('This button will load your file and proceed to Phase 2')">Load File</button>
+  <p class="note">Use this to upload additional data to the current table.</p>
 
   <script>
     const industrySubcategories = {
