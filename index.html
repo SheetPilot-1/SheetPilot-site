@@ -169,3 +169,77 @@
   </script>
 </body>
 </html>
+
+<script>
+  const requiredLabels = [
+    "Date", "Agent Name", "Agent Type", "Pre-Tax", "Product",
+    "Policy Number", "Contract Type", "Promo", "Program", "Leader"
+  ];
+
+  const previewArea = document.createElement("div");
+  previewArea.id = "previewArea";
+  previewArea.style.marginTop = "30px";
+  document.body.appendChild(previewArea);
+
+  function handleFile() {
+    const fileInput = document.getElementById("fileUpload");
+    const file = fileInput.files[0];
+    if (!file) return alert("Please upload a file first.");
+
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const content = e.target.result;
+      const rows = content.split(/\r\n|\n/).map(r => r.split(","));
+      generatePreview(rows);
+    };
+    reader.readAsText(file);
+  }
+
+  function generatePreview(rows) {
+    const previewHTML = [];
+
+    if (rows.length === 0) {
+      previewArea.innerHTML = "<p>No data found in file.</p>";
+      return;
+    }
+
+    previewHTML.push('<div style="overflow-x: auto;"><table style="border-collapse: collapse; width: 100%; background: #E0F0FF;">');
+    previewHTML.push('<tr>');
+
+    // Header Row
+    rows[0].forEach(header => {
+      previewHTML.push(`<th style="padding: 12px; border: 1px solid #ccc; background-color: #003366; color: #FFF5CC;">${header}</th>`);
+    });
+    previewHTML.push('</tr>');
+
+    // Dropdown Mapping Row
+    previewHTML.push('<tr>');
+    rows[0].forEach((_, colIndex) => {
+      const dropdown = generateDropdown(colIndex);
+      previewHTML.push(`<td style="border: 1px solid #ccc; padding: 6px;">${dropdown}</td>`);
+    });
+    previewHTML.push('</tr>');
+
+    // First 3 data rows
+    for (let i = 1; i < Math.min(4, rows.length); i++) {
+      previewHTML.push('<tr>');
+      rows[i].forEach(cell => {
+        previewHTML.push(`<td style="padding: 8px; border: 1px solid #ccc;">${cell}</td>`);
+      });
+      previewHTML.push('</tr>');
+    }
+
+    previewHTML.push('</table></div>');
+    previewArea.innerHTML = previewHTML.join("");
+  }
+
+  function generateDropdown(index) {
+    let dropdown = `<select data-col="${index}" style="width: 100%; padding: 8px; border-radius: 6px;">`;
+    dropdown += `<option value="">-- Label Column --</option>`;
+    requiredLabels.forEach(label => {
+      dropdown += `<option value="${label}">${label}</option>`;
+    });
+    dropdown += `</select>`;
+    return dropdown;
+  }
+</script>
