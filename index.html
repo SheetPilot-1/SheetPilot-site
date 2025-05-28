@@ -524,71 +524,65 @@ document.getElementById("cleanSortSection").style.display = "block";
 </div>
 <script>
   function populateFilterDropdowns(headers) {
-    const filledColumn = document.getElementById("filledColumn");
-    const sortColumn = document.getElementById("sortColumn");
+  const requiredColumn = document.getElementById("requiredColumn");
+  const sortColumn = document.getElementById("sortColumn");
 
-    filledColumn.innerHTML = '<option value="">-- Select Column --</option>';
-    sortColumn.innerHTML = '<option value="">-- Select Column --</option>';
+  requiredColumn.innerHTML = '<option value="">-- Select Column --</option>';
+  sortColumn.innerHTML = '<option value="">-- Select Column --</option>';
 
-    headers.forEach(h => {
-      const opt1 = document.createElement("option");
-      const opt2 = document.createElement("option");
-      opt1.textContent = opt1.value = h;
-      opt2.textContent = opt2.value = h;
-      filledColumn.appendChild(opt1);
-      sortColumn.appendChild(opt2);
-    });
+  headers.forEach(h => {
+    const opt1 = document.createElement("option");
+    const opt2 = document.createElement("option");
+    opt1.textContent = opt1.value = h;
+    opt2.textContent = opt2.value = h;
+    requiredColumn.appendChild(opt1);
+    sortColumn.appendChild(opt2);
+  });
+}
+  function applyCleanAndSort() {
+  let data = [...tableData];
+  const selects = document.querySelectorAll("#headerFields select");
+  const inputs = document.querySelectorAll("#headerFields input[type='text']");
+  const checkboxes = document.querySelectorAll("#headerFields input[type='checkbox']");
+
+  const headers = [];
+  const includedIndexes = [];
+
+  selects.forEach((select, i) => {
+    const manualValue = inputs[i].value.trim();
+    const useColumn = checkboxes[i].checked;
+    if (!useColumn) return;
+    includedIndexes.push(i);
+    headers.push(manualValue || select.value || `Column ${i + 1}`);
+  });
+
+  if (document.getElementById("removeEmpty").checked) {
+    data = data.filter(row => row.join("").trim() !== "");
   }
 
-  function applySimpleFilters() {
-    let data = [...tableData]; // use original tableData from Phase 2
-    const headers = [];
-
-    const selects = document.querySelectorAll("#headerFields select");
-    const inputs = document.querySelectorAll("#headerFields input[type='text']");
-    const checkboxes = document.querySelectorAll("#headerFields input[type='checkbox']");
-
-    const includedIndexes = [];
-
-    selects.forEach((select, i) => {
-      const manualValue = inputs[i].value.trim();
-      const useColumn = checkboxes[i].checked;
-      if (!useColumn) return;
-      includedIndexes.push(i);
-      headers.push(manualValue || select.value || `Column ${i + 1}`);
-    });
-
-    // Remove blanks
-    if (document.getElementById("removeBlanks").checked) {
-      data = data.filter(row => row.join("").trim() !== "");
+  const required = document.getElementById("requiredColumn").value;
+  if (required) {
+    const idx = headers.indexOf(required);
+    if (idx !== -1) {
+      data = data.filter(row => (row[includedIndexes[idx]] || "").toString().trim() !== "");
     }
-
-    // Filter by filled column
-    const filled = document.getElementById("filledColumn").value;
-    if (filled) {
-      const idx = headers.indexOf(filled);
-      if (idx !== -1) {
-        data = data.filter(row => (row[includedIndexes[idx]] || "").toString().trim() !== "");
-      }
-    }
-
-    // Sort by column
-    const sortCol = document.getElementById("sortColumn").value;
-    const sortDir = document.getElementById("sortDirection").value;
-    if (sortCol) {
-      const idx = headers.indexOf(sortCol);
-      if (idx !== -1) {
-        data.sort((a, b) => {
-          const valA = (a[includedIndexes[idx]] || "").toString().toLowerCase();
-          const valB = (b[includedIndexes[idx]] || "").toString().toLowerCase();
-          return sortDir === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
-        });
-      }
-    }
-
-    renderCleanedTable(headers, data, includedIndexes);
   }
 
+  const sortCol = document.getElementById("sortColumn").value;
+  const sortDir = document.getElementById("sortDirection").value;
+  if (sortCol) {
+    const idx = headers.indexOf(sortCol);
+    if (idx !== -1) {
+      data.sort((a, b) => {
+        const valA = (a[includedIndexes[idx]] || "").toString().toLowerCase();
+        const valB = (b[includedIndexes[idx]] || "").toString().toLowerCase();
+        return sortDir === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
+      });
+    }
+  }
+
+  renderCleanedTable(headers, data, includedIndexes);
+}
   function renderCleanedTable(headers, rows, indexes) {
     const table = document.createElement("table");
     table.style.width = "100%";
