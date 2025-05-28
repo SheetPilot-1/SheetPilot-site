@@ -163,33 +163,54 @@
       }
     }
   </script>
-</body>
-</html>
-
-<!-- Phase 2: Header Mapping -->
+  <!-- Phase 2: Header Mapping + Preview Table -->
 <div id="headerMappingSection" style="display: none; margin-top: 40px;">
-  <h2 style="color: #F5F5DC;">Set Column Headers</h2>
+  <h2 style="color:#F5F5DC;">Set Column Headers</h2>
   <div id="headerFields"></div>
-
   <button class="button" onclick="resetMapping()">Reset Mapping</button>
-  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
-    Use this to reset the header mapping if you change industry or subcategory.
-  </p>
-
-  <button class="button" onclick="previewTable()">Preview Table</button>
-  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
-    Tip: If you change labels or uncheck columns, click “Preview Table” again to refresh the preview.
-  </p>
+  <button class="button" id="previewButton" onclick="previewTable()" style="display: none;">Preview Table</button>
 </div>
 
-<!-- Preview Section -->
-<div id="tablePreview" style="display: none; margin-top: 40px;">
-  <h2 style="color: #F5F5DC;">Preview Table</h2>
+<div id="tablePreview" style="margin-top: 40px; display: none;">
+  <h2 style="color:#F5F5DC;">Preview Table</h2>
   <div id="previewContainer" style="overflow-x: auto;"></div>
 </div>
+
+<!-- XLSX Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script>
   let originalHeaders = [];
   let tableData = [];
+
+  document.getElementById("fileUpload").addEventListener("change", handleFile);
+
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function (evt) {
+      const data = new Uint8Array(evt.target.result);
+      const workbook = XLSX.read(data, { type: 'array' });
+      const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+      const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+      if (json.length === 0) {
+        alert("Empty sheet.");
+        return;
+      }
+
+      const newHeaders = json[0];
+      const newRows = json.slice(1).filter(row => row.join("").trim() !== "");
+
+      originalHeaders = newHeaders;
+      tableData = newRows;
+
+      showHeaderMapping(originalHeaders);
+    };
+    reader.readAsArrayBuffer(file);
+  }
 
   function showHeaderMapping(headers) {
     const container = document.getElementById("headerFields");
@@ -215,7 +236,8 @@
       select.appendChild(defaultOption);
 
       const suggestions = [
-        "Client", "Product Name", "Service", "Amount", "Price", "Agent", "Date", "Status", "Commission"
+        "Client", "Product Name", "Service", "Amount", "Price", "Agent",
+        "Date", "Status", "Commission", "Phone", "Email", "Location"
       ];
       suggestions.forEach(text => {
         const option = document.createElement("option");
@@ -252,6 +274,7 @@
     });
 
     document.getElementById("headerMappingSection").style.display = "block";
+    document.getElementById("previewButton").style.display = "inline-block";
   }
 
   function previewTable() {
@@ -323,3 +346,6 @@
     tableData = [];
   }
 </script>
+</body>
+</html>
+
