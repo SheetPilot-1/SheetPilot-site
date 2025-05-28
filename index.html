@@ -1,114 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>SheetPilot</title>
-  <style>
-    body {
-      background-color: #1C1C2A;
-      color: #F5F5DC;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 30px;
-      margin: 0;
-    }
-
-    h1, h2 {
-      font-size: 2em;
-      color: #F5F5DC;
-    }
-
-    label {
-      font-weight: bold;
-      margin-top: 20px;
-      display: block;
-    }
-
-    select, input[type="text"], input[type="file"] {
-      width: 100%;
-      max-width: 400px;
-      padding: 10px;
-      margin-top: 6px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1em;
-      box-sizing: border-box;
-    }
-
-    button {
-      background-color: #00E5FF;
-      color: #000;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-weight: bold;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-
-    button:hover {
-      background-color: #00CCE0;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th {
-      background-color: #00E5FF;
-      color: #000;
-      padding: 10px;
-    }
-
-    td {
-      padding: 8px;
-      border-top: 1px solid #444;
-    }
-
-    tr:nth-child(even) {
-      background-color: #232338;
-    }
-
-    tr:nth-child(odd) {
-      background-color: #1C1C2A;
-    }
-
-    .filter-input {
-      padding: 8px;
-      margin-bottom: 10px;
-      margin-right: 10px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1em;
-      width: 180px;
-    }
-  </style>
-</head>
-<body>
-  <h1>SheetPilot</h1>
+<!-- PHASE 1: Industry, Subcategory, File Upload -->
+<div style="padding: 30px; background-color: #1C1C2A; color: #F5F5DC; font-family: 'Segoe UI', sans-serif;">
+  <h1 style="font-size: 2.5em; margin-bottom: 20px;">SheetPilot</h1>
 
   <label for="industry">Select Industry:</label>
-  <select id="industry" onchange="updateSubcategories()">
-    <option value="">-- Choose an Industry --</option>
-    <option>Retail</option>
+  <select id="industry" onchange="updateSubcategories()" style="width: 100%; max-width: 380px; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+    <option value="">-- Choose Industry --</option>
+    <option>Small Business</option>
     <option>Transportation</option>
-    <option>Finance</option>
-    <option>Education</option>
     <option>Healthcare</option>
     <option>Construction</option>
-    <option>Small Business</option>
-    <option>Consulting</option>
-    <option>Publishing</option>
     <option>Real Estate</option>
+    <option>Retail</option>
+    <option>Finance</option>
+    <option>Education</option>
     <option>Legal</option>
     <option>Hospitality</option>
     <option>Manufacturing</option>
+    <option>Cleaning Services</option>
+    <option>Beauty & Wellness</option>
+    <option>Consulting</option>
     <option>Insurance</option>
+    <option>Home Services</option>
     <option>Marketing & Advertising</option>
+    <option>Non-Profit</option>
     <option>Entertainment</option>
+    <option>Agriculture</option>
     <option>Technology</option>
     <option>Food & Beverage</option>
     <option>Fitness</option>
@@ -118,6 +34,8 @@
     <option>Plumbing</option>
     <option>Electrician</option>
     <option>Auto Repair</option>
+    <option>Moving & Storage</option>
+    <option>Tutoring</option>
     <option>Security Services</option>
     <option>Courier Services</option>
     <option>Barber/Salon</option>
@@ -126,6 +44,7 @@
     <option>Accounting</option>
     <option>Veterinary</option>
     <option>HR Services</option>
+    <option>Publishing</option>
     <option>Travel Services</option>
     <option>Copywriting</option>
     <option>Interior Design</option>
@@ -138,269 +57,402 @@
   </select>
 
   <label for="subcategory">Subcategory:</label>
-  <select id="subcategory">
-    <option value="">-- Select Industry First --</option>
+  <select id="subcategory" style="width: 100%; max-width: 280px; padding: 12px; border-radius: 8px; margin-bottom: 10px;">
+    <option value="">-- Choose Subcategory --</option>
   </select>
+  <input type="text" id="customSubcategory" placeholder="Or type a custom subcategory" style="width: 100%; max-width: 380px; padding: 12px; margin-bottom: 20px; border-radius: 8px;" />
 
-  <input type="text" id="customIndustry" placeholder="Or type a custom subcategory" />
-
-  <label for="fileUpload">Upload File:</label>
-  <input type="file" id="fileUpload" />
-  <button onclick="triggerFileReload()">Load File</button>
+  <label for="fileUpload">Upload Your File:</label>
+  <input type="file" id="fileUpload" accept=".xlsx, .csv" style="margin-bottom: 10px;" />
+  <button onclick="triggerFileReload()" style="background-color: #00E5FF; color: #000; padding: 12px 20px; font-weight: bold; border-radius: 10px; border: none;">Load File</button>
 
   <p style="color: gray; font-size: 0.9em;">Use this to upload additional data to the current table.</p>
+</div>
 
-  <div id="headerMappingSection" style="display:none;">
-    <h2>Set Column Headers</h2>
-    <div id="headerFields"></div>
-    <button onclick="resetMapping()">Reset Mapping</button>
-    <button onclick="previewTable()">Preview Table</button>
-  </div>
+<script>
+  const subcategoryOptions = {
+    "Small Business": ["Lawn Care", "Cleaning Services", "Consulting"],
+    "Transportation": ["Logistics", "Trucking", "Fleet Management", "Dispatcher"],
+    "Healthcare": ["Home Care", "Nursing", "Dental Office", "Physical Therapy"],
+    "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
+    "Real Estate": ["Property Manager", "Agent", "Broker", "Leasing"],
+    "Retail": ["Clothing", "Electronics", "Convenience Store"],
+    "Finance": ["Bookkeeping", "CPA", "Advisory Services"],
+    "Education": ["Tutor", "Private Instructor", "Online School"],
+    "Legal": ["Attorney", "Paralegal", "Notary"],
+    "Hospitality": ["Hotel", "BnB Host", "Event Host"],
+    "Manufacturing": ["Parts", "Assembly", "Private Label"],
+    "Cleaning Services": ["Residential", "Commercial", "Move-out"],
+    "Beauty & Wellness": ["Salon", "Spa", "Massage Therapist", "Esthetician"],
+    "Consulting": ["Business Strategy", "Sales Training", "Operations"],
+    "Insurance": ["Agent", "Broker", "Claims Adjuster"],
+    "Home Services": ["Plumbing", "HVAC", "Electrician", "Carpentry"],
+    "Marketing & Advertising": ["SEO", "Social Media", "Graphic Design"],
+    "Non-Profit": ["Community Org", "Faith-based", "Foundation"],
+    "Entertainment": ["Performer", "DJ", "Event Production"],
+    "Agriculture": ["Farming", "Produce", "Equipment"],
+    "Technology": ["Web Dev", "App Dev", "IT Support"],
+    "Food & Beverage": ["Catering", "Food Truck", "Bakery"],
+    "Fitness": ["Personal Trainer", "Yoga", "Gym Owner"],
+    "Childcare": ["Babysitting", "Daycare", "After School"],
+    "Landscaping": ["Maintenance", "Design", "Tree Service"],
+    "E-commerce": ["Dropshipping", "Reseller", "Print-on-Demand"],
+    "Plumbing": ["Residential", "Commercial"],
+    "Electrician": ["Industrial", "Residential"],
+    "Auto Repair": ["Mobile Mechanic", "Garage"],
+    "Moving & Storage": ["Movers", "U-Haul Operator"],
+    "Tutoring": ["K–12", "College Prep", "Test Prep"],
+    "Security Services": ["Patrol", "Alarm Setup", "Event Security"],
+    "Courier Services": ["Same-day", "Medical Courier", "Fleet"],
+    "Barber/Salon": ["Barber", "Stylist", "Color Specialist"],
+    "Photography": ["Wedding", "Portrait", "Product"],
+    "Event Planning": ["Weddings", "Corporate Events", "Birthdays"],
+    "Accounting": ["Tax Prep", "Small Business", "Freelance"],
+    "Veterinary": ["Clinic", "Mobile Vet"],
+    "HR Services": ["Recruiting", "Onboarding", "Benefits"],
+    "Publishing": ["Blog", "Magazine", "Self-Publishing"],
+    "Travel Services": ["Travel Agent", "Group Tours"],
+    "Copywriting": ["Marketing", "Web", "Brand"],
+    "Interior Design": ["Residential", "Commercial"],
+    "IT Support": ["Remote", "On-site", "Helpdesk"],
+    "Printing Services": ["Digital", "Signage", "Labels"],
+    "Pet Grooming": ["Mobile Grooming", "Salon"],
+    "Roofing": ["Installation", "Repair"],
+    "HVAC": ["Installation", "Maintenance"],
+    "Painting": ["Interior", "Exterior"]
+  };
 
-  <div id="simpleFilters" style="display:none; margin-top: 20px;">
-    <h2>Simple Filters</h2>
-    <div id="filterInputs"></div>
-  </div>
+  function updateSubcategories() {
+    const industry = document.getElementById("industry").value;
+    const subcat = document.getElementById("subcategory");
+    subcat.innerHTML = '<option value="">-- Choose Subcategory --</option>';
 
-  <div id="tablePreview" style="display:none;">
-    <h2>Preview Table</h2>
-    <div id="previewContainer"></div>
-  </div>
+    if (subcategoryOptions[industry]) {
+      subcategoryOptions[industry].forEach(option => {
+        const opt = document.createElement("option");
+        opt.value = option;
+        opt.textContent = option;
+        subcat.appendChild(opt);
+      });
+    }
+  }
+</script>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <script>
-    const subcategoryOptions = {
-      "Retail": ["Clothing", "Electronics", "Convenience Store"],
-      "Transportation": ["Trucking", "Fleet Management"],
-      "Finance": ["Bookkeeping", "CPA", "Investments"],
-      "Education": ["Tutor", "Private Instructor", "School Admin"],
-      "Healthcare": ["Nursing", "Dental", "Home Health"],
-      "Construction": ["Residential", "Commercial", "Remodeling"],
-      "Small Business": ["Lawn Care", "Cleaning", "Freelance"]
-    };
+<!-- PHASE 2: Column Mapping + Table Preview -->
+<div id="headerMappingSection" style="display: none; margin-top: 40px;">
+  <h2 style="color: #F5F5DC;">Set Column Headers</h2>
+  <div id="headerFields"></div>
 
-    const suggestedHeaders = {
-      "Retail": ["Product Name", "SKU", "Price", "Quantity", "Category"],
-      "Finance": ["Client", "Account Type", "Balance", "Transaction Date", "Amount"],
-      "Transportation": ["Driver", "Vehicle", "Route", "Date", "Distance"]
-    };
+  <button class="button" onclick="resetMapping()">Reset Mapping</button>
+  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
+    Use this to reset the header mapping if you change your category.
+  </p>
 
-    let originalHeaders = [];
-    let tableData = [];
-    let industryPicked = "";
+  <button class="button" onclick="previewTable()">Preview Table</button>
+  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
+    Tip: If you uncheck or change any column headers, click “Preview Table” again to refresh the table below.
+  </p>
+</div>
 
-    document.getElementById('industry').addEventListener('change', function () {
-      industryPicked = this.value;
-      updateSubcategories();
+<div id="tablePreview" style="margin-top: 40px; display: none;">
+  <h2 style="color: #F5F5DC;">Preview Table</h2>
+  <div id="previewContainer" style="overflow-x: auto;"></div>
+</div>
+
+<script>
+  const suggestedHeaders = {
+    "Small Business": ["Customer Name", "Phone", "Email", "Service Type", "Amount", "Date", "Notes"],
+    "Retail": ["Product Name", "SKU", "Price", "Quantity", "Category"],
+    "Finance": ["Client", "Account Type", "Balance", "Transaction Date", "Amount"],
+    "Healthcare": ["Patient Name", "DOB", "Service Date", "Procedure", "Billing Code", "Amount"],
+    "Transportation": ["Driver", "Vehicle", "Route", "Date", "Distance"],
+    // You can expand this with more mapped suggestions per industry as needed
+  };
+
+  let originalHeaders = [];
+  let tableData = [];
+  let industryPicked = "";
+
+  function resetMapping() {
+    document.getElementById("headerMappingSection").style.display = "none";
+    document.getElementById("tablePreview").style.display = "none";
+    document.getElementById("previewContainer").innerHTML = "";
+    document.getElementById("headerFields").innerHTML = "";
+    originalHeaders = [];
+    tableData = [];
+  }
+
+  function showHeaderMapping(headers) {
+    const container = document.getElementById("headerFields");
+    container.innerHTML = "";
+
+    const suggestions = suggestedHeaders[industryPicked] || [];
+
+    headers.forEach((header, i) => {
+      const wrapper = document.createElement("div");
+      wrapper.style.marginBottom = "15px";
+
+      const label = document.createElement("label");
+      label.textContent = `Column ${i + 1}`;
+      label.style.display = "block";
+      label.style.marginBottom = "5px";
+
+      const select = document.createElement("select");
+      select.style.width = "100%";
+      select.style.padding = "10px";
+      select.style.borderRadius = "6px";
+      select.dataset.index = i;
+
+      const blank = document.createElement("option");
+      blank.value = "";
+      blank.textContent = "-- Choose or type your own --";
+      select.appendChild(blank);
+
+      suggestions.forEach(s => {
+        const option = document.createElement("option");
+        option.value = s;
+        option.textContent = s;
+        select.appendChild(option);
+      });
+
+      const manualInput = document.createElement("input");
+      manualInput.type = "text";
+      manualInput.placeholder = "Or enter a custom label";
+      manualInput.style.marginTop = "6px";
+      manualInput.style.width = "100%";
+      manualInput.dataset.index = i;
+
+      const includeBox = document.createElement("input");
+      includeBox.type = "checkbox";
+      includeBox.checked = true;
+      includeBox.id = `include-${i}`;
+      includeBox.style.marginTop = "10px";
+
+      const includeLabel = document.createElement("label");
+      includeLabel.textContent = " Include this column";
+      includeLabel.style.marginLeft = "6px";
+      includeLabel.style.fontWeight = "bold";
+      includeLabel.style.display = "block";
+
+      const helper = document.createElement("div");
+      helper.textContent = "Uncheck this to exclude this column from the table and export.";
+      helper.style.color = "gray";
+      helper.style.fontSize = "0.85em";
+      helper.style.marginTop = "3px";
+
+      wrapper.appendChild(label);
+      wrapper.appendChild(select);
+      wrapper.appendChild(manualInput);
+      wrapper.appendChild(includeBox);
+      wrapper.appendChild(includeLabel);
+      wrapper.appendChild(helper);
+
+      container.appendChild(wrapper);
     });
 
-    function updateSubcategories() {
-      const sub = document.getElementById("subcategory");
-      const selected = subcategoryOptions[industryPicked] || [];
-      sub.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-      selected.forEach(opt => {
-        const o = document.createElement("option");
-        o.textContent = o.value = opt;
-        sub.appendChild(o);
+    document.getElementById("headerMappingSection").style.display = "block";
+  }
+
+  function previewTable() {
+    const selects = document.querySelectorAll("#headerFields select");
+    const inputs = document.querySelectorAll("#headerFields input[type='text']");
+    const checkboxes = document.querySelectorAll("#headerFields input[type='checkbox']");
+
+    const headers = [];
+    const includedIndexes = [];
+
+    selects.forEach((select, i) => {
+      const manualValue = inputs[i].value.trim();
+      const useColumn = checkboxes[i].checked;
+
+      if (!useColumn) return;
+
+      includedIndexes.push(i);
+      headers.push(manualValue || select.value || `Column ${i + 1}`);
+    });
+
+    const table = document.createElement("table");
+    table.style.width = "100%";
+    table.style.borderCollapse = "collapse";
+    table.style.backgroundColor = "#1C1C2A";
+    table.style.color = "#F5F5DC";
+    table.style.fontSize = "0.95em";
+
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+
+    headers.forEach(h => {
+      const th = document.createElement("th");
+      th.textContent = h;
+      th.style.backgroundColor = "#00E5FF";
+      th.style.color = "#000";
+      th.style.padding = "10px";
+      headerRow.appendChild(th);
+    });
+
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+
+    tableData.forEach((row, rIndex) => {
+      const tr = document.createElement("tr");
+      tr.style.backgroundColor = rIndex % 2 === 0 ? "#232338" : "#1C1C2A";
+
+      includedIndexes.forEach(i => {
+        const td = document.createElement("td");
+        td.textContent = row[i] ?? "";
+        td.style.padding = "8px";
+        td.style.wordBreak = "break-word";
+        td.style.borderTop = "1px solid #444";
+        tr.appendChild(td);
       });
+
+      tbody.appendChild(tr);
+    });
+
+    table.appendChild(tbody);
+
+    const container = document.getElementById("previewContainer");
+    container.innerHTML = "";
+    container.appendChild(table);
+    document.getElementById("tablePreview").style.display = "block";
+  }
+</script>
+
+<!-- PHASE 3: Clean & Sort -->
+<div id="cleanSortSection" style="margin-top: 40px; display: none;">
+  <h2 style="color: #F5F5DC;">Clean Up & Sort Your Data</h2>
+
+  <label style="margin-top: 10px; color: #F5F5DC;">
+    <input type="checkbox" id="removeEmpty" checked> Remove empty rows
+  </label>
+
+  <div style="margin-top: 15px;">
+    <label style="color: #F5F5DC;">Keep only rows where</label>
+    <select id="requiredColumn" style="margin-top: 6px;"></select>
+    <span style="color: #F5F5DC;">is filled in</span>
+  </div>
+
+  <div style="margin-top: 15px;">
+    <label style="color: #F5F5DC;">Sort by</label>
+    <select id="sortColumn" style="margin-top: 6px;"></select>
+    <select id="sortDirection" style="margin-top: 6px;">
+      <option value="asc">A–Z</option>
+      <option value="desc">Z–A</option>
+    </select>
+  </div>
+
+  <button class="button" onclick="applyCleanAndSort()" style="margin-top: 15px;">Preview Cleaned Table</button>
+</div>
+
+<div id="cleanPreviewContainer" style="margin-top: 30px;"></div>
+
+<script>
+  function populateFilterDropdowns(headers) {
+    const requiredColumn = document.getElementById("requiredColumn");
+    const sortColumn = document.getElementById("sortColumn");
+
+    requiredColumn.innerHTML = '<option value="">-- Select Column --</option>';
+    sortColumn.innerHTML = '<option value="">-- Select Column --</option>';
+
+    headers.forEach(h => {
+      const opt1 = document.createElement("option");
+      const opt2 = document.createElement("option");
+      opt1.textContent = opt1.value = h;
+      opt2.textContent = opt2.value = h;
+      requiredColumn.appendChild(opt1);
+      sortColumn.appendChild(opt2);
+    });
+  }
+
+  function applyCleanAndSort() {
+    let data = [...tableData];
+    const selects = document.querySelectorAll("#headerFields select");
+    const inputs = document.querySelectorAll("#headerFields input[type='text']");
+    const checkboxes = document.querySelectorAll("#headerFields input[type='checkbox']");
+
+    const headers = [];
+    const includedIndexes = [];
+
+    selects.forEach((select, i) => {
+      const manualValue = inputs[i].value.trim();
+      const useColumn = checkboxes[i].checked;
+      if (!useColumn) return;
+      includedIndexes.push(i);
+      headers.push(manualValue || select.value || `Column ${i + 1}`);
+    });
+
+    // Remove blanks
+    if (document.getElementById("removeEmpty").checked) {
+      data = data.filter(row => row.join("").trim() !== "");
     }
 
-    function triggerFileReload() {
-      const fileInput = document.getElementById('fileUpload');
-      const file = fileInput.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-
-        if (json.length === 0) {
-          alert("Empty sheet.");
-          return;
-        }
-
-        const newHeaders = json[0];
-        const newRows = json.slice(1).filter(row => row.join("").trim() !== "");
-
-        if (originalHeaders.length === 0) {
-          originalHeaders = newHeaders;
-          tableData = newRows;
-        } else {
-          const append = confirm("Append this data to your current table?");
-          if (append) {
-            if (JSON.stringify(originalHeaders) !== JSON.stringify(newHeaders)) {
-              alert("Headers don't match. Cannot append.");
-              return;
-            }
-            tableData = [...tableData, ...newRows];
-          } else {
-            originalHeaders = newHeaders;
-            tableData = newRows;
-          }
-        }
-
-        showHeaderMapping(originalHeaders);
-        fileInput.value = "";
-      };
-      reader.readAsArrayBuffer(file);
+    // Keep only rows where a required column is filled
+    const required = document.getElementById("requiredColumn").value;
+    if (required) {
+      const idx = headers.indexOf(required);
+      if (idx !== -1) {
+        data = data.filter(row => (row[includedIndexes[idx]] || "").toString().trim() !== "");
+      }
     }
 
-    function resetMapping() {
-      document.getElementById("headerFields").innerHTML = "";
-      document.getElementById("previewContainer").innerHTML = "";
-      document.getElementById("headerMappingSection").style.display = "none";
-      document.getElementById("tablePreview").style.display = "none";
-      document.getElementById("simpleFilters").style.display = "none";
-    }
-
-    function showHeaderMapping(headers) {
-      const container = document.getElementById("headerFields");
-      container.innerHTML = "";
-      const suggestions = suggestedHeaders[industryPicked] || [];
-
-      headers.forEach((header, i) => {
-        const wrapper = document.createElement("div");
-        wrapper.style.marginBottom = "15px";
-
-        const label = document.createElement("label");
-        label.textContent = `Column ${i + 1}`;
-
-        const select = document.createElement("select");
-        select.dataset.index = i;
-        const blank = document.createElement("option");
-        blank.value = "";
-        blank.textContent = "-- Choose or type your own --";
-        select.appendChild(blank);
-        suggestions.forEach(s => {
-          const option = document.createElement("option");
-          option.value = s;
-          option.textContent = s;
-          select.appendChild(option);
+    // Sort by selected column
+    const sortCol = document.getElementById("sortColumn").value;
+    const sortDir = document.getElementById("sortDirection").value;
+    if (sortCol) {
+      const idx = headers.indexOf(sortCol);
+      if (idx !== -1) {
+        data.sort((a, b) => {
+          const valA = (a[includedIndexes[idx]] || "").toString().toLowerCase();
+          const valB = (b[includedIndexes[idx]] || "").toString().toLowerCase();
+          return sortDir === "asc" ? valA.localeCompare(valB) : valB.localeCompare(valA);
         });
-
-        const manual = document.createElement("input");
-        manual.type = "text";
-        manual.placeholder = "Or enter custom label";
-        manual.dataset.index = i;
-
-        const includeBox = document.createElement("input");
-        includeBox.type = "checkbox";
-        includeBox.checked = true;
-        includeBox.id = `include-${i}`;
-
-        const includeLabel = document.createElement("label");
-        includeLabel.textContent = " Include this column";
-        includeLabel.style.marginLeft = "6px";
-
-        wrapper.appendChild(label);
-        wrapper.appendChild(select);
-        wrapper.appendChild(manual);
-        wrapper.appendChild(includeBox);
-        wrapper.appendChild(includeLabel);
-        container.appendChild(wrapper);
-      });
-
-      document.getElementById("headerMappingSection").style.display = "block";
+      }
     }
 
-    function previewTable() {
-      const selects = document.querySelectorAll("#headerFields select");
-      const inputs = document.querySelectorAll("#headerFields input[type='text']");
-      const checkboxes = document.querySelectorAll("#headerFields input[type='checkbox']");
+    renderCleanedTable(headers, data, includedIndexes);
+  }
 
-      const headers = [];
-      const includedIndexes = [];
+  function renderCleanedTable(headers, rows, indexes) {
+    const table = document.createElement("table");
+    table.style.width = "100%";
+    table.style.borderCollapse = "collapse";
+    table.style.backgroundColor = "#1C1C2A";
+    table.style.color = "#F5F5DC";
+    table.style.fontSize = "0.95em";
 
-      selects.forEach((select, i) => {
-        const manualValue = inputs[i].value.trim();
-        const useColumn = checkboxes[i].checked;
-        if (!useColumn) return;
-        includedIndexes.push(i);
-        headers.push(manualValue || select.value || `Column ${i + 1}`);
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+    headers.forEach(h => {
+      const th = document.createElement("th");
+      th.textContent = h;
+      th.style.backgroundColor = "#00E5FF";
+      th.style.color = "#000";
+      th.style.padding = "10px";
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    rows.forEach((row, rIndex) => {
+      const tr = document.createElement("tr");
+      tr.style.backgroundColor = rIndex % 2 === 0 ? "#232338" : "#1C1C2A";
+      indexes.forEach(i => {
+        const td = document.createElement("td");
+        td.textContent = row[i] ?? "";
+        td.style.padding = "8px";
+        td.style.wordBreak = "break-word";
+        td.style.borderTop = "1px solid #444";
+        tr.appendChild(td);
       });
+      tbody.appendChild(tr);
+    });
 
-      const table = document.createElement("table");
-      const thead = document.createElement("thead");
-      const headerRow = document.createElement("tr");
-      headers.forEach(h => {
-        const th = document.createElement("th");
-        th.textContent = h;
-        headerRow.appendChild(th);
-      });
-      thead.appendChild(headerRow);
-      table.appendChild(thead);
-
-      const tbody = document.createElement("tbody");
-      tableData.forEach(row => {
-        const tr = document.createElement("tr");
-        includedIndexes.forEach(i => {
-          const td = document.createElement("td");
-          td.textContent = row[i] ?? "";
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
-      table.appendChild(tbody);
-
-      const container = document.getElementById("previewContainer");
-      container.innerHTML = "";
-      container.appendChild(table);
-
-      // Filter Inputs
-      const filterDiv = document.getElementById("filterInputs");
-      filterDiv.innerHTML = "";
-      headers.forEach((h, idx) => {
-        const input = document.createElement("input");
-        input.placeholder = `Filter ${h}`;
-        input.className = "filter-input";
-        input.addEventListener("input", () => {
-          const filtered = tableData.filter(row => {
-            return includedIndexes.every((i, j) => {
-              const filter = document.querySelectorAll(".filter-input")[j].value.toLowerCase();
-              return (row[i] ?? "").toString().toLowerCase().includes(filter);
-            });
-          });
-          renderFilteredTable(headers, includedIndexes, filtered);
-        });
-        filterDiv.appendChild(input);
-      });
-
-      document.getElementById("simpleFilters").style.display = "block";
-      document.getElementById("tablePreview").style.display = "block";
-    }
-
-    function renderFilteredTable(headers, indexes, rows) {
-      const container = document.getElementById("previewContainer");
-      const table = document.createElement("table");
-
-      const thead = document.createElement("thead");
-      const headerRow = document.createElement("tr");
-      headers.forEach(h => {
-        const th = document.createElement("th");
-        th.textContent = h;
-        headerRow.appendChild(th);
-      });
-      thead.appendChild(headerRow);
-      table.appendChild(thead);
-
-      const tbody = document.createElement("tbody");
-      rows.forEach(row => {
-        const tr = document.createElement("tr");
-        indexes.forEach(i => {
-          const td = document.createElement("td");
-          td.textContent = row[i] ?? "";
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
-
-      table.appendChild(tbody);
-      container.innerHTML = "";
-      container.appendChild(table);
-    }
-  </script>
-</body>
-</html>
+    table.appendChild(tbody);
+    const container = document.getElementById("cleanPreviewContainer");
+    container.innerHTML = "";
+    container.appendChild(table);
+  }
+</script>
