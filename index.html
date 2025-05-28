@@ -166,34 +166,34 @@
 </body>
 </html>
 
-<!-- Phase 2: Header Mapping + Preview -->
-<div id="headerMappingSection" style="display:none; margin-top: 40px;">
+<!-- Phase 2: Header Mapping -->
+<div id="headerMappingSection" style="display: none; margin-top: 40px;">
   <h2 style="color: #F5F5DC;">Set Column Headers</h2>
   <div id="headerFields"></div>
+
   <button class="button" onclick="resetMapping()">Reset Mapping</button>
-  <p style="color: gray; font-size: 0.9em;">Use this to reset the header mapping if you change industry or subcategory.</p>
+  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
+    Use this to reset the header mapping if you change industry or subcategory.
+  </p>
+
   <button class="button" onclick="previewTable()">Preview Table</button>
+  <p style="color: gray; font-size: 0.9em; margin-top: 5px;">
+    Tip: If you change labels or uncheck columns, click “Preview Table” again to refresh the preview.
+  </p>
 </div>
 
-<div id="tablePreview" style="margin-top: 40px; display:none;">
+<!-- Preview Section -->
+<div id="tablePreview" style="display: none; margin-top: 40px;">
   <h2 style="color: #F5F5DC;">Preview Table</h2>
-  <div id="previewContainer" style="overflow-x:auto;"></div>
+  <div id="previewContainer" style="overflow-x: auto;"></div>
 </div>
-
 <script>
-  const suggestedHeaders = {
-    "Retail": ["Product Name", "SKU", "Price", "Quantity", "Category"],
-    "Finance": ["Client", "Account Type", "Balance", "Transaction Date", "Amount"],
-    "Transportation": ["Driver", "Vehicle", "Route", "Date", "Distance"],
-    // You can expand this list based on your industry selection
-  };
+  let originalHeaders = [];
+  let tableData = [];
 
   function showHeaderMapping(headers) {
     const container = document.getElementById("headerFields");
     container.innerHTML = "";
-
-    const industry = document.getElementById("industry").value;
-    const suggestions = suggestedHeaders[industry] || [];
 
     headers.forEach((header, i) => {
       const wrapper = document.createElement("div");
@@ -209,60 +209,49 @@
       select.style.borderRadius = "6px";
       select.dataset.index = i;
 
-      const blank = document.createElement("option");
-      blank.value = "";
-      blank.textContent = "-- Choose or type your own --";
-      select.appendChild(blank);
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "-- Choose or type your own --";
+      select.appendChild(defaultOption);
 
-      suggestions.forEach(s => {
+      const suggestions = [
+        "Client", "Product Name", "Service", "Amount", "Price", "Agent", "Date", "Status", "Commission"
+      ];
+      suggestions.forEach(text => {
         const option = document.createElement("option");
-        option.value = s;
-        option.textContent = s;
+        option.value = text;
+        option.textContent = text;
         select.appendChild(option);
       });
 
-      const manualInput = document.createElement("input");
-      manualInput.type = "text";
-      manualInput.placeholder = "Or enter a custom label";
-      manualInput.style.marginTop = "6px";
-      manualInput.style.width = "100%";
-      manualInput.dataset.index = i;
+      const customInput = document.createElement("input");
+      customInput.type = "text";
+      customInput.placeholder = "Or enter custom label";
+      customInput.style.marginTop = "6px";
+      customInput.style.width = "100%";
+      customInput.dataset.index = i;
 
       const includeBox = document.createElement("input");
       includeBox.type = "checkbox";
       includeBox.checked = true;
       includeBox.id = `include-${i}`;
+      includeBox.style.marginRight = "5px";
 
       const includeLabel = document.createElement("label");
-      includeLabel.textContent = " Include this column";
-      includeLabel.style.marginLeft = "6px";
+      includeLabel.textContent = "Include this column";
       includeLabel.style.fontWeight = "bold";
-      includeLabel.style.display = "block";
       includeLabel.style.color = "#F5F5DC";
-
-      const helper = document.createElement("div");
-      helper.textContent = "Uncheck this to exclude this column from the table and export.";
-      helper.style.color = "gray";
-      helper.style.fontSize = "0.85em";
-      helper.style.marginTop = "3px";
 
       wrapper.appendChild(label);
       wrapper.appendChild(select);
-      wrapper.appendChild(manualInput);
+      wrapper.appendChild(customInput);
       wrapper.appendChild(includeBox);
       wrapper.appendChild(includeLabel);
-      wrapper.appendChild(helper);
 
       container.appendChild(wrapper);
     });
 
     document.getElementById("headerMappingSection").style.display = "block";
-  }
-
-  function resetMapping() {
-    document.getElementById("headerMappingSection").style.display = "none";
-    document.getElementById("previewContainer").innerHTML = "";
-    document.getElementById("tablePreview").style.display = "none";
   }
 
   function previewTable() {
@@ -274,13 +263,13 @@
     const includedIndexes = [];
 
     selects.forEach((select, i) => {
-      const manualValue = inputs[i].value.trim();
-      const useColumn = checkboxes[i].checked;
+      const manualLabel = inputs[i].value.trim();
+      const isChecked = checkboxes[i].checked;
 
-      if (!useColumn) return;
+      if (!isChecked) return;
 
       includedIndexes.push(i);
-      headers.push(manualValue || select.value || `Column ${i + 1}`);
+      headers.push(manualLabel || select.value || `Column ${i + 1}`);
     });
 
     const table = document.createElement("table");
@@ -292,7 +281,6 @@
 
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
-
     headers.forEach(h => {
       const th = document.createElement("th");
       th.textContent = h;
@@ -301,25 +289,20 @@
       th.style.padding = "10px";
       headerRow.appendChild(th);
     });
-
     thead.appendChild(headerRow);
     table.appendChild(thead);
 
     const tbody = document.createElement("tbody");
-
-    tableData.forEach((row, rIndex) => {
+    tableData.forEach((row, rIdx) => {
       const tr = document.createElement("tr");
-      tr.style.backgroundColor = rIndex % 2 === 0 ? "#232338" : "#1C1C2A";
-
+      tr.style.backgroundColor = rIdx % 2 === 0 ? "#232338" : "#1C1C2A";
       includedIndexes.forEach(i => {
         const td = document.createElement("td");
         td.textContent = row[i] ?? "";
         td.style.padding = "8px";
-        td.style.wordBreak = "break-word";
         td.style.borderTop = "1px solid #444";
         tr.appendChild(td);
       });
-
       tbody.appendChild(tr);
     });
 
@@ -329,5 +312,14 @@
     container.innerHTML = "";
     container.appendChild(table);
     document.getElementById("tablePreview").style.display = "block";
+  }
+
+  function resetMapping() {
+    document.getElementById("headerFields").innerHTML = "";
+    document.getElementById("previewContainer").innerHTML = "";
+    document.getElementById("headerMappingSection").style.display = "none";
+    document.getElementById("tablePreview").style.display = "none";
+    originalHeaders = [];
+    tableData = [];
   }
 </script>
