@@ -371,7 +371,8 @@
   });
 
   document.getElementById("headerMappingSection").style.display = "block";
-    const dropdowns = document.querySelectorAll("#requiredColumn, #sortColumn");
+  // Populate the filter dropdowns for Phase 3
+const dropdowns = document.querySelectorAll("#requiredColumn, #sortColumn");
 dropdowns.forEach(drop => {
   drop.innerHTML = '<option value="">-- Select column --</option>';
   headers.forEach(h => {
@@ -381,6 +382,9 @@ dropdowns.forEach(drop => {
     drop.appendChild(opt);
   });
 });
+
+// Reveal the clean/sort UI only after mapping
+document.getElementById("cleanSortSection").style.display = "block";
 }
   
   function previewTable() {
@@ -495,54 +499,29 @@ dropdowns.forEach(drop => {
 }
 </script>
 
-<!-- Phase 3: Sorting & Cleanup -->
-<div id="cleanupSection" style="display: none; margin-top: 40px;">
+<!-- Phase 3: Clean & Sort -->
+<div id="cleanSortSection" style="margin-top: 40px; display: none;">
   <h2>Clean Up & Sort Your Data</h2>
 
-  <div style="margin-bottom: 20px;">
-    <label><input type="checkbox" id="removeBlanks"> Remove empty rows</label>
+  <label><input type="checkbox" id="removeEmpty" checked> Remove empty rows</label>
+  
+  <div style="margin-top: 15px;">
+    <label>Keep only rows where</label>
+    <select id="requiredColumn"></select>
+    <span>is filled in</span>
   </div>
 
-  <div style="margin-bottom: 20px;">
-    <label>
-      Keep only rows where
-      <select id="filledColumn" style="margin-left: 5px; padding: 6px; border-radius: 6px;">
-        <option value="">-- Select Column --</option>
-      </select>
-      is filled in
-    </label>
+  <div style="margin-top: 15px;">
+    <label>Sort by</label>
+    <select id="sortColumn"></select>
+    <select id="sortDirection">
+      <option value="asc">A–Z</option>
+      <option value="desc">Z–A</option>
+    </select>
   </div>
 
-  <div style="margin-bottom: 20px;">
-    <label>
-      Sort by
-      <select id="sortColumn" style="margin-left: 5px; padding: 6px; border-radius: 6px;">
-        <option value="">-- Select Column --</option>
-      </select>
-      <select id="sortDirection" style="margin-left: 5px; padding: 6px; border-radius: 6px;">
-        <option value="asc">A–Z</option>
-        <option value="desc">Z–A</option>
-      </select>
-    </label>
-  </div>
-
-  <button class="button" onclick="applySimpleFilters()">Preview Cleaned Table</button>
-
-  <p style="color: gray; font-size: 0.9em; margin-top: 10px;">
-    These filters are optional — use them to organize or clean your data before downloading.
-  </p>
-
-  <div style="margin-top: 30px;">
-    <label style="font-weight: bold;">Need more control?</label>
-    <button class="button" onclick="toggleAdvancedFilters()">Show Advanced Options</button>
-    <div id="advancedFilters" style="display: none; margin-top: 20px;">
-      <p style="color: gray;">Advanced filtering will go here...</p>
-    </div>
-  </div>
-
-  <div id="cleanPreviewContainer" style="margin-top: 40px;"></div>
+  <button class="button" onclick="applyCleanAndSort()" style="margin-top: 15px;">Preview Cleaned Table</button>
 </div>
-
 <script>
   function populateFilterDropdowns(headers) {
     const filledColumn = document.getElementById("filledColumn");
