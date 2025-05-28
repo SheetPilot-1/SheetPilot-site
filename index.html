@@ -59,6 +59,36 @@
       margin-top: 5px;
     }
   </style>
+  #headerFields > div {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  background-color: #232338;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+#headerFields label {
+  flex: 1 1 100%;
+  font-weight: bold;
+  color: #F5F5DC;
+  margin-bottom: 5px;
+}
+
+#headerFields select,
+#headerFields input[type="text"] {
+  flex: 1 1 48%;
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 6px;
+  border: none;
+}
+
+#headerFields input[type="checkbox"] {
+  margin-top: 10px;
+}
 </head>
 <body>
   <h2>SheetPilot</h2>
