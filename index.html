@@ -1,7 +1,62 @@
-<!-- PHASE 1: INDUSTRY & SUBCATEGORY SELECTION -->
-<div class="phase-section" id="phase1">
-  <h2>Select Your Industry</h2>
-  <label for="industry">Industry:</label>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SheetPilot – Phase 1</title>
+  <style>
+    body {
+      background-color: #1C1C2A;
+      color: #F5F5DC;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 1.8em;
+      margin-bottom: 10px;
+      color: #F5F5DC;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 20px;
+      display: block;
+    }
+
+    select, input[type="text"] {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 15px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+
+    .button {
+      background-color: #00E5FF;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .button:hover {
+      background-color: #00cce0;
+    }
+  </style>
+</head>
+<body>
+  <h2>SheetPilot</h2>
+
+  <label for="industry">Select Your Industry:</label>
   <select id="industry" onchange="updateSubcategories()">
     <option value="">-- Select Industry --</option>
   </select>
@@ -11,89 +66,89 @@
     <option value="">-- Select Subcategory --</option>
   </select>
 
-  <br><br>
   <label for="manualIndustry">Or enter industry manually:</label>
   <input type="text" id="manualIndustry" placeholder="Custom Industry" />
 
   <label for="manualSubcategory">Or enter subcategory manually:</label>
   <input type="text" id="manualSubcategory" placeholder="Custom Subcategory" />
-</div>
 
-<script>
-  const industrySubcategories = {
-    "Healthcare": ["Hospitals", "Private Practice", "Medical Billing", "Medical Devices"],
-    "Finance": ["Accounting", "Bookkeeping", "Credit Repair", "Wealth Management"],
-    "Retail": ["Online Store", "Brick & Mortar", "Inventory Management", "POS Systems"],
-    "Construction": ["Residential", "Commercial", "Permitting", "Project Management"],
-    "Education": ["Tutoring", "eLearning", "School Districts", "Private Schools"],
-    "Legal": ["Corporate Law", "Criminal Law", "Paralegal", "Compliance"],
-    "Real Estate": ["Commercial", "Residential", "REIT", "Property Management"],
-    "Logistics": ["Warehousing", "Fleet Management", "Freight", "Delivery Services"],
-    "Marketing": ["Advertising", "Digital Marketing", "SEO", "Market Research"],
-    "Technology": ["Software", "Hardware", "IT Services", "Cybersecurity"],
-    "Food & Beverage": ["Restaurants", "Catering", "Wholesale", "Food Trucks"],
-    "Automotive": ["Dealership", "Repair Shops", "Auto Parts", "Car Rentals"],
-    "Travel & Hospitality": ["Hotels", "Travel Agencies", "Resorts", "Airlines"],
-    "Media & Entertainment": ["Streaming", "Production", "Publishing", "Gaming"],
-    "Manufacturing": ["Industrial", "Textile", "Electronics", "Machinery"],
-    "Agriculture": ["Farming", "Livestock", "AgriTech", "Crop Distribution"],
-    "Telecommunications": ["Cellular", "Internet Providers", "Cable", "Satellite"],
-    "Energy": ["Oil & Gas", "Renewables", "Utilities", "Energy Consulting"],
-    "Insurance": ["Life", "Auto", "Health", "Claims Processing"],
-    "Nonprofit": ["Charities", "Foundations", "Volunteer Orgs", "Grant Writing"],
-    "Human Resources": ["Recruiting", "Staffing", "Payroll", "Benefits"],
-    "Event Planning": ["Weddings", "Corporate Events", "Festivals", "Catering"],
-    "Fitness & Wellness": ["Gyms", "Personal Training", "Spas", "Yoga Studios"],
-    "Beauty": ["Salons", "Cosmetics", "Skincare", "Aesthetic Clinics"],
-    "Home Services": ["Plumbing", "Electricians", "HVAC", "Landscaping"],
-    "Arts & Culture": ["Museums", "Galleries", "Performing Arts", "Workshops"],
-    "Cleaning Services": ["Residential", "Commercial", "Specialty", "Eco-Friendly"],
-    "Childcare": ["Daycare", "Nanny Services", "Afterschool", "Montessori"],
-    "Pet Services": ["Veterinary", "Grooming", "Boarding", "Training"],
-    "Security": ["Private Security", "Surveillance", "Cybersecurity", "Alarm Systems"],
-    "Transportation": ["Taxi", "Bus", "Rail", "Logistics Brokers"],
-    "E-commerce": ["Marketplaces", "Dropshipping", "Fulfillment", "Subscription"],
-    "Consulting": ["Business", "Tech", "Management", "HR"],
-    "Freelancing": ["Design", "Writing", "Development", "Virtual Assistants"],
-    "Publishing": ["Books", "Magazines", "Academic", "Self-Publishing"],
-    "Architecture": ["Residential", "Commercial", "Interior Design", "Urban Planning"],
-    "Engineering": ["Civil", "Mechanical", "Electrical", "Environmental"],
-    "Photography": ["Event", "Studio", "Commercial", "Editing Services"],
-    "Tattoo & Piercing": ["Studios", "Supplies", "Aftercare", "Appointments"],
-    "Political": ["Campaigns", "Advocacy", "Polling", "Consulting"],
-    "Accounting": ["CPA", "Tax Filing", "Forensics", "Audit Services"],
-    "Legal Tech": ["E-discovery", "Document Automation", "Case Management", "Compliance"],
-    "Green Energy": ["Solar", "Wind", "Biofuel", "Consulting"],
-    "Interior Design": ["Residential", "Commercial", "3D Modeling", "Furniture"],
-    "Courier Services": ["Same-Day", "Scheduled", "International", "Tracking"],
-    "Printing": ["Commercial", "Promotional", "On-Demand", "Publishing"],
-    "Translation": ["Document", "Interpretation", "Software Localization", "Legal Translation"],
-    "Auction & Resale": ["Online Auction", "Estate Sales", "Liquidation", "Collectibles"],
-    "Adult Services": ["Counseling", "Wellness", "Education", "Subscription"],
-    "Environmental": ["Recycling", "Sustainability Consulting", "Monitoring", "Waste Management"]
-  };
+  <script>
+    const industrySubcategories = {
+      "Healthcare": ["Hospitals", "Private Practice", "Medical Billing", "Medical Devices"],
+      "Finance": ["Accounting", "Bookkeeping", "Credit Repair", "Wealth Management"],
+      "Retail": ["Online Store", "Brick & Mortar", "Inventory Management", "POS Systems"],
+      "Construction": ["Residential", "Commercial", "Permitting", "Project Management"],
+      "Education": ["Tutoring", "eLearning", "School Districts", "Private Schools"],
+      "Legal": ["Corporate Law", "Criminal Law", "Paralegal", "Compliance"],
+      "Real Estate": ["Commercial", "Residential", "REIT", "Property Management"],
+      "Logistics": ["Warehousing", "Fleet Management", "Freight", "Delivery Services"],
+      "Marketing": ["Advertising", "Digital Marketing", "SEO", "Market Research"],
+      "Technology": ["Software", "Hardware", "IT Services", "Cybersecurity"],
+      "Food & Beverage": ["Restaurants", "Catering", "Wholesale", "Food Trucks"],
+      "Automotive": ["Dealership", "Repair Shops", "Auto Parts", "Car Rentals"],
+      "Travel & Hospitality": ["Hotels", "Travel Agencies", "Resorts", "Airlines"],
+      "Media & Entertainment": ["Streaming", "Production", "Publishing", "Gaming"],
+      "Manufacturing": ["Industrial", "Textile", "Electronics", "Machinery"],
+      "Agriculture": ["Farming", "Livestock", "AgriTech", "Crop Distribution"],
+      "Telecommunications": ["Cellular", "Internet Providers", "Cable", "Satellite"],
+      "Energy": ["Oil & Gas", "Renewables", "Utilities", "Energy Consulting"],
+      "Insurance": ["Life", "Auto", "Health", "Claims Processing"],
+      "Nonprofit": ["Charities", "Foundations", "Volunteer Orgs", "Grant Writing"],
+      "Human Resources": ["Recruiting", "Staffing", "Payroll", "Benefits"],
+      "Event Planning": ["Weddings", "Corporate Events", "Festivals", "Catering"],
+      "Fitness & Wellness": ["Gyms", "Personal Training", "Spas", "Yoga Studios"],
+      "Beauty": ["Salons", "Cosmetics", "Skincare", "Aesthetic Clinics"],
+      "Home Services": ["Plumbing", "Electricians", "HVAC", "Landscaping"],
+      "Arts & Culture": ["Museums", "Galleries", "Performing Arts", "Workshops"],
+      "Cleaning Services": ["Residential", "Commercial", "Specialty", "Eco-Friendly"],
+      "Childcare": ["Daycare", "Nanny Services", "Afterschool", "Montessori"],
+      "Pet Services": ["Veterinary", "Grooming", "Boarding", "Training"],
+      "Security": ["Private Security", "Surveillance", "Cybersecurity", "Alarm Systems"],
+      "Transportation": ["Taxi", "Bus", "Rail", "Logistics Brokers"],
+      "E-commerce": ["Marketplaces", "Dropshipping", "Fulfillment", "Subscription"],
+      "Consulting": ["Business", "Tech", "Management", "HR"],
+      "Freelancing": ["Design", "Writing", "Development", "Virtual Assistants"],
+      "Publishing": ["Books", "Magazines", "Academic", "Self-Publishing"],
+      "Architecture": ["Residential", "Commercial", "Interior Design", "Urban Planning"],
+      "Engineering": ["Civil", "Mechanical", "Electrical", "Environmental"],
+      "Photography": ["Event", "Studio", "Commercial", "Editing Services"],
+      "Tattoo & Piercing": ["Studios", "Supplies", "Aftercare", "Appointments"],
+      "Political": ["Campaigns", "Advocacy", "Polling", "Consulting"],
+      "Accounting": ["CPA", "Tax Filing", "Forensics", "Audit Services"],
+      "Legal Tech": ["E-discovery", "Document Automation", "Case Management", "Compliance"],
+      "Green Energy": ["Solar", "Wind", "Biofuel", "Consulting"],
+      "Interior Design": ["Residential", "Commercial", "3D Modeling", "Furniture"],
+      "Courier Services": ["Same-Day", "Scheduled", "International", "Tracking"],
+      "Printing": ["Commercial", "Promotional", "On-Demand", "Publishing"],
+      "Translation": ["Document", "Interpretation", "Software Localization", "Legal Translation"],
+      "Auction & Resale": ["Online Auction", "Estate Sales", "Liquidation", "Collectibles"],
+      "Adult Services": ["Counseling", "Wellness", "Education", "Subscription"],
+      "Environmental": ["Recycling", "Sustainability Consulting", "Monitoring", "Waste Management"]
+    };
 
-  window.onload = function () {
-    const industrySelect = document.getElementById("industry");
-    Object.keys(industrySubcategories).forEach(industry => {
-      const option = document.createElement("option");
-      option.value = industry;
-      option.textContent = industry;
-      industrySelect.appendChild(option);
-    });
-  };
-
-  function updateSubcategories() {
-    const subcategorySelect = document.getElementById("subcategory");
-    const selectedIndustry = document.getElementById("industry").value;
-    subcategorySelect.innerHTML = "<option value=''>-- Select Subcategory --</option>";
-    if (industrySubcategories[selectedIndustry]) {
-      industrySubcategories[selectedIndustry].forEach(sub => {
+    window.onload = function () {
+      const industrySelect = document.getElementById("industry");
+      Object.keys(industrySubcategories).forEach(industry => {
         const option = document.createElement("option");
-        option.value = sub;
-        option.textContent = sub;
-        subcategorySelect.appendChild(option);
+        option.value = industry;
+        option.textContent = industry;
+        industrySelect.appendChild(option);
       });
+    };
+
+    function updateSubcategories() {
+      const subcategorySelect = document.getElementById("subcategory");
+      const selectedIndustry = document.getElementById("industry").value;
+      subcategorySelect.innerHTML = "<option value=''>-- Select Subcategory --</option>";
+      if (industrySubcategories[selectedIndustry]) {
+        industrySubcategories[selectedIndustry].forEach(sub => {
+          const option = document.createElement("option");
+          option.value = sub;
+          option.textContent = sub;
+          subcategorySelect.appendChild(option);
+        });
+      }
     }
-  }
-</script>
+  </script>
+</body>
+</html>
