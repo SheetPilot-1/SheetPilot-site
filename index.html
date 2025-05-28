@@ -162,6 +162,7 @@
     }
 
     function handleFile() {
+    <div id="previewArea"></div>
       alert("Phase 2 logic will be triggered here.");
     }
 
@@ -170,76 +171,97 @@
 </body>
 </html>
 
+<!-- Load XLSX for .xlsx file support -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script>
   const requiredLabels = [
     "Date", "Agent Name", "Agent Type", "Pre-Tax", "Product",
     "Policy Number", "Contract Type", "Promo", "Program", "Leader"
   ];
 
-  const previewArea = document.createElement("div");
-  previewArea.id = "previewArea";
-  previewArea.style.marginTop = "30px";
-  document.body.appendChild(previewArea);
-
-  function handleFile() {
-    const fileInput = document.getElementById("fileUpload");
-    const file = fileInput.files[0];
-    if (!file) return alert("Please upload a file first.");
+  function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
 
     const reader = new FileReader();
     reader.onload = function (e) {
-      const content = e.target.result;
-      const rows = content.split(/\r\n|\n/).map(r => r.split(","));
-      generatePreview(rows);
+      const data = new Uint8Array(e.target.result);
+      const workbook = XLSX.read(data, { type: "array" });
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      generateMappingUI(rows);
     };
-    reader.readAsText(file);
+    reader.readAsArrayBuffer(file);
   }
 
-  function generatePreview(rows) {
-    const previewHTML = [];
+  function generateMappingUI(rows) {
+    const preview = document.getElementById("previewArea") || document.createElement("div");
+    preview.id = "previewArea";
+    preview.innerHTML = "";
+
+    if (!document.body.contains(preview)) document.body.appendChild(preview);
 
     if (rows.length === 0) {
-      previewArea.innerHTML = "<p>No data found in file.</p>";
+      preview.innerHTML = "<p>No data in sheet.</p>";
       return;
     }
 
-    previewHTML.push('<div style="overflow-x: auto;"><table style="border-collapse: collapse; width: 100%; background: #E0F0FF;">');
-    previewHTML.push('<tr>');
+    const table = document.createElement("table");
+    table.style.width = "100%";
+    table.style.borderCollapse = "collapse";
+    table.style.backgroundColor = "#E0F0FF";
+    table.style.marginTop = "30px";
 
-    // Header Row
+    // Header row
+    const headerRow = document.createElement("tr");
     rows[0].forEach(header => {
-      previewHTML.push(`<th style="padding: 12px; border: 1px solid #ccc; background-color: #003366; color: #FFF5CC;">${header}</th>`);
+      const th = document.createElement("th");
+      th.textContent = header;
+      th.style.backgroundColor = "#003366";
+      th.style.color = "#FFF5CC";
+      th.style.padding = "10px";
+      th.style.border = "1px solid #ccc";
+      headerRow.appendChild(th);
     });
-    previewHTML.push('</tr>');
+    table.appendChild(headerRow);
 
-    // Dropdown Mapping Row
-    previewHTML.push('<tr>');
+    // Mapping row
+    const mappingRow = document.createElement("tr");
     rows[0].forEach((_, colIndex) => {
-      const dropdown = generateDropdown(colIndex);
-      previewHTML.push(`<td style="border: 1px solid #ccc; padding: 6px;">${dropdown}</td>`);
-    });
-    previewHTML.push('</tr>');
-
-    // First 3 data rows
-    for (let i = 1; i < Math.min(4, rows.length); i++) {
-      previewHTML.push('<tr>');
-      rows[i].forEach(cell => {
-        previewHTML.push(`<td style="padding: 8px; border: 1px solid #ccc;">${cell}</td>`);
+      const td = document.createElement("td");
+      td.style.padding = "5px";
+      const select = document.createElement("select");
+      select.innerHTML = `<option value="">-- Label Column --</option>`;
+      requiredLabels.forEach(label => {
+        const opt = document.createElement("option");
+        opt.value = label;
+        opt.textContent = label;
+        select.appendChild(opt);
       });
-      previewHTML.push('</tr>');
+      select.style.width = "100%";
+      select.style.padding = "6px";
+      select.style.borderRadius = "6px";
+      td.appendChild(select);
+      mappingRow.appendChild(td);
+    });
+    table.appendChild(mappingRow);
+
+    // First few data rows
+    for (let i = 1; i < Math.min(rows.length, 4); i++) {
+      const tr = document.createElement("tr");
+      rows[i].forEach(cell => {
+        const td = document.createElement("td");
+        td.textContent = cell ?? "";
+        td.style.padding = "8px";
+        td.style.border = "1px solid #ccc";
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
     }
 
-    previewHTML.push('</table></div>');
-    previewArea.innerHTML = previewHTML.join("");
+    preview.appendChild(table);
   }
 
-  function generateDropdown(index) {
-    let dropdown = `<select data-col="${index}" style="width: 100%; padding: 8px; border-radius: 6px;">`;
-    dropdown += `<option value="">-- Label Column --</option>`;
-    requiredLabels.forEach(label => {
-      dropdown += `<option value="${label}">${label}</option>`;
-    });
-    dropdown += `</select>`;
-    return dropdown;
-  }
+  document.getElementById("fileUpload").addEventListener("change", handleFileUpload);
 </script>
