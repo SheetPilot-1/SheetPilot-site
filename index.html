@@ -5,22 +5,21 @@
   <title>SheetPilot</title>
   <style>
     body {
-      background-color: #2C3E50;
+      background-color: #264256;
       color: #FFF5CC;
       font-family: 'Segoe UI', sans-serif;
+      padding: 30px;
       margin: 0;
-      padding: 30px 20px;
     }
 
     h1 {
       font-size: 2.2em;
       color: #FFF5CC;
-      margin-bottom: 25px;
     }
 
     label {
-      font-weight: bold;
       display: block;
+      font-weight: bold;
       margin-top: 20px;
       margin-bottom: 6px;
     }
@@ -29,35 +28,31 @@
       width: 100%;
       max-width: 400px;
       padding: 12px;
-      border-radius: 8px;
+      border-radius: 6px;
       border: none;
       font-size: 1em;
       box-sizing: border-box;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
-    .button {
-      background-color: #00E5FF;
+    #loadFileBtn {
+      background-color: #00e5ff;
       color: #000;
       border: none;
-      padding: 12px 24px;
-      border-radius: 10px;
+      padding: 12px 20px;
+      border-radius: 8px;
       font-weight: bold;
       font-size: 1rem;
       cursor: pointer;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
       margin-top: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      transition: background-color 0.3s ease;
     }
 
-    .button:hover {
-      background-color: #00cce0;
-    }
-
-    .note {
-      font-size: 0.9em;
+    #loadNote {
       color: #ccc;
-      margin-top: 5px;
+      font-size: 0.9em;
+      margin-top: 8px;
+      margin-bottom: 30px;
     }
   </style>
 </head>
@@ -82,186 +77,85 @@
 
   <label for="fileUpload">Upload Your File:</label>
   <input type="file" id="fileUpload" accept=".xlsx, .csv" />
-  <button class="button" onclick="handleFile()">Load File</button>
-  <p class="note">Use this to upload additional data to the current table.</p>
+
+  <button id="loadFileBtn">Load File</button>
+  <p id="loadNote">Use this to upload additional data to the current table.</p>
 
   <script>
     const industries = {
       "Retail": ["Clothing", "Electronics", "Convenience Store"],
-      "Real Estate": ["Residential", "REIT", "Commercial"],
-      "Healthcare": ["Home Care", "Nursing", "Dental Office"],
-      "Construction": ["Residential", "Commercial", "Roofing"],
-      "Finance": ["Bookkeeping", "CPA", "Investment Advisor"],
-      "Technology": ["IT Support", "Web Dev", "App Dev"],
-      "Transportation": ["Logistics", "Trucking", "Dispatcher"],
-      "Cleaning Services": ["Residential", "Commercial", "Move-out"],
-      "Beauty & Wellness": ["Salon", "Spa", "Massage Therapist"],
-      "Consulting": ["Strategy", "Sales Training", "Operations"],
-      "Insurance": ["Agent", "Broker", "Claims Adjuster"],
-      "Hospitality": ["Hotel", "BnB Host", "Event Host"],
-      "Marketing": ["SEO", "Social Media", "Design"],
-      "Education": ["Tutor", "Private Instructor", "Test Prep"],
-      "Legal": ["Attorney", "Paralegal", "Notary"],
-      "Non-Profit": ["Community Org", "Faith-based", "Foundation"],
-      "Food & Beverage": ["Catering", "Food Truck", "Bakery"],
-      "Fitness": ["Trainer", "Gym Owner", "Yoga"],
-      "Childcare": ["Babysitting", "Daycare", "After School"],
-      "E-commerce": ["Dropshipping", "Print-on-Demand", "Reseller"],
-      "Home Services": ["Plumbing", "HVAC", "Electrician"],
-      "Veterinary": ["Clinic", "Mobile Vet"],
-      "Photography": ["Wedding", "Portrait", "Product"],
-      "Security": ["Alarm Setup", "Patrol", "Event Security"],
-      "Event Planning": ["Weddings", "Corporate", "Birthdays"],
-      "Auto Repair": ["Garage", "Mobile Mechanic"],
-      "Landscaping": ["Design", "Maintenance", "Tree Service"],
-      "Courier Services": ["Medical", "Fleet", "Same-day"],
-      "Printing": ["Digital", "Labels", "Signage"],
-      "Barber/Salon": ["Barber", "Stylist", "Color Specialist"],
-      "Moving & Storage": ["Movers", "U-Haul Operator"],
-      "Painting": ["Interior", "Exterior", "Commercial"],
-      "Roofing": ["Install", "Repair", "Inspection"],
+      "Finance": ["Accounting", "Investments", "Banking", "Tax Services"],
+      "Real Estate": ["REIT", "Residential", "Commercial"],
       "Interior Design": ["Residential", "Commercial"],
-      "Publishing": ["Blog", "Magazine", "Self-Publish"],
-      "Travel Services": ["Travel Agent", "Group Tours"],
-      "HR Services": ["Recruiting", "Onboarding", "Benefits"],
-      "Copywriting": ["Marketing", "Web", "Brand"],
-      "Legal Services": ["Mediation", "Compliance"],
-      "Agriculture": ["Produce", "Farming", "Machinery"],
-      "Pet Grooming": ["Salon", "Mobile"],
-      "Accounting": ["Freelance", "Firm", "Tax Prep"],
-      "IT Support": ["Helpdesk", "Remote", "On-site"],
-      "Cleaning": ["Deep Clean", "Recurring", "Move-Out"],
-      "Entertainment": ["DJ", "Performer", "Lighting"],
+      "Healthcare": ["Home Health", "Dental", "Urgent Care"],
+      "Construction": ["General Contractor", "Roofing", "Plumbing"],
+      "Technology": ["Software", "IT Support", "Web Dev"],
+      "Hospitality": ["Hotel", "BnB", "Catering"],
+      "Transportation": ["Trucking", "Dispatch", "Logistics"],
+      "Pet Grooming": ["Mobile Grooming", "Salon"],
+      "Education": ["Tutoring", "Training", "Online Courses"],
+      "E-commerce": ["Dropshipping", "Amazon Seller", "Print-on-Demand"],
+      "Cleaning Services": ["Residential", "Commercial", "Move Out"],
+      "Auto Repair": ["Mobile Mechanic", "Shop"],
+      "Legal": ["Attorney", "Paralegal"],
+      "Marketing": ["Social Media", "Design", "Email"],
+      "Fitness": ["Trainer", "Yoga", "Gym"],
+      "Event Planning": ["Weddings", "Corporate", "Birthday"],
+      "Entertainment": ["Performer", "Streamer", "DJ"],
+      "Telecommunications": ["Internet Providers", "Installers"],
+      "Insurance": ["Broker", "Claims Adjuster"],
+      "Consulting": ["Sales", "Business Strategy"],
+      "Non-Profit": ["Faith-based", "Charity", "Community"],
+      "Childcare": ["Daycare", "After School"],
+      "Photography": ["Portraits", "Weddings", "Commercial"],
+      "Food & Beverage": ["Restaurant", "Food Truck", "Catering"],
+      "Home Services": ["HVAC", "Electrician", "Pest Control"],
+      "Landscaping": ["Mowing", "Design", "Irrigation"],
+      "Courier Services": ["Medical", "Local", "Fleet"],
+      "Printing": ["Flyers", "Signs", "Packaging"],
+      "Security": ["Guards", "Alarm Setup"],
+      "Beauty & Wellness": ["Massage", "Esthetician", "Hair"],
+      "Tutoring": ["Test Prep", "K-12", "College"],
+      "Publishing": ["Blog", "Magazine", "Self-Publishing"],
       "Plumbing": ["Residential", "Commercial"],
-      "Electrician": ["Residential", "Industrial"],
-      "Telecommunications": ["Sales", "Installation", "Internet Providers"]
+      "HVAC": ["Install", "Service", "Duct Cleaning"],
+      "Painting": ["Interior", "Exterior", "Decorative"],
+      "Roofing": ["Shingles", "Metal", "Repair"],
+      "HR Services": ["Recruiting", "Payroll"],
+      "Travel Services": ["Agent", "Tours"],
+      "IT Support": ["On-site", "Remote", "Contract"],
+      "Barber/Salon": ["Stylist", "Barber", "Colorist"],
+      "Copywriting": ["SEO", "Ad Copy", "Web"],
+      "Manufacturing": ["Assembly", "Private Label"],
+      "Accounting": ["Tax Prep", "Bookkeeping"],
+      "Veterinary": ["Clinic", "Mobile Vet"]
     };
 
-    const industrySelect = document.getElementById("industry");
-    const subcategorySelect = document.getElementById("subcategory");
-
-    function populateIndustries() {
-      Object.keys(industries).forEach(industry => {
-        const option = document.createElement("option");
-        option.value = industry;
-        option.textContent = industry;
-        industrySelect.appendChild(option);
-      });
-    }
-
     function updateSubcategories() {
-      const selected = industrySelect.value;
-      const options = industries[selected] || [];
-      subcategorySelect.innerHTML = '<option value="">-- Select Subcategory --</option>';
-      options.forEach(sub => {
+      const industry = document.getElementById("industry").value;
+      const subSelect = document.getElementById("subcategory");
+      subSelect.innerHTML = '<option value="">-- Select Subcategory --</option>';
+
+      if (industries[industry]) {
+        industries[industry].forEach(sub => {
+          const opt = document.createElement("option");
+          opt.value = sub;
+          opt.textContent = sub;
+          subSelect.appendChild(opt);
+        });
+      }
+    }
+
+    // On page load, populate industry list
+    window.onload = () => {
+      const industrySelect = document.getElementById("industry");
+      Object.keys(industries).forEach(name => {
         const opt = document.createElement("option");
-        opt.value = sub;
-        opt.textContent = sub;
-        subcategorySelect.appendChild(opt);
+        opt.value = name;
+        opt.textContent = name;
+        industrySelect.appendChild(opt);
       });
-    }
-
-    function handleFile() {
-    <div id="previewArea"></div>
-      alert("Phase 2 logic will be triggered here.");
-    }
-
-    populateIndustries();
+    };
   </script>
 </body>
 </html>
-
-<!-- Load XLSX for .xlsx file support -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
-<script>
-  const requiredLabels = [
-    "Date", "Agent Name", "Agent Type", "Pre-Tax", "Product",
-    "Policy Number", "Contract Type", "Promo", "Program", "Leader"
-  ];
-
-  function handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      const rows = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-      generateMappingUI(rows);
-    };
-    reader.readAsArrayBuffer(file);
-  }
-
-  function generateMappingUI(rows) {
-    const preview = document.getElementById("previewArea") || document.createElement("div");
-    preview.id = "previewArea";
-    preview.innerHTML = "";
-
-    if (!document.body.contains(preview)) document.body.appendChild(preview);
-
-    if (rows.length === 0) {
-      preview.innerHTML = "<p>No data in sheet.</p>";
-      return;
-    }
-
-    const table = document.createElement("table");
-    table.style.width = "100%";
-    table.style.borderCollapse = "collapse";
-    table.style.backgroundColor = "#E0F0FF";
-    table.style.marginTop = "30px";
-
-    // Header row
-    const headerRow = document.createElement("tr");
-    rows[0].forEach(header => {
-      const th = document.createElement("th");
-      th.textContent = header;
-      th.style.backgroundColor = "#003366";
-      th.style.color = "#FFF5CC";
-      th.style.padding = "10px";
-      th.style.border = "1px solid #ccc";
-      headerRow.appendChild(th);
-    });
-    table.appendChild(headerRow);
-
-    // Mapping row
-    const mappingRow = document.createElement("tr");
-    rows[0].forEach((_, colIndex) => {
-      const td = document.createElement("td");
-      td.style.padding = "5px";
-      const select = document.createElement("select");
-      select.innerHTML = `<option value="">-- Label Column --</option>`;
-      requiredLabels.forEach(label => {
-        const opt = document.createElement("option");
-        opt.value = label;
-        opt.textContent = label;
-        select.appendChild(opt);
-      });
-      select.style.width = "100%";
-      select.style.padding = "6px";
-      select.style.borderRadius = "6px";
-      td.appendChild(select);
-      mappingRow.appendChild(td);
-    });
-    table.appendChild(mappingRow);
-
-    // First few data rows
-    for (let i = 1; i < Math.min(rows.length, 4); i++) {
-      const tr = document.createElement("tr");
-      rows[i].forEach(cell => {
-        const td = document.createElement("td");
-        td.textContent = cell ?? "";
-        td.style.padding = "8px";
-        td.style.border = "1px solid #ccc";
-        tr.appendChild(td);
-      });
-      table.appendChild(tr);
-    }
-
-    preview.appendChild(table);
-  }
-
-  document.getElementById("fileUpload").addEventListener("change", handleFileUpload);
-</script>
