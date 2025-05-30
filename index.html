@@ -228,76 +228,133 @@
       reader.readAsArrayBuffer(file);
     });
 
-    function showPreviewTable(data) {
-      const previewDiv = document.getElementById("data-preview");
-      previewDiv.innerHTML = "";
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-      const industry = document.getElementById("industry").value.trim() || document.getElementById("customIndustry").value.trim();
-      const subcategory = document.getElementById("subcategory").value.trim() || document.getElementById("customSubcategory").value.trim();
+<script>
+document.getElementById("fileInput").addEventListener("change", function () {
+  const file = this.files[0];
+  if (!file) return;
 
-      const defaultLabels = [
-        "Ignore Column",
-        "Client Name",
-        "Service Date",
-        "Amount",
-        "Status",
-        "Notes",
-        "Phone",
-        "Email",
-        "Zip Code",
-        "Approval",
-        "Other"
-      ];
+  const reader = new FileReader();
 
-      const table = document.createElement("table");
+  reader.onload = function (e) {
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
 
-      data.forEach((row, rowIndex) => {
-        const tr = document.createElement("tr");
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
 
-        row.forEach((cell, colIndex) => {
-          let cellElement;
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    showPreviewTable(jsonData);
+  };
 
-          if (rowIndex === 0) {
-            cellElement = document.createElement("th");
-            const select = document.createElement("select");
-            select.style.width = "100%";
-            select.style.padding = "6px";
-            select.style.border = "none";
-            select.style.fontWeight = "bold";
-            select.style.backgroundColor = "#003366";
-            select.style.color = "white";
-            select.dataset.colIndex = colIndex;
+  reader.readAsArrayBuffer(file);
+});
 
-            defaultLabels.forEach(option => {
-              const opt = document.createElement("option");
-              opt.value = option;
-              opt.textContent = option;
-              select.appendChild(opt);
-            });
+function showPreviewTable(data) {
+  const previewDiv = document.getElementById("data-preview");
+  previewDiv.innerHTML = "";
 
-            const guessed = defaultLabels.find(label =>
-              label.toLowerCase().includes((cell || "").toLowerCase())
-            );
-            if (guessed) select.value = guessed;
+  // Instruction text
+  const instructions = document.createElement("p");
+  instructions.innerHTML = "✏️ <strong>Use the dropdowns above each column to assign labels.</strong> Choose 'Ignore Column' to skip it or enter a custom label in the box below.";
+  instructions.style.marginBottom = "12px";
+  instructions.style.color = "#FFF6DC";
+  instructions.style.fontSize = "0.95em";
+  previewDiv.appendChild(instructions);
 
-            cellElement.appendChild(select);
-          } else {
-            cellElement = document.createElement("td");
-            cellElement.textContent = cell ?? "";
-            cellElement.style.padding = "8px";
-            cellElement.style.border = "1px solid #ccc";
-            cellElement.style.backgroundColor = "#ffffff";
-            cellElement.style.color = "#000";
-          }
+  const defaultLabels = [
+    "Ignore Column",
+    "Client Name",
+    "Service Date",
+    "Amount",
+    "Status",
+    "Notes",
+    "Phone",
+    "Email",
+    "Zip Code",
+    "Approval",
+    "Other"
+  ];
 
-          tr.appendChild(cellElement);
+  const table = document.createElement("table");
+  table.style.width = "100%";
+  table.style.borderCollapse = "collapse";
+  table.style.marginTop = "10px";
+  table.style.backgroundColor = "#ffffff";
+  table.style.fontSize = "15px";
+
+  data.forEach((row, rowIndex) => {
+    const tr = document.createElement("tr");
+    tr.style.backgroundColor = rowIndex % 2 === 0 ? "#f0f8ff" : "#ffffff";
+
+    row.forEach((cell, colIndex) => {
+      let cellElement;
+
+      if (rowIndex === 0) {
+        const th = document.createElement("th");
+        th.style.backgroundColor = "#003366";
+        th.style.color = "white";
+        th.style.padding = "8px";
+        th.style.textAlign = "left";
+        th.style.border = "1px solid #333";
+
+        const select = document.createElement("select");
+        select.style.width = "100%";
+        select.style.padding = "6px";
+        select.style.border = "none";
+        select.style.fontWeight = "bold";
+        select.dataset.colIndex = colIndex;
+
+        defaultLabels.forEach(option => {
+          const opt = document.createElement("option");
+          opt.value = option;
+          opt.textContent = option;
+          select.appendChild(opt);
         });
 
-        table.appendChild(tr);
-      });
+        // Auto-guess match
+        const guessed = defaultLabels.find(label =>
+          label.toLowerCase().includes((cell || "").toLowerCase())
+        );
+        if (guessed) select.value = guessed;
 
-      previewDiv.appendChild(table);
-    }
-  </script>
-</body>
-</html>
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = "Custom Label";
+        input.style.marginTop = "4px";
+        input.style.width = "100%";
+        input.style.padding = "4px";
+        input.style.borderRadius = "4px";
+        input.style.border = "1px solid #ccc";
+        input.dataset.colIndex = colIndex;
+
+        // Live sync: if custom label is typed, override dropdown value
+        input.addEventListener("input", function () {
+          if (this.value.trim() !== "") {
+            select.value = "Other";
+          }
+        });
+
+        const container = document.createElement("div");
+        container.appendChild(select);
+        container.appendChild(input);
+        th.appendChild(container);
+        cellElement = th;
+      } else {
+        cellElement = document.createElement("td");
+        cellElement.textContent = cell ?? "";
+        cellElement.style.padding = "8px";
+        cellElement.style.border = "1px solid #ccc";
+        cellElement.style.color = "#000";
+      }
+
+      tr.appendChild(cellElement);
+    });
+
+    table.appendChild(tr);
+  });
+
+  previewDiv.appendChild(table);
+}
+</script>
