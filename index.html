@@ -11,199 +11,191 @@
     margin: 0;
     padding: 20px;
   }
-  h2 {
-    font-size: 1.8rem;
+  h1 {
+    font-size: 2rem;
     margin-bottom: 15px;
-    color: #F5F5DC;
   }
   label {
     display: block;
-    margin-top: 12px;
+    margin-top: 10px;
     font-weight: bold;
   }
-  input[type="file"], input[type="text"], select {
+  input[type="file"], button, select, input[type="text"] {
     width: 100%;
     max-width: 400px;
-    padding: 10px;
     margin-top: 6px;
-    margin-bottom: 10px;
+    padding: 10px;
     border-radius: 6px;
     border: none;
     font-size: 1em;
-    box-sizing: border-box;
   }
   button {
     background-color: #00E5FF;
     color: #000;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 1rem;
     cursor: pointer;
+    margin-top: 15px;
+    font-weight: bold;
   }
   button:hover {
     background-color: #00cce0;
   }
-  table {
-    width: 100%;
+  .columnMapping {
     margin-top: 20px;
+  }
+  .columnWrapper {
+    margin-bottom: 15px;
+  }
+  .previewTable {
+    margin-top: 20px;
+    width: 100%;
     border-collapse: collapse;
-    background-color: #F5F5DC;
+    background-color: #f5f5f5;
     color: #000;
   }
-  th, td {
+  .previewTable th, .previewTable td {
     padding: 8px;
     border: 1px solid #ccc;
   }
-  th {
+  .previewTable th {
     background-color: #00E5FF;
     color: #000;
   }
-  tr:nth-child(even) {
+  .previewTable tr:nth-child(even) {
     background-color: #e0e0e0;
   }
-  .note {
-    color: #ccc;
-    font-size: 0.85rem;
-    margin-top: 5px;
+  .checkboxMsg {
+    font-size: 0.85em;
+    color: #ddd;
   }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
-<!-- Phase 1: Upload File -->
-<h2>Phase 1 – Upload Your File</h2>
-<input type="file" id="fileUpload" accept=".xlsx, .csv" />
-<button onclick="loadFile()">Add/Replace</button>
+<h1>SheetPilot</h1>
+
+<label for="fileInput">Upload Your File:</label>
+<input type="file" id="fileInput" accept=".xlsx, .csv" />
+<button onclick="handleFileUpload()">Add/Replace</button>
 <p class="note">Use this to upload additional data to the current table.</p>
 
-<!-- Phase 2: Dynamic Headers and Column Selection -->
-<h2>Phase 2 – Map Your Columns</h2>
 <div id="columnMapping"></div>
-<button onclick="previewTable()">Preview Table</button>
-<div id="preview"></div>
+<button id="previewBtn" style="display:none;" onclick="previewTable()">Preview Table</button>
+<div id="tableContainer"></div>
 
-<!-- SheetJS library -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-// Phase 1: Load file and parse to JSON
-function loadFile() {
-  const fileInput = document.getElementById('fileUpload');
-  const file = fileInput.files[0];
-  if (!file) {
+function handleFileUpload() {
+  const fileInput = document.getElementById('fileInput');
+  if (!fileInput.files.length) {
     alert("Please select a file first.");
     return;
   }
+  const file = fileInput.files[0];
   const reader = new FileReader();
   reader.onload = function(e) {
     const data = new Uint8Array(e.target.result);
     const workbook = XLSX.read(data, { type: 'array' });
-    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-    const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    const sheet = workbook.Sheets[workbook.SheetNames[0]];
+    const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
     if (json.length === 0) {
       alert("Empty sheet.");
       return;
     }
-    const headers = json[0];
-    const rows = json.slice(1).filter(row => row.join("").trim() !== "");
-    renderColumnMapping(headers, rows);
+    renderColumnMapping(json[0], json.slice(1));
   };
   reader.readAsArrayBuffer(file);
 }
 
-// Phase 2: Render dynamic headers
 function renderColumnMapping(headers, rows) {
-  const container = document.getElementById("columnMapping");
-  container.innerHTML = ""; // Clear previous
-
-  headers.forEach((header, i) => {
+  const container = document.getElementById('columnMapping');
+  container.innerHTML = "";
+  headers.forEach((header, idx) => {
     const wrapper = document.createElement("div");
-    wrapper.style.marginBottom = "10px";
+    wrapper.className = "columnWrapper";
 
-    // Checkbox to include/exclude column
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = true;
+    checkbox.id = `colCheck${idx}`;
     wrapper.appendChild(checkbox);
 
-    const msg = document.createElement("span");
-    msg.textContent = " Include this column";
-    msg.style.marginLeft = "5px";
-    wrapper.appendChild(msg);
+    const checkboxLabel = document.createElement("label");
+    checkboxLabel.className = "checkboxMsg";
+    checkboxLabel.textContent = " Uncheck to hide this column";
+    wrapper.appendChild(checkboxLabel);
 
-    // Dropdown for header suggestions
     const select = document.createElement("select");
-    ["-- Choose or type your own --", "Name", "Email", "Phone", "Date", "Amount", "Status", "Notes"].forEach(optVal => {
+    const defaultOpt = document.createElement("option");
+    defaultOpt.value = "";
+    defaultOpt.textContent = "-- Choose or type your own --";
+    select.appendChild(defaultOpt);
+
+    // Popular header suggestions
+    ["Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status", "Notes"].forEach(optTxt => {
       const opt = document.createElement("option");
-      opt.value = optVal;
-      opt.textContent = optVal;
+      opt.value = optTxt;
+      opt.textContent = optTxt;
       select.appendChild(opt);
     });
-    select.style.marginTop = "5px";
+    select.value = header;
     wrapper.appendChild(select);
 
-    // Input for custom label
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "Or enter custom label";
-    input.style.marginTop = "5px";
-    wrapper.appendChild(input);
+    const textInput = document.createElement("input");
+    textInput.type = "text";
+    textInput.placeholder = "Or enter custom label";
+    wrapper.appendChild(textInput);
 
     container.appendChild(wrapper);
   });
-
-  // Save rows for later preview
+  document.getElementById("previewBtn").style.display = "inline-block";
   container.dataset.rows = JSON.stringify(rows);
 }
 
-// Preview Table
 function previewTable() {
-  const container = document.getElementById("columnMapping");
-  const rows = JSON.parse(container.dataset.rows || "[]");
-  const wrappers = container.querySelectorAll("div");
+  const container = document.getElementById('columnMapping');
+  const rows = JSON.parse(container.dataset.rows);
+  const columnWrappers = container.querySelectorAll('.columnWrapper');
+
   const finalHeaders = [];
-  const includeFlags = [];
+  const includedIndexes = [];
+  columnWrappers.forEach((wrapper, idx) => {
+    const checkbox = wrapper.querySelector('input[type="checkbox"]');
+    if (!checkbox.checked) return;
 
-  wrappers.forEach(wrapper => {
-    const checkbox = wrapper.querySelector("input[type='checkbox']");
-    const select = wrapper.querySelector("select");
-    const input = wrapper.querySelector("input[type='text']");
-    includeFlags.push(checkbox.checked);
-    finalHeaders.push(input.value.trim() || select.value || "Column");
+    const select = wrapper.querySelector('select');
+    const input = wrapper.querySelector('input[type="text"]');
+    const header = input.value.trim() || select.value || `Column ${idx + 1}`;
+    finalHeaders.push(header);
+    includedIndexes.push(idx);
   });
 
+  const tableContainer = document.getElementById('tableContainer');
+  tableContainer.innerHTML = "";
   const table = document.createElement("table");
+  table.className = "previewTable";
+
   const thead = document.createElement("thead");
-  const trHead = document.createElement("tr");
-  finalHeaders.forEach((h, i) => {
-    if (includeFlags[i]) {
-      const th = document.createElement("th");
-      th.textContent = h;
-      trHead.appendChild(th);
-    }
+  const tr = document.createElement("tr");
+  finalHeaders.forEach(h => {
+    const th = document.createElement("th");
+    th.textContent = h;
+    tr.appendChild(th);
   });
-  thead.appendChild(trHead);
+  thead.appendChild(tr);
   table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
   rows.forEach(row => {
     const tr = document.createElement("tr");
-    finalHeaders.forEach((h, i) => {
-      if (includeFlags[i]) {
-        const td = document.createElement("td");
-        td.textContent = row[i] || "";
-        tr.appendChild(td);
-      }
+    includedIndexes.forEach(idx => {
+      const td = document.createElement("td");
+      td.textContent = row[idx] || "";
+      tr.appendChild(td);
     });
     tbody.appendChild(tr);
   });
   table.appendChild(tbody);
-
-  const previewDiv = document.getElementById("preview");
-  previewDiv.innerHTML = "";
-  previewDiv.appendChild(table);
+  tableContainer.appendChild(table);
 }
 </script>
 </body>
