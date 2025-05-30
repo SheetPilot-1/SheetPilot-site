@@ -1,220 +1,124 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot – Upload Your Sheet</title>
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <style>
-    body {
-      background-color: #2C4A5D;
-      font-family: Arial, sans-serif;
-      color: #FFF6DC;
-      padding: 20px;
-    }
-    h1 { font-size: 1.8em; margin-bottom: 10px; }
-    label { font-weight: bold; display: block; margin: 12px 0 5px; }
-    select, input[type="text"] {
-      width: 100%; padding: 10px; margin-bottom: 10px;
-      border-radius: 5px; border: none; font-size: 1em;
-    }
-    input[type="file"] { margin-top: 5px; }
-    #uploadSection { margin-top: 20px; }
-    .note { color: #B0B0B0; font-size: 0.9em; margin-top: 8px; }
-  </style>
-</head>
-<body>
-  <h1>SheetPilot</h1>
+<!-- PHASE 1: INDUSTRY / SUBCATEGORY SETUP -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-  <label for="industry">Select Your Industry:</label>
-  <select id="industry"><option value="">-- Select Industry --</option></select>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const industryMap = {
+    "Construction": ["General Contractor", "Framing", "Concrete", "Roofing"],
+    "Trucking": ["Freight", "Dispatching", "Fleet Management", "Owner-Operator"],
+    "Barbershop/Salon": ["Men's Cuts", "Women's Styling", "Coloring"],
+    "Copywriting": ["Sales Copy", "Blogs", "Web Content"],
+    "Photography": ["Weddings", "Portraits", "Events"],
+    "Fitness": ["Personal Training", "Nutrition", "Classes"],
+    "Plumbing": ["Repair", "Remodel", "Emergency"],
+    "Electrician": ["Residential", "Commercial", "Low Voltage"],
+    "Real Estate": ["Residential", "Commercial", "Land"],
+    "Education": ["Tutoring", "Workshops", "Online Courses"],
+    "Cleaning Services": ["Residential", "Commercial", "Deep Clean"],
+    "Legal Services": ["Criminal", "Family", "Contract"],
+    "Accounting": ["Bookkeeping", "Tax Prep", "Payroll"],
+    "Therapy & Counseling": ["Individual", "Couples", "Family"],
+    "Consulting": ["HR", "IT", "Business Strategy"],
+    "Marketing": ["SEO", "Email", "Brand Strategy"],
+    "Tech Support": ["Remote", "Enterprise", "Home"],
+    "Insurance": ["Health", "Auto", "Life"],
+    "Voice Over": ["Commercials", "Audiobooks", "Narration"],
+    "Logistics": ["Dispatch", "Fleet", "Supply Chain"],
+    "Cybersecurity": ["Pen Testing", "Compliance", "SOC Audit"],
+    "Project Management": ["Agile", "Scrum", "Scheduling"],
+    "UX/UI Design": ["Wireframing", "Prototyping", "Audit"],
+    "HR Services": ["Hiring", "Payroll", "Compliance"],
+    "Medical Billing": ["Coding", "Claims", "Authorization"],
+    "Speech Therapy": ["Pediatric", "Adult", "Cognitive"],
+    "Nutrition": ["Meal Planning", "Supplements", "Coaching"],
+    "Veterinary Services": ["Exams", "Emergency", "Surgery"],
+    "Childcare": ["Babysitting", "Nanny", "Daycare"],
+    "Automotive Repair": ["Diagnostics", "Engine", "Brakes"],
+    "Landscaping": ["Design", "Mowing", "Irrigation"],
+    "Painting": ["Interior", "Exterior", "Custom"],
+    "Roofing": ["Shingle", "Metal", "Inspection"],
+    "Event Planning": ["Weddings", "Corporate", "Birthdays"],
+    "Tattoo Services": ["Tattoo", "Piercing", "Removal"],
+    "Pet Training": ["Obedience", "Behavioral", "Advanced"],
+    "Baking": ["Cakes", "Pastries", "Bread"],
+    "Catering": ["Events", "Meal Prep", "Drop-off"],
+    "Interior Design": ["Residential", "Commercial", "Staging"],
+    "Retail": ["Clothing", "Home Goods", "Tech"],
+    "E-commerce": ["Product Listings", "Fulfillment", "Marketing"],
+    "Translation": ["Documents", "Live", "Legal"],
+    "Voice Acting": ["Commercial", "Narration", "Dubbing"],
+    "Game Development": ["Mobile", "Indie", "PC"],
+    "Music Lessons": ["Piano", "Guitar", "Voice"],
+    "Personal Assistant": ["Admin", "Inbox", "Calendar"],
+    "IT Consulting": ["Infrastructure", "Security", "Cloud"],
+    "Data Analysis": ["BI", "Dashboards", "Reporting"],
+        "Business Strategy": ["Growth", "Funding", "Operations"],
+    "Product Management": ["MVP", "Launch", "Feature Planning"],
+    "UX Research": ["User Testing", "Surveys", "Interviews"],
+    "SEO Services": ["Keyword Research", "Audits", "Link Building"],
+    "Advertising": ["Google Ads", "Meta Ads", "Billboards"],
+    "Graphic Design": ["Logos", "Flyers", "Digital Ads"],
+    "3D Modeling": ["Game Assets", "Product Models", "Animation"],
+    "Animation": ["Explainers", "2D/3D", "VFX"],
+    "Video Editing": ["Reels", "YouTube", "Corporate"],
+    "Podcast Editing": ["Audio Cleanup", "Publishing", "Promotion"],
+    "Finance Advisory": ["Budgeting", "Debt Help", "Investments"],
+    "Wealth Management": ["Portfolios", "Retirement", "Estate"],
+    "Tax Services": ["Prep", "Filing", "Back Taxes"],
+    "Nonprofit Outreach": ["Volunteering", "Events", "Grants"],
+    "Fundraising": ["Email Campaigns", "Donor Strategy", "Grants"],
+    "Social Media Management": ["Posts", "Scheduling", "Engagement"],
+    "Virtual Events": ["Zoom Setup", "Moderation", "Live Streaming"],
+    "Customer Service": ["Live Chat", "Call Handling", "Help Desk"],
+    "Technical Writing": ["User Guides", "APIs", "Policies"],
+    "Blog Writing": ["SEO", "Thought Leadership", "Tutorials"],
+    "Ghostwriting": ["Books", "Blogs", "Speeches"],
+    "Resume Writing": ["Professional", "Executive", "Creative"],
+    "Real Estate Photography": ["Homes", "Aerial", "360 Tours"],
+    "Drone Videography": ["Real Estate", "Events", "Inspections"],
+    "Conflict Mediation": ["Workplace", "Legal", "Family"],
+    "Life Coaching": ["Career", "Wellness", "Mindset"],
+    "Sales Strategy": ["Outbound", "Pipelines", "Closers"],
+    "Field Service Ops": ["Routing", "Work Orders", "Inventory"],
+    "Remote Work Consulting": ["Setup", "Productivity", "Policy"],
+    "ERP Systems": ["Setup", "Migration", "Training"],
+    "Supply Chain": ["Inventory", "Vendor", "Forecasting"],
+    "Procurement": ["RFPs", "Negotiation", "Tracking"],
+    "Brand Strategy": ["Positioning", "Messaging", "Voice"],
+    "Web Hosting": ["Domains", "Servers", "Support"],
+    "CRM Setup": ["Salesforce", "HubSpot", "Zoho"],
+    "Business Automation": ["Zapier", "Make", "Custom"],
+    "Sales Funnel Design": ["Landing Pages", "Lead Magnets", "Follow-ups"],
+    "Health Coaching": ["Plans", "Check-ins", "Accountability"],
+    "Chiropractic Services": ["Adjustments", "Therapy", "Posture"],
+    "Legal Tech": ["eDiscovery", "Contract AI", "Case Mgmt"],
+    "AI Integration": ["Chatbots", "Workflows", "Analytics"],
+    "Market Research": ["Surveys", "Focus Groups", "Reports"],
+    "Recruiting": ["Talent Search", "Screening", "Onboarding"],
+    "SaaS Product Setup": ["Trials", "Onboarding", "Support"]
+  };
 
-  <label for="subcategory">Subcategory:</label>
-  <select id="subcategory"><option value="">-- Choose Subcategory --</option></select>
+  const industrySelect = document.getElementById("industry");
+  const subcategorySelect = document.getElementById("subcategory");
 
-  <label for="customIndustry">Or enter industry manually:</label>
-  <input type="text" id="customIndustry" placeholder="Custom Industry" />
+  for (let industry in industryMap) {
+    const option = document.createElement("option");
+    option.value = industry;
+    option.textContent = industry;
+    industrySelect.appendChild(option);
+  }
 
-  <label for="customSubcategory">Or enter subcategory manually:</label>
-  <input type="text" id="customSubcategory" placeholder="Custom Subcategory" />
-
-  <div id="uploadSection">
-    <label>Upload Your File:</label>
-    <input type="file" id="fileInput" />
-    <div class="note">Use this to upload additional data to the current table.</div>
-    <div id="data-preview"></div>
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const industryMap = {
-        "Construction": ["General Contractor", "Framing", "Concrete", "Roofing"],
-        "Barbershop/Salon": ["Men's Cuts", "Women's Styling", "Coloring"],
-        "Copywriting": ["Sales Copy", "Blogs", "Web Content"],
-        "Photography": ["Weddings", "Portraits", "Events"],
-        "Fitness": ["Personal Training", "Nutrition", "Classes"],
-        "Plumbing": ["Repair", "Remodel", "Emergency"],
-        "Electrician": ["Residential", "Commercial", "Low Voltage"],
-        "Pet Grooming": ["Mobile", "Salon", "In-Home"],
-        "Real Estate": ["Residential", "Commercial", "Land"],
-        "Education": ["Tutoring", "Workshops", "Courses"],
-        "Cleaning Services": ["Residential", "Commercial", "Deep Clean"],
-        "Legal Services": ["Criminal", "Family", "Contract"],
-        "Therapy & Counseling": ["Individual", "Couples", "Family"],
-        "Accounting": ["Tax Prep", "Bookkeeping", "Audit"],
-        "Marketing": ["SEO", "Social Media", "Email"],
-        "Consulting": ["HR", "Management", "IT"],
-        "Software Development": ["Web", "Mobile", "SaaS"],
-        "Tech Support": ["Remote Help", "Help Desk"],
-        "Insurance": ["Claims", "Underwriting", "Sales"],
-        "Trucking": ["Freight", "Owner-Operator", "Dispatching"],
-        "Logistics": ["Routing", "Supply Chain", "Delivery"],
-        "Cybersecurity": ["Risk", "Firewall", "Audit"],
-        "Project Management": ["Agile", "Scrum", "Scheduling"],
-        "UX/UI Design": ["Wireframing", "Prototyping", "Audit"],
-        "HR Services": ["Hiring", "Payroll", "Compliance"],
-        "Medical Billing": ["Coding", "Claims", "Authorization"],
-        "Speech Therapy": ["Pediatric", "Adult", "Cognitive"],
-        "Nutrition": ["Meal Planning", "Supplements", "Coaching"],
-        "Veterinary Services": ["Exams", "Emergency", "Surgery"],
-        "Childcare": ["Babysitting", "Nanny", "Daycare"],
-        "Automotive Repair": ["Diagnostics", "Engine", "Brakes"],
-        "Landscaping": ["Design", "Mowing", "Irrigation"],
-        "Painting": ["Interior", "Exterior", "Custom"],
-        "Roofing": ["Shingle", "Metal", "Inspection"],
-        "Event Planning": ["Weddings", "Corporate", "Birthdays"],
-        "Tattoo Services": ["Tattoo", "Piercing", "Removal"],
-        "Pet Training": ["Obedience", "Behavioral", "Advanced"],
-        "Baking": ["Cakes", "Pastries", "Bread"],
-        "Catering": ["Events", "Meal Prep", "Drop-off"],
-        "Interior Design": ["Residential", "Commercial", "Staging"],
-        "Retail": ["Clothing", "Home Goods", "Tech"],
-        "E-commerce": ["Product Listings", "Fulfillment", "Marketing"],
-        "Translation": ["Documents", "Live", "Legal"],
-        "Voice Over": ["Commercial", "Audiobook", "Animation"],
-        "Game Development": ["Mobile", "Indie", "PC"],
-        "Music Lessons": ["Piano", "Guitar", "Voice"],
-        "Personal Assistant": ["Admin", "Inbox", "Calendar"],
-        "IT Consulting": ["Infrastructure", "Security", "Cloud"],
-        "Data Analysis": ["BI", "Dashboards", "Reporting"]
-        // Add the rest as needed — this is already 50+ and works fine
-      };
-
-      const industrySelect = document.getElementById("industry");
-      const subcategorySelect = document.getElementById("subcategory");
-
-      for (let industry in industryMap) {
+  industrySelect.addEventListener("change", function () {
+    const selected = this.value;
+    subcategorySelect.innerHTML = '<option value="">-- Choose Subcategory --</option>';
+    if (industryMap[selected]) {
+      industryMap[selected].forEach(sub => {
         const option = document.createElement("option");
-        option.value = industry;
-        option.textContent = industry;
-        industrySelect.appendChild(option);
-      }
-
-      industrySelect.addEventListener("change", function () {
-        const selected = this.value;
-        subcategorySelect.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-        if (industryMap[selected]) {
-          industryMap[selected].forEach(sub => {
-            const option = document.createElement("option");
-            option.value = sub;
-            option.textContent = sub;
-            subcategorySelect.appendChild(option);
-          });
-        }
+        option.value = sub;
+        option.textContent = sub;
+        subcategorySelect.appendChild(option);
       });
-    });
-  </script>
-</body>
-</html>
-
-    // === Phase 2: Auto-load file & parse ===
-    document.getElementById("fileInput").addEventListener("change", function () {
-      const file = this.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
-        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-        showPreviewTable(jsonData);
-      };
-      reader.readAsArrayBuffer(file);
-    });
-
-    // === Phase 3: Preview + Custom Labels ===
-    function showPreviewTable(data) {
-      const previewDiv = document.getElementById("data-preview");
-      previewDiv.innerHTML = "";
-
-      const instructions = document.createElement("p");
-      instructions.className = "instructions";
-      instructions.innerHTML = "✏️ <strong>Use the dropdowns above each column to assign labels.</strong> Choose 'Ignore Column' to skip or enter a custom label.";
-      previewDiv.appendChild(instructions);
-
-      const defaultLabels = [
-        "Ignore Column", "Client Name", "Service Date", "Amount", "Status",
-        "Notes", "Phone", "Email", "Zip Code", "Approval", "Other"
-      ];
-
-      const table = document.createElement("table");
-
-      data.forEach((row, rowIndex) => {
-        const tr = document.createElement("tr");
-
-        row.forEach((cell, colIndex) => {
-          let cellElement;
-
-          if (rowIndex === 0) {
-            cellElement = document.createElement("th");
-
-            const select = document.createElement("select");
-            select.style.width = "100%";
-            select.style.padding = "6px";
-            select.style.marginBottom = "4px";
-
-            defaultLabels.forEach(label => {
-              const option = document.createElement("option");
-              option.value = label;
-              option.textContent = label;
-              select.appendChild(option);
-            });
-
-            const guessed = defaultLabels.find(label =>
-              label.toLowerCase().includes((cell || "").toLowerCase())
-            );
-            if (guessed) select.value = guessed;
-
-            const input = document.createElement("input");
-            input.type = "text";
-            input.placeholder = "Custom Label";
-            input.style.width = "100%";
-            input.style.padding = "5px";
-            input.style.border = "1px solid #ccc";
-            input.style.borderRadius = "4px";
-
-            input.addEventListener("input", () => {
-              if (input.value.trim()) {
-                select.value = "Other";
-              }
-            });
-
-            cellElement.appendChild(select);
-            cellElement.appendChild(input);
-          } else {
-            cellElement = document.createElement("td");
-            cellElement.textContent = cell ?? "";
-          }
-
-          tr.appendChild(cellElement);
-        });
-
-        table.appendChild(tr);
-      });
-
-      previewDiv.appendChild(table);
     }
-  </script>
-</body>
-</html>
+  });
+});
+</script>
