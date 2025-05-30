@@ -209,11 +209,12 @@ function loadFile() {
 </script>
 </body>
 </html>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>SheetPilot Phase 2 (No Duplicates)</title>
+<title>SheetPilot Phase 2 - Clean & Functional</title>
 <style>
   body {
     background-color: #33658A;
@@ -224,11 +225,11 @@ function loadFile() {
   }
   h1 {
     font-size: 2rem;
-    color: #F5F5DC;
+    margin-bottom: 15px;
   }
   label {
     display: block;
-    margin-top: 15px;
+    margin-top: 12px;
     font-weight: bold;
   }
   select, input[type="text"], input[type="file"] {
@@ -239,15 +240,13 @@ function loadFile() {
     border-radius: 6px;
     border: none;
     font-size: 1em;
-    box-sizing: border-box;
-    display: block;
   }
   button {
     background-color: #00E5FF;
     color: #000;
     border: none;
     padding: 12px 20px;
-    border-radius: 8px;
+    border-radius: 6px;
     margin-top: 10px;
     font-weight: bold;
     font-size: 1rem;
@@ -263,14 +262,11 @@ function loadFile() {
   }
   th, td {
     padding: 8px;
-    border-top: 1px solid #ccc;
+    border: 1px solid #ccc;
   }
   th { background-color: #00E5FF; }
   tr:nth-child(even) { background-color: #e0e0e0; }
-  .note {
-    color: #ccc;
-    font-size: 0.85rem;
-  }
+  .note { color: #ccc; font-size: 0.85rem; margin-top: 5px; }
 </style>
 </head>
 <body>
@@ -306,13 +302,13 @@ function loadFile() {
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-const popularHeaders = ["Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status", "Notes", "Location"];
 const subcategoryMap = {
   "IT Services": ["Remote Support", "Network Setup", "Security"],
   "Finance": ["CPA", "Wealth Management", "Tax Prep"],
   "Construction": ["Residential", "Commercial", "Roofing"],
   "Education": ["Tutoring", "Online Learning", "Workshops"]
 };
+const popularHeaders = ["Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status", "Notes", "Location"];
 
 document.getElementById('industry').addEventListener('change', () => {
   const industry = document.getElementById('industry').value;
