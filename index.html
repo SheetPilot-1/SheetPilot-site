@@ -213,7 +213,7 @@ function loadFile() {
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<title>SheetPilot Phase 2</title>
+<title>SheetPilot Phase 2 (No Duplicates)</title>
 <style>
   body {
     background-color: #33658A;
@@ -265,9 +265,7 @@ function loadFile() {
     padding: 8px;
     border-top: 1px solid #ccc;
   }
-  th {
-    background-color: #00E5FF;
-  }
+  th { background-color: #00E5FF; }
   tr:nth-child(even) { background-color: #e0e0e0; }
   .note {
     color: #ccc;
@@ -285,17 +283,11 @@ function loadFile() {
     <option>Finance</option>
     <option>Construction</option>
     <option>Education</option>
-    <option>Marketing</option>
-    <!-- Add more as needed -->
   </select>
 
   <label for="subcategory">Select Your Subcategory</label>
   <select id="subcategory">
     <option value="">-- Choose Subcategory --</option>
-    <option>Remote Support</option>
-    <option>CPA</option>
-    <option>Remodeling</option>
-    <option>Online Learning</option>
   </select>
 
   <label for="customIndustry">Or Manually Enter Industry</label>
@@ -315,6 +307,24 @@ function loadFile() {
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 const popularHeaders = ["Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status", "Notes", "Location"];
+const subcategoryMap = {
+  "IT Services": ["Remote Support", "Network Setup", "Security"],
+  "Finance": ["CPA", "Wealth Management", "Tax Prep"],
+  "Construction": ["Residential", "Commercial", "Roofing"],
+  "Education": ["Tutoring", "Online Learning", "Workshops"]
+};
+
+document.getElementById('industry').addEventListener('change', () => {
+  const industry = document.getElementById('industry').value;
+  const subcat = document.getElementById('subcategory');
+  subcat.innerHTML = '<option value="">-- Choose Subcategory --</option>';
+  (subcategoryMap[industry] || []).forEach(sc => {
+    const opt = document.createElement("option");
+    opt.value = sc;
+    opt.textContent = sc;
+    subcat.appendChild(opt);
+  });
+});
 
 document.getElementById('loadButton').addEventListener('click', () => {
   const fileInput = document.getElementById('fileUpload');
@@ -433,7 +443,7 @@ function previewTable(headers, rows, headerContainer) {
   table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
-  rows.forEach((row, rIndex) => {
+  rows.forEach(row => {
     const tr = document.createElement("tr");
     visibleIndexes.forEach(i => {
       const td = document.createElement("td");
