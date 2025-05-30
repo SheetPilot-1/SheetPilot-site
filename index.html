@@ -2,183 +2,207 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>SheetPilot</title>
+  <title>SheetPilot – Upload</title>
   <style>
     body {
-      background-color: #294152;
-      color: #f5f5dc;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 40px 20px;
+      font-family: Arial, sans-serif;
+      background-color: #eef6fb;
       margin: 0;
+      padding: 20px;
+      color: #1e1e1e;
     }
 
     h1 {
-      font-size: 2.2em;
-      margin-bottom: 25px;
-      font-weight: bold;
+      color: #003147;
+      margin-bottom: 10px;
     }
 
     label {
       font-weight: bold;
       display: block;
-      margin-top: 20px;
-      margin-bottom: 8px;
+      margin: 12px 0 6px;
     }
 
     select, input[type="text"], input[type="file"] {
       width: 100%;
-      max-width: 380px;
-      padding: 12px;
-      margin-bottom: 12px;
-      border-radius: 8px;
-      border: none;
-      font-size: 1em;
-      box-sizing: border-box;
-      display: block;
+      padding: 10px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
     }
 
-    .button {
-      background-color: #00e5ff;
-      color: #000;
-      border: none;
-      padding: 12px 22px;
-      border-radius: 10px;
+    button {
+      padding: 10px 16px;
+      font-size: 16px;
       font-weight: bold;
-      font-size: 1rem;
+      background-color: #00bcd4;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      transition: background-color 0.3s ease;
       margin-top: 10px;
     }
 
-    .button:hover {
-      background-color: #00cce0;
+    button:hover {
+      background-color: #0097a7;
     }
 
-    .note {
-      color: #f5f5dc;
-      font-size: 0.95em;
+    #uploadNote {
+      color: #555;
+      font-size: 13px;
       margin-top: 6px;
-      opacity: 0.85;
     }
 
-    .upload-section {
-      margin-bottom: 40px;
+    .form-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 600px;
+    }
+
+    @media (min-width: 600px) {
+      .form-row {
+        flex-direction: row;
+        align-items: flex-end;
+      }
+
+      .form-row > div {
+        flex: 1;
+      }
+
+      #uploadContainer {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      #uploadNote {
+        margin-top: 0;
+        padding-top: 4px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>SheetPilot</h1>
+  <h1>SheetPilot – Upload Your Sheet</h1>
 
-  <label for="industry">Select Your Industry:</label>
-  <select id="industry" onchange="updateSubcategories()">
-    <option value="">-- Select Industry --</option>
+  <label for="industrySelect">Select Your Industry</label>
+  <select id="industrySelect">
+    <option value="">-- Choose Industry --</option>
   </select>
 
-  <label for="subcategory">Subcategory:</label>
-  <select id="subcategory">
-    <option value="">-- Select Subcategory --</option>
+  <label for="subcategorySelect">Select Your Subcategory</label>
+  <select id="subcategorySelect" disabled>
+    <option value="">-- Choose Subcategory --</option>
   </select>
 
-  <label for="customIndustry">Or enter industry manually:</label>
-  <input type="text" id="customIndustry" placeholder="Custom Industry" />
+  <label for="manualSubcategory">Or Manually Enter Subcategory</label>
+  <input type="text" id="manualSubcategory" placeholder="Enter your subcategory here (optional)" />
 
-  <label for="customSubcategory">Or enter subcategory manually:</label>
-  <input type="text" id="customSubcategory" placeholder="Custom Subcategory" />
-
-  <div class="upload-section">
-    <label for="fileUpload">Upload Your File:</label>
-    <input type="file" id="fileUpload" accept=".xlsx, .csv" />
-    <button class="button" onclick="triggerFileReload()">Add/Replace</button>
-    <p class="note">Use this to upload additional data to the current table.</p>
+  <label for="fileUpload">Upload Spreadsheet</label>
+  <div id="uploadContainer">
+    <input type="file" id="fileUpload" accept=".xlsx,.csv" />
+    <button onclick="handleFileUpload()">Add/Replace</button>
   </div>
+  <div id="uploadNote">This will replace the currently loaded file.</div>
 
   <script>
-    const subcategoryOptions = {
-      "Retail": ["Clothing", "Electronics", "Convenience Store"],
-      "Finance": ["Accounting", "CPA", "Wealth Management"],
-      "Real Estate": ["Residential", "Commercial", "REIT"],
-      "Healthcare": ["Clinic", "Dental Office", "Private Practice"],
-      "Marketing": ["Social Media", "SEO", "Brand Design"],
-      "Education": ["K-12", "Tutoring", "Online Courses"],
-      "Construction": ["Residential", "Remodeling", "Roofing"],
-      "Transportation": ["Trucking", "Logistics", "Fleet Management"],
-      "Technology": ["Software Dev", "IT Services", "Cybersecurity"],
-      "Food & Beverage": ["Catering", "Bakery", "Restaurant"],
-      "Legal": ["Attorney", "Paralegal", "Notary"],
-      "Insurance": ["Broker", "Adjuster", "Agency"],
-      "Home Services": ["Plumbing", "HVAC", "Electrician"],
-      "Pet Grooming": ["Salon", "Mobile Grooming"],
-      "Cleaning Services": ["Residential", "Commercial", "Move-out"],
-      "Fitness": ["Personal Training", "Gym", "Yoga Studio"],
-      "Entertainment": ["DJ", "Performer", "Event Host"],
-      "Non-Profit": ["Community", "Religious Org", "Foundation"],
-      "Beauty & Wellness": ["Salon", "Spa", "Massage"],
-      "E-commerce": ["Dropshipping", "Reseller", "Print-on-Demand"],
-      "Hospitality": ["BnB Host", "Hotel", "Event Space"],
-      "Consulting": ["Operations", "Strategy", "Sales"],
-      "Interior Design": ["Residential", "Commercial"],
-      "Auto Repair": ["Mechanic", "Body Shop"],
-      "Barber/Salon": ["Barber", "Stylist"],
-      "Security Services": ["Guard", "Alarm Setup"],
-      "Childcare": ["Babysitting", "Daycare"],
-      "Veterinary": ["Clinic", "Mobile Vet"],
-      "Courier Services": ["Fleet", "Same-day Delivery"],
-      "Event Planning": ["Weddings", "Corporate"],
-      "Accounting": ["Tax Prep", "Payroll"],
-      "Photography": ["Portrait", "Product", "Wedding"],
-      "Publishing": ["Blog", "Magazine", "Print Media"],
-      "Travel Services": ["Agent", "Tour Guide"],
-      "Electrician": ["Residential", "Industrial"],
-      "Landscaping": ["Design", "Maintenance"],
-      "Painting": ["Interior", "Exterior"],
-      "IT Support": ["Remote", "On-site"],
-      "Plumbing": ["Emergency", "Standard"],
-      "HR Services": ["Recruiting", "Onboarding"],
-      "Copywriting": ["Web", "Ad Copy", "Email"],
-      "Roofing": ["Repair", "New Installation"],
-      "Manufacturing": ["Parts", "Assembly"],
-      "Fitness": ["Trainer", "Yoga", "Studio"],
-      "Food & Beverage": ["Truck", "Bakery", "Catering"],
-      "Telecommunications": ["Cell", "Internet", "Cable"],
-      "Tutoring": ["Math", "Test Prep"],
-      "Freelancing": ["Writing", "Design", "Coding"]
+    const industryToSubcategories = {
+      "Accounting": ["Bookkeeping", "Payroll", "Tax Prep", "Auditing"],
+      "Advertising": ["Digital Ads", "Print Media", "Copywriting", "Strategy"],
+      "Agriculture": ["Crop Farming", "Livestock", "Horticulture", "Ag Tech"],
+      "Architecture": ["Residential", "Commercial", "Landscape", "Urban Planning"],
+      "Auto Repair": ["Engine", "Brakes", "Transmissions", "Detailing"],
+      "Barbershop/Salon": ["Men’s Cuts", "Coloring", "Hair Styling", "Beard Grooming"],
+      "Beauty & Cosmetics": ["Makeup", "Skincare", "Nails", "Haircare"],
+      "Carpentry": ["Framing", "Cabinetry", "Decks", "Trim Work"],
+      "Childcare": ["Daycare", "After-school", "Nanny", "Preschool"],
+      "Cleaning Services": ["Residential", "Commercial", "Post-Construction", "Deep Cleaning"],
+      "Construction": ["Residential", "Commercial", "Masonry", "Site Prep"],
+      "Consulting": ["Business", "IT", "Marketing", "Operations"],
+      "Dental": ["Orthodontics", "Cosmetic", "Pediatric", "General Practice"],
+      "Education": ["Tutoring", "Private School", "Adult Learning", "Online Courses"],
+      "Electrical": ["Residential", "Commercial", "Panels", "Smart Homes"],
+      "Event Planning": ["Weddings", "Corporate", "Birthdays", "Festivals"],
+      "Fencing": ["Chain Link", "Wood", "Vinyl", "Metal"],
+      "Financial Services": ["Investments", "Planning", "Loans", "Insurance"],
+      "Fitness & Wellness": ["Personal Training", "Yoga", "Massage", "Nutrition"],
+      "Food & Beverage": ["Catering", "Restaurant", "Bakery", "Food Truck"],
+      "Freight & Logistics": ["Trucking", "Warehousing", "Courier", "Distribution"],
+      "Graphic Design": ["Logos", "Branding", "UI/UX", "Print Media"],
+      "Handyman Services": ["Repairs", "Installations", "Fixtures", "Painting"],
+      "HVAC": ["Installation", "Repair", "Duct Work", "Refrigeration"],
+      "IT Services": ["Networking", "Support", "Security", "Cloud"],
+      "Interior Design": ["Residential", "Office", "Retail", "Staging"],
+      "Janitorial Services": ["Offices", "Industrial", "Schools", "Healthcare"],
+      "Landscaping": ["Design", "Maintenance", "Hardscapes", "Irrigation"],
+      "Legal": ["Criminal", "Family", "Corporate", "Real Estate"],
+      "Manufacturing": ["Assembly", "Custom Parts", "Machining", "Packaging"],
+      "Marketing": ["Strategy", "SEO", "Social Media", "Branding"],
+      "Masonry": ["Brick", "Stone", "Concrete", "Fireplaces"],
+      "Moving Services": ["Local", "Long Distance", "Commercial", "Packing"],
+      "Nonprofit": ["Youth", "Environmental", "Health", "Education"],
+      "Painting": ["Interior", "Exterior", "Staining", "Commercial"],
+      "Pet Services": ["Grooming", "Boarding", "Training", "Walking"],
+      "Photography": ["Weddings", "Portraits", "Real Estate", "Commercial"],
+      "Plumbing": ["Drains", "Installations", "Remodels", "Emergencies"],
+      "Pool Services": ["Cleaning", "Installation", "Repairs", "Inspections"],
+      "Pressure Washing": ["Residential", "Fleet", "Commercial", "Graffiti Removal"],
+      "Property Management": ["Residential", "HOA", "Commercial", "Leasing"],
+      "Real Estate": ["Agents", "Investors", "Appraisers", "Brokers"],
+      "Remodeling": ["Kitchens", "Bathrooms", "Basements", "Additions"],
+      "Roofing": ["Shingle", "Metal", "Flat", "Repairs"],
+      "Security": ["Installations", "Monitoring", "Guards", "Cyber"],
+      "Signage": ["Vehicle Wraps", "LED", "Window Graphics", "3D Letters"],
+      "Solar": ["Installation", "Maintenance", "Batteries", "Commercial"],
+      "Staffing": ["Temp", "Recruiting", "Payroll", "Training"],
+      "Tattoo & Piercings": ["Custom Art", "Piercings", "Aftercare", "Cover-ups"],
+      "Tile & Flooring": ["Hardwood", "Laminate", "Tile", "Carpet"],
+      "Trash & Junk Removal": ["Residential", "Commercial", "Bulk Pickup", "Donation Hauls"],
+      "Tree Services": ["Removal", "Trimming", "Emergency", "Stump Grinding"],
+      "Tutoring": ["Math", "Reading", "Test Prep", "Languages"],
+      "Veterinary": ["Emergency", "Routine", "Exotics", "Mobile"],
+      "Welding & Fabrication": ["Structural", "Custom Jobs", "Mobile Welding", "Repairs"],
+      "Window Cleaning": ["Residential", "Commercial", "High-Rise", "Detailing"],
+      "Window & Door Installation": ["Replacement", "Storm", "Custom", "Screens"]
     };
 
-    const industryDropdown = document.getElementById("industry");
-    const subcategoryDropdown = document.getElementById("subcategory");
+    const industrySelect = document.getElementById("industrySelect");
+    const subcategorySelect = document.getElementById("subcategorySelect");
 
-    // Populate industry dropdown
-    Object.keys(subcategoryOptions).sort().forEach(industry => {
+    for (const industry in industryToSubcategories) {
       const option = document.createElement("option");
       option.value = industry;
       option.textContent = industry;
-      industryDropdown.appendChild(option);
-    });
-
-    function updateSubcategories() {
-      const industry = industryDropdown.value;
-      subcategoryDropdown.innerHTML = '<option value="">-- Select Subcategory --</option>';
-      if (subcategoryOptions[industry]) {
-        subcategoryOptions[industry].forEach(sub => {
-          const option = document.createElement("option");
-          option.value = sub;
-          option.textContent = sub;
-          subcategoryDropdown.appendChild(option);
-        });
-      }
+      industrySelect.appendChild(option);
     }
 
-    function triggerFileReload() {
-      const fileInput = document.getElementById('fileUpload');
-      const file = fileInput.files[0];
-      if (!file) {
-        alert("Please select a file first.");
-        return;
+    industrySelect.addEventListener("change", function () {
+      const selected = this.value;
+      subcategorySelect.innerHTML = '<option value="">-- Choose Subcategory --</option>';
+      subcategorySelect.disabled = !selected;
+
+      if (selected && industryToSubcategories[selected]) {
+        industryToSubcategories[selected].forEach(sub => {
+          const opt = document.createElement("option");
+          opt.value = sub;
+          opt.textContent = sub;
+          subcategorySelect.appendChild(opt);
+        });
       }
-      alert(`You selected: ${file.name}\n(This is where your file processing will begin.)`);
-      fileInput.value = "";
+    });
+
+    function handleFileUpload() {
+      const fileInput = document.getElementById("fileUpload");
+      const file = fileInput.files[0];
+      if (file) {
+        alert(`File "${file.name}" uploaded successfully.`);
+        fileInput.value = "";
+      } else {
+        alert("Please select a file to upload.");
+      }
     }
   </script>
 </body>
