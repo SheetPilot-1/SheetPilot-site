@@ -239,15 +239,15 @@ Object.assign(industryMap, {
       }
     }
 
-    window.onload = () => {
-      const industrySelect = document.getElementById("industry");
-      for (let industry in industryMap) {
-        const option = document.createElement("option");
-        option.value = industry;
-        option.textContent = industry;
-        industrySelect.appendChild(option);
-      }
-    };
+  document.addEventListener("DOMContentLoaded", () => {
+  const industrySelect = document.getElementById("industry");
+  for (let industry in industryMap) {
+    const option = document.createElement("option");
+    option.value = industry;
+    option.textContent = industry;
+    industrySelect.appendChild(option);
+  }
+});
 
     // === Phase 2: Auto-load file & parse ===
     document.getElementById("fileInput").addEventListener("change", function () {
