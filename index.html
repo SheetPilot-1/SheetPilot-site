@@ -186,33 +186,12 @@
   </script>
 </body>
 </html>
+<!-- SheetJS CDN (make sure this is somewhere in your <head> or before this script runs) -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
 <script>
 document.getElementById("loadButton").addEventListener("click", function () {
   const fileInput = document.getElementById("fileInput");
-  const file = fileInput.files[0];
-  if (!file) {
-    alert("Please upload a file first.");
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = function (e) {
-    const data = new Uint8Array(e.target.result);
-    const workbook = XLSX.read(data, { type: "array" });
-
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-
-    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-    showPreviewTable(jsonData); // This must match the updated function
-  };
-
-  reader.readAsArrayBuffer(file);
-});
-  const fileInput = document.querySelector("input[type='file']");
   const file = fileInput.files[0];
   if (!file) {
     alert("Please upload a file first.");
@@ -235,16 +214,13 @@ document.getElementById("loadButton").addEventListener("click", function () {
   reader.readAsArrayBuffer(file);
 });
 
-<script>
 function showPreviewTable(data) {
   const previewDiv = document.getElementById("data-preview");
-  previewDiv.innerHTML = ""; // Clear previous
+  previewDiv.innerHTML = "";
 
-  // Determine label options based on selection or default
   const industry = document.getElementById("industry-select").value.trim() || document.getElementById("customIndustry").value.trim();
   const subcategory = document.getElementById("subcategory-select").value.trim() || document.getElementById("customSubcategory").value.trim();
 
-  // Default options (can expand by industry later)
   const defaultLabels = [
     "Ignore Column",
     "Client Name",
@@ -263,7 +239,6 @@ function showPreviewTable(data) {
   table.style.width = "100%";
   table.style.borderCollapse = "collapse";
   table.style.marginTop = "20px";
-  table.style.backgroundColor = "#f0f8ff";
   table.style.fontSize = "15px";
 
   data.forEach((row, rowIndex) => {
@@ -273,7 +248,6 @@ function showPreviewTable(data) {
       let cellElement;
 
       if (rowIndex === 0) {
-        // Dropdown header row
         cellElement = document.createElement("th");
         const select = document.createElement("select");
         select.style.width = "100%";
@@ -291,8 +265,9 @@ function showPreviewTable(data) {
           select.appendChild(opt);
         });
 
-        // Try to auto-select based on header content
-        const guessed = defaultLabels.find(label => label.toLowerCase().includes((cell || "").toLowerCase()));
+        const guessed = defaultLabels.find(label =>
+          label.toLowerCase().includes((cell || "").toLowerCase())
+        );
         if (guessed) select.value = guessed;
 
         cellElement.appendChild(select);
