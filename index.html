@@ -210,36 +210,6 @@ function loadFile() {
 </body>
 </html>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>SheetPilot – Phase 2</title>
-<style>
-  body { background-color: #33658A; color: #F5F5DC; font-family: 'Segoe UI', sans-serif; padding: 20px; }
-  h1 { font-size: 2rem; margin-bottom: 15px; }
-  label { display: block; margin-top: 12px; font-weight: bold; }
-  input[type="file"] { width: 100%; max-width: 400px; margin-top: 6px; }
-  button { background-color: #00E5FF; color: #000; border: none; padding: 12px 20px; border-radius: 6px; margin-top: 10px; font-weight: bold; cursor: pointer; }
-  button:hover { background-color: #00cce0; }
-  table { width: 100%; margin-top: 20px; border-collapse: collapse; background-color: #f5f5f5; color: #000; }
-  th, td { padding: 8px; border: 1px solid #ccc; }
-  th { background-color: #00E5FF; }
-  tr:nth-child(even) { background-color: #e0e0e0; }
-  .note { color: #ccc; font-size: 0.85rem; margin-top: 5px; }
-</style>
-</head>
-<body>
-  <h1>SheetPilot Phase 2</h1>
-
-  <label for="fileUpload">Upload Your File:</label>
-  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
-  <button id="loadButton">Add/Replace</button>
-  <p class="note">Use this to upload additional data to the current table.</p>
-
-  <div id="headerFields"></div>
-  <div id="tablePreview"></div>
-
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 const popularHeaders = ["Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status", "Notes", "Location"];
