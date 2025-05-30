@@ -213,25 +213,76 @@ document.getElementById("loadButton").addEventListener("click", function () {
   reader.readAsArrayBuffer(file);
 });
 
+<script>
 function showPreviewTable(data) {
   const previewDiv = document.getElementById("data-preview");
-  previewDiv.innerHTML = ""; // clear previous
+  previewDiv.innerHTML = ""; // Clear previous
+
+  // Determine label options based on selection or default
+  const industry = document.getElementById("industry-select").value.trim() || document.getElementById("customIndustry").value.trim();
+  const subcategory = document.getElementById("subcategory-select").value.trim() || document.getElementById("customSubcategory").value.trim();
+
+  // Default options (can expand by industry later)
+  const defaultLabels = [
+    "Ignore Column",
+    "Client Name",
+    "Service Date",
+    "Amount",
+    "Status",
+    "Notes",
+    "Phone",
+    "Email",
+    "Zip Code",
+    "Approval",
+    "Other"
+  ];
 
   const table = document.createElement("table");
   table.style.width = "100%";
   table.style.borderCollapse = "collapse";
   table.style.marginTop = "20px";
+  table.style.backgroundColor = "#f0f8ff";
+  table.style.fontSize = "15px";
 
   data.forEach((row, rowIndex) => {
     const tr = document.createElement("tr");
 
-    row.forEach(cell => {
-      const cellElement = rowIndex === 0 ? document.createElement("th") : document.createElement("td");
-      cellElement.textContent = cell ?? "";
-      cellElement.style.padding = "8px";
-      cellElement.style.border = "1px solid #000";
-      cellElement.style.backgroundColor = rowIndex === 0 ? "#003366" : "#f0f8ff";
-      cellElement.style.color = rowIndex === 0 ? "#fff" : "#000";
+    row.forEach((cell, colIndex) => {
+      let cellElement;
+
+      if (rowIndex === 0) {
+        // Dropdown header row
+        cellElement = document.createElement("th");
+        const select = document.createElement("select");
+        select.style.width = "100%";
+        select.style.padding = "6px";
+        select.style.border = "none";
+        select.style.fontWeight = "bold";
+        select.style.backgroundColor = "#003366";
+        select.style.color = "white";
+        select.dataset.colIndex = colIndex;
+
+        defaultLabels.forEach(option => {
+          const opt = document.createElement("option");
+          opt.value = option;
+          opt.textContent = option;
+          select.appendChild(opt);
+        });
+
+        // Try to auto-select based on header content
+        const guessed = defaultLabels.find(label => label.toLowerCase().includes((cell || "").toLowerCase()));
+        if (guessed) select.value = guessed;
+
+        cellElement.appendChild(select);
+      } else {
+        cellElement = document.createElement("td");
+        cellElement.textContent = cell ?? "";
+        cellElement.style.padding = "8px";
+        cellElement.style.border = "1px solid #ccc";
+        cellElement.style.backgroundColor = "#ffffff";
+        cellElement.style.color = "#000";
+      }
+
       tr.appendChild(cellElement);
     });
 
