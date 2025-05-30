@@ -1,124 +1,211 @@
-<!-- PHASE 1: INDUSTRY / SUBCATEGORY SETUP -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SheetPilot – Upload Your Spreadsheet</title>
+<style>
+  body {
+    background-color: #33658A; /* lighter blue */
+    color: #F5F5DC; /* deep cream */
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #F5F5DC;
+  }
+  label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #F5F5DC;
+  }
+  select, input[type="text"], input[type="file"] {
+    width: 100%;
+    max-width: 380px;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1em;
+    box-sizing: border-box;
+    display: block;
+  }
+  button {
+    background-color: #00E5FF;
+    color: #000;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #00cce0;
+  }
+  p.note {
+    color: #ccc;
+    font-size: 0.85rem;
+    margin-top: 5px;
+  }
+</style>
+</head>
+<body>
+  <h1>SheetPilot – Upload Your Spreadsheet</h1>
+
+  <label for="industry">Select Your Industry</label>
+  <select id="industry" onchange="updateSubcategories()">
+    <option value="">-- Select Industry --</option>
+    <option>Tutoring</option>
+    <option>Real Estate</option>
+    <option>Healthcare</option>
+    <option>Finance</option>
+    <option>Accounting</option>
+    <option>Interior Design</option>
+    <option>IT Services</option>
+    <option>Construction</option>
+    <option>Transportation</option>
+    <option>Education</option>
+    <option>Legal</option>
+    <option>Consulting</option>
+    <option>Auto Repair</option>
+    <option>HVAC</option>
+    <option>Plumbing</option>
+    <option>Landscaping</option>
+    <option>Marketing & Advertising</option>
+    <option>Non-Profit</option>
+    <option>Hospitality</option>
+    <option>Cleaning Services</option>
+    <option>Pet Grooming</option>
+    <option>Veterinary</option>
+    <option>Photography</option>
+    <option>Event Planning</option>
+    <option>Barbershop/Salon</option>
+    <option>Nail Technician</option>
+    <option>Tattoo & Piercing</option>
+    <option>Roofing</option>
+    <option>Electrical</option>
+    <option>Welding & Fabrication</option>
+    <option>Masonry</option>
+    <option>Carpentry</option>
+    <option>Moving & Storage</option>
+    <option>Courier Services</option>
+    <option>Security Services</option>
+    <option>Publishing</option>
+    <option>Fitness</option>
+    <option>Food & Beverage</option>
+    <option>Travel Services</option>
+    <option>Childcare</option>
+    <option>Retail</option>
+    <option>Wholesale</option>
+    <option>Logistics</option>
+    <option>Insurance</option>
+    <option>Entertainment</option>
+    <option>Technology</option>
+    <option>Home Improvement</option>
+    <option>Manufacturing</option>
+    <option>Waste Management</option>
+  </select>
+
+  <label for="subcategory">Select Your Subcategory</label>
+  <select id="subcategory">
+    <option value="">-- Choose Subcategory --</option>
+  </select>
+
+  <label for="customIndustry">Or Manually Enter Industry</label>
+  <input type="text" id="customIndustry" placeholder="Custom Industry" />
+
+  <label for="customSubcategory">Or Manually Enter Subcategory</label>
+  <input type="text" id="customSubcategory" placeholder="Custom Subcategory" />
+
+  <label for="fileUpload">Upload Your File:</label>
+  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
+  <button id="loadButton" onclick="loadFile()">Add/Replace</button>
+  <p class="note">Use this to upload additional data to the current table.</p>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const industryMap = {
-    "Construction": ["General Contractor", "Framing", "Concrete", "Roofing"],
-    "Trucking": ["Freight", "Dispatching", "Fleet Management", "Owner-Operator"],
-    "Barbershop/Salon": ["Men's Cuts", "Women's Styling", "Coloring"],
-    "Copywriting": ["Sales Copy", "Blogs", "Web Content"],
-    "Photography": ["Weddings", "Portraits", "Events"],
-    "Fitness": ["Personal Training", "Nutrition", "Classes"],
-    "Plumbing": ["Repair", "Remodel", "Emergency"],
-    "Electrician": ["Residential", "Commercial", "Low Voltage"],
-    "Real Estate": ["Residential", "Commercial", "Land"],
-    "Education": ["Tutoring", "Workshops", "Online Courses"],
-    "Cleaning Services": ["Residential", "Commercial", "Deep Clean"],
-    "Legal Services": ["Criminal", "Family", "Contract"],
-    "Accounting": ["Bookkeeping", "Tax Prep", "Payroll"],
-    "Therapy & Counseling": ["Individual", "Couples", "Family"],
-    "Consulting": ["HR", "IT", "Business Strategy"],
-    "Marketing": ["SEO", "Email", "Brand Strategy"],
-    "Tech Support": ["Remote", "Enterprise", "Home"],
-    "Insurance": ["Health", "Auto", "Life"],
-    "Voice Over": ["Commercials", "Audiobooks", "Narration"],
-    "Logistics": ["Dispatch", "Fleet", "Supply Chain"],
-    "Cybersecurity": ["Pen Testing", "Compliance", "SOC Audit"],
-    "Project Management": ["Agile", "Scrum", "Scheduling"],
-    "UX/UI Design": ["Wireframing", "Prototyping", "Audit"],
-    "HR Services": ["Hiring", "Payroll", "Compliance"],
-    "Medical Billing": ["Coding", "Claims", "Authorization"],
-    "Speech Therapy": ["Pediatric", "Adult", "Cognitive"],
-    "Nutrition": ["Meal Planning", "Supplements", "Coaching"],
-    "Veterinary Services": ["Exams", "Emergency", "Surgery"],
-    "Childcare": ["Babysitting", "Nanny", "Daycare"],
-    "Automotive Repair": ["Diagnostics", "Engine", "Brakes"],
-    "Landscaping": ["Design", "Mowing", "Irrigation"],
-    "Painting": ["Interior", "Exterior", "Custom"],
-    "Roofing": ["Shingle", "Metal", "Inspection"],
-    "Event Planning": ["Weddings", "Corporate", "Birthdays"],
-    "Tattoo Services": ["Tattoo", "Piercing", "Removal"],
-    "Pet Training": ["Obedience", "Behavioral", "Advanced"],
-    "Baking": ["Cakes", "Pastries", "Bread"],
-    "Catering": ["Events", "Meal Prep", "Drop-off"],
-    "Interior Design": ["Residential", "Commercial", "Staging"],
-    "Retail": ["Clothing", "Home Goods", "Tech"],
-    "E-commerce": ["Product Listings", "Fulfillment", "Marketing"],
-    "Translation": ["Documents", "Live", "Legal"],
-    "Voice Acting": ["Commercial", "Narration", "Dubbing"],
-    "Game Development": ["Mobile", "Indie", "PC"],
-    "Music Lessons": ["Piano", "Guitar", "Voice"],
-    "Personal Assistant": ["Admin", "Inbox", "Calendar"],
-    "IT Consulting": ["Infrastructure", "Security", "Cloud"],
-    "Data Analysis": ["BI", "Dashboards", "Reporting"],
-        "Business Strategy": ["Growth", "Funding", "Operations"],
-    "Product Management": ["MVP", "Launch", "Feature Planning"],
-    "UX Research": ["User Testing", "Surveys", "Interviews"],
-    "SEO Services": ["Keyword Research", "Audits", "Link Building"],
-    "Advertising": ["Google Ads", "Meta Ads", "Billboards"],
-    "Graphic Design": ["Logos", "Flyers", "Digital Ads"],
-    "3D Modeling": ["Game Assets", "Product Models", "Animation"],
-    "Animation": ["Explainers", "2D/3D", "VFX"],
-    "Video Editing": ["Reels", "YouTube", "Corporate"],
-    "Podcast Editing": ["Audio Cleanup", "Publishing", "Promotion"],
-    "Finance Advisory": ["Budgeting", "Debt Help", "Investments"],
-    "Wealth Management": ["Portfolios", "Retirement", "Estate"],
-    "Tax Services": ["Prep", "Filing", "Back Taxes"],
-    "Nonprofit Outreach": ["Volunteering", "Events", "Grants"],
-    "Fundraising": ["Email Campaigns", "Donor Strategy", "Grants"],
-    "Social Media Management": ["Posts", "Scheduling", "Engagement"],
-    "Virtual Events": ["Zoom Setup", "Moderation", "Live Streaming"],
-    "Customer Service": ["Live Chat", "Call Handling", "Help Desk"],
-    "Technical Writing": ["User Guides", "APIs", "Policies"],
-    "Blog Writing": ["SEO", "Thought Leadership", "Tutorials"],
-    "Ghostwriting": ["Books", "Blogs", "Speeches"],
-    "Resume Writing": ["Professional", "Executive", "Creative"],
-    "Real Estate Photography": ["Homes", "Aerial", "360 Tours"],
-    "Drone Videography": ["Real Estate", "Events", "Inspections"],
-    "Conflict Mediation": ["Workplace", "Legal", "Family"],
-    "Life Coaching": ["Career", "Wellness", "Mindset"],
-    "Sales Strategy": ["Outbound", "Pipelines", "Closers"],
-    "Field Service Ops": ["Routing", "Work Orders", "Inventory"],
-    "Remote Work Consulting": ["Setup", "Productivity", "Policy"],
-    "ERP Systems": ["Setup", "Migration", "Training"],
-    "Supply Chain": ["Inventory", "Vendor", "Forecasting"],
-    "Procurement": ["RFPs", "Negotiation", "Tracking"],
-    "Brand Strategy": ["Positioning", "Messaging", "Voice"],
-    "Web Hosting": ["Domains", "Servers", "Support"],
-    "CRM Setup": ["Salesforce", "HubSpot", "Zoho"],
-    "Business Automation": ["Zapier", "Make", "Custom"],
-    "Sales Funnel Design": ["Landing Pages", "Lead Magnets", "Follow-ups"],
-    "Health Coaching": ["Plans", "Check-ins", "Accountability"],
-    "Chiropractic Services": ["Adjustments", "Therapy", "Posture"],
-    "Legal Tech": ["eDiscovery", "Contract AI", "Case Mgmt"],
-    "AI Integration": ["Chatbots", "Workflows", "Analytics"],
-    "Market Research": ["Surveys", "Focus Groups", "Reports"],
-    "Recruiting": ["Talent Search", "Screening", "Onboarding"],
-    "SaaS Product Setup": ["Trials", "Onboarding", "Support"]
-  };
+const subcategoryOptions = {
+  "Tutoring": ["K–12", "College Prep", "Test Prep", "Private Instructor"],
+  "Real Estate": ["Residential", "Commercial", "REIT"],
+  "Healthcare": ["Home Care", "Nursing", "Dental", "Physical Therapy"],
+  "Finance": ["Advisory", "CPA", "Wealth Management"],
+  "Accounting": ["Tax Prep", "Bookkeeping", "Auditing"],
+  "Interior Design": ["Residential", "Commercial", "Color Consulting"],
+  "IT Services": ["Network Setup", "Remote Support", "Security"],
+  "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
+  "Transportation": ["Fleet", "Logistics", "Courier", "Moving"],
+  "Education": ["Tutoring", "Online Learning", "Curriculum Dev"],
+  "Legal": ["Attorney", "Paralegal", "Notary"],
+  "Consulting": ["Business Strategy", "Sales", "Operations"],
+  "Auto Repair": ["Garage", "Mobile Mechanic"],
+  "HVAC": ["Install", "Repair", "Maintenance"],
+  "Plumbing": ["Residential", "Commercial", "Emergency"],
+  "Landscaping": ["Design", "Maintenance", "Tree Service"],
+  "Marketing & Advertising": ["SEO", "Social Media", "Branding"],
+  "Non-Profit": ["Community Org", "Faith-Based", "Foundation"],
+  "Hospitality": ["BnB", "Hotel", "Event Host"],
+  "Cleaning Services": ["Residential", "Commercial", "Move-out"],
+  "Pet Grooming": ["Salon", "Mobile", "Self-Serve"],
+  "Veterinary": ["Clinic", "Mobile Vet"],
+  "Photography": ["Wedding", "Portrait", "Product"],
+  "Event Planning": ["Weddings", "Corporate", "Festivals"],
+  "Barbershop/Salon": ["Barber", "Stylist", "Color"],
+  "Nail Technician": ["Manicure", "Pedicure", "Nail Art"],
+  "Tattoo & Piercing": ["Tattoo", "Piercing", "Aftercare"],
+  "Roofing": ["Shingle", "Metal", "Repair", "Inspection"],
+  "Electrical": ["Residential", "Commercial", "Panel Upgrades"],
+  "Welding & Fabrication": ["Structural", "Custom", "Pipe"],
+  "Masonry": ["Brick", "Stone", "Concrete", "Repair"],
+  "Carpentry": ["Trim", "Decking", "Custom Furniture"],
+  "Moving & Storage": ["Moving", "Storage", "Packing"],
+  "Courier Services": ["Medical", "Same-Day", "Fleet"],
+  "Security Services": ["Private", "Event", "Monitoring"],
+  "Publishing": ["Books", "Blogs", "Magazines"],
+  "Fitness": ["Gym", "Personal Trainer", "Yoga"],
+  "Food & Beverage": ["Catering", "Food Truck", "Bakery"],
+  "Travel Services": ["Agent", "Group Tours", "Booking"],
+  "Childcare": ["Babysitting", "Daycare", "After School"],
+  "Retail": ["Clothing", "Electronics", "Convenience Store"],
+  "Wholesale": ["Suppliers", "B2B", "Bulk"],
+  "Logistics": ["Shipping", "Supply Chain", "Distribution"],
+  "Insurance": ["Broker", "Claims", "Adjuster"],
+  "Entertainment": ["DJ", "Performer", "Event Host"],
+  "Technology": ["App Dev", "Web Dev", "Support"],
+  "Home Improvement": ["Painting", "Flooring", "Cabinetry"],
+  "Manufacturing": ["Assembly", "Tooling", "Quality Control"],
+  "Waste Management": ["Junk Removal", "Recycling", "Eco Disposal"]
+};
 
-  const industrySelect = document.getElementById("industry");
-  const subcategorySelect = document.getElementById("subcategory");
+function updateSubcategories() {
+  const industry = document.getElementById("industry").value;
+  const subcategory = document.getElementById("subcategory");
+  subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
 
-  for (let industry in industryMap) {
-    const option = document.createElement("option");
-    option.value = industry;
-    option.textContent = industry;
-    industrySelect.appendChild(option);
+  if (subcategoryOptions[industry]) {
+    subcategoryOptions[industry].forEach(option => {
+      const el = document.createElement("option");
+      el.value = option;
+      el.textContent = option;
+      subcategory.appendChild(el);
+    });
   }
+}
 
-  industrySelect.addEventListener("change", function () {
-    const selected = this.value;
-    subcategorySelect.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-    if (industryMap[selected]) {
-      industryMap[selected].forEach(sub => {
-        const option = document.createElement("option");
-        option.value = sub;
-        option.textContent = sub;
-        subcategorySelect.appendChild(option);
-      });
-    }
-  });
-});
+function loadFile() {
+  const fileInput = document.getElementById('fileUpload');
+  if (!fileInput.files.length) {
+    alert("Please select a file first.");
+    return;
+  }
+  alert("File ready to be processed (functionality to be implemented).");
+}
 </script>
+</body>
+</html>
