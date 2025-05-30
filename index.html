@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot – Upload Your Sheet</title>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <style>
     body {
       background-color: #2C4A5D;
@@ -49,6 +50,25 @@
       border-radius: 6px;
       cursor: pointer;
       margin-top: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th {
+      padding: 6px;
+      background-color: #003366;
+      color: white;
+    }
+
+    td {
+      padding: 8px;
+      border: 1px solid #ccc;
+      background-color: #ffffff;
+      color: #000;
     }
 
     .note {
@@ -183,109 +203,101 @@
         industrySelect.appendChild(option);
       }
     };
+
+    document.getElementById("loadButton").addEventListener("click", function () {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Please upload a file first.");
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        showPreviewTable(jsonData);
+      };
+
+      reader.readAsArrayBuffer(file);
+    });
+
+    function showPreviewTable(data) {
+      const previewDiv = document.getElementById("data-preview");
+      previewDiv.innerHTML = "";
+
+      const industry = document.getElementById("industry").value.trim() || document.getElementById("customIndustry").value.trim();
+      const subcategory = document.getElementById("subcategory").value.trim() || document.getElementById("customSubcategory").value.trim();
+
+      const defaultLabels = [
+        "Ignore Column",
+        "Client Name",
+        "Service Date",
+        "Amount",
+        "Status",
+        "Notes",
+        "Phone",
+        "Email",
+        "Zip Code",
+        "Approval",
+        "Other"
+      ];
+
+      const table = document.createElement("table");
+
+      data.forEach((row, rowIndex) => {
+        const tr = document.createElement("tr");
+
+        row.forEach((cell, colIndex) => {
+          let cellElement;
+
+          if (rowIndex === 0) {
+            cellElement = document.createElement("th");
+            const select = document.createElement("select");
+            select.style.width = "100%";
+            select.style.padding = "6px";
+            select.style.border = "none";
+            select.style.fontWeight = "bold";
+            select.style.backgroundColor = "#003366";
+            select.style.color = "white";
+            select.dataset.colIndex = colIndex;
+
+            defaultLabels.forEach(option => {
+              const opt = document.createElement("option");
+              opt.value = option;
+              opt.textContent = option;
+              select.appendChild(opt);
+            });
+
+            const guessed = defaultLabels.find(label =>
+              label.toLowerCase().includes((cell || "").toLowerCase())
+            );
+            if (guessed) select.value = guessed;
+
+            cellElement.appendChild(select);
+          } else {
+            cellElement = document.createElement("td");
+            cellElement.textContent = cell ?? "";
+            cellElement.style.padding = "8px";
+            cellElement.style.border = "1px solid #ccc";
+            cellElement.style.backgroundColor = "#ffffff";
+            cellElement.style.color = "#000";
+          }
+
+          tr.appendChild(cellElement);
+        });
+
+        table.appendChild(tr);
+      });
+
+      previewDiv.appendChild(table);
+    }
   </script>
 </body>
 </html>
-<!-- SheetJS CDN (make sure this is somewhere in your <head> or before this script runs) -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
-<script>
-document.getElementById("loadButton").addEventListener("click", function () {
-  const fileInput = document.getElementById("fileInput");
-  const file = fileInput.files[0];
-  if (!file) {
-    alert("Please upload a file first.");
-    return;
-  }
-
-  const reader = new FileReader();
-
-  reader.onload = function (e) {
-    const data = new Uint8Array(e.target.result);
-    const workbook = XLSX.read(data, { type: "array" });
-
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
-
-    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-    showPreviewTable(jsonData);
-  };
-
-  reader.readAsArrayBuffer(file);
-});
-
-function showPreviewTable(data) {
-  const previewDiv = document.getElementById("data-preview");
-  previewDiv.innerHTML = "";
-
-  const industry = document.getElementById("industry-select").value.trim() || document.getElementById("customIndustry").value.trim();
-  const subcategory = document.getElementById("subcategory-select").value.trim() || document.getElementById("customSubcategory").value.trim();
-
-  const defaultLabels = [
-    "Ignore Column",
-    "Client Name",
-    "Service Date",
-    "Amount",
-    "Status",
-    "Notes",
-    "Phone",
-    "Email",
-    "Zip Code",
-    "Approval",
-    "Other"
-  ];
-
-  const table = document.createElement("table");
-  table.style.width = "100%";
-  table.style.borderCollapse = "collapse";
-  table.style.marginTop = "20px";
-  table.style.fontSize = "15px";
-
-  data.forEach((row, rowIndex) => {
-    const tr = document.createElement("tr");
-
-    row.forEach((cell, colIndex) => {
-      let cellElement;
-
-      if (rowIndex === 0) {
-        cellElement = document.createElement("th");
-        const select = document.createElement("select");
-        select.style.width = "100%";
-        select.style.padding = "6px";
-        select.style.border = "none";
-        select.style.fontWeight = "bold";
-        select.style.backgroundColor = "#003366";
-        select.style.color = "white";
-        select.dataset.colIndex = colIndex;
-
-        defaultLabels.forEach(option => {
-          const opt = document.createElement("option");
-          opt.value = option;
-          opt.textContent = option;
-          select.appendChild(opt);
-        });
-
-        const guessed = defaultLabels.find(label =>
-          label.toLowerCase().includes((cell || "").toLowerCase())
-        );
-        if (guessed) select.value = guessed;
-
-        cellElement.appendChild(select);
-      } else {
-        cellElement = document.createElement("td");
-        cellElement.textContent = cell ?? "";
-        cellElement.style.padding = "8px";
-        cellElement.style.border = "1px solid #ccc";
-        cellElement.style.backgroundColor = "#ffffff";
-        cellElement.style.color = "#000";
-      }
-
-      tr.appendChild(cellElement);
-    });
-
-    table.appendChild(tr);
-  });
-
-  previewDiv.appendChild(table);
-}
-</script>
