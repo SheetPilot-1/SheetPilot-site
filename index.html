@@ -209,8 +209,12 @@ function loadFile() {
 </script>
 </body>
 </html>
+<!-- Include the XLSX library -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+// Define header suggestions for industries
 const headerSuggestions = {
-  // 1–50 industries (previous chunk)
   "Tutoring": ["Student Name", "Subject", "Session Date", "Duration", "Grade"],
   "Real Estate": ["Property Address", "Client Name", "Listing Date", "Price", "Status"],
   "Healthcare": ["Patient Name", "Appointment Date", "Service", "Provider", "Notes"],
@@ -260,9 +264,6 @@ const headerSuggestions = {
   "Home Improvement": ["Client Name", "Project Type", "Start Date", "End Date", "Budget"],
   "Manufacturing": ["Item", "Batch #", "Production Date", "QC Status", "Quantity"],
   "Waste Management": ["Client Name", "Pickup Date", "Material", "Weight", "Notes"],
-
-  // 51–100 industries (second chunk)
-  const headerSuggestionsPart2 = {
   "Music Lessons": ["Student Name", "Instrument", "Lesson Date", "Instructor", "Notes"],
   "Mechanic": ["Customer Name", "Vehicle", "Service Date", "Repair Type", "Cost"],
   "Pool Services": ["Client Name", "Service Date", "Type", "Technician", "Notes"],
@@ -273,10 +274,8 @@ const headerSuggestions = {
   "Veterinary Services": ["Pet Name", "Owner", "Date", "Service Type", "Outcome"],
   "Crafts & Handmade": ["Item Name", "Material", "Creation Date", "Price", "Notes"],
   "Baking": ["Item", "Order Date", "Delivery Date", "Price", "Notes"],
-  "Consulting": ["Client Name", "Project", "Start Date", "End Date", "Outcome"],
   "Legal Consulting": ["Client Name", "Case", "Date", "Status", "Notes"],
   "Tax Services": ["Client Name", "Tax Year", "Filing Date", "Amount", "Status"],
-  "Insurance": ["Client Name", "Policy #", "Coverage Type", "Premium", "Status"],
   "Logistics": ["Shipment ID", "Origin", "Destination", "Ship Date", "Status"],
   "Farming": ["Farm Name", "Product", "Harvest Date", "Yield", "Notes"],
   "Real Estate Services": ["Client Name", "Property", "Listing Date", "Status", "Agent"],
@@ -311,4 +310,13 @@ const headerSuggestions = {
   "Tree Services": ["Client Name", "Service Date", "Type", "Arborist", "Notes"],
   "Junk Removal": ["Client Name", "Pickup Date", "Type", "Crew", "Status"]
 };
-};
+
+// Handle file upload
+document.getElementById('fileUpload').addEventListener('change', handleFile);
+
+function handleFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader 
