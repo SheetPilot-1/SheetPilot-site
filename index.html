@@ -1,156 +1,210 @@
-<!-- Phase 1: Upload and Parse -->
-<div id="phase1-container" style="margin-bottom: 20px;">
-  <h2 style="color: #F5F5DC; font-size: 1.8rem;">Phase 1 – Upload Your File</h2>
-  <input type="file" id="fileUpload" accept=".xlsx, .csv" style="width: 100%; max-width: 400px; padding: 8px; margin-top: 10px; border-radius: 6px; border: none; font-size: 1rem;"/>
-  <button id="loadButton" style="background-color: #00E5FF; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 6px;">Add/Replace</button>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SheetPilot</title>
+<style>
+  body {
+    background-color: #33658A;
+    color: #F5F5DC;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: #F5F5DC;
+  }
+  label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+  }
+  input[type="file"], input[type="text"], select {
+    width: 100%;
+    max-width: 400px;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1em;
+    box-sizing: border-box;
+  }
+  button {
+    background-color: #00E5FF;
+    color: #000;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  button:hover {
+    background-color: #00cce0;
+  }
+  table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: #F5F5DC;
+    color: #000;
+  }
+  th, td {
+    padding: 8px;
+    border: 1px solid #ccc;
+  }
+  th {
+    background-color: #00E5FF;
+    color: #000;
+  }
+  tr:nth-child(even) {
+    background-color: #e0e0e0;
+  }
+  .note {
+    color: #ccc;
+    font-size: 0.85rem;
+    margin-top: 5px;
+  }
+</style>
+</head>
+<body>
 
+<!-- Phase 1: Upload File -->
+<h2>Phase 1 – Upload Your File</h2>
+<input type="file" id="fileUpload" accept=".xlsx, .csv" />
+<button onclick="loadFile()">Add/Replace</button>
+<p class="note">Use this to upload additional data to the current table.</p>
+
+<!-- Phase 2: Dynamic Headers and Column Selection -->
+<h2>Phase 2 – Map Your Columns</h2>
+<div id="columnMapping"></div>
+<button onclick="previewTable()">Preview Table</button>
+<div id="preview"></div>
+
+<!-- SheetJS library -->
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-let parsedDataPhase1 = [];
-
-document.getElementById('loadButton').addEventListener('click', () => {
+// Phase 1: Load file and parse to JSON
+function loadFile() {
   const fileInput = document.getElementById('fileUpload');
-  if (!fileInput.files.length) {
+  const file = fileInput.files[0];
+  if (!file) {
     alert("Please select a file first.");
     return;
   }
-
-  const file = fileInput.files[0];
   const reader = new FileReader();
-
-  reader.onload = function(evt) {
-    const data = new Uint8Array(evt.target.result);
+  reader.onload = function(e) {
+    const data = new Uint8Array(e.target.result);
     const workbook = XLSX.read(data, { type: 'array' });
-    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-    if (jsonData.length === 0) {
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    const json = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    if (json.length === 0) {
       alert("Empty sheet.");
       return;
     }
-
-    parsedDataPhase1 = jsonData;
-    renderPhase2(jsonData[0], jsonData.slice(1));
+    const headers = json[0];
+    const rows = json.slice(1).filter(row => row.join("").trim() !== "");
+    renderColumnMapping(headers, rows);
   };
   reader.readAsArrayBuffer(file);
-});
-</script>
-<!-- Phase 2: Column Mapping -->
-<div id="phase2-container" style="margin-top: 30px;">
-  <h2 style="color: #F5F5DC; font-size: 1.8rem;">Phase 2 – Map Your Columns</h2>
-  <div id="headerMappings"></div>
-  <button id="previewButton" style="background-color: #00E5FF; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px;">Preview Table</button>
-  <div id="previewTable" style="margin-top: 20px;"></div>
-</div>
+}
 
-<script>
-function renderPhase2(headers, rows) {
-  const container = document.getElementById('headerMappings');
-  container.innerHTML = "";
+// Phase 2: Render dynamic headers
+function renderColumnMapping(headers, rows) {
+  const container = document.getElementById("columnMapping");
+  container.innerHTML = ""; // Clear previous
 
   headers.forEach((header, i) => {
     const wrapper = document.createElement("div");
     wrapper.style.marginBottom = "10px";
 
+    // Checkbox to include/exclude column
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = true;
-    checkbox.style.marginRight = "6px";
+    wrapper.appendChild(checkbox);
 
-    const message = document.createElement("span");
-    message.textContent = "Uncheck to hide this column";
+    const msg = document.createElement("span");
+    msg.textContent = " Include this column";
+    msg.style.marginLeft = "5px";
+    wrapper.appendChild(msg);
 
+    // Dropdown for header suggestions
     const select = document.createElement("select");
-    ["Client Name", "Service Date", "Amount", "Status", "Notes"].forEach(option => {
+    ["-- Choose or type your own --", "Name", "Email", "Phone", "Date", "Amount", "Status", "Notes"].forEach(optVal => {
       const opt = document.createElement("option");
-      opt.value = option;
-      opt.textContent = option;
+      opt.value = optVal;
+      opt.textContent = optVal;
       select.appendChild(opt);
     });
-    select.style.marginLeft = "10px";
+    select.style.marginTop = "5px";
+    wrapper.appendChild(select);
 
+    // Input for custom label
     const input = document.createElement("input");
     input.type = "text";
     input.placeholder = "Or enter custom label";
-    input.style.marginLeft = "10px";
-    input.style.padding = "4px";
-    input.style.width = "200px";
-
-    wrapper.appendChild(checkbox);
-    wrapper.appendChild(message);
-    wrapper.appendChild(select);
+    input.style.marginTop = "5px";
     wrapper.appendChild(input);
+
     container.appendChild(wrapper);
   });
 
-  document.getElementById('previewButton').onclick = () => {
-    const finalHeaders = [];
-    const finalRows = [];
-
-    const wrappers = container.querySelectorAll("div");
-    wrappers.forEach((wrapper, i) => {
-      const checkbox = wrapper.querySelector("input[type=checkbox]");
-      if (!checkbox.checked) return;
-
-      const select = wrapper.querySelector("select");
-      const input = wrapper.querySelector("input[type=text]");
-      const label = input.value.trim() || select.value || `Column ${i+1}`;
-      finalHeaders.push(label);
-    });
-
-    rows.forEach(row => {
-      const filteredRow = [];
-      wrappers.forEach((wrapper, i) => {
-        const checkbox = wrapper.querySelector("input[type=checkbox]");
-        if (checkbox.checked) {
-          filteredRow.push(row[i] || "");
-        }
-      });
-      finalRows.push(filteredRow);
-    });
-
-    renderPreviewTable(finalHeaders, finalRows);
-  };
+  // Save rows for later preview
+  container.dataset.rows = JSON.stringify(rows);
 }
 
-function renderPreviewTable(headers, rows) {
-  const container = document.getElementById('previewTable');
-  container.innerHTML = "";
+// Preview Table
+function previewTable() {
+  const container = document.getElementById("columnMapping");
+  const rows = JSON.parse(container.dataset.rows || "[]");
+  const wrappers = container.querySelectorAll("div");
+  const finalHeaders = [];
+  const includeFlags = [];
+
+  wrappers.forEach(wrapper => {
+    const checkbox = wrapper.querySelector("input[type='checkbox']");
+    const select = wrapper.querySelector("select");
+    const input = wrapper.querySelector("input[type='text']");
+    includeFlags.push(checkbox.checked);
+    finalHeaders.push(input.value.trim() || select.value || "Column");
+  });
 
   const table = document.createElement("table");
-  table.style.width = "100%";
-  table.style.borderCollapse = "collapse";
-  table.style.backgroundColor = "#F5F5DC";
-  table.style.color = "#000";
-
   const thead = document.createElement("thead");
   const trHead = document.createElement("tr");
-  headers.forEach(header => {
-    const th = document.createElement("th");
-    th.textContent = header;
-    th.style.padding = "8px";
-    th.style.backgroundColor = "#00E5FF";
-    th.style.color = "#000";
-    trHead.appendChild(th);
+  finalHeaders.forEach((h, i) => {
+    if (includeFlags[i]) {
+      const th = document.createElement("th");
+      th.textContent = h;
+      trHead.appendChild(th);
+    }
   });
   thead.appendChild(trHead);
   table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
-  rows.forEach((row, rIndex) => {
+  rows.forEach(row => {
     const tr = document.createElement("tr");
-    tr.style.backgroundColor = rIndex % 2 === 0 ? "#f0f0f0" : "#e0e0e0";
-    row.forEach(cell => {
-      const td = document.createElement("td");
-      td.textContent = cell;
-      td.style.padding = "6px";
-      tr.appendChild(td);
+    finalHeaders.forEach((h, i) => {
+      if (includeFlags[i]) {
+        const td = document.createElement("td");
+        td.textContent = row[i] || "";
+        tr.appendChild(td);
+      }
     });
     tbody.appendChild(tr);
   });
-
   table.appendChild(tbody);
-  container.appendChild(table);
+
+  const previewDiv = document.getElementById("preview");
+  previewDiv.innerHTML = "";
+  previewDiv.appendChild(table);
 }
 </script>
+</body>
+</html>
