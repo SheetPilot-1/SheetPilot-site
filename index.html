@@ -1,60 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>SheetPilot</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<style>
-  body {
-    background-color: #33658A;
-    color: #F5F5DC;
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 20px;
-  }
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-  label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-  }
-  select, input[type="text"], input[type="file"] {
-    width: 100%;
-    max-width: 380px;
-    padding: 10px;
-    margin-top: 6px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: none;
-    font-size: 1em;
-    box-sizing: border-box;
-    display: block;
-  }
-  button {
-    background-color: #00E5FF;
-    color: #000;
-    border: none;
-    padding: 10px 16px;
-    border-radius: 6px;
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease;
-  }
-  button:hover {
-    background-color: #00cce0;
-  }
-  p.note {
-    color: #ccc;
-    font-size: 0.85rem;
-    margin-top: 5px;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <title>SheetPilot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      background-color: #33658A;
+      color: #F5F5DC;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    select, input[type="text"], input[type="file"] {
+      width: 100%;
+      max-width: 380px;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1em;
+      box-sizing: border-box;
+      display: block;
+    }
+    button {
+      background-color: #00E5FF;
+      color: #000;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #00cce0;
+    }
+    p.note {
+      color: #ccc;
+      font-size: 0.85rem;
+      margin-top: 5px;
+    }
+  </style>
 </head>
 <body>
 
@@ -63,69 +63,7 @@
   <label for="industry">Select Your Industry</label>
   <select id="industry">
     <option value="">-- Select Industry --</option>
-    <option>Accounting</option>
-    <option>Advertising</option>
-    <option>Architecture</option>
-    <option>Auto Repair</option>
-    <option>Barbershop/Salon</option>
-    <option>Childcare</option>
-    <option>Cleaning Services</option>
-    <option>Construction</option>
-    <option>Consulting</option>
-    <option>Courier Services</option>
-    <option>Creative Services</option>
-    <option>Customer Service</option>
-    <option>Education</option>
-    <option>Electrical</option>
-    <option>Engineering</option>
-    <option>Entertainment</option>
-    <option>Event Planning</option>
-    <option>Finance</option>
-    <option>Fitness</option>
-    <option>Food & Beverage</option>
-    <option>Government</option>
-    <option>Healthcare</option>
-    <option>Home Improvement</option>
-    <option>Hospitality</option>
-    <option>HR & Recruiting</option>
-    <option>Insurance</option>
-    <option>Interior Design</option>
-    <option>IT Services</option>
-    <option>Landscaping</option>
-    <option>Legal</option>
-    <option>Logistics</option>
-    <option>Maintenance</option>
-    <option>Manufacturing</option>
-    <option>Marketing</option>
-    <option>Masonry</option>
-    <option>Moving & Storage</option>
-    <option>Non-Profit</option>
-    <option>Painting</option>
-    <option>Pet Grooming</option>
-    <option>Photography</option>
-    <option>Plumbing</option>
-    <option>Printing</option>
-    <option>Product Design</option>
-    <option>Property Management</option>
-    <option>Publishing</option>
-    <option>Real Estate</option>
-    <option>Retail</option>
-    <option>Roofing</option>
-    <option>Security Services</option>
-    <option>Technology</option>
-    <option>Telecommunications</option>
-    <option>Tourism</option>
-    <option>Transportation</option>
-    <option>Trucking</option>
-    <option>Tutoring</option>
-    <option>Utilities</option>
-    <option>Veterinary</option>
-    <option>Warehouse</option>
-    <option>Waste Management</option>
-    <option>Welding & Fabrication</option>
-    <option>Wholesale</option>
-    <option>Writing & Editing</option>
-    <!-- Additional industries can be added as needed -->
+    <!-- Industry options will be populated by JavaScript -->
   </select>
 
   <label for="subcategory">Select Your Subcategory</label>
@@ -144,41 +82,107 @@
   <button id="loadButton" onclick="handleFile()">Add/Replace</button>
   <p class="note">Use this to upload additional data to the current table.</p>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script>
-function handleFile() {
-  const fileInput = document.getElementById('fileUpload');
-  if (!fileInput.files.length) {
-    alert("Please select a file first.");
-    return;
-  }
-  alert("File ready to be processed (functionality to be implemented).");
-}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    // Define industries and their subcategories
+    const industries = {
+      "Accounting": ["Bookkeeping", "Tax Preparation", "Auditing"],
+      "Advertising": ["Digital Marketing", "Print Advertising", "Public Relations"],
+      "Architecture": ["Residential Design", "Commercial Design", "Landscape Architecture"],
+      "Auto Repair": ["Engine Repair", "Body Work", "Oil Change Services"],
+      "Barbershop/Salon": ["Haircutting", "Styling", "Coloring"],
+      "Childcare": ["Daycare", "Preschool", "After-School Programs"],
+      "Cleaning Services": ["Residential Cleaning", "Commercial Cleaning", "Specialized Cleaning"],
+      "Construction": ["Residential Construction", "Commercial Construction", "Remodeling"],
+      "Consulting": ["Business Consulting", "IT Consulting", "Management Consulting"],
+      "Courier Services": ["Local Delivery", "Express Shipping", "International Shipping"],
+      "Creative Services": ["Graphic Design", "Video Production", "Photography"],
+      "Customer Service": ["Call Centers", "Help Desk Support", "Customer Relationship Management"],
+      "Education": ["K-12 Education", "Higher Education", "Online Learning"],
+      "Electrical": ["Residential Electrical", "Commercial Electrical", "Industrial Electrical"],
+      "Engineering": ["Civil Engineering", "Mechanical Engineering", "Electrical Engineering"],
+      "Entertainment": ["Film Production", "Music Production", "Event Planning"],
+      "Event Planning": ["Weddings", "Corporate Events", "Private Parties"],
+      "Finance": ["Financial Planning", "Investment Banking", "Insurance"],
+      "Fitness": ["Personal Training", "Group Classes", "Gym Management"],
+      "Food & Beverage": ["Restaurants", "Catering", "Food Trucks"],
+      "Government": ["Federal Agencies", "State Agencies", "Local Government"],
+      "Healthcare": ["Hospitals", "Clinics", "Home Health Care"],
+      "Home Improvement": ["Kitchen Remodeling", "Bathroom Remodeling", "Landscaping"],
+      "Hospitality": ["Hotels", "Resorts", "Bed & Breakfasts"],
+      "HR & Recruiting": ["Talent Acquisition", "Employee Training", "Payroll Services"],
+      "Insurance": ["Life Insurance", "Health Insurance", "Property Insurance"],
+      "Interior Design": ["Residential Design", "Commercial Design", "Space Planning"],
+      "IT Services": ["Network Setup", "Software Development", "Technical Support"],
+      "Landscaping": ["Lawn Care", "Garden Design", "Tree Services"],
+      "Legal": ["Corporate Law", "Family Law", "Criminal Defense"],
+      "Logistics": ["Supply Chain Management", "Freight Forwarding", "Inventory Management"],
+      "Maintenance": ["Building Maintenance", "Equipment Maintenance", "Vehicle Maintenance"],
+      "Manufacturing": ["Automotive Manufacturing", "Electronics Manufacturing", "Textile Manufacturing"],
+      "Marketing": ["Market Research", "Brand Management", "Advertising Campaigns"],
+      "Masonry": ["Bricklaying", "Stonework", "Concrete Work"],
+      "Moving & Storage": ["Residential Moving", "Commercial Moving", "Storage Services"],
+      "Non-Profit": ["Charitable Organizations", "Foundations", "Advocacy Groups"],
+      "Painting": ["Residential Painting", "Commercial Painting", "Industrial Painting"],
+      "Pet Grooming": ["Dog Grooming", "Cat Grooming", "Pet Spa Services"],
+      "Photography": ["Portrait Photography", "Event Photography", "Commercial Photography"],
+      "Plumbing": ["Residential Plumbing", "Commercial Plumbing", "Emergency Services"],
+      "Printing": ["Digital Printing", "Offset Printing", "Large Format Printing"],
+      "Product Design": ["Industrial Design", "User Experience Design", "Prototyping"],
+      "Property Management": ["Residential Properties", "Commercial Properties", "Vacation Rentals"],
+      "Publishing": ["Book Publishing", "Magazine Publishing", "Online Publishing"],
+      "Real Estate": ["Residential Sales", "Commercial Sales", "Property Management"],
+      "Retail": ["Clothing Stores", "Electronics Stores", "Grocery Stores"],
+      "Roofing": ["Residential Roofing", "Commercial Roofing", "Roof Repairs"],
+      "Security Services": ["Private Security", "Event Security", "Surveillance Systems"],
+      "Technology": ["Software Development", "Hardware Manufacturing", "IT Services"],
+      "Telecommunications": ["Internet Services", "Mobile Services", "Cable Services"],
+      "Tourism": ["Travel Agencies", "Tour Operators", "Guided Tours"],
+      "Transportation": ["Public Transportation", "Private Transportation", "Logistics"],
+      "Trucking": ["Long-Haul Trucking", "Local Delivery", "Freight Services"],
+      "Tutoring": ["Academic Tutoring", "Test Preparation", "Online Tutoring"],
+      "Utilities": ["Electric Utilities", "Water Utilities", "Gas Utilities"],
+      "Veterinary": ["Small Animal Practice", "Large Animal Practice", "Emergency Services"],
+      "Warehouse": ["Storage Services", "Inventory Management", "Distribution"],
+      "Waste Management": ["Recycling Services", "Hazardous Waste Disposal", "Landfill Management"],
+      "Welding & Fabrication": ["Metal Fabrication", "Custom Welding", "Structural Welding"],
+      "Wholesale": ["Food Wholesale", "Electronics Wholesale", "Clothing Wholesale"],
+      "Writing & Editing": ["Content Writing", "Copy Editing", "Technical Writing"]
+    };
 
-// Example dynamic subcategory logic
-const subcategoryOptions = {
-  "Tutoring": ["K–12", "College Prep", "Test Prep", "Private Instructor"],
-  "Healthcare": ["Home Care", "Nursing", "Dental", "Physical Therapy"],
-  "Finance": ["Advisory", "CPA", "Wealth Management"],
-  "Trucking": ["Long Haul", "Local", "Owner Operator"],
-  // Add more...
-};
+    // Populate industry dropdown
+    const industrySelect = document.getElementById('industry');
+    for (let industry in industries) {
+      let option = document.createElement('option');
+      option.value = industry;
+      option.textContent = industry;
+      industrySelect.appendChild(option);
+    }
 
-document.getElementById("industry").addEventListener("change", () => {
-  const industry = document.getElementById("industry").value;
-  const subcategory = document.getElementById("subcategory");
-  subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-
-  if (subcategoryOptions[industry]) {
-    subcategoryOptions[industry].forEach(option => {
-      const el = document.createElement("option");
-      el.value = option;
-      el.textContent = option;
-      subcategory.appendChild(el);
+    // Update subcategory dropdown based on selected industry
+    industrySelect.addEventListener('change', () => {
+      const subcategorySelect = document.getElementById('subcategory');
+      subcategorySelect.innerHTML = '<option value="">-- Choose Subcategory --</option>';
+      const selectedIndustry = industrySelect.value;
+      if (industries[selectedIndustry]) {
+        industries[selectedIndustry].forEach(subcat => {
+          let option = document.createElement('option');
+          option.value = subcat;
+          option.textContent = subcat;
+          subcategorySelect.appendChild(option);
+        });
+      }
     });
-  }
-});
-</script>
+
+    function handleFile() {
+      const fileInput = document.getElementById('fileUpload');
+      if (!fileInput.files.length) {
+        alert("Please select a file first.");
+        return;
+      }
+      alert("File ready to be processed (functionality to be implemented).");
+    }
+  </script>
 
 </body>
 </html>
