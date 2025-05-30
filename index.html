@@ -216,175 +216,74 @@ function loadFile() {
 <title>Phase 2 with Popular Headers</title>
 </head>
 <body>
-  <h1>Phase 2 Test</h1>
-  <input type="file" id="fileUpload" accept=".xlsx,.csv" />
-  <div id="headerFields"></div>
-  <div id="tablePreview"></div>
+function renderHeaderMapping(headers, rows) {
+  const container = document.createElement("div");
+  container.id = "headerFields";
+  container.style.marginTop = "20px";
 
-  <!-- Final script (same one we’ve refined above!) -->
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <script>
-    const popularHeaders = [
-      "Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status",
-      "Notes", "Location", "Technician", "Client Name", "Service Date"
-    ];
+  headers.forEach((header, i) => {
+    const wrapper = document.createElement("div");
+    wrapper.style.marginBottom = "15px";
 
-    document.getElementById('fileUpload').addEventListener('change', handleFile);
+    // Remove column name descriptor
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.checked = true;
+    checkbox.style.marginRight = "6px";
 
-    function handleFile(e) {
-      const file = e.target.files[0];
-      if (!file) return;
+    // Add note next to checkbox
+    const note = document.createElement("span");
+    note.textContent = " Uncheck to hide this column";
+    note.style.fontSize = "0.85rem";
+    note.style.color = "#ccc";
 
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const data = new Uint8Array(evt.target.result);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-        const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+    wrapper.appendChild(checkbox);
+    wrapper.appendChild(note);
 
-        if (json.length === 0) {
-          alert("Empty sheet.");
-          return;
-        }
+    const select = document.createElement("select");
+    select.style.width = "100%";
+    select.style.padding = "8px";
+    select.style.marginTop = "5px";
 
-        const headers = json[0];
-        const rows = json.slice(1).filter(row => row.join("").trim() !== "");
-        renderHeaderMapping(headers, rows);
-      };
-      reader.readAsArrayBuffer(file);
-    }
+    const defaultOption = document.createElement("option");
+    defaultOption.textContent = "-- Choose or type your own --";
+    defaultOption.value = "";
+    select.appendChild(defaultOption);
 
-    function renderHeaderMapping(headers, rows) {
-      const container = document.createElement("div");
-      container.id = "headerFields";
-      container.style.marginTop = "20px";
+    popularHeaders.forEach(option => {
+      const opt = document.createElement("option");
+      opt.value = option;
+      opt.textContent = option;
+      select.appendChild(opt);
+    });
 
-      headers.forEach((header, i) => {
-        const wrapper = document.createElement("div");
-        wrapper.style.marginBottom = "15px";
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = "Or enter custom label";
+    input.style.width = "100%";
+    input.style.marginTop = "5px";
 
-        const label = document.createElement("label");
-        label.textContent = `Column ${i + 1}: ${header}`;
-        label.style.fontWeight = "bold";
-        wrapper.appendChild(label);
+    wrapper.appendChild(select);
+    wrapper.appendChild(input);
+    container.appendChild(wrapper);
+  });
 
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.checked = true;
-        checkbox.style.marginLeft = "10px";
-        wrapper.appendChild(checkbox);
+  const previewButton = document.createElement("button");
+  previewButton.textContent = "Preview Table";
+  previewButton.style.marginTop = "15px";
+  previewButton.style.padding = "10px 20px";
+  previewButton.style.backgroundColor = "#00E5FF";
+  previewButton.style.color = "#000";
+  previewButton.style.border = "none";
+  previewButton.style.cursor = "pointer";
+  previewButton.onclick = () => previewTable(headers, rows, container);
 
-        const select = document.createElement("select");
-        select.style.width = "100%";
-        select.style.padding = "8px";
-        select.style.marginTop = "5px";
+  container.appendChild(previewButton);
 
-        const defaultOption = document.createElement("option");
-        defaultOption.textContent = "-- Choose or type your own --";
-        defaultOption.value = "";
-        select.appendChild(defaultOption);
-
-        popularHeaders.forEach(option => {
-          const opt = document.createElement("option");
-          opt.value = option;
-          opt.textContent = option;
-          select.appendChild(opt);
-        });
-
-        const input = document.createElement("input");
-        input.type = "text";
-        input.placeholder = "Or enter custom label";
-        input.style.width = "100%";
-        input.style.marginTop = "5px";
-
-        wrapper.appendChild(select);
-        wrapper.appendChild(input);
-        container.appendChild(wrapper);
-      });
-
-      const previewButton = document.createElement("button");
-      previewButton.textContent = "Preview Table";
-      previewButton.style.marginTop = "15px";
-      previewButton.style.padding = "10px 20px";
-      previewButton.style.backgroundColor = "#00E5FF";
-      previewButton.style.color = "#000";
-      previewButton.style.border = "none";
-      previewButton.style.cursor = "pointer";
-      previewButton.onclick = () => previewTable(headers, rows, container);
-
-      container.appendChild(previewButton);
-
-      const existingContainer = document.getElementById("headerFields");
-      if (existingContainer) {
-        existingContainer.replaceWith(container);
-      } else {
-        document.body.appendChild(container);
-      }
-    }
-
-    function previewTable(headers, rows, headerContainer) {
-      const selects = headerContainer.querySelectorAll("select");
-      const inputs = headerContainer.querySelectorAll("input[type='text']");
-      const checkboxes = headerContainer.querySelectorAll("input[type='checkbox']");
-
-      const finalHeaders = [];
-      checkboxes.forEach((cb, i) => {
-        if (cb.checked) {
-          const custom = inputs[i].value.trim();
-          const selectVal = selects[i].value;
-          finalHeaders.push(custom || selectVal || `Column ${i + 1}`);
-        }
-      });
-
-      const visibleIndexes = [];
-      checkboxes.forEach((cb, i) => {
-        if (cb.checked) visibleIndexes.push(i);
-      });
-
-      const table = document.createElement("table");
-      table.style.width = "100%";
-      table.style.marginTop = "20px";
-      table.style.borderCollapse = "collapse";
-      table.style.backgroundColor = "#1C1C2A";
-      table.style.color = "#F5F5DC";
-      table.style.fontSize = "0.9em";
-
-      const thead = document.createElement("thead");
-      const trHead = document.createElement("tr");
-      finalHeaders.forEach(h => {
-        const th = document.createElement("th");
-        th.textContent = h;
-        th.style.padding = "10px";
-        th.style.backgroundColor = "#00E5FF";
-        th.style.color = "#000";
-        trHead.appendChild(th);
-      });
-      thead.appendChild(trHead);
-      table.appendChild(thead);
-
-      const tbody = document.createElement("tbody");
-      rows.forEach((row, rIndex) => {
-        const tr = document.createElement("tr");
-        tr.style.backgroundColor = rIndex % 2 === 0 ? "#232338" : "#1C1C2A";
-        visibleIndexes.forEach(i => {
-          const td = document.createElement("td");
-          td.textContent = row[i] || "";
-          td.style.padding = "8px";
-          td.style.borderTop = "1px solid #444";
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
-      table.appendChild(tbody);
-
-      const existingPreview = document.getElementById("tablePreview");
-      if (existingPreview) {
-        existingPreview.replaceWith(table);
-      } else {
-        table.id = "tablePreview";
-        document.body.appendChild(table);
-      }
-    }
-  </script>
-</body>
-</html>
+  const existingContainer = document.getElementById("headerFields");
+  if (existingContainer) {
+    existingContainer.replaceWith(container);
+  } else {
+    document.body.appendChild(container);
+  }
+}
