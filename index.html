@@ -190,217 +190,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>SheetPilot - Column Mapping</title>
-  <style>
-    body {
-      background-color: #33658A;
-      color: #F5F5DC;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-    }
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      margin-top: 8px;
-    }
-    .checkbox-container input[type="checkbox"] {
-      margin-right: 6px;
-    }
-    .column-container {
-      background-color: #41729F;
-      padding: 15px;
-      margin-top: 10px;
-      border-radius: 6px;
-    }
-    select, input[type="text"] {
-      width: 100%;
-      max-width: 360px;
-      padding: 8px;
-      margin-top: 5px;
-      margin-bottom: 10px;
-      border: none;
-      border-radius: 4px;
-      font-size: 1em;
-      box-sizing: border-box;
-    }
-    button {
-      background-color: #00E5FF;
-      color: #000;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 6px;
-      margin-top: 15px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #00cce0;
-    }
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-      background-color: #1C1C2A;
-      color: #F5F5DC;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #444;
-    }
-    th {
-      background-color: #00E5FF;
-      color: #000;
-    }
-    tr:nth-child(even) {
-      background-color: #232338;
-    }
-    /* Adjust table background to a lighter color for better readability */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #f9f9f9; /* Light gray for a softer, lighter appearance */
-  color: #333; /* Dark gray text for contrast and easy reading */
-  margin-top: 20px;
-}
+<meta charset="UTF-8">
+<title>Map Columns</title>
+<style>
+  body {
+    background-color: #33658A;
+    color: #F5F5DC;
+    font-family: 'Segoe UI', sans-serif;
+    padding: 20px;
+  }
 
-th, td {
-  padding: 10px;
-  border: 1px solid #ddd; /* Light border for subtle separation */
-}
+  h2 {
+    margin-top: 20px;
+  }
 
-th {
-  background-color: #dff0f7; /* Soft blue for header rows */
-}
+  .column-container {
+    margin-bottom: 15px;
+    background-color: #4682B4;
+    padding: 10px;
+    border-radius: 5px;
+  }
 
-tr:nth-child(even) {
-  background-color: #f2f2f2; /* Alternating light gray for even rows */
-}
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
 
-tr:hover {
-  background-color: #e0e0e0; /* Slight highlight on hover for interactivity */
-}
-  </style>
+  select, input[type="text"] {
+    width: 100%;
+    padding: 6px;
+    margin-top: 4px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  input[type="checkbox"] {
+    margin-right: 6px;
+  }
+
+  button {
+    background-color: #00E5FF;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin-top: 15px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background-color: #00cce0;
+  }
+
+  #previewContainer table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    background-color: #ffffff;
+  }
+
+  #previewContainer th,
+  #previewContainer td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+
+  #previewContainer th {
+    background-color: #00E5FF;
+    color: #000;
+  }
+
+  #previewContainer tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+
+  #previewContainer tr:nth-child(odd) {
+    background-color: #ffffff;
+  }
+</style>
 </head>
 <body>
 
-  <h1>Map Your Columns</h1>
-  <p>Use this section to map your spreadsheet columns to custom or suggested headers. Uncheck to hide columns you don’t want in the final table.</p>
+<h2>Map Your Columns</h2>
+<p>Use this section to map your spreadsheet columns to custom or suggested headers. Uncheck to hide columns you don’t want in the final table.</p>
 
-  <div id="columnMapping"></div>
+<div id="columnsContainer"></div>
 
-  <button id="previewBtn">Preview Table</button>
+<button id="previewButton">Preview Table</button>
 
-  <div id="previewContainer"></div>
+<div id="previewContainer"></div>
 
-  <script>
-  const columnMappingDiv = document.getElementById("columnMapping");
+<script>
+  // Example data structure (replace with actual dynamic data)
+  const availableColumns = ["Name", "Email", "Phone", "Date", "Amount", "Notes"];
+  const previewData = [
+    ["John Doe", "john@example.com", "123-456-7890", "2025-05-30", "$100", "Consulting"],
+    ["Jane Smith", "jane@example.com", "987-654-3210", "2025-05-29", "$200", "Development"]
+  ];
 
-    headers.forEach((header, index) => {
-      const container = document.createElement("div");
-      container.className = "column-container";
+  const columnsContainer = document.getElementById('columnsContainer');
 
-      const checkboxContainer = document.createElement("div");
-      checkboxContainer.className = "checkbox-container";
+  // Create mapping UI
+  availableColumns.forEach((col, index) => {
+    const container = document.createElement('div');
+    container.classList.add('column-container');
 
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = true;
-      checkbox.id = `include${index}`;
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = true;
+    checkbox.id = `colCheckbox-${index}`;
 
-      const checkboxLabel = document.createElement("label");
-      checkboxLabel.htmlFor = `include${index}`;
-      checkboxLabel.textContent = "Include this column?";
+    const label = document.createElement('label');
+    label.textContent = `Column: ${col}`;
+    label.htmlFor = `colCheckbox-${index}`;
 
-      checkboxContainer.appendChild(checkbox);
-      checkboxContainer.appendChild(checkboxLabel);
+    const select = document.createElement('select');
+    const defaultOption = document.createElement('option');
+    defaultOption.value = col;
+    defaultOption.textContent = col;
+    select.appendChild(defaultOption);
 
-      const label = document.createElement("label");
-      label.textContent = `Column: ${header}`;
+    const customInput = document.createElement('input');
+    customInput.type = 'text';
+    customInput.placeholder = 'Or enter custom label';
 
-      const select = document.createElement("select");
-      const defaultOption = document.createElement("option");
-      defaultOption.value = "";
-      defaultOption.textContent = "-- Choose or type your own --";
-      select.appendChild(defaultOption);
+    container.appendChild(checkbox);
+    container.appendChild(label);
+    container.appendChild(select);
+    container.appendChild(customInput);
 
-      ["Name", "Email", "Phone", "Date", "Amount", "Notes", "Service Type", "Status"].forEach(optionText => {
-        const option = document.createElement("option");
-        option.value = optionText;
-        option.textContent = optionText;
-        select.appendChild(option);
-      });
+    columnsContainer.appendChild(container);
+  });
 
-      const input = document.createElement("input");
-      input.type = "text";
-      input.placeholder = "Or enter custom label";
+  // Handle preview button
+  document.getElementById('previewButton').addEventListener('click', () => {
+    const selectedIndices = [];
+    const customLabels = [];
 
-      container.appendChild(checkboxContainer);
-      container.appendChild(label);
-      container.appendChild(select);
-      container.appendChild(input);
-      columnMappingDiv.appendChild(container);
+    // Determine selected columns
+    availableColumns.forEach((_, index) => {
+      const checkbox = document.getElementById(`colCheckbox-${index}`);
+      if (checkbox.checked) {
+        selectedIndices.push(index);
+
+        const container = checkbox.closest('.column-container');
+        const customInput = container.querySelector('input[type="text"]');
+        const select = container.querySelector('select');
+
+        customLabels.push(customInput.value.trim() || select.value);
+      }
     });
 
-    document.getElementById("previewBtn").addEventListener("click", () => {
-      const previewContainer = document.getElementById("previewContainer");
-      previewContainer.innerHTML = "";
-
-      const columnContainers = document.querySelectorAll(".column-container");
-      const selectedHeaders = [];
-      const selectedIndices = [];
-
-      columnContainers.forEach((container, index) => {
-        const checkbox = container.querySelector("input[type='checkbox']");
-        const select = container.querySelector("select");
-        const input = container.querySelector("input[type='text']");
-
-        if (checkbox.checked) {
-          const headerLabel = input.value.trim() || select.value || headers[index];
-          selectedHeaders.push(headerLabel);
-          selectedIndices.push(index);
-        }
-      });
-
-      const table = document.createElement("table");
-      const thead = document.createElement("thead");
-      const headerRow = document.createElement("tr");
-
-      selectedHeaders.forEach(headerText => {
-        const th = document.createElement("th");
-        th.textContent = headerText;
-        headerRow.appendChild(th);
-      });
-
-      thead.appendChild(headerRow);
-      table.appendChild(thead);
-
-      const tbody = document.createElement("tbody");
-
-      data.forEach(rowData => {
-        const row = document.createElement("tr");
-        selectedIndices.forEach(i => {
-          const td = document.createElement("td");
-          td.textContent = rowData[i] || "";
-          row.appendChild(td);
-        });
-        tbody.appendChild(row);
-      });
-
-      table.appendChild(tbody);
-      previewContainer.appendChild(table);
+    // Build table
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    customLabels.forEach(label => {
+      const th = document.createElement('th');
+      th.textContent = label;
+      headerRow.appendChild(th);
     });
-  </script>
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    previewData.forEach(rowData => {
+      const row = document.createElement('tr');
+      selectedIndices.forEach(i => {
+        const td = document.createElement('td');
+        td.textContent = rowData[i] || "";
+        row.appendChild(td);
+      });
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+
+    // Insert table
+    const previewContainer = document.getElementById('previewContainer');
+    previewContainer.innerHTML = '';
+    previewContainer.appendChild(table);
+  });
+</script>
 
 </body>
 </html>
