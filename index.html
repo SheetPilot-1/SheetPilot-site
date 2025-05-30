@@ -83,6 +83,7 @@
     <br />
     <button id="loadButton">Add/Replace</button>
     <div class="note">Use this to upload additional data to the current table.</div>
+    <div id="data-preview" style="margin-top: 20px;"></div>
   </div>
 
   <script>
@@ -185,3 +186,58 @@
   </script>
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+<script>
+document.getElementById("loadButton").addEventListener("click", function () {
+  const fileInput = document.querySelector("input[type='file']");
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please upload a file first.");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
+
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    showPreviewTable(jsonData);
+  };
+
+  reader.readAsArrayBuffer(file);
+});
+
+function showPreviewTable(data) {
+  const previewDiv = document.getElementById("data-preview");
+  previewDiv.innerHTML = ""; // clear previous
+
+  const table = document.createElement("table");
+  table.style.width = "100%";
+  table.style.borderCollapse = "collapse";
+  table.style.marginTop = "20px";
+
+  data.forEach((row, rowIndex) => {
+    const tr = document.createElement("tr");
+
+    row.forEach(cell => {
+      const cellElement = rowIndex === 0 ? document.createElement("th") : document.createElement("td");
+      cellElement.textContent = cell ?? "";
+      cellElement.style.padding = "8px";
+      cellElement.style.border = "1px solid #000";
+      cellElement.style.backgroundColor = rowIndex === 0 ? "#003366" : "#f0f8ff";
+      cellElement.style.color = rowIndex === 0 ? "#fff" : "#000";
+      tr.appendChild(cellElement);
+    });
+
+    table.appendChild(tr);
+  });
+
+  previewDiv.appendChild(table);
+}
+</script>
