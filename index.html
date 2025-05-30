@@ -209,100 +209,106 @@ function loadFile() {
 </script>
 </body>
 </html>
-<!-- Phase 2: File Upload, Parsing, and Dynamic Header Suggestions -->
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script>
-document.getElementById('fileUpload').addEventListener('change', handleFile);
+const headerSuggestions = {
+  // 1–50 industries (previous chunk)
+  "Tutoring": ["Student Name", "Subject", "Session Date", "Duration", "Grade"],
+  "Real Estate": ["Property Address", "Client Name", "Listing Date", "Price", "Status"],
+  "Healthcare": ["Patient Name", "Appointment Date", "Service", "Provider", "Notes"],
+  "Finance": ["Client Name", "Account #", "Transaction Date", "Amount", "Balance"],
+  "Accounting": ["Client Name", "Invoice #", "Amount", "Due Date", "Paid"],
+  "Interior Design": ["Client Name", "Room", "Style", "Color Palette", "Budget"],
+  "IT Services": ["Client Name", "Issue", "Resolution Date", "Technician", "Status"],
+  "Construction": ["Project Name", "Location", "Start Date", "End Date", "Budget"],
+  "Transportation": ["Driver Name", "Route", "Pickup Time", "Dropoff Time", "Miles"],
+  "Education": ["Student Name", "Course", "Grade", "Attendance", "Comments"],
+  "Legal": ["Client Name", "Case #", "Date Filed", "Court", "Status"],
+  "Consulting": ["Client Name", "Project", "Start Date", "End Date", "Outcome"],
+  "Auto Repair": ["Customer Name", "Vehicle", "Service Date", "Service", "Cost"],
+  "HVAC": ["Client Name", "Service Type", "Date", "Technician", "Notes"],
+  "Plumbing": ["Client Name", "Issue", "Service Date", "Technician", "Status"],
+  "Landscaping": ["Client Name", "Service Date", "Property Address", "Crew", "Notes"],
+  "Marketing & Advertising": ["Campaign", "Channel", "Start Date", "Leads", "ROI"],
+  "Non-Profit": ["Donor Name", "Donation Date", "Amount", "Purpose", "Event"],
+  "Hospitality": ["Guest Name", "Room #", "Check-in Date", "Check-out Date", "Rate"],
+  "Cleaning Services": ["Client Name", "Service Date", "Location", "Team", "Notes"],
+  "Pet Grooming": ["Pet Name", "Owner", "Service", "Date", "Price"],
+  "Veterinary": ["Pet Name", "Owner", "Visit Date", "Reason", "Outcome"],
+  "Photography": ["Client Name", "Event Date", "Location", "Package", "Price"],
+  "Event Planning": ["Event Name", "Date", "Venue", "Client", "Budget"],
+  "Barbershop/Salon": ["Client Name", "Service Date", "Service", "Stylist", "Price"],
+  "Nail Technician": ["Client Name", "Service", "Date", "Technician", "Price"],
+  "Tattoo & Piercing": ["Client Name", "Service Type", "Artist", "Date", "Price"],
+  "Roofing": ["Client Name", "Service Date", "Roof Type", "Technician", "Status"],
+  "Electrical": ["Client Name", "Service Date", "Issue", "Electrician", "Status"],
+  "Welding & Fabrication": ["Client Name", "Job Type", "Date", "Welder", "Notes"],
+  "Masonry": ["Client Name", "Service Date", "Type", "Mason", "Status"],
+  "Carpentry": ["Client Name", "Job Type", "Start Date", "End Date", "Price"],
+  "Moving & Storage": ["Client Name", "Move Date", "From", "To", "Miles"],
+  "Courier Services": ["Client Name", "Pickup Date", "Delivery Date", "Item", "Status"],
+  "Security Services": ["Client Name", "Service Date", "Type", "Guard", "Status"],
+  "Publishing": ["Title", "Author", "Publish Date", "Editor", "Price"],
+  "Fitness": ["Client Name", "Session Date", "Trainer", "Service", "Price"],
+  "Food & Beverage": ["Item", "Category", "Price", "Supplier", "Notes"],
+  "Travel Services": ["Client Name", "Destination", "Depart Date", "Return Date", "Package"],
+  "Childcare": ["Child Name", "Parent", "Date", "Service", "Price"],
+  "Retail": ["Product Name", "SKU", "Price", "Supplier", "Stock"],
+  "Wholesale": ["Product Name", "SKU", "Supplier", "Price", "Stock"],
+  "Logistics": ["Item", "Origin", "Destination", "Ship Date", "Status"],
+  "Insurance": ["Client Name", "Policy #", "Type", "Start Date", "End Date"],
+  "Entertainment": ["Event Name", "Date", "Performer", "Venue", "Price"],
+  "Technology": ["Client Name", "Service", "Date", "Technician", "Status"],
+  "Home Improvement": ["Client Name", "Project Type", "Start Date", "End Date", "Budget"],
+  "Manufacturing": ["Item", "Batch #", "Production Date", "QC Status", "Quantity"],
+  "Waste Management": ["Client Name", "Pickup Date", "Material", "Weight", "Notes"],
 
-function handleFile(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    const data = new Uint8Array(evt.target.result);
-    const workbook = XLSX.read(data, { type: 'array' });
-    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-    const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-
-    if (json.length === 0) {
-      alert("Empty sheet.");
-      return;
-    }
-
-    const headers = json[0];
-    const rows = json.slice(1).filter(row => row.join("").trim() !== "");
-    renderHeaderMapping(headers, rows);
-  };
-  reader.readAsArrayBuffer(file);
-}
-
-function renderHeaderMapping(headers, rows) {
-  const selectedIndustry = document.getElementById('industry').value;
-  const headerSuggestions = getHeaderSuggestions(selectedIndustry);
-
-  const container = document.createElement("div");
-  container.id = "headerFields";
-  container.style.marginTop = "20px";
-
-  headers.forEach((header, i) => {
-    const wrapper = document.createElement("div");
-    wrapper.style.marginBottom = "15px";
-
-    const label = document.createElement("label");
-    label.textContent = `Column ${i + 1}: ${header}`;
-    label.style.fontWeight = "bold";
-    wrapper.appendChild(label);
-
-    const select = document.createElement("select");
-    select.style.width = "100%";
-    select.style.padding = "8px";
-    select.style.marginTop = "5px";
-
-    const defaultOption = document.createElement("option");
-    defaultOption.textContent = "-- Choose or type your own --";
-    defaultOption.value = "";
-    select.appendChild(defaultOption);
-
-    headerSuggestions.forEach(suggestion => {
-      const opt = document.createElement("option");
-      opt.value = suggestion;
-      opt.textContent = suggestion;
-      select.appendChild(opt);
-    });
-
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "Or enter custom label";
-    input.style.width = "100%";
-    input.style.marginTop = "5px";
-
-    wrapper.appendChild(select);
-    wrapper.appendChild(input);
-    container.appendChild(wrapper);
-  });
-
-  const existingContainer = document.getElementById("headerFields");
-  if (existingContainer) {
-    existingContainer.replaceWith(container);
-  } else {
-    document.body.appendChild(container);
-  }
-}
-
-function getHeaderSuggestions(industry) {
-  const suggestions = {
-    "Non-Profit": ["Donor Name", "Donation Date", "Amount", "Purpose", "Event"],
-    "Barbershop/Salon": ["Client Name", "Service Date", "Service Type", "Stylist", "Price"],
-    "Transportation": ["Driver Name", "Route", "Pickup Date", "Delivery Date", "Miles"],
-    "Education": ["Student Name", "Grade", "Subject", "Session Date", "Attendance"],
-    "Healthcare": ["Patient Name", "Treatment Date", "Provider", "Diagnosis", "Notes"],
-    "Retail": ["Product Name", "SKU", "Stock", "Unit Price", "Supplier"],
-    "Construction": ["Project Name", "Job Type", "Start Date", "End Date", "Foreman"],
-    "Marketing": ["Campaign", "Channel", "Start Date", "Leads", "Conversion Rate"],
-    "Finance": ["Client Name", "Account #", "Transaction Date", "Amount", "Balance"],
-    "General": ["Name", "Email", "Phone", "Date", "Amount"]
-  };
-  return suggestions[industry] || suggestions["General"];
-}
-</script>
+  // 51–100 industries (second chunk)
+  const headerSuggestionsPart2 = {
+  "Music Lessons": ["Student Name", "Instrument", "Lesson Date", "Instructor", "Notes"],
+  "Mechanic": ["Customer Name", "Vehicle", "Service Date", "Repair Type", "Cost"],
+  "Pool Services": ["Client Name", "Service Date", "Type", "Technician", "Notes"],
+  "Window Cleaning": ["Client Name", "Service Date", "Location", "Team", "Notes"],
+  "Copywriting": ["Client Name", "Project Name", "Deadline", "Fee", "Status"],
+  "Translation": ["Client Name", "Document", "Language", "Due Date", "Fee"],
+  "Social Work": ["Client Name", "Date", "Service Type", "Provider", "Outcome"],
+  "Veterinary Services": ["Pet Name", "Owner", "Date", "Service Type", "Outcome"],
+  "Crafts & Handmade": ["Item Name", "Material", "Creation Date", "Price", "Notes"],
+  "Baking": ["Item", "Order Date", "Delivery Date", "Price", "Notes"],
+  "Consulting": ["Client Name", "Project", "Start Date", "End Date", "Outcome"],
+  "Legal Consulting": ["Client Name", "Case", "Date", "Status", "Notes"],
+  "Tax Services": ["Client Name", "Tax Year", "Filing Date", "Amount", "Status"],
+  "Insurance": ["Client Name", "Policy #", "Coverage Type", "Premium", "Status"],
+  "Logistics": ["Shipment ID", "Origin", "Destination", "Ship Date", "Status"],
+  "Farming": ["Farm Name", "Product", "Harvest Date", "Yield", "Notes"],
+  "Real Estate Services": ["Client Name", "Property", "Listing Date", "Status", "Agent"],
+  "Snow Removal": ["Client Name", "Service Date", "Location", "Type", "Notes"],
+  "Virtual Assistant": ["Client Name", "Task", "Due Date", "Status", "Notes"],
+  "Voice Over": ["Client Name", "Project", "Script", "Delivery Date", "Fee"],
+  "Game Design": ["Project Name", "Platform", "Release Date", "Status", "Budget"],
+  "Woodworking": ["Client Name", "Project Type", "Material", "Delivery Date", "Price"],
+  "Moving Services": ["Client Name", "Move Date", "From", "To", "Cost"],
+  "Window Tinting": ["Client Name", "Service Date", "Type", "Technician", "Notes"],
+  "Pest Control": ["Client Name", "Service Date", "Pest Type", "Technician", "Status"],
+  "Pet Training": ["Pet Name", "Owner", "Service Date", "Trainer", "Notes"],
+  "Tailoring": ["Client Name", "Garment", "Alteration Type", "Due Date", "Price"],
+  "Hair Removal": ["Client Name", "Service Date", "Type", "Technician", "Price"],
+  "Spa Services": ["Client Name", "Service Date", "Type", "Therapist", "Price"],
+  "Ministry": ["Member Name", "Attendance Date", "Tithes", "Offerings", "Notes"],
+  "Sales Copy": ["Client Name", "Product", "Launch Date", "Target Audience", "Price"],
+  "Web Design": ["Client Name", "Project", "Launch Date", "Status", "Budget"],
+  "Data Analysis": ["Client Name", "Dataset", "Analysis Date", "Method", "Result"],
+  "Trucking": ["Driver Name", "Truck #", "Route", "Delivery Date", "Mileage"],
+  "Land Surveying": ["Client Name", "Site Location", "Survey Date", "Type", "Notes"],
+  "Engineering": ["Project Name", "Phase", "Start Date", "End Date", "Status"],
+  "Recruiting": ["Candidate Name", "Position", "Interview Date", "Status", "Notes"],
+  "Human Resources": ["Employee Name", "Role", "Start Date", "Status", "Notes"],
+  "Legal Services": ["Client Name", "Case #", "Court Date", "Status", "Attorney"],
+  "Digital Marketing": ["Campaign", "Platform", "Start Date", "Leads", "ROI"],
+  "Community Services": ["Client Name", "Date", "Service", "Outcome", "Notes"],
+  "Notary": ["Client Name", "Document", "Date", "Fee", "Status"],
+  "Handyman Services": ["Client Name", "Service Type", "Date", "Location", "Price"],
+  "Gutter Services": ["Client Name", "Service Date", "Type", "Technician", "Status"],
+  "Painting": ["Client Name", "Service Date", "Type", "Painter", "Status"],
+  "Tree Services": ["Client Name", "Service Date", "Type", "Arborist", "Notes"],
+  "Junk Removal": ["Client Name", "Pickup Date", "Type", "Crew", "Status"]
+};
+};
