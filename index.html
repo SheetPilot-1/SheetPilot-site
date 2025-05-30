@@ -209,3 +209,97 @@ function loadFile() {
 </script>
 </body>
 </html>
+<!-- Phase 2: Set Column Headers -->
+<div id="headerMappingSection" style="display: none; margin-top: 40px;">
+  <h2 style="color: #F5F5DC; font-weight: bold;">Set Column Headers</h2>
+  <div id="headerFields" style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 10px; margin-top: 20px;">
+    <!-- Dynamically generated header fields will appear here -->
+  </div>
+  <button style="background-color: #00E5FF; color: #000; border: none; padding: 12px 20px; border-radius: 10px; margin-top: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);" onclick="resetMapping()">Reset Mapping</button>
+  <p style="color: #aaa; font-size: 0.9em; margin-top: 5px;">Use this to reset the header mapping if you change your industry or subcategory.</p>
+  <button style="background-color: #00E5FF; color: #000; border: none; padding: 12px 20px; border-radius: 10px; margin-top: 20px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);" onclick="previewTable()">Preview Table</button>
+  <p style="color: #aaa; font-size: 0.9em; margin-top: 5px;">Tip: If you uncheck or change any column headers, click “Preview Table” again to refresh the table below.</p>
+</div>
+
+<script>
+  function showHeaderMapping(headers) {
+    const container = document.getElementById("headerFields");
+    container.innerHTML = "";
+    
+    headers.forEach((header, i) => {
+      const wrapper = document.createElement("div");
+      wrapper.style.flex = "1 1 48%";
+      wrapper.style.padding = "10px";
+      wrapper.style.backgroundColor = "#232338";
+      wrapper.style.borderRadius = "6px";
+
+      const label = document.createElement("label");
+      label.textContent = `Column ${i + 1}`;
+      label.style.color = "#F5F5DC";
+      label.style.fontWeight = "bold";
+      label.style.display = "block";
+      label.style.marginBottom = "5px";
+
+      const select = document.createElement("select");
+      select.style.width = "100%";
+      select.style.padding = "8px";
+      select.style.borderRadius = "6px";
+      select.style.marginBottom = "5px";
+      select.dataset.index = i;
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "-- Choose or type your own --";
+      select.appendChild(defaultOption);
+
+      // Suggested headers (could be enhanced later!)
+      const suggestions = ["Name", "Date", "Amount", "Status", "Notes"];
+      suggestions.forEach(s => {
+        const option = document.createElement("option");
+        option.value = s;
+        option.textContent = s;
+        select.appendChild(option);
+      });
+
+      const manualInput = document.createElement("input");
+      manualInput.type = "text";
+      manualInput.placeholder = "Or enter custom label";
+      manualInput.style.width = "100%";
+      manualInput.style.padding = "8px";
+      manualInput.style.marginTop = "6px";
+      manualInput.style.borderRadius = "6px";
+      manualInput.dataset.index = i;
+
+      const includeBox = document.createElement("input");
+      includeBox.type = "checkbox";
+      includeBox.checked = true;
+      includeBox.id = `include-${i}`;
+      includeBox.style.marginTop = "10px";
+
+      const includeLabel = document.createElement("label");
+      includeLabel.textContent = " Include this column";
+      includeLabel.style.color = "#F5F5DC";
+      includeLabel.style.marginLeft = "6px";
+
+      wrapper.appendChild(label);
+      wrapper.appendChild(select);
+      wrapper.appendChild(manualInput);
+      wrapper.appendChild(includeBox);
+      wrapper.appendChild(includeLabel);
+
+      container.appendChild(wrapper);
+    });
+
+    document.getElementById("headerMappingSection").style.display = "block";
+  }
+
+  function resetMapping() {
+    document.getElementById("headerMappingSection").style.display = "none";
+    document.getElementById("headerFields").innerHTML = "";
+    document.getElementById("tablePreview").style.display = "none";
+  }
+
+  function previewTable() {
+    // This will call a Phase 3 script to render the preview using chosen headers
+    alert("Preview logic will go here in Phase 3!");
+  }
+</script>
