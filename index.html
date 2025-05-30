@@ -190,129 +190,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>SheetPilot - Column Mapping</title>
-<style>
-  body {
-    background-color: #33658A;
-    color: #F5F5DC;
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 20px;
-  }
-  h1 {
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-  }
-  label {
-    display: block;
-    margin-top: 12px;
-    font-weight: bold;
-  }
-  .checkbox-container {
-    display: flex;
-    align-items: center;
-    margin-top: 8px;
-  }
-  .checkbox-container input[type="checkbox"] {
-    margin-right: 6px;
-  }
-  .column-container {
-    background-color: #41729F;
-    padding: 15px;
-    margin-top: 10px;
-    border-radius: 6px;
-  }
-  select, input[type="text"] {
-    width: 100%;
-    max-width: 360px;
-    padding: 8px;
-    margin-top: 5px;
-    margin-bottom: 10px;
-    border: none;
-    border-radius: 4px;
-    font-size: 1em;
-    box-sizing: border-box;
-  }
-  button {
-    background-color: #00E5FF;
-    color: #000;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 6px;
-    margin-top: 15px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  button:hover {
-    background-color: #00cce0;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <title>SheetPilot - Column Mapping</title>
+  <style>
+    body {
+      background-color: #33658A;
+      color: #F5F5DC;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .checkbox-container input[type="checkbox"] {
+      margin-right: 6px;
+    }
+    .column-container {
+      background-color: #41729F;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      max-width: 360px;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #00E5FF;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      margin-top: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #00cce0;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      background-color: #1C1C2A;
+      color: #F5F5DC;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #444;
+    }
+    th {
+      background-color: #00E5FF;
+      color: #000;
+    }
+    tr:nth-child(even) {
+      background-color: #232338;
+    }
+  </style>
 </head>
 <body>
 
-<h1>Map Your Columns</h1>
-<p>Use this section to map your spreadsheet columns to custom or suggested headers. Uncheck to hide columns you don’t want in the final table.</p>
+  <h1>Map Your Columns</h1>
+  <p>Use this section to map your spreadsheet columns to custom or suggested headers. Uncheck to hide columns you don’t want in the final table.</p>
 
-<div id="columnMapping"></div>
+  <div id="columnMapping"></div>
 
-<button id="previewBtn">Preview Table</button>
+  <button id="previewBtn">Preview Table</button>
 
-<script>
-  // Example: Replace this data with what you actually parse from your uploaded sheet
-  const exampleHeaders = ["Name", "Email", "Phone", "Date", "Amount", "Service Type"];
-  const columnMappingDiv = document.getElementById("columnMapping");
+  <div id="previewContainer"></div>
 
-  exampleHeaders.forEach((header, index) => {
-    const container = document.createElement("div");
-    container.className = "column-container";
+  <script>
+    // Example headers and data; replace with actual data from Phase 1
+    const headers = ["Name", "Email", "Phone", "Date", "Amount", "Service Type"];
+    const data = [
+      ["John Doe", "john@example.com", "123-456-7890", "2025-05-30", "$100", "Consulting"],
+      ["Jane Smith", "jane@example.com", "987-654-3210", "2025-05-29", "$200", "Development"]
+    ];
 
-    const checkboxContainer = document.createElement("div");
-    checkboxContainer.className = "checkbox-container";
+    const columnMappingDiv = document.getElementById("columnMapping");
 
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = true;
-    checkbox.id = `include${index}`;
+    headers.forEach((header, index) => {
+      const container = document.createElement("div");
+      container.className = "column-container";
 
-    const checkboxLabel = document.createElement("label");
-    checkboxLabel.htmlFor = `include${index}`;
-    checkboxLabel.textContent = "Include this column?";
+      const checkboxContainer = document.createElement("div");
+      checkboxContainer.className = "checkbox-container";
 
-    checkboxContainer.appendChild(checkbox);
-    checkboxContainer.appendChild(checkboxLabel);
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = true;
+      checkbox.id = `include${index}`;
 
-    const label = document.createElement("label");
-    label.textContent = `Column: ${header}`;
+      const checkboxLabel = document.createElement("label");
+      checkboxLabel.htmlFor = `include${index}`;
+      checkboxLabel.textContent = "Include this column?";
 
-    const select = document.createElement("select");
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = "-- Choose or type your own --";
-    select.appendChild(defaultOption);
+      checkboxContainer.appendChild(checkbox);
+      checkboxContainer.appendChild(checkboxLabel);
 
-    ["Name", "Email", "Phone", "Date", "Amount", "Notes", "Service Type", "Status"].forEach(optionText => {
-      const option = document.createElement("option");
-      option.value = optionText;
-      option.textContent = optionText;
-      select.appendChild(option);
+      const label = document.createElement("label");
+      label.textContent = `Column: ${header}`;
+
+      const select = document.createElement("select");
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.textContent = "-- Choose or type your own --";
+      select.appendChild(defaultOption);
+
+      ["Name", "Email", "Phone", "Date", "Amount", "Notes", "Service Type", "Status"].forEach(optionText => {
+        const option = document.createElement("option");
+        option.value = optionText;
+        option.textContent = optionText;
+        select.appendChild(option);
+      });
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = "Or enter custom label";
+
+      container.appendChild(checkboxContainer);
+      container.appendChild(label);
+      container.appendChild(select);
+      container.appendChild(input);
+      columnMappingDiv.appendChild(container);
     });
 
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "Or enter custom label";
+    document.getElementById("previewBtn").addEventListener("click", () => {
+      const previewContainer = document.getElementById("previewContainer");
+      previewContainer.innerHTML = "";
 
-    container.appendChild(checkboxContainer);
-    container.appendChild(label);
-    container.appendChild(select);
-    container.appendChild(input);
-    columnMappingDiv.appendChild(container);
-  });
+      const columnContainers = document.querySelectorAll(".column-container");
+      const selectedHeaders = [];
+      const selectedIndices = [];
 
-  document.getElementById("previewBtn").addEventListener("click", () => {
-    alert("Table preview logic here.");
-  });
-</script>
+      columnContainers.forEach((container, index) => {
+        const checkbox = container.querySelector("input[type='checkbox']");
+        const select = container.querySelector("select");
+        const input = container.querySelector("input[type='text']");
+
+        if (checkbox.checked) {
+          const headerLabel = input.value.trim() || select.value || headers[index];
+          selectedHeaders.push(headerLabel);
+          selectedIndices.push(index);
+        }
+      });
+
+      const table = document.createElement("table");
+      const thead = document.createElement("thead");
+      const headerRow = document.createElement("tr");
+
+      selectedHeaders.forEach(headerText => {
+        const th = document.createElement("th");
+        th.textContent = headerText;
+        headerRow.appendChild(th);
+      });
+
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+
+      data.forEach(rowData => {
+        const row = document.createElement("tr");
+        selectedIndices.forEach(i => {
+          const td = document.createElement("td");
+          td.textContent = rowData[i] || "";
+          row.appendChild(td);
+        });
+        tbody.appendChild(row);
+      });
+
+      table.appendChild(tbody);
+      previewContainer.appendChild(table);
+    });
+  </script>
 
 </body>
 </html>
