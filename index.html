@@ -187,194 +187,137 @@
 </body>
 </html>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Map Columns</title>
-<style>
-  body {
-    background-color: #33658A;
-    color: #F5F5DC;
-    font-family: 'Segoe UI', sans-serif;
-    padding: 20px;
-  }
-
-  h2 {
-    margin-top: 20px;
-  }
-
-  .column-container {
-    margin-bottom: 15px;
-    background-color: #4682B4;
-    padding: 10px;
-    border-radius: 5px;
-  }
-
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-
-  select, input[type="text"] {
-    width: 100%;
-    padding: 6px;
-    margin-top: 4px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  input[type="checkbox"] {
-    margin-right: 6px;
-  }
-
-  button {
-    background-color: #00E5FF;
-    color: #000;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    margin-top: 15px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-
-  button:hover {
-    background-color: #00cce0;
-  }
-
-  #previewContainer table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 0.9rem;
-    background-color: #ffffff;
-  }
-
-  #previewContainer th,
-  #previewContainer td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-  }
-
-  #previewContainer th {
-    background-color: #00E5FF;
-    color: #000;
-  }
-
-  #previewContainer tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-
-  #previewContainer tr:nth-child(odd) {
-    background-color: #ffffff;
-  }
-</style>
-</head>
-<body>
-
-<h2>Map Your Columns</h2>
-<p>Use this section to map your spreadsheet columns to custom or suggested headers. Uncheck to hide columns you don’t want in the final table.</p>
-
-<div id="columnsContainer"></div>
-
-<button id="previewButton">Preview Table</button>
-
-<div id="previewContainer"></div>
+<!-- Phase 2: Column Mapping -->
+<div id="phase2" style="margin-top: 40px;">
+  <h2>Map Your Columns</h2>
+  <p>Use this section to map your spreadsheet columns to custom or suggested headers. Uncheck to hide columns you don’t want in the final table.</p>
+  <div id="columnMappingContainer"></div>
+  <button id="previewTableButton" style="margin-top: 15px; padding: 8px 16px; background: #00E5FF; color: #000; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;">Preview Table</button>
+  <div id="previewContainer" style="margin-top: 20px;"></div>
+</div>
 
 <script>
-  // Example data structure (replace with actual dynamic data)
-  const availableColumns = ["Name", "Email", "Phone", "Date", "Amount", "Notes"];
-  const previewData = [
-    ["John Doe", "john@example.com", "123-456-7890", "2025-05-30", "$100", "Consulting"],
-    ["Jane Smith", "jane@example.com", "987-654-3210", "2025-05-29", "$200", "Development"]
-  ];
+  // Phase 2 script
+  let parsedData; // make sure this is set by Phase 1 script
 
-  const columnsContainer = document.getElementById('columnsContainer');
+  document.getElementById('addReplaceButton').addEventListener('click', () => {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const data = e.target.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+        parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
 
-  // Create mapping UI
-  availableColumns.forEach((col, index) => {
-    const container = document.createElement('div');
-    container.classList.add('column-container');
-
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = true;
-    checkbox.id = `colCheckbox-${index}`;
-
-    const label = document.createElement('label');
-    label.textContent = `Column: ${col}`;
-    label.htmlFor = `colCheckbox-${index}`;
-
-    const select = document.createElement('select');
-    const defaultOption = document.createElement('option');
-    defaultOption.value = col;
-    defaultOption.textContent = col;
-    select.appendChild(defaultOption);
-
-    const customInput = document.createElement('input');
-    customInput.type = 'text';
-    customInput.placeholder = 'Or enter custom label';
-
-    container.appendChild(checkbox);
-    container.appendChild(label);
-    container.appendChild(select);
-    container.appendChild(customInput);
-
-    columnsContainer.appendChild(container);
+        buildColumnMapping(parsedData[0] || []);
+      };
+      reader.readAsBinaryString(file);
+    }
   });
 
-  // Handle preview button
-  document.getElementById('previewButton').addEventListener('click', () => {
-    const selectedIndices = [];
-    const customLabels = [];
+  function buildColumnMapping(headers) {
+    const container = document.getElementById('columnMappingContainer');
+    container.innerHTML = '';
 
-    // Determine selected columns
-    availableColumns.forEach((_, index) => {
-      const checkbox = document.getElementById(`colCheckbox-${index}`);
-      if (checkbox.checked) {
+    headers.forEach((header, index) => {
+      const section = document.createElement('div');
+      section.style.marginBottom = '10px';
+      section.style.background = '#1E3A5F';
+      section.style.padding = '10px';
+      section.style.borderRadius = '5px';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = true;
+      checkbox.id = `include_${index}`;
+
+      const label = document.createElement('label');
+      label.textContent = ' Include this column?';
+      label.style.color = '#fff';
+      label.style.marginLeft = '5px';
+
+      const columnLabel = document.createElement('div');
+      columnLabel.textContent = `Column: ${header}`;
+      columnLabel.style.color = '#fff';
+      columnLabel.style.marginTop = '5px';
+      columnLabel.style.fontWeight = 'bold';
+
+      const select = document.createElement('select');
+      select.innerHTML = `<option value="${header}">${header}</option>`;
+      select.style.width = '100%';
+      select.style.marginTop = '5px';
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Or enter custom label';
+      input.style.width = '100%';
+      input.style.marginTop = '5px';
+
+      section.appendChild(checkbox);
+      section.appendChild(label);
+      section.appendChild(columnLabel);
+      section.appendChild(select);
+      section.appendChild(input);
+      container.appendChild(section);
+    });
+  }
+
+  document.getElementById('previewTableButton').addEventListener('click', () => {
+    const selectedIndices = [];
+    const selectedHeaders = [];
+
+    const mappingSections = document.getElementById('columnMappingContainer').children;
+    Array.from(mappingSections).forEach((section, index) => {
+      const includeCheckbox = section.querySelector('input[type="checkbox"]');
+      if (includeCheckbox.checked) {
         selectedIndices.push(index);
 
-        const container = checkbox.closest('.column-container');
-        const customInput = container.querySelector('input[type="text"]');
-        const select = container.querySelector('select');
-
-        customLabels.push(customInput.value.trim() || select.value);
+        const input = section.querySelector('input[type="text"]');
+        const customLabel = input.value.trim();
+        const defaultHeader = section.querySelector('select').value;
+        selectedHeaders.push(customLabel || defaultHeader);
       }
     });
 
-    // Build table
     const table = document.createElement('table');
+    table.style.width = '100%';
+    table.style.marginTop = '10px';
+    table.style.borderCollapse = 'collapse';
+    table.style.backgroundColor = '#f0f0f0';
+    table.style.color = '#000';
+
     const thead = document.createElement('thead');
     const headerRow = document.createElement('tr');
-    customLabels.forEach(label => {
+    selectedHeaders.forEach(header => {
       const th = document.createElement('th');
-      th.textContent = label;
+      th.textContent = header;
+      th.style.padding = '8px';
+      th.style.backgroundColor = '#00E5FF';
+      th.style.color = '#000';
       headerRow.appendChild(th);
     });
     thead.appendChild(headerRow);
     table.appendChild(thead);
 
     const tbody = document.createElement('tbody');
-    previewData.forEach(rowData => {
+    parsedData.slice(1).forEach(rowData => {
       const row = document.createElement('tr');
       selectedIndices.forEach(i => {
         const td = document.createElement('td');
-        td.textContent = rowData[i] || "";
+        td.textContent = rowData[i] || '';
+        td.style.padding = '6px';
+        td.style.border = '1px solid #ccc';
         row.appendChild(td);
       });
       tbody.appendChild(row);
     });
     table.appendChild(tbody);
 
-    // Insert table
     const previewContainer = document.getElementById('previewContainer');
     previewContainer.innerHTML = '';
     previewContainer.appendChild(table);
   });
 </script>
-
-</body>
-</html>
