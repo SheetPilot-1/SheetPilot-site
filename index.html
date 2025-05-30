@@ -209,7 +209,8 @@ function loadFile() {
 </script>
 </body>
 </html>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<!-- Phase 2: File Upload, Parsing, and Dynamic Header Suggestions -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 document.getElementById('fileUpload').addEventListener('change', handleFile);
 
@@ -237,6 +238,9 @@ function handleFile(e) {
 }
 
 function renderHeaderMapping(headers, rows) {
+  const selectedIndustry = document.getElementById('industry').value;
+  const headerSuggestions = getHeaderSuggestions(selectedIndustry);
+
   const container = document.createElement("div");
   container.id = "headerFields";
   container.style.marginTop = "20px";
@@ -260,8 +264,7 @@ function renderHeaderMapping(headers, rows) {
     defaultOption.value = "";
     select.appendChild(defaultOption);
 
-    // Add suggestions for dropdown (could use dynamic suggestions)
-    ["Name", "Email", "Phone", "Date", "Amount"].forEach(suggestion => {
+    headerSuggestions.forEach(suggestion => {
       const opt = document.createElement("option");
       opt.value = suggestion;
       opt.textContent = suggestion;
@@ -279,18 +282,6 @@ function renderHeaderMapping(headers, rows) {
     container.appendChild(wrapper);
   });
 
-  const previewButton = document.createElement("button");
-  previewButton.textContent = "Preview Table";
-  previewButton.style.marginTop = "15px";
-  previewButton.style.padding = "10px 20px";
-  previewButton.style.backgroundColor = "#00E5FF";
-  previewButton.style.color = "#000";
-  previewButton.style.border = "none";
-  previewButton.style.cursor = "pointer";
-  previewButton.onclick = () => previewTable(headers, rows, container);
-
-  container.appendChild(previewButton);
-
   const existingContainer = document.getElementById("headerFields");
   if (existingContainer) {
     existingContainer.replaceWith(container);
@@ -299,56 +290,19 @@ function renderHeaderMapping(headers, rows) {
   }
 }
 
-function previewTable(headers, rows, headerContainer) {
-  const selects = headerContainer.querySelectorAll("select");
-  const inputs = headerContainer.querySelectorAll("input[type='text']");
-
-  const finalHeaders = Array.from(selects).map((sel, i) => {
-    return inputs[i].value.trim() || sel.value || `Column ${i + 1}`;
-  });
-
-  const table = document.createElement("table");
-  table.style.width = "100%";
-  table.style.marginTop = "20px";
-  table.style.borderCollapse = "collapse";
-  table.style.backgroundColor = "#1C1C2A";
-  table.style.color = "#F5F5DC";
-  table.style.fontSize = "0.9em";
-
-  const thead = document.createElement("thead");
-  const trHead = document.createElement("tr");
-  finalHeaders.forEach(h => {
-    const th = document.createElement("th");
-    th.textContent = h;
-    th.style.padding = "10px";
-    th.style.backgroundColor = "#00E5FF";
-    th.style.color = "#000";
-    trHead.appendChild(th);
-  });
-  thead.appendChild(trHead);
-  table.appendChild(thead);
-
-  const tbody = document.createElement("tbody");
-  rows.forEach((row, rIndex) => {
-    const tr = document.createElement("tr");
-    tr.style.backgroundColor = rIndex % 2 === 0 ? "#232338" : "#1C1C2A";
-    finalHeaders.forEach((h, i) => {
-      const td = document.createElement("td");
-      td.textContent = row[i] || "";
-      td.style.padding = "8px";
-      td.style.borderTop = "1px solid #444";
-      tr.appendChild(td);
-    });
-    tbody.appendChild(tr);
-  });
-  table.appendChild(tbody);
-
-  const existingPreview = document.getElementById("tablePreview");
-  if (existingPreview) {
-    existingPreview.replaceWith(table);
-  } else {
-    table.id = "tablePreview";
-    document.body.appendChild(table);
-  }
+function getHeaderSuggestions(industry) {
+  const suggestions = {
+    "Non-Profit": ["Donor Name", "Donation Date", "Amount", "Purpose", "Event"],
+    "Barbershop/Salon": ["Client Name", "Service Date", "Service Type", "Stylist", "Price"],
+    "Transportation": ["Driver Name", "Route", "Pickup Date", "Delivery Date", "Miles"],
+    "Education": ["Student Name", "Grade", "Subject", "Session Date", "Attendance"],
+    "Healthcare": ["Patient Name", "Treatment Date", "Provider", "Diagnosis", "Notes"],
+    "Retail": ["Product Name", "SKU", "Stock", "Unit Price", "Supplier"],
+    "Construction": ["Project Name", "Job Type", "Start Date", "End Date", "Foreman"],
+    "Marketing": ["Campaign", "Channel", "Start Date", "Leads", "Conversion Rate"],
+    "Finance": ["Client Name", "Account #", "Transaction Date", "Amount", "Balance"],
+    "General": ["Name", "Email", "Phone", "Date", "Amount"]
+  };
+  return suggestions[industry] || suggestions["General"];
 }
 </script>
