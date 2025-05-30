@@ -1,267 +1,97 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>SheetPilot </title>
-<style>
-  body {
-    background-color: #33658A; /* lighter blue */
-    color: #F5F5DC; /* deep cream */
-    font-family: 'Segoe UI', sans-serif;
-    margin: 0;
-    padding: 20px;
-  }
-  h1 {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    color: #F5F5DC;
-  }
-  label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-    color: #F5F5DC;
-  }
-  select, input[type="text"], input[type="file"] {
-    width: 100%;
-    max-width: 380px;
-    padding: 10px;
-    margin-top: 6px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: none;
-    font-size: 1em;
-    box-sizing: border-box;
-    display: block;
-  }
-  button {
-    background-color: #00E5FF;
-    color: #000;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-    transition: background-color 0.3s ease;
-  }
-  button:hover {
-    background-color: #00cce0;
-  }
-  p.note {
-    color: #ccc;
-    font-size: 0.85rem;
-    margin-top: 5px;
-  }
-</style>
-</head>
-<body>
-  <h1>SheetPilot</h1>
+<!-- Phase 1: Upload and Parse -->
+<div id="phase1-container" style="margin-bottom: 20px;">
+  <h2 style="color: #F5F5DC; font-size: 1.8rem; margin-bottom: 15px;">Phase 1 – Upload Your File</h2>
+  <input type="file" id="fileUpload" accept=".xlsx, .csv" style="width: 100%; max-width: 400px; padding: 8px; margin-bottom: 10px; border-radius: 6px; border: none; font-size: 1rem;"/>
+  <button id="loadButton" style="background-color: #00E5FF; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 6px;">Add/Replace</button>
+</div>
 
-  <label for="industry">Select Your Industry</label>
-  <select id="industry" onchange="updateSubcategories()">
-    <option value="">-- Select Industry --</option>
-    <option>Tutoring</option>
-    <option>Real Estate</option>
-    <option>Healthcare</option>
-    <option>Finance</option>
-    <option>Accounting</option>
-    <option>Interior Design</option>
-    <option>IT Services</option>
-    <option>Construction</option>
-    <option>Transportation</option>
-    <option>Education</option>
-    <option>Legal</option>
-    <option>Consulting</option>
-    <option>Auto Repair</option>
-    <option>HVAC</option>
-    <option>Plumbing</option>
-    <option>Landscaping</option>
-    <option>Marketing & Advertising</option>
-    <option>Non-Profit</option>
-    <option>Hospitality</option>
-    <option>Cleaning Services</option>
-    <option>Pet Grooming</option>
-    <option>Veterinary</option>
-    <option>Photography</option>
-    <option>Event Planning</option>
-    <option>Barbershop/Salon</option>
-    <option>Nail Technician</option>
-    <option>Tattoo & Piercing</option>
-    <option>Roofing</option>
-    <option>Electrical</option>
-    <option>Welding & Fabrication</option>
-    <option>Masonry</option>
-    <option>Carpentry</option>
-    <option>Moving & Storage</option>
-    <option>Courier Services</option>
-    <option>Security Services</option>
-    <option>Publishing</option>
-    <option>Fitness</option>
-    <option>Food & Beverage</option>
-    <option>Travel Services</option>
-    <option>Childcare</option>
-    <option>Retail</option>
-    <option>Wholesale</option>
-    <option>Logistics</option>
-    <option>Insurance</option>
-    <option>Entertainment</option>
-    <option>Technology</option>
-    <option>Home Improvement</option>
-    <option>Manufacturing</option>
-    <option>Waste Management</option>
-  </select>
-
-  <label for="subcategory">Select Your Subcategory</label>
-  <select id="subcategory">
-    <option value="">-- Choose Subcategory --</option>
-  </select>
-
-  <label for="customIndustry">Or Manually Enter Industry</label>
-  <input type="text" id="customIndustry" placeholder="Custom Industry" />
-
-  <label for="customSubcategory">Or Manually Enter Subcategory</label>
-  <input type="text" id="customSubcategory" placeholder="Custom Subcategory" />
-
-  <label for="fileUpload">Upload Your File:</label>
-  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
-  <button id="loadButton" onclick="loadFile()">Add/Replace</button>
-  <p class="note">Use this to upload additional data to the current table.</p>
-
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-const subcategoryOptions = {
-  "Tutoring": ["K–12", "College Prep", "Test Prep", "Private Instructor"],
-  "Real Estate": ["Residential", "Commercial", "REIT"],
-  "Healthcare": ["Home Care", "Nursing", "Dental", "Physical Therapy"],
-  "Finance": ["Advisory", "CPA", "Wealth Management"],
-  "Accounting": ["Tax Prep", "Bookkeeping", "Auditing"],
-  "Interior Design": ["Residential", "Commercial", "Color Consulting"],
-  "IT Services": ["Network Setup", "Remote Support", "Security"],
-  "Construction": ["Residential", "Commercial", "Remodeling", "Roofing"],
-  "Transportation": ["Fleet", "Logistics", "Courier", "Moving"],
-  "Education": ["Tutoring", "Online Learning", "Curriculum Dev"],
-  "Legal": ["Attorney", "Paralegal", "Notary"],
-  "Consulting": ["Business Strategy", "Sales", "Operations"],
-  "Auto Repair": ["Garage", "Mobile Mechanic"],
-  "HVAC": ["Install", "Repair", "Maintenance"],
-  "Plumbing": ["Residential", "Commercial", "Emergency"],
-  "Landscaping": ["Design", "Maintenance", "Tree Service"],
-  "Marketing & Advertising": ["SEO", "Social Media", "Branding"],
-  "Non-Profit": ["Community Org", "Faith-Based", "Foundation"],
-  "Hospitality": ["BnB", "Hotel", "Event Host"],
-  "Cleaning Services": ["Residential", "Commercial", "Move-out"],
-  "Pet Grooming": ["Salon", "Mobile", "Self-Serve"],
-  "Veterinary": ["Clinic", "Mobile Vet"],
-  "Photography": ["Wedding", "Portrait", "Product"],
-  "Event Planning": ["Weddings", "Corporate", "Festivals"],
-  "Barbershop/Salon": ["Barber", "Stylist", "Color"],
-  "Nail Technician": ["Manicure", "Pedicure", "Nail Art"],
-  "Tattoo & Piercing": ["Tattoo", "Piercing", "Aftercare"],
-  "Roofing": ["Shingle", "Metal", "Repair", "Inspection"],
-  "Electrical": ["Residential", "Commercial", "Panel Upgrades"],
-  "Welding & Fabrication": ["Structural", "Custom", "Pipe"],
-  "Masonry": ["Brick", "Stone", "Concrete", "Repair"],
-  "Carpentry": ["Trim", "Decking", "Custom Furniture"],
-  "Moving & Storage": ["Moving", "Storage", "Packing"],
-  "Courier Services": ["Medical", "Same-Day", "Fleet"],
-  "Security Services": ["Private", "Event", "Monitoring"],
-  "Publishing": ["Books", "Blogs", "Magazines"],
-  "Fitness": ["Gym", "Personal Trainer", "Yoga"],
-  "Food & Beverage": ["Catering", "Food Truck", "Bakery"],
-  "Travel Services": ["Agent", "Group Tours", "Booking"],
-  "Childcare": ["Babysitting", "Daycare", "After School"],
-  "Retail": ["Clothing", "Electronics", "Convenience Store"],
-  "Wholesale": ["Suppliers", "B2B", "Bulk"],
-  "Logistics": ["Shipping", "Supply Chain", "Distribution"],
-  "Insurance": ["Broker", "Claims", "Adjuster"],
-  "Entertainment": ["DJ", "Performer", "Event Host"],
-  "Technology": ["App Dev", "Web Dev", "Support"],
-  "Home Improvement": ["Painting", "Flooring", "Cabinetry"],
-  "Manufacturing": ["Assembly", "Tooling", "Quality Control"],
-  "Waste Management": ["Junk Removal", "Recycling", "Eco Disposal"]
-};
+let phase1JsonData = []; // Store parsed data for Phase 2
 
-function updateSubcategories() {
-  const industry = document.getElementById("industry").value;
-  const subcategory = document.getElementById("subcategory");
-  subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-
-  if (subcategoryOptions[industry]) {
-    subcategoryOptions[industry].forEach(option => {
-      const el = document.createElement("option");
-      el.value = option;
-      el.textContent = option;
-      subcategory.appendChild(el);
-    });
-  }
-}
-
-function loadFile() {
+document.getElementById('loadButton').addEventListener('click', () => {
   const fileInput = document.getElementById('fileUpload');
   if (!fileInput.files.length) {
     alert("Please select a file first.");
     return;
   }
-  alert("File ready to be processed (functionality to be implemented).");
-}
-</script>
-</body>
-</html>
 
-<!-- PHASE 2: Dynamic header mapping, no duplicate outer tags -->
-<div id="phase2-container" style="margin-top: 20px;">
-  <label for="fileUploadPhase2">Upload Your File:</label>
-  <input type="file" id="fileUploadPhase2" accept=".xlsx, .csv" />
-  <button id="loadButtonPhase2">Add/Replace</button>
-  <p class="note">Use this to upload additional data to the current table.</p>
-
-  <div id="headerFieldsPhase2"></div>
-  <div id="tablePreviewPhase2"></div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-<script>
-const popularHeaders = ["Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status", "Notes", "Location"];
-
-document.getElementById('loadButtonPhase2').addEventListener('click', () => {
-  const fileInput = document.getElementById('fileUploadPhase2');
-  if (!fileInput.files.length) {
-    alert("Please select a file first.");
-    return;
-  }
-  handleFilePhase2({ target: { files: [fileInput.files[0]] } });
-});
-
-function handleFilePhase2(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-
+  const file = fileInput.files[0];
   const reader = new FileReader();
+
   reader.onload = function(evt) {
     const data = new Uint8Array(evt.target.result);
     const workbook = XLSX.read(data, { type: 'array' });
     const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-    const json = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
-    if (json.length === 0) {
+    if (jsonData.length === 0) {
       alert("Empty sheet.");
       return;
     }
 
-    const headers = json[0];
-    const rows = json.slice(1).filter(row => row.join("").trim() !== "");
-    renderHeaderMappingPhase2(headers, rows);
+    // Store data for phase 2
+    phase1JsonData = jsonData;
+
+    // 🚀 Trigger Phase 2
+    renderHeaderMappingPhase2(jsonData[0], jsonData.slice(1));
   };
   reader.readAsArrayBuffer(file);
-}
+});
+</script>
+<!-- Phase 1: File upload and JSON parsing only -->
+<div id="phase1-container" style="margin-bottom: 20px;">
+  <h2>Phase 1 – Upload Your File</h2>
+  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
+  <button id="loadButton">Add/Replace</button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+let phase1JsonData = []; // Store parsed data for phase 2
+
+document.getElementById('loadButton').addEventListener('click', () => {
+  const fileInput = document.getElementById('fileUpload');
+  if (!fileInput.files.length) {
+    alert("Please select a file.");
+    return;
+  }
+
+  const file = fileInput.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(evt) {
+    const data = new Uint8Array(evt.target.result);
+    const workbook = XLSX.read(data, { type: 'array' });
+    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+
+    if (jsonData.length === 0) {
+      alert("Empty sheet.");
+      return;
+    }
+
+    // Store data for phase 2
+    phase1JsonData = jsonData;
+
+    // 🎯 Automatically trigger Phase 2 mapping!
+    renderHeaderMappingPhase2(jsonData[0], jsonData.slice(1));
+  };
+  reader.readAsArrayBuffer(file);
+});
+</script>
+<!-- Phase 2: Clean Dynamic Header Mapping Only -->
+<div id="headerMappingContainer"></div>
+<div id="tablePreview" style="margin-top: 20px;"></div>
+
+<script>
+const popularHeaders = ["Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status", "Notes", "Location"];
 
 function renderHeaderMappingPhase2(headers, rows) {
   const container = document.createElement("div");
-  container.style.marginTop = "20px";
+  container.style.marginTop = "10px";
 
-  headers.forEach((header, i) => {
+  headers.forEach((header, index) => {
     const wrapper = document.createElement("div");
     wrapper.style.marginBottom = "10px";
 
@@ -271,7 +101,7 @@ function renderHeaderMappingPhase2(headers, rows) {
     checkbox.style.marginRight = "6px";
 
     const note = document.createElement("span");
-    note.textContent = " Uncheck to hide this column";
+    note.textContent = "Uncheck to hide this column";
     note.style.fontSize = "0.85rem";
     note.style.color = "#ccc";
     wrapper.appendChild(checkbox);
@@ -279,25 +109,24 @@ function renderHeaderMappingPhase2(headers, rows) {
 
     const select = document.createElement("select");
     select.style.width = "100%";
-    select.style.padding = "8px";
-    select.style.marginTop = "5px";
+    select.style.marginTop = "4px";
     const defaultOption = document.createElement("option");
-    defaultOption.textContent = "-- Choose or type your own --";
     defaultOption.value = "";
+    defaultOption.textContent = "-- Choose or type your own --";
     select.appendChild(defaultOption);
 
-    popularHeaders.forEach(opt => {
-      const option = document.createElement("option");
-      option.value = opt;
-      option.textContent = opt;
-      select.appendChild(option);
+    popularHeaders.forEach(h => {
+      const opt = document.createElement("option");
+      opt.value = h;
+      opt.textContent = h;
+      select.appendChild(opt);
     });
 
     const input = document.createElement("input");
     input.type = "text";
     input.placeholder = "Or enter custom label";
     input.style.width = "100%";
-    input.style.marginTop = "5px";
+    input.style.marginTop = "4px";
 
     wrapper.appendChild(select);
     wrapper.appendChild(input);
@@ -306,34 +135,42 @@ function renderHeaderMappingPhase2(headers, rows) {
 
   const previewButton = document.createElement("button");
   previewButton.textContent = "Preview Table";
-  previewButton.style.marginTop = "15px";
-  previewButton.onclick = () => previewTablePhase2(headers, rows, container);
+  previewButton.style.marginTop = "10px";
+  previewButton.style.backgroundColor = "#00E5FF";
+  previewButton.style.color = "#000";
+  previewButton.style.padding = "8px 16px";
+  previewButton.style.border = "none";
+  previewButton.style.borderRadius = "6px";
+  previewButton.style.cursor = "pointer";
+  previewButton.onclick = () => previewTable(headers, rows, container);
+
   container.appendChild(previewButton);
 
-  document.getElementById("headerFieldsPhase2").innerHTML = "";
-  document.getElementById("headerFieldsPhase2").appendChild(container);
+  document.getElementById("headerMappingContainer").innerHTML = "";
+  document.getElementById("headerMappingContainer").appendChild(container);
 }
 
-function previewTablePhase2(headers, rows, headerContainer) {
+function previewTable(headers, rows, headerContainer) {
+  const checkboxes = headerContainer.querySelectorAll("input[type='checkbox']");
   const selects = headerContainer.querySelectorAll("select");
   const inputs = headerContainer.querySelectorAll("input[type='text']");
-  const checkboxes = headerContainer.querySelectorAll("input[type='checkbox']");
 
   const finalHeaders = [];
   const visibleIndexes = [];
+
   checkboxes.forEach((cb, i) => {
     if (cb.checked) {
-      const custom = inputs[i].value.trim();
-      const selectVal = selects[i].value;
-      finalHeaders.push(custom || selectVal || headers[i]);
+      const customLabel = inputs[i].value.trim();
+      const selected = selects[i].value;
+      finalHeaders.push(customLabel || selected || headers[i]);
       visibleIndexes.push(i);
     }
   });
 
   const table = document.createElement("table");
   table.style.width = "100%";
-  table.style.marginTop = "20px";
   table.style.borderCollapse = "collapse";
+  table.style.marginTop = "10px";
   table.style.backgroundColor = "#f5f5f5";
   table.style.color = "#000";
 
@@ -351,13 +188,13 @@ function previewTablePhase2(headers, rows, headerContainer) {
   table.appendChild(thead);
 
   const tbody = document.createElement("tbody");
-  rows.forEach(row => {
+  rows.forEach((row, rIndex) => {
     const tr = document.createElement("tr");
-    tr.style.backgroundColor = "#fff";
+    tr.style.backgroundColor = rIndex % 2 === 0 ? "#e0e0e0" : "#f5f5f5";
     visibleIndexes.forEach(i => {
       const td = document.createElement("td");
       td.textContent = row[i] || "";
-      td.style.padding = "8px";
+      td.style.padding = "6px";
       td.style.border = "1px solid #ccc";
       tr.appendChild(td);
     });
@@ -365,7 +202,8 @@ function previewTablePhase2(headers, rows, headerContainer) {
   });
   table.appendChild(tbody);
 
-  document.getElementById("tablePreviewPhase2").innerHTML = "";
-  document.getElementById("tablePreviewPhase2").appendChild(table);
+  const previewContainer = document.getElementById("tablePreview");
+  previewContainer.innerHTML = "";
+  previewContainer.appendChild(table);
 }
 </script>
