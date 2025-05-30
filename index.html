@@ -2,208 +2,186 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>SheetPilot – Upload</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SheetPilot – Upload Your Sheet</title>
   <style>
     body {
+      background-color: #2C4A5D;
       font-family: Arial, sans-serif;
-      background-color: #eef6fb;
-      margin: 0;
+      color: #FFF6DC;
       padding: 20px;
-      color: #1e1e1e;
     }
 
     h1 {
-      color: #003147;
+      font-size: 1.8em;
       margin-bottom: 10px;
     }
 
     label {
       font-weight: bold;
       display: block;
-      margin: 12px 0 6px;
+      margin: 12px 0 5px;
     }
 
-    select, input[type="text"], input[type="file"] {
+    select, input[type="text"] {
       width: 100%;
       padding: 10px;
-      margin-bottom: 16px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: none;
+      font-size: 1em;
     }
 
-    button {
-      padding: 10px 16px;
-      font-size: 16px;
+    input[type="file"] {
+      margin-top: 5px;
+    }
+
+    #uploadSection {
+      margin-top: 20px;
+    }
+
+    #loadButton {
+      background-color: #00E0FF;
+      color: black;
       font-weight: bold;
-      background-color: #00bcd4;
-      color: #fff;
+      padding: 10px 16px;
       border: none;
       border-radius: 6px;
       cursor: pointer;
       margin-top: 10px;
     }
 
-    button:hover {
-      background-color: #0097a7;
-    }
-
-    #uploadNote {
-      color: #555;
-      font-size: 13px;
-      margin-top: 6px;
-    }
-
-    .form-row {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-width: 600px;
-    }
-
-    @media (min-width: 600px) {
-      .form-row {
-        flex-direction: row;
-        align-items: flex-end;
-      }
-
-      .form-row > div {
-        flex: 1;
-      }
-
-      #uploadContainer {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      #uploadNote {
-        margin-top: 0;
-        padding-top: 4px;
-      }
+    .note {
+      color: #B0B0B0;
+      font-size: 0.9em;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
+  <h1>SheetPilot</h1>
 
-  <h1>SheetPilot – Upload Your Sheet</h1>
-
-  <label for="industrySelect">Select Your Industry</label>
-  <select id="industrySelect">
-    <option value="">-- Choose Industry --</option>
+  <label for="industry">Select Your Industry:</label>
+  <select id="industry" onchange="populateSubcategories()">
+    <option value="">-- Select Industry --</option>
   </select>
 
-  <label for="subcategorySelect">Select Your Subcategory</label>
-  <select id="subcategorySelect" disabled>
+  <label for="subcategory">Subcategory:</label>
+  <select id="subcategory">
     <option value="">-- Choose Subcategory --</option>
   </select>
 
-  <label for="manualSubcategory">Or Manually Enter Subcategory</label>
-  <input type="text" id="manualSubcategory" placeholder="Enter your subcategory here (optional)" />
+  <label for="customIndustry">Or enter industry manually:</label>
+  <input type="text" id="customIndustry" placeholder="Custom Industry" />
 
-  <label for="fileUpload">Upload Spreadsheet</label>
-  <div id="uploadContainer">
-    <input type="file" id="fileUpload" accept=".xlsx,.csv" />
-    <button onclick="handleFileUpload()">Add/Replace</button>
+  <label for="customSubcategory">Or enter subcategory manually:</label>
+  <input type="text" id="customSubcategory" placeholder="Custom Subcategory" />
+
+  <div id="uploadSection">
+    <label>Upload Your File:</label>
+    <input type="file" id="fileInput" />
+    <br />
+    <button id="loadButton">Add/Replace</button>
+    <div class="note">Use this to upload additional data to the current table.</div>
   </div>
-  <div id="uploadNote">This will replace the currently loaded file.</div>
 
   <script>
-    const industryToSubcategories = {
-      "Accounting": ["Bookkeeping", "Payroll", "Tax Prep", "Auditing"],
-      "Advertising": ["Digital Ads", "Print Media", "Copywriting", "Strategy"],
-      "Agriculture": ["Crop Farming", "Livestock", "Horticulture", "Ag Tech"],
-      "Architecture": ["Residential", "Commercial", "Landscape", "Urban Planning"],
-      "Auto Repair": ["Engine", "Brakes", "Transmissions", "Detailing"],
-      "Barbershop/Salon": ["Men’s Cuts", "Coloring", "Hair Styling", "Beard Grooming"],
-      "Beauty & Cosmetics": ["Makeup", "Skincare", "Nails", "Haircare"],
-      "Carpentry": ["Framing", "Cabinetry", "Decks", "Trim Work"],
-      "Childcare": ["Daycare", "After-school", "Nanny", "Preschool"],
-      "Cleaning Services": ["Residential", "Commercial", "Post-Construction", "Deep Cleaning"],
-      "Construction": ["Residential", "Commercial", "Masonry", "Site Prep"],
-      "Consulting": ["Business", "IT", "Marketing", "Operations"],
-      "Dental": ["Orthodontics", "Cosmetic", "Pediatric", "General Practice"],
-      "Education": ["Tutoring", "Private School", "Adult Learning", "Online Courses"],
-      "Electrical": ["Residential", "Commercial", "Panels", "Smart Homes"],
-      "Event Planning": ["Weddings", "Corporate", "Birthdays", "Festivals"],
-      "Fencing": ["Chain Link", "Wood", "Vinyl", "Metal"],
-      "Financial Services": ["Investments", "Planning", "Loans", "Insurance"],
-      "Fitness & Wellness": ["Personal Training", "Yoga", "Massage", "Nutrition"],
-      "Food & Beverage": ["Catering", "Restaurant", "Bakery", "Food Truck"],
-      "Freight & Logistics": ["Trucking", "Warehousing", "Courier", "Distribution"],
-      "Graphic Design": ["Logos", "Branding", "UI/UX", "Print Media"],
-      "Handyman Services": ["Repairs", "Installations", "Fixtures", "Painting"],
-      "HVAC": ["Installation", "Repair", "Duct Work", "Refrigeration"],
-      "IT Services": ["Networking", "Support", "Security", "Cloud"],
-      "Interior Design": ["Residential", "Office", "Retail", "Staging"],
-      "Janitorial Services": ["Offices", "Industrial", "Schools", "Healthcare"],
-      "Landscaping": ["Design", "Maintenance", "Hardscapes", "Irrigation"],
-      "Legal": ["Criminal", "Family", "Corporate", "Real Estate"],
-      "Manufacturing": ["Assembly", "Custom Parts", "Machining", "Packaging"],
-      "Marketing": ["Strategy", "SEO", "Social Media", "Branding"],
-      "Masonry": ["Brick", "Stone", "Concrete", "Fireplaces"],
-      "Moving Services": ["Local", "Long Distance", "Commercial", "Packing"],
-      "Nonprofit": ["Youth", "Environmental", "Health", "Education"],
-      "Painting": ["Interior", "Exterior", "Staining", "Commercial"],
-      "Pet Services": ["Grooming", "Boarding", "Training", "Walking"],
-      "Photography": ["Weddings", "Portraits", "Real Estate", "Commercial"],
-      "Plumbing": ["Drains", "Installations", "Remodels", "Emergencies"],
-      "Pool Services": ["Cleaning", "Installation", "Repairs", "Inspections"],
-      "Pressure Washing": ["Residential", "Fleet", "Commercial", "Graffiti Removal"],
-      "Property Management": ["Residential", "HOA", "Commercial", "Leasing"],
-      "Real Estate": ["Agents", "Investors", "Appraisers", "Brokers"],
-      "Remodeling": ["Kitchens", "Bathrooms", "Basements", "Additions"],
-      "Roofing": ["Shingle", "Metal", "Flat", "Repairs"],
-      "Security": ["Installations", "Monitoring", "Guards", "Cyber"],
-      "Signage": ["Vehicle Wraps", "LED", "Window Graphics", "3D Letters"],
-      "Solar": ["Installation", "Maintenance", "Batteries", "Commercial"],
-      "Staffing": ["Temp", "Recruiting", "Payroll", "Training"],
-      "Tattoo & Piercings": ["Custom Art", "Piercings", "Aftercare", "Cover-ups"],
-      "Tile & Flooring": ["Hardwood", "Laminate", "Tile", "Carpet"],
-      "Trash & Junk Removal": ["Residential", "Commercial", "Bulk Pickup", "Donation Hauls"],
-      "Tree Services": ["Removal", "Trimming", "Emergency", "Stump Grinding"],
-      "Tutoring": ["Math", "Reading", "Test Prep", "Languages"],
-      "Veterinary": ["Emergency", "Routine", "Exotics", "Mobile"],
-      "Welding & Fabrication": ["Structural", "Custom Jobs", "Mobile Welding", "Repairs"],
-      "Window Cleaning": ["Residential", "Commercial", "High-Rise", "Detailing"],
-      "Window & Door Installation": ["Replacement", "Storm", "Custom", "Screens"]
+    const industryMap = {
+      "Tutoring": ["Math", "Science", "Test Prep", "Reading", "Writing"],
+      "Pet Grooming": ["Mobile Grooming", "In-Home Grooming", "Salon Services"],
+      "Real Estate": ["Residential", "Commercial", "REIT", "Land"],
+      "Construction": ["General Contractor", "Framing", "Concrete", "Roofing"],
+      "Barbershop/Salon": ["Men's Cuts", "Women's Styling", "Coloring", "Shaves"],
+      "Nail Technician": ["Manicure", "Pedicure", "Acrylics", "Gel Polish"],
+      "Tattoo & Piercings": ["Tattoo", "Piercing", "Tattoo Removal"],
+      "HVAC": ["Residential", "Commercial", "Repair", "Installation"],
+      "Plumbing": ["Drain Cleaning", "Water Heaters", "Remodels"],
+      "Electrician": ["Residential", "Commercial", "Low Voltage"],
+      "Landscaping": ["Design", "Maintenance", "Hardscaping"],
+      "IT Services": ["Network Setup", "PC Repair", "Security"],
+      "Digital Marketing": ["SEO", "Social Media", "Email"],
+      "Photography": ["Weddings", "Portraits", "Events"],
+      "Fitness": ["Personal Training", "Classes", "Nutrition"],
+      "Cleaning Services": ["Residential", "Commercial", "Deep Clean"],
+      "Automotive": ["Repair", "Detailing", "Tuning"],
+      "Childcare": ["Babysitting", "Nanny", "Daycare"],
+      "Food Services": ["Catering", "Meal Prep", "Delivery"],
+      "Event Planning": ["Weddings", "Corporate", "Birthdays"],
+      "Carpentry": ["Framing", "Trim Work", "Custom Furniture"],
+      "Masonry": ["Brick", "Stone", "Repair"],
+      "Welding & Fabrication": ["Pipe", "Automotive", "Custom Jobs"],
+      "Security Services": ["Monitoring", "Installations"],
+      "Nonprofit": ["Fundraising", "Community Outreach"],
+      "Retail": ["Clothing", "Tech", "Home Goods"],
+      "Education": ["Online Courses", "Tutoring", "Workshops"],
+      "Tech Support": ["Remote Help", "Phone Support"],
+      "Legal Services": ["Criminal", "Family", "Contract"],
+      "Accounting": ["Tax Prep", "Bookkeeping"],
+      "Therapy & Counseling": ["Individual", "Couples", "Family"],
+      "Interior Design": ["Residential", "Commercial", "Staging"],
+      "Painting": ["Interior", "Exterior", "Decorative"],
+      "Roofing": ["Shingle", "Metal", "Inspection"],
+      "Tree Services": ["Removal", "Trimming"],
+      "Junk Removal": ["Residential", "Commercial"],
+      "Handyman Services": ["Small Repairs", "Assembly"],
+      "Courier Services": ["Food", "Packages", "Documents"],
+      "Music Lessons": ["Piano", "Guitar", "Voice"],
+      "Mechanic": ["General Repair", "Diagnostics"],
+      "Pool Services": ["Cleaning", "Repair", "Installation"],
+      "Window Cleaning": ["Commercial", "Residential"],
+      "Copywriting": ["Sales Copy", "Blogs", "Web Content"],
+      "Translation": ["Documents", "Live", "Technical"],
+      "Social Work": ["Family", "Crisis"],
+      "Veterinary Services": ["Small Animal", "Emergency"],
+      "Crafts & Handmade": ["Etsy", "Markets"],
+      "Baking": ["Cakes", "Pastries"],
+      "Consulting": ["Business", "HR", "Sales"],
+      "Legal Consulting": ["Litigation", "Compliance"],
+      "Tax Services": ["Prep", "Filing", "Advisory"],
+      "Insurance": ["Health", "Auto", "Life"],
+      "Logistics": ["Freight", "Local Delivery"],
+      "Farming": ["Produce", "Livestock"],
+      "Real Estate Services": ["Staging", "Photography"],
+      "Snow Removal": ["Residential", "Commercial"],
+      "Virtual Assistant": ["Admin", "Inbox", "Research"],
+      "Voice Over": ["Commercials", "Narration"],
+      "Game Design": ["Mobile", "Indie", "PC"],
+      "Woodworking": ["Custom Furniture", "Cabinetry"],
+      "Moving Services": ["Local", "Long Distance"],
+      "Window Tinting": ["Auto", "Home", "Office"],
+      "Pest Control": ["Termites", "General"],
+      "Pet Training": ["Obedience", "Behavioral"],
+      "Tailoring": ["Alterations", "Custom Work"],
+      "Hair Removal": ["Waxing", "Laser"],
+      "Spa Services": ["Massage", "Facial", "Steam"]
     };
 
-    const industrySelect = document.getElementById("industrySelect");
-    const subcategorySelect = document.getElementById("subcategorySelect");
+    function populateSubcategories() {
+      const industrySelect = document.getElementById("industry");
+      const subcategorySelect = document.getElementById("subcategory");
+      const selectedIndustry = industrySelect.value;
 
-    for (const industry in industryToSubcategories) {
-      const option = document.createElement("option");
-      option.value = industry;
-      option.textContent = industry;
-      industrySelect.appendChild(option);
-    }
-
-    industrySelect.addEventListener("change", function () {
-      const selected = this.value;
       subcategorySelect.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-      subcategorySelect.disabled = !selected;
 
-      if (selected && industryToSubcategories[selected]) {
-        industryToSubcategories[selected].forEach(sub => {
-          const opt = document.createElement("option");
-          opt.value = sub;
-          opt.textContent = sub;
-          subcategorySelect.appendChild(opt);
+      if (industryMap[selectedIndustry]) {
+        industryMap[selectedIndustry].forEach(sub => {
+          const option = document.createElement("option");
+          option.value = sub;
+          option.textContent = sub;
+          subcategorySelect.appendChild(option);
         });
       }
-    });
-
-    function handleFileUpload() {
-      const fileInput = document.getElementById("fileUpload");
-      const file = fileInput.files[0];
-      if (file) {
-        alert(`File "${file.name}" uploaded successfully.`);
-        fileInput.value = "";
-      } else {
-        alert("Please select a file to upload.");
-      }
     }
+
+    window.onload = () => {
+      const industrySelect = document.getElementById("industry");
+      for (let industry in industryMap) {
+        const option = document.createElement("option");
+        option.value = industry;
+        option.textContent = industry;
+        industrySelect.appendChild(option);
+      }
+    };
   </script>
 </body>
 </html>
