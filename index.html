@@ -222,11 +222,14 @@ function loadFile() {
     margin: 0;
     padding: 20px;
   }
+  h1 {
+    font-size: 2rem;
+    color: #F5F5DC;
+  }
   label {
     display: block;
     margin-top: 15px;
     font-weight: bold;
-    color: #F5F5DC;
   }
   select, input[type="text"], input[type="file"] {
     width: 100%;
@@ -249,7 +252,6 @@ function loadFile() {
     font-weight: bold;
     font-size: 1rem;
     cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   }
   button:hover { background-color: #00cce0; }
   table {
@@ -265,7 +267,6 @@ function loadFile() {
   }
   th {
     background-color: #00E5FF;
-    color: #000;
   }
   tr:nth-child(even) { background-color: #e0e0e0; }
   .note {
@@ -283,6 +284,8 @@ function loadFile() {
     <option>IT Services</option>
     <option>Finance</option>
     <option>Construction</option>
+    <option>Education</option>
+    <option>Marketing</option>
     <!-- Add more as needed -->
   </select>
 
@@ -292,6 +295,7 @@ function loadFile() {
     <option>Remote Support</option>
     <option>CPA</option>
     <option>Remodeling</option>
+    <option>Online Learning</option>
   </select>
 
   <label for="customIndustry">Or Manually Enter Industry</label>
@@ -310,7 +314,7 @@ function loadFile() {
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-const popularHeaders = ["Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status", "Notes", "Location", "Technician", "Client Name", "Service Date"];
+const popularHeaders = ["Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status", "Notes", "Location"];
 
 document.getElementById('loadButton').addEventListener('click', () => {
   const fileInput = document.getElementById('fileUpload');
