@@ -210,20 +210,31 @@ function loadFile() {
 </body>
 </html>
 
+<!-- PHASE 2: Dynamic header mapping, no duplicate outer tags -->
+<div id="phase2-container" style="margin-top: 20px;">
+  <label for="fileUploadPhase2">Upload Your File:</label>
+  <input type="file" id="fileUploadPhase2" accept=".xlsx, .csv" />
+  <button id="loadButtonPhase2">Add/Replace</button>
+  <p class="note">Use this to upload additional data to the current table.</p>
+
+  <div id="headerFieldsPhase2"></div>
+  <div id="tablePreviewPhase2"></div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
 const popularHeaders = ["Name", "Email", "Phone", "Date", "Amount", "Service Type", "Status", "Notes", "Location"];
 
-document.getElementById('loadButton').addEventListener('click', () => {
-  const fileInput = document.getElementById('fileUpload');
+document.getElementById('loadButtonPhase2').addEventListener('click', () => {
+  const fileInput = document.getElementById('fileUploadPhase2');
   if (!fileInput.files.length) {
     alert("Please select a file first.");
     return;
   }
-  handleFile({ target: { files: [fileInput.files[0]] } });
+  handleFilePhase2({ target: { files: [fileInput.files[0]] } });
 });
 
-function handleFile(e) {
+function handleFilePhase2(e) {
   const file = e.target.files[0];
   if (!file) return;
 
@@ -241,12 +252,12 @@ function handleFile(e) {
 
     const headers = json[0];
     const rows = json.slice(1).filter(row => row.join("").trim() !== "");
-    renderHeaderMapping(headers, rows);
+    renderHeaderMappingPhase2(headers, rows);
   };
   reader.readAsArrayBuffer(file);
 }
 
-function renderHeaderMapping(headers, rows) {
+function renderHeaderMappingPhase2(headers, rows) {
   const container = document.createElement("div");
   container.style.marginTop = "20px";
 
@@ -296,14 +307,14 @@ function renderHeaderMapping(headers, rows) {
   const previewButton = document.createElement("button");
   previewButton.textContent = "Preview Table";
   previewButton.style.marginTop = "15px";
-  previewButton.onclick = () => previewTable(headers, rows, container);
+  previewButton.onclick = () => previewTablePhase2(headers, rows, container);
   container.appendChild(previewButton);
 
-  document.getElementById("headerFields").innerHTML = "";
-  document.getElementById("headerFields").appendChild(container);
+  document.getElementById("headerFieldsPhase2").innerHTML = "";
+  document.getElementById("headerFieldsPhase2").appendChild(container);
 }
 
-function previewTable(headers, rows, headerContainer) {
+function previewTablePhase2(headers, rows, headerContainer) {
   const selects = headerContainer.querySelectorAll("select");
   const inputs = headerContainer.querySelectorAll("input[type='text']");
   const checkboxes = headerContainer.querySelectorAll("input[type='checkbox']");
@@ -320,11 +331,20 @@ function previewTable(headers, rows, headerContainer) {
   });
 
   const table = document.createElement("table");
+  table.style.width = "100%";
+  table.style.marginTop = "20px";
+  table.style.borderCollapse = "collapse";
+  table.style.backgroundColor = "#f5f5f5";
+  table.style.color = "#000";
+
   const thead = document.createElement("thead");
   const trHead = document.createElement("tr");
   finalHeaders.forEach(h => {
     const th = document.createElement("th");
     th.textContent = h;
+    th.style.padding = "8px";
+    th.style.backgroundColor = "#00E5FF";
+    th.style.border = "1px solid #ccc";
     trHead.appendChild(th);
   });
   thead.appendChild(trHead);
@@ -333,18 +353,19 @@ function previewTable(headers, rows, headerContainer) {
   const tbody = document.createElement("tbody");
   rows.forEach(row => {
     const tr = document.createElement("tr");
+    tr.style.backgroundColor = "#fff";
     visibleIndexes.forEach(i => {
       const td = document.createElement("td");
       td.textContent = row[i] || "";
+      td.style.padding = "8px";
+      td.style.border = "1px solid #ccc";
       tr.appendChild(td);
     });
     tbody.appendChild(tr);
   });
   table.appendChild(tbody);
 
-  document.getElementById("tablePreview").innerHTML = "";
-  document.getElementById("tablePreview").appendChild(table);
+  document.getElementById("tablePreviewPhase2").innerHTML = "";
+  document.getElementById("tablePreviewPhase2").appendChild(table);
 }
 </script>
-</body>
-</html>
