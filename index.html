@@ -3,44 +3,64 @@
 <head>
 <meta charset="UTF-8" />
 <title>SheetPilot - Phase 1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <style>
   body {
     background-color: #33658A;
     color: #F5F5DC;
     font-family: 'Segoe UI', sans-serif;
-    padding: 20px;
+    margin: 0;
+    padding: 10px 20px;
   }
   h1 {
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin-bottom: 15px;
   }
   label {
     display: block;
-    margin-top: 12px;
+    margin-top: 10px;
     font-weight: bold;
+    font-size: 0.9rem;
   }
   input[type="file"] {
     width: 100%;
-    max-width: 400px;
+    max-width: 100%;
     margin-top: 6px;
   }
   button {
     background-color: #00E5FF;
     color: #000;
     border: none;
-    padding: 12px 20px;
+    padding: 10px 18px;
     border-radius: 6px;
     margin-top: 10px;
     font-weight: bold;
     cursor: pointer;
+    font-size: 0.95rem;
+    width: 100%;
   }
   button:hover {
     background-color: #00cce0;
   }
   p.note {
-    color: #ccc;
-    font-size: 0.85rem;
+    color: #ddd;
+    font-size: 0.8rem;
     margin-top: 5px;
+  }
+  .file-upload {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  @media(min-width: 600px) {
+    .file-upload {
+      flex-direction: row;
+      align-items: center;
+      gap: 15px;
+    }
+    button {
+      width: auto;
+    }
   }
 </style>
 </head>
@@ -48,8 +68,10 @@
   <h1>SheetPilot</h1>
 
   <label for="fileUpload">Upload Your File:</label>
-  <input type="file" id="fileUpload" accept=".xlsx, .csv" />
-  <button id="loadButton" onclick="loadFile()">Add/Replace</button>
+  <div class="file-upload">
+    <input type="file" id="fileUpload" accept=".xlsx, .csv" />
+    <button id="loadButton" onclick="loadFile()">Add/Replace</button>
+  </div>
   <p class="note">Use this to upload additional data to the current table.</p>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -71,8 +93,6 @@ function loadFile() {
     const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
 
     console.log("File parsed. Data ready for Phase 2:", jsonData);
-    // Here you’d normally store jsonData in a variable or pass it to Phase 2
-    // For testing: just show a success message
     alert("File successfully uploaded and parsed!");
   };
 
