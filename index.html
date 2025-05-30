@@ -190,6 +190,28 @@
 
 <script>
 document.getElementById("loadButton").addEventListener("click", function () {
+  const fileInput = document.getElementById("fileInput");
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("Please upload a file first.");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const data = new Uint8Array(e.target.result);
+    const workbook = XLSX.read(data, { type: "array" });
+
+    const sheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[sheetName];
+
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+    showPreviewTable(jsonData); // This must match the updated function
+  };
+
+  reader.readAsArrayBuffer(file);
+});
   const fileInput = document.querySelector("input[type='file']");
   const file = fileInput.files[0];
   if (!file) {
