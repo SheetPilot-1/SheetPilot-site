@@ -138,6 +138,8 @@ const industryMap = {
   "Artificial Intelligence": ["Machine Learning Development", "AI Research", "Natural Language Processing", "Robotics"]
 };
 
+<script>
+// 1️⃣ Ensure this code block is **before the `window.onload` block**:
 function updateSubcategories() {
   const industry = document.getElementById("industry").value;
   const subcategory = document.getElementById("subcategory");
@@ -152,16 +154,20 @@ function updateSubcategories() {
   }
 }
 
-// Populate industries on load
+// 2️⃣ Fix the `window.onload` block
 window.onload = () => {
   const industrySelect = document.getElementById("industry");
+  if (!industrySelect) return; // Prevents error if element is not present
   Object.keys(industryMap).forEach(industry => {
     const option = document.createElement("option");
     option.value = industry;
     option.textContent = industry;
     industrySelect.appendChild(option);
   });
+  // Immediately populate subcategories if any pre-selected
+  updateSubcategories();
 };
+</script>
 
 let parsedData;
 
