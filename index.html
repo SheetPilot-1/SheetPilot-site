@@ -165,14 +165,9 @@ window.onload = () => {
 
 let parsedData;
 
-document.getElementById('addReplaceButton').addEventListener('click', () => {
-  const fileInput = document.getElementById('fileInput');
-  const file = fileInput.files[0];
-  if (!file) {
-    alert('Please select a file first.');
-    return;
-  }
-
+document.getElementById('fileInput').addEventListener('change', () => {
+  const file = document.getElementById('fileInput').files[0];
+  if (!file) return;
   const reader = new FileReader();
   reader.onload = (e) => {
     const data = e.target.result;
@@ -257,10 +252,12 @@ document.getElementById('previewTableButton').addEventListener('click', () => {
     tbody.appendChild(row);
   });
   table.appendChild(tbody);
-  const previewContainer = document.getElementById('previewContainer');
-  previewContainer.innerHTML = '';
-  previewContainer.appendChild(table);
-});
+const previewButton = document.getElementById('previewTableButton');
+const note = document.createElement('span');
+note.textContent = ' If you make changes, press this button again to see the updated table.';
+note.style.fontSize = '0.85rem';
+note.style.marginLeft = '10px';
+previewButton.insertAdjacentElement('afterend', note);
 </script>
 </body>
 </html>
