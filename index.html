@@ -2,36 +2,23 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SheetPilot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SheetPilot - Step 1</title>
 <style>
   body { background-color: #33658A; color: #F5F5DC; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
   h1 { font-size: 2rem; margin-bottom: 15px; }
   label { display: block; margin-top: 12px; font-weight: bold; }
-  select, input[type="text"], input[type="file"] {
+  select, input[type="text"] {
     width: 100%; max-width: 400px; padding: 8px; margin-top: 6px; margin-bottom: 10px;
     border-radius: 6px; border: none; font-size: 1em; box-sizing: border-box;
     background-color: #d0e4f5; color: #000;
-  }
-  button {
-    background-color: #00E5FF; color: #000; border: none; padding: 10px 20px;
-    border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px;
-  }
-  button:hover { background-color: #00cce0; }
-  .section { margin-bottom: 20px; }
-  .mapping-section {
-    background: #1E3A5F; padding: 10px; border-radius: 5px; margin-bottom: 10px;
-  }
-  .mapping-section div, .mapping-section input[type="text"] {
-    color: #fff; font-weight: bold; margin-top: 5px;
   }
 </style>
 </head>
 <body>
 
-<h1>SheetPilot</h1>
+<h1>SheetPilot - Step 1: Industry & Subcategory</h1>
 
-<!-- Phase 1: Industry & Subcategory Selection -->
 <div class="section">
   <label for="industry">Select Your Industry:</label>
   <select id="industry" onchange="updateSubcategories()">
@@ -50,24 +37,8 @@
   <input type="text" id="customSubcategory" placeholder="Custom Subcategory" />
 </div>
 
-<!-- Phase 2: File Upload -->
-<div class="section">
-  <label for="fileInput">Upload Your File:</label>
-  <input type="file" id="fileInput" />
-</div>
-
-<!-- Phase 2: Column Mapping (appears after upload) -->
-<div id="mappingSection" class="section" style="display:none;">
-  <h2>Map Your Columns</h2>
-  <p>Choose custom or suggested headers for each column.</p>
-  <div id="columnMappingContainer"></div>
-  <button id="previewTableButton">Preview Table</button>
-  <div id="previewContainer" style="margin-top: 20px;"></div>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-// 25 industries, 3 subcategories each
+// Phase 1 data: 25 industries, 3 subcategories each
 const industryMap = {
   "Retail": ["Clothing Stores", "Convenience Stores", "Online Retail"],
   "Food & Beverage": ["Restaurants", "Food Trucks", "Catering Services"],
@@ -96,6 +67,7 @@ const industryMap = {
   "Non-Profit": ["Charitable Organizations", "Community Outreach", "Youth Programs"]
 };
 
+// Populate industry dropdown
 window.onload = () => {
   const industrySelect = document.getElementById("industry");
   Object.keys(industryMap).forEach(industry => {
@@ -106,6 +78,7 @@ window.onload = () => {
   });
 };
 
+// Update subcategories
 function updateSubcategories() {
   const industry = document.getElementById("industry").value;
   const subcategory = document.getElementById("subcategory");
@@ -119,82 +92,6 @@ function updateSubcategories() {
     });
   }
 }
-
-// File Upload & Mapping
-let parsedData;
-
-document.getElementById('fileInput').addEventListener('change', () => {
-  const file = document.getElementById('fileInput').files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const data = e.target.result;
-    const workbook = XLSX.read(data, { type: 'binary' });
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-    buildColumnMapping(parsedData[0] || []);
-    document.getElementById('mappingSection').style.display = 'block';
-  };
-  reader.readAsBinaryString(file);
-});
-
-function buildColumnMapping(headers) {
-  const container = document.getElementById('columnMappingContainer');
-  container.innerHTML = '';
-  headers.forEach(header => {
-    const section = document.createElement('div');
-    section.className = 'mapping-section';
-
-    const columnLabel = document.createElement('div');
-    columnLabel.textContent = header;
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Or enter custom label';
-    input.style.width = '100%';
-
-    section.appendChild(columnLabel);
-    section.appendChild(input);
-    container.appendChild(section);
-  });
-}
-
-document.getElementById('previewTableButton').addEventListener('click', () => {
-  const selectedHeaders = [];
-  const mappingSections = document.getElementById('columnMappingContainer').children;
-  Array.from(mappingSections).forEach((section, index) => {
-    const input = section.querySelector('input[type="text"]');
-    selectedHeaders.push(input.value.trim() || parsedData[0][index]);
-  });
-
-  const table = document.createElement('table');
-  const thead = document.createElement('thead');
-  const headerRow = document.createElement('tr');
-  selectedHeaders.forEach(header => {
-    const th = document.createElement('th');
-    th.textContent = header;
-    headerRow.appendChild(th);
-  });
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
-
-  const tbody = document.createElement('tbody');
-  parsedData.slice(1).forEach(rowData => {
-    const row = document.createElement('tr');
-    rowData.forEach(cell => {
-      const td = document.createElement('td');
-      td.textContent = cell || '';
-      row.appendChild(td);
-    });
-    tbody.appendChild(row);
-  });
-  table.appendChild(tbody);
-
-  const previewContainer = document.getElementById('previewContainer');
-  previewContainer.innerHTML = '';
-  previewContainer.appendChild(table);
-});
 </script>
 </body>
 </html>
