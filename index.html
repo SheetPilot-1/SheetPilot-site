@@ -137,8 +137,14 @@ const industryMap = {
   "Artificial Intelligence": ["Machine Learning Development", "AI Research", "Natural Language Processing", "Robotics"]
 };
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-// 1️⃣ Ensure this code block is **before the `window.onload` block**:
+// Full industry & subcategory list
+const industryMap = {
+  // (All your industries as you had them)
+};
+
+// 1️⃣ The updateSubcategories function
 function updateSubcategories() {
   const industry = document.getElementById("industry").value;
   const subcategory = document.getElementById("subcategory");
@@ -153,20 +159,18 @@ function updateSubcategories() {
   }
 }
 
-// 2️⃣ Fix the `window.onload` block
+// 2️⃣ Populate the industry dropdown on load
 window.onload = () => {
   const industrySelect = document.getElementById("industry");
-  if (!industrySelect) return; // Prevents error if element is not present
   Object.keys(industryMap).forEach(industry => {
     const option = document.createElement("option");
     option.value = industry;
     option.textContent = industry;
     industrySelect.appendChild(option);
   });
-  // Immediately populate subcategories if any pre-selected
-  updateSubcategories();
 };
 
+// 3️⃣ All other logic for file upload and column mapping
 let parsedData;
 
 document.getElementById('fileInput').addEventListener('change', () => {
@@ -256,12 +260,20 @@ document.getElementById('previewTableButton').addEventListener('click', () => {
     tbody.appendChild(row);
   });
   table.appendChild(tbody);
-const previewButton = document.getElementById('previewTableButton');
-const note = document.createElement('span');
-note.textContent = ' If you make changes, press this button again to see the updated table.';
-note.style.fontSize = '0.85rem';
-note.style.marginLeft = '10px';
-previewButton.insertAdjacentElement('afterend', note);
+  const previewContainer = document.getElementById('previewContainer');
+  previewContainer.innerHTML = '';
+  previewContainer.appendChild(table);
+
+  // Message note
+  const previewButton = document.getElementById('previewTableButton');
+  let note = document.getElementById('previewNote');
+  if (!note) {
+    note = document.createElement('span');
+    note.id = 'previewNote';
+    note.textContent = ' If you make changes, press this button again to see the updated table.';
+    note.style.fontSize = '0.85rem';
+    note.style.marginLeft = '10px';
+    previewButton.insertAdjacentElement('afterend', note);
+  }
+});
 </script>
-</body>
-</html>
