@@ -1,93 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot</title>
-  <style>
-    body {
-      background-color: #33658A;
-      color: #F5F5DC;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-    }
-    select, input[type="text"], input[type="file"] {
-      width: 100%;
-      max-width: 400px;
-      padding: 8px;
-      margin-top: 6px;
-      margin-bottom: 10px;
-      border-radius: 6px;
-      border: none;
-      font-size: 1em;
-      box-sizing: border-box;
-      background-color: #a9c8e5;
-      color: #000;
-    }
-    button {
-      background-color: #00E5FF;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #00cce0;
-    }
-    .note {
-      color: #ccc;
-      font-size: 0.85rem;
-      margin-top: 5px;
-    }
-    table {
-      width: 100%;
-      margin-top: 20px;
-      border-collapse: collapse;
-      background-color: #f0f0f0;
-      color: #000;
-    }
-    th, td {
-      padding: 8px;
-      border: 1px solid #ccc;
-    }
-    th {
-      background-color: #00E5FF;
-      color: #000;
-    }
-    tr:nth-child(even) {
-      background-color: #e0e0e0;
-    }
-    .section {
-      margin-bottom: 20px;
-    }
-    .mapping-section {
-      background: #1E3A5F;
-      padding: 10px;
-      border-radius: 5px;
-      margin-bottom: 10px;
-    }
-    .mapping-section label, .mapping-section div {
-      color: #fff;
-      margin-top: 5px;
-      font-weight: bold;
-    }
-    .mapping-section input[type="text"] {
-      margin-top: 5px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SheetPilot</title>
+<style>
+  body { background-color: #33658A; color: #F5F5DC; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+  h1 { font-size: 2rem; margin-bottom: 15px; }
+  label { display: block; margin-top: 12px; font-weight: bold; }
+  select, input[type="text"], input[type="file"] {
+    width: 100%; max-width: 400px; padding: 8px; margin-top: 6px; margin-bottom: 10px;
+    border-radius: 6px; border: none; font-size: 1em; box-sizing: border-box; background-color: #fff; color: #000;
+  }
+  button { background-color: #00E5FF; color: #000; border: none; padding: 10px 20px; border-radius: 6px;
+    font-weight: bold; cursor: pointer; margin-top: 10px; }
+  button:hover { background-color: #00cce0; }
+  .note { color: #ccc; font-size: 0.85rem; margin-top: 5px; }
+  table { width: 100%; margin-top: 20px; border-collapse: collapse; background-color: #f0f0f0; color: #000; }
+  th, td { padding: 8px; border: 1px solid #ccc; }
+  th { background-color: #00E5FF; color: #000; }
+  tr:nth-child(even) { background-color: #e0e0e0; }
+  .section { margin-bottom: 20px; }
+  .mapping-section { background: #1E3A5F; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+  .mapping-section div { color: #fff; margin-top: 5px; font-weight: bold; }
+</style>
 </head>
 <body>
 
@@ -127,7 +63,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-  // Industry and Subcategory Mapping
   const industryMap = {
     "Retail": ["Clothing Stores", "Convenience Stores", "Online Retail", "Specialty Shops"],
     "Food & Beverage": ["Restaurants", "Food Trucks", "Catering Services", "Bakeries"],
@@ -170,7 +105,6 @@
     }
   }
 
-  // Populate industries on load
   window.onload = () => {
     const industrySelect = document.getElementById("industry");
     Object.keys(industryMap).forEach(industry => {
@@ -183,7 +117,7 @@
 
   let parsedData;
 
-  document.getElementById('fileInput').addEventListener('change', () => {
+  document.getElementById('addReplaceButton').addEventListener('click', () => {
     const file = document.getElementById('fileInput').files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -233,4 +167,37 @@
       const includeCheckbox = section.querySelector('input[type="checkbox"]');
       if (includeCheckbox.checked) {
         selectedIndices.push(index);
-        const 
+        const input = section.querySelector('input[type="text"]');
+        const customLabel = input.value.trim();
+        const defaultHeader = section.querySelector('div').textContent;
+        selectedHeaders.push(customLabel || defaultHeader);
+      }
+    });
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    selectedHeaders.forEach(header => {
+      const th = document.createElement('th');
+      th.textContent = header;
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    parsedData.slice(1).forEach(rowData => {
+      const row = document.createElement('tr');
+      selectedIndices.forEach(i => {
+        const td = document.createElement('td');
+        td.textContent = rowData[i] || '';
+        row.appendChild(td);
+      });
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    const previewContainer = document.getElementById('previewContainer');
+    previewContainer.innerHTML = '';
+    previewContainer.appendChild(table);
+  });
+</script>
+</body>
+</html>
