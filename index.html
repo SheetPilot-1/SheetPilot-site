@@ -17,7 +17,7 @@
   th { background-color: #00E5FF; color: #000; }
   tr:nth-child(even) { background-color: #e0e0e0; }
   .section { margin-bottom: 20px; }
-  .mapping-section { background: #1E3A5F; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+  .mapping-section { background: #4A6FA5; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
   .mapping-section label { color: #fff; margin-left: 5px; }
   .mapping-section div { color: #fff; margin-top: 5px; font-weight: bold; }
 </style>
@@ -54,97 +54,28 @@
   <p>Use this section to map your spreadsheet columns to custom or suggested headers. Uncheck to hide columns you don’t want in the final table.</p>
   <div id="columnMappingContainer"></div>
   <button id="previewTableButton">Preview Table</button>
+  <span style="font-size: 0.85rem; margin-left: 10px;">If you make changes, press this button again to see the updated table.</span>
   <div id="previewContainer" style="margin-top: 20px;"></div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js">
-// Full industry & subcategory list
-const industryMap = {
-  "Agriculture": ["Crop Production", "Animal Husbandry", "Aquaculture", "Agricultural Support Services"],
-  "Apparel & Fashion": ["Clothing Manufacturing", "Footwear Production", "Textile Design", "Accessory Design"],
-  "Automotive": ["Vehicle Manufacturing", "Auto Parts Suppliers", "Dealerships", "Auto Repair Services"],
-  "Aviation & Aerospace": ["Aircraft Manufacturing", "Airlines", "Aerospace Engineering", "Air Traffic Control"],
-  "Banking & Financial Services": ["Retail Banking", "Investment Banking", "Asset Management", "Credit Unions"],
-  "Biotechnology": ["Pharmaceutical Research", "Genetic Engineering", "Bioinformatics", "Clinical Trials"],
-  "Broadcast Media": ["Television Networks", "Radio Stations", "Podcasting", "Streaming Services"],
-  "Building Materials": ["Cement Production", "Lumber Suppliers", "Glass Manufacturing", "Insulation Materials"],
-  "Business Services": ["Consulting Firms", "Market Research", "Staffing Agencies", "Business Process Outsourcing"],
-  "Chemicals": ["Industrial Chemicals", "Agricultural Chemicals", "Specialty Chemicals", "Petrochemicals"],
-  "Civil Engineering": ["Infrastructure Development", "Structural Engineering", "Transportation Engineering", "Environmental Engineering"],
-  "Commercial Real Estate": ["Property Management", "Commercial Leasing", "Real Estate Investment Trusts (REITs)", "Real Estate Development"],
-  "Computer & Network Security": ["Cybersecurity Services", "Network Infrastructure", "Security Software Development", "Penetration Testing"],
-  "Computer Games": ["Game Development", "Game Publishing", "eSports", "Mobile Gaming"],
-  "Computer Hardware": ["PC Manufacturing", "Semiconductor Production", "Peripheral Devices", "Hardware Retail"],
-  "Computer Networking": ["Network Design", "Internet Service Providers", "Cloud Networking", "Network Maintenance"],
-  "Computer Software": ["Application Development", "Operating Systems", "Software as a Service (SaaS)", "Software Consulting"],
-  "Construction": ["Residential Construction", "Commercial Construction", "Infrastructure Projects", "Renovation Services"],
-  "Consumer Electronics": ["Smartphone Manufacturing", "Home Appliances", "Audio/Visual Equipment", "Wearable Technology"],
-  "Consumer Goods": ["Packaged Foods", "Personal Care Products", "Household Products", "Beverages"],
-  "Consumer Services": ["Retail Services", "Hospitality", "Personal Care Services", "Repair Services"],
-  "Education": ["K-12 Schools", "Higher Education", "Online Learning Platforms", "Educational Publishing"],
-  "Energy": ["Oil & Gas", "Renewable Energy", "Nuclear Power", "Energy Trading"],
-  "Engineering Services": ["Mechanical Engineering", "Electrical Engineering", "Civil Engineering", "Environmental Engineering"],
-  "Entertainment": ["Film Production", "Music Industry", "Live Events", "Streaming Services"],
-  "Environmental Services": ["Waste Management", "Recycling Services", "Environmental Consulting", "Pollution Control"],
-  "Fashion Design": ["Apparel Design", "Textile Design", "Fashion Merchandising", "Costume Design"],
-  "Financial Services": ["Financial Planning", "Investment Services", "Insurance", "Mortgage Services"],
-  "Food & Beverage": ["Restaurants", "Food Manufacturing", "Beverage Production", "Catering Services"],
-  "Forestry": ["Timber Harvesting", "Forest Management", "Pulp and Paper Production", "Reforestation Services"],
-  "Government": ["Federal Agencies", "State and Local Government", "Public Administration", "Regulatory Bodies"],
-  "Healthcare": ["Hospitals", "Clinics", "Telemedicine", "Health Insurance"],
-  "Hospitality": ["Hotels", "Resorts", "Bed & Breakfasts", "Hostels"],
-  "Information Technology": ["IT Consulting", "Software Development", "Systems Integration", "IT Support Services"],
-  "Insurance": ["Life Insurance", "Property & Casualty Insurance", "Health Insurance", "Reinsurance"],
-  "Interior Design": ["Residential Design", "Commercial Design", "Space Planning", "Lighting Design"],
-  "Internet Services": ["Web Hosting", "Internet Service Providers", "Online Portals", "E-commerce Platforms"],
-  "Legal Services": ["Law Firms", "Corporate Legal Departments", "Legal Aid Services", "Notary Services"],
-  "Logistics & Supply Chain": ["Freight Forwarding", "Warehousing", "Inventory Management", "Distribution Services"],
-  "Manufacturing": ["Automotive Manufacturing", "Electronics Manufacturing", "Textile Manufacturing", "Machinery Production"],
-  "Marine Transportation": ["Shipping Lines", "Port Operations", "Maritime Logistics", "Cruise Lines"],
-  "Marketing & Advertising": ["Digital Marketing", "Advertising Agencies", "Public Relations", "Market Research"],
-  "Media & Publishing": ["Newspapers", "Magazines", "Book Publishing", "Online Media"],
-  "Mining & Metals": ["Mineral Extraction", "Metal Refining", "Quarrying", "Mining Equipment Manufacturing"],
-  "Non-Profit Organizations": ["Charitable Organizations", "Foundations", "Advocacy Groups", "Community Services"],
-  "Oil & Gas": ["Exploration & Production", "Refining", "Pipeline Transportation", "Oilfield Services"],
-  "Pharmaceuticals": ["Drug Manufacturing", "Research & Development", "Clinical Trials", "Generic Pharmaceuticals"],
-  "Photography": ["Portrait Photography", "Commercial Photography", "Photojournalism", "Event Photography"],
-  "Printing & Publishing": ["Commercial Printing", "Book Publishing", "Magazine Publishing", "Digital Publishing"],
-  "Professional Training & Coaching": ["Corporate Training", "Personal Coaching", "Educational Workshops", "Online Courses"],
-  "Real Estate": ["Residential Sales", "Commercial Leasing", "Property Management", "Real Estate Investment"],
-  "Renewable Energy": ["Solar Energy", "Wind Energy", "Hydro Power", "Bioenergy"],
-  "Research & Development": ["Scientific Research", "Industrial Research", "Product Development", "Innovation Labs"],
-  "Restaurants & Food Services": ["Fine Dining", "Fast Food", "Catering Services", "Food Trucks"],
-  "Retail": ["Department Stores", "Specialty Stores", "Online Retail", "Convenience Stores"],
-  "Security Services": ["Private Security", "Cybersecurity", "Surveillance Services", "Alarm Systems"],
-  "Semiconductors": ["Chip Manufacturing", "Semiconductor Equipment", "Integrated Circuits", "Microprocessors"],
-  "Software & Applications": ["Mobile App Development", "Enterprise Software", "Cloud Computing", "SaaS"],
-  "Sports & Recreation": ["Professional Sports Teams", "Fitness Centers", "Recreational Facilities", "Sporting Goods Retail"],
-  "Telecommunications": ["Mobile Network Operators", "Internet Service Providers", "Satellite Communications", "Telecom Equipment Manufacturing"],
-  "Textiles": ["Fabric Manufacturing", "Textile Design", "Dyeing and Finishing", "Textile Machinery"],
-  "Tourism & Travel": ["Travel Agencies", "Tour Operators", "Cruise Lines", "Adventure Travel"],
-  "Transportation": ["Public Transit", "Freight Transportation", "Ride-Sharing Services", "Logistics Providers"],
-  "Trucking": ["Long-Haul Trucking", "Local Delivery Services", "Freight Brokerage", "Truck Maintenance Services"],
-  "Utilities": ["Electric Power Generation", "Water Supply", "Natural Gas Distribution", "Waste Management"],
-  "Veterinary Services": ["Animal Hospitals", "Mobile Veterinary Clinics", "Pet Grooming", "Animal Shelters"],
-  "Warehousing & Storage": ["Cold Storage", "Distribution Centers", "Fulfillment Services", "Self-Storage Facilities"],
-  "Waste Management": ["Recycling Services", "Hazardous Waste Disposal", "Landfill Operations", "Composting Services"],
-  "Wholesale Trade": ["Wholesale Distributors", "Import/Export Services", "Industrial Suppliers", "Wholesale Electronics"],
-  "Wood Products": ["Lumber Mills", "Furniture Manufacturing", "Plywood Production", "Woodworking Shops"],
-  "Writing & Editing": ["Content Creation", "Copywriting", "Technical Writing", "Editorial Services"],
-  "Youth Services": ["Childcare Centers", "Youth Mentoring Programs", "After-School Programs", "Summer Camps"],
-  "Zoological Services": ["Zoos & Aquariums", "Wildlife Conservation", "Animal Training", "Veterinary Research"],
-  "3D Printing": ["Prototyping Services", "Custom Manufacturing", "3D Printing Equipment", "Materials Development"],
-  "Artificial Intelligence": ["Machine Learning Development", "AI Research", "Natural Language Processing", "Robotics"]
-};
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-// Full industry & subcategory list
+// Industry list (shortened for example; use your full list in production!)
 const industryMap = {
-  // (All your industries as you had them)
+  "Apparel & Fashion": ["Clothing Manufacturing", "Footwear Production"],
+  "Automotive": ["Vehicle Manufacturing", "Auto Repair"],
+  "Barbershop / Tattoo and Piercing": ["Barbershop", "Tattoo", "Piercing"],
+  "Education & Tutoring": ["Private Tutoring", "Test Prep"],
+  "Food & Beverage": ["Restaurants", "Catering"],
+  "Healthcare": ["Dental", "Physical Therapy", "Chiropractor"],
+  "Legal Services": ["Family Law", "Criminal Defense"],
+  "Real Estate": ["Residential", "Commercial"],
+  "Retail": ["Department Stores", "Online Retail"],
+  "Small Business": ["Local Shops", "Startups"],
+  "Transportation & Logistics": ["Trucking", "Courier Services"]
+  // Add the rest of your industries here!
 };
 
-// 1️⃣ The updateSubcategories function
 function updateSubcategories() {
   const industry = document.getElementById("industry").value;
   const subcategory = document.getElementById("subcategory");
@@ -159,7 +90,7 @@ function updateSubcategories() {
   }
 }
 
-// 2️⃣ Populate the industry dropdown on load
+// Populate industries on load
 window.onload = () => {
   const industrySelect = document.getElementById("industry");
   Object.keys(industryMap).forEach(industry => {
@@ -170,7 +101,6 @@ window.onload = () => {
   });
 };
 
-// 3️⃣ All other logic for file upload and column mapping
 let parsedData;
 
 document.getElementById('fileInput').addEventListener('change', () => {
@@ -209,6 +139,8 @@ function buildColumnMapping(headers) {
     select.innerHTML = `<option value="${header}">${header}</option>`;
     select.style.width = '100%';
     select.style.marginTop = '5px';
+    select.style.backgroundColor = '#cce0ff'; // lighter blue
+    select.style.color = '#000';
 
     const input = document.createElement('input');
     input.type = 'text';
@@ -263,17 +195,7 @@ document.getElementById('previewTableButton').addEventListener('click', () => {
   const previewContainer = document.getElementById('previewContainer');
   previewContainer.innerHTML = '';
   previewContainer.appendChild(table);
-
-  // Message note
-  const previewButton = document.getElementById('previewTableButton');
-  let note = document.getElementById('previewNote');
-  if (!note) {
-    note = document.createElement('span');
-    note.id = 'previewNote';
-    note.textContent = ' If you make changes, press this button again to see the updated table.';
-    note.style.fontSize = '0.85rem';
-    note.style.marginLeft = '10px';
-    previewButton.insertAdjacentElement('afterend', note);
-  }
 });
 </script>
+</body>
+</html>
