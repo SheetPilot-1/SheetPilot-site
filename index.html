@@ -9,11 +9,28 @@
   h1 { font-size: 2rem; margin-bottom: 15px; }
   label { display: block; margin-top: 12px; font-weight: bold; }
   select, input[type="text"], input[type="file"] {
-    width: 100%; max-width: 400px; padding: 8px; margin-top: 6px; margin-bottom: 10px;
-    border-radius: 6px; border: none; font-size: 1em; box-sizing: border-box; background-color: #fff; color: #000;
+    width: 100%;
+    max-width: 400px;
+    padding: 8px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: #ffffff; /* Lighter color for easier reading */
+    color: #000;
   }
-  button { background-color: #00E5FF; color: #000; border: none; padding: 10px 20px; border-radius: 6px;
-    font-weight: bold; cursor: pointer; margin-top: 10px; }
+  button {
+    background-color: #00E5FF;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
   button:hover { background-color: #00cce0; }
   .note { color: #ccc; font-size: 0.85rem; margin-top: 5px; }
   table { width: 100%; margin-top: 20px; border-collapse: collapse; background-color: #f0f0f0; color: #000; }
@@ -22,7 +39,7 @@
   tr:nth-child(even) { background-color: #e0e0e0; }
   .section { margin-bottom: 20px; }
   .mapping-section { background: #1E3A5F; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
-  .mapping-section div { color: #fff; margin-top: 5px; font-weight: bold; }
+  .mapping-section label, .mapping-section div { color: #fff; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -48,7 +65,6 @@
 
   <label for="fileInput">Upload Your File:</label>
   <input type="file" id="fileInput" />
-  <button id="addReplaceButton">Add/Replace</button>
   <p class="note">Use this to upload additional data to the current table.</p>
 </div>
 
@@ -76,19 +92,9 @@
     "Landscaping & Lawn Care": ["Lawn Maintenance", "Landscape Design", "Tree Services", "Irrigation Services"],
     "Plumbing & HVAC": ["Plumbing Services", "HVAC Installation", "HVAC Repair", "Drain Cleaning"],
     "Electrical Services": ["Residential Electricians", "Commercial Electricians", "Electrical Repair", "Lighting Installation"],
-    "Carpentry & Woodworking": ["Custom Furniture", "Cabinet Making", "Wood Flooring", "Deck Building"],
-    "Painting & Drywall": ["Interior Painting", "Exterior Painting", "Drywall Installation", "Drywall Repair"],
     "Legal Services": ["Family Law", "Criminal Defense", "Corporate Law", "Estate Planning"],
     "Financial & Tax Services": ["Accounting", "Tax Preparation", "Financial Planning", "Bookkeeping"],
-    "Marketing & Advertising": ["Digital Marketing", "SEO Services", "Social Media Management", "Content Creation"],
-    "Real Estate Services": ["Residential Sales", "Commercial Leasing", "Property Management", "Real Estate Investment"],
-    "Transportation & Logistics": ["Courier Services", "Freight Shipping", "Moving Services", "Logistics Management"],
-    "IT Services & Tech Support": ["Computer Repair", "Network Setup", "Software Installation", "Tech Consulting"],
-    "Consulting & Business Services": ["Business Strategy", "HR Consulting", "Operations Management", "Process Improvement"],
-    "Photography & Videography": ["Event Photography", "Portrait Photography", "Commercial Videography", "Drone Services"],
-    "Education & Tutoring": ["Test Prep", "Subject Tutoring", "Online Courses", "Language Instruction"],
-    "Healthcare & Personal Care": ["Massage Therapy", "Chiropractic Services", "Home Healthcare", "Physical Therapy"],
-    "Non-Profit & Community Services": ["Charitable Organizations", "Community Outreach", "Youth Programs", "Support Services"]
+    "Healthcare & Personal Care": ["Massage Therapy", "Chiropractic Services", "Home Healthcare", "Physical Therapy"]
   };
 
   function updateSubcategories() {
@@ -117,7 +123,7 @@
 
   let parsedData;
 
-  document.getElementById('addReplaceButton').addEventListener('click', () => {
+  document.getElementById('fileInput').addEventListener('change', () => {
     const file = document.getElementById('fileInput').files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -146,6 +152,25 @@
       const columnLabel = document.createElement('div');
       columnLabel.textContent = header;
 
+      // Drop-down for mapping to pre-defined industry/subcategory headers
+      const select = document.createElement('select');
+      select.style.width = '100%';
+      select.style.marginTop = '5px';
+      select.style.backgroundColor = '#ffffff'; // Lighter background for dropdown
+      select.style.color = '#000';
+      select.innerHTML = '<option value="">-- Choose Header --</option>';
+      Object.keys(industryMap).forEach(industry => {
+        const group = document.createElement('optgroup');
+        group.label = industry;
+        industryMap[industry].forEach(sub => {
+          const option = document.createElement('option');
+          option.value = sub;
+          option.textContent = sub;
+          group.appendChild(option);
+        });
+        select.appendChild(group);
+      });
+
       const input = document.createElement('input');
       input.type = 'text';
       input.placeholder = 'Or enter custom label';
@@ -154,6 +179,7 @@
 
       section.appendChild(checkbox);
       section.appendChild(columnLabel);
+      section.appendChild(select);
       section.appendChild(input);
       container.appendChild(section);
     });
@@ -167,10 +193,11 @@
       const includeCheckbox = section.querySelector('input[type="checkbox"]');
       if (includeCheckbox.checked) {
         selectedIndices.push(index);
+        const select = section.querySelector('select');
         const input = section.querySelector('input[type="text"]');
         const customLabel = input.value.trim();
-        const defaultHeader = section.querySelector('div').textContent;
-        selectedHeaders.push(customLabel || defaultHeader);
+        const selectedLabel = select.value.trim();
+        selectedHeaders.push(customLabel || selectedLabel || section.querySelector('div').textContent);
       }
     });
     const table = document.createElement('table');
@@ -183,6 +210,7 @@
     });
     thead.appendChild(headerRow);
     table.appendChild(thead);
+
     const tbody = document.createElement('tbody');
     parsedData.slice(1).forEach(rowData => {
       const row = document.createElement('tr');
@@ -194,6 +222,7 @@
       tbody.appendChild(row);
     });
     table.appendChild(tbody);
+
     const previewContainer = document.getElementById('previewContainer');
     previewContainer.innerHTML = '';
     previewContainer.appendChild(table);
