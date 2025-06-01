@@ -1,46 +1,89 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SheetPilot</title>
-<style>
-  body { background-color: #33658A; color: #F5F5DC; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
-  h1 { font-size: 2rem; margin-bottom: 15px; }
-  label { display: block; margin-top: 12px; font-weight: bold; }
-  select, input[type="text"], input[type="file"] {
-    width: 100%;
-    max-width: 400px;
-    padding: 8px;
-    margin-top: 6px;
-    margin-bottom: 10px;
-    border-radius: 6px;
-    border: none;
-    font-size: 1em;
-    box-sizing: border-box;
-    background-color: #ffffff; /* Lighter color for easier reading */
-    color: #000;
-  }
-  button {
-    background-color: #00E5FF;
-    color: #000;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-  }
-  button:hover { background-color: #00cce0; }
-  .note { color: #ccc; font-size: 0.85rem; margin-top: 5px; }
-  table { width: 100%; margin-top: 20px; border-collapse: collapse; background-color: #f0f0f0; color: #000; }
-  th, td { padding: 8px; border: 1px solid #ccc; }
-  th { background-color: #00E5FF; color: #000; }
-  tr:nth-child(even) { background-color: #e0e0e0; }
-  .section { margin-bottom: 20px; }
-  .mapping-section { background: #1E3A5F; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
-  .mapping-section label, .mapping-section div { color: #fff; font-weight: bold; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SheetPilot</title>
+  <style>
+    body {
+      background-color: #33658A;
+      color: #F5F5DC;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    select, input[type="text"], input[type="file"] {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1em;
+      box-sizing: border-box;
+      background-color: #ffffff; /* Lighter background for readability */
+      color: #000;
+    }
+    button {
+      background-color: #00E5FF;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #00cce0;
+    }
+    .note {
+      color: #ccc;
+      font-size: 0.85rem;
+      margin-top: 5px;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      background-color: #f0f0f0;
+      color: #000;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+    th {
+      background-color: #00E5FF;
+      color: #000;
+    }
+    tr:nth-child(even) {
+      background-color: #e0e0e0;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .mapping-section {
+      background: #1E3A5F;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .mapping-section label, .mapping-section div {
+      color: #fff;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 
@@ -79,22 +122,33 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
+  // Define industries and subcategories
   const industryMap = {
-    "Retail": ["Clothing Stores", "Convenience Stores", "Online Retail", "Specialty Shops"],
-    "Food & Beverage": ["Restaurants", "Food Trucks", "Catering Services", "Bakeries"],
-    "Barbershop / Tattoo & Piercing": ["Barbershop", "Tattoo Studio", "Piercing Studio", "Nail Salon"],
-    "Cleaning Services": ["Residential Cleaning", "Commercial Cleaning", "Carpet Cleaning", "Window Cleaning"],
-    "Nail Salon & Beauty Services": ["Nail Salon", "Hair Salon", "Spa Services", "Makeup Artists"],
-    "Fitness & Personal Training": ["Gyms", "Personal Trainers", "Yoga Studios", "Pilates Studios"],
-    "Event Planning": ["Wedding Planning", "Corporate Events", "Party Planning", "Event Coordination"],
-    "Construction & Renovation": ["Residential Construction", "Commercial Construction", "Remodeling", "General Contractors"],
-    "Automotive Services": ["Auto Repair", "Car Wash", "Auto Detailing", "Tire Services"],
-    "Landscaping & Lawn Care": ["Lawn Maintenance", "Landscape Design", "Tree Services", "Irrigation Services"],
-    "Plumbing & HVAC": ["Plumbing Services", "HVAC Installation", "HVAC Repair", "Drain Cleaning"],
-    "Electrical Services": ["Residential Electricians", "Commercial Electricians", "Electrical Repair", "Lighting Installation"],
-    "Legal Services": ["Family Law", "Criminal Defense", "Corporate Law", "Estate Planning"],
-    "Financial & Tax Services": ["Accounting", "Tax Preparation", "Financial Planning", "Bookkeeping"],
-    "Healthcare & Personal Care": ["Massage Therapy", "Chiropractic Services", "Home Healthcare", "Physical Therapy"]
+    "Retail": ["Clothing Stores", "Convenience Stores", "Online Retail"],
+    "Food & Beverage": ["Restaurants", "Food Trucks", "Catering Services"],
+    "Beauty Services": ["Nail Salon", "Hair Salon", "Spa Services"],
+    "Fitness & Wellness": ["Gyms", "Personal Trainers", "Yoga Studios"],
+    "Event Planning": ["Wedding Planning", "Corporate Events", "Party Planning"],
+    "Cleaning Services": ["Residential Cleaning", "Commercial Cleaning", "Window Cleaning"],
+    "Automotive Services": ["Auto Repair", "Car Wash", "Tire Services"],
+    "Landscaping": ["Lawn Maintenance", "Landscape Design", "Tree Services"],
+    "Construction": ["Residential Construction", "Commercial Construction", "Remodeling"],
+    "Plumbing": ["Plumbing Services", "Drain Cleaning", "Pipe Installation"],
+    "Electrical": ["Residential Electricians", "Commercial Electricians", "Lighting Installation"],
+    "HVAC": ["HVAC Installation", "HVAC Repair", "Ventilation Services"],
+    "Painting": ["Interior Painting", "Exterior Painting", "Drywall Repair"],
+    "Carpentry": ["Custom Furniture", "Cabinet Making", "Deck Building"],
+    "Legal Services": ["Family Law", "Criminal Defense", "Corporate Law"],
+    "Financial Services": ["Accounting", "Tax Preparation", "Financial Planning"],
+    "Marketing": ["Digital Marketing", "SEO Services", "Content Creation"],
+    "Real Estate": ["Residential Sales", "Commercial Leasing", "Property Management"],
+    "Consulting": ["Business Strategy", "HR Consulting", "Operations Management"],
+    "IT Services": ["Computer Repair", "Network Setup", "Tech Consulting"],
+    "Education": ["Test Prep", "Subject Tutoring", "Online Courses"],
+    "Healthcare": ["Massage Therapy", "Chiropractic Services", "Home Healthcare"],
+    "Photography": ["Event Photography", "Portrait Photography", "Drone Services"],
+    "Transportation": ["Courier Services", "Freight Shipping", "Moving Services"],
+    "Other": ["Custom Industry 1", "Custom Industry 2", "Custom Industry 3"]
   };
 
   function updateSubcategories() {
@@ -111,6 +165,7 @@
     }
   }
 
+  // Populate industries on load
   window.onload = () => {
     const industrySelect = document.getElementById("industry");
     Object.keys(industryMap).forEach(industry => {
@@ -149,14 +204,10 @@
       checkbox.type = 'checkbox';
       checkbox.checked = true;
 
-      const columnLabel = document.createElement('div');
-      columnLabel.textContent = header;
-
-      // Drop-down for mapping to pre-defined industry/subcategory headers
       const select = document.createElement('select');
       select.style.width = '100%';
       select.style.marginTop = '5px';
-      select.style.backgroundColor = '#ffffff'; // Lighter background for dropdown
+      select.style.backgroundColor = '#ffffff';
       select.style.color = '#000';
       select.innerHTML = '<option value="">-- Choose Header --</option>';
       Object.keys(industryMap).forEach(industry => {
@@ -178,7 +229,6 @@
       input.style.marginTop = '5px';
 
       section.appendChild(checkbox);
-      section.appendChild(columnLabel);
       section.appendChild(select);
       section.appendChild(input);
       container.appendChild(section);
@@ -197,36 +247,7 @@
         const input = section.querySelector('input[type="text"]');
         const customLabel = input.value.trim();
         const selectedLabel = select.value.trim();
-        selectedHeaders.push(customLabel || selectedLabel || section.querySelector('div').textContent);
+        selectedHeaders.push(customLabel || selectedLabel || parsedData[0][index]);
       }
     });
-    const table = document.createElement('table');
-    const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
-    selectedHeaders.forEach(header => {
-      const th = document.createElement('th');
-      th.textContent = header;
-      headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    const tbody = document.createElement('tbody');
-    parsedData.slice(1).forEach(rowData => {
-      const row = document.createElement('tr');
-      selectedIndices.forEach(i => {
-        const td = document.createElement('td');
-        td.textContent = rowData[i] || '';
-        row.appendChild(td);
-      });
-      tbody.appendChild(row);
-    });
-    table.appendChild(tbody);
-
-    const previewContainer = document.getElementById('previewContainer');
-    previewContainer.innerHTML = '';
-    previewContainer.appendChild(table);
-  });
-</script>
-</body>
-</html>
+    const table = document 
