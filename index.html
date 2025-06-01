@@ -1,26 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SheetPilot</title>
-<style>
-  body { background-color: #33658A; color: #F5F5DC; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
-  h1 { font-size: 2rem; margin-bottom: 15px; }
-  label { display: block; margin-top: 12px; font-weight: bold; }
-  select, input[type="text"], input[type="file"] { width: 100%; max-width: 400px; padding: 8px; margin-top: 6px; margin-bottom: 10px; border-radius: 6px; border: none; font-size: 1em; box-sizing: border-box; }
-  button { background-color: #00E5FF; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-  button:hover { background-color: #00cce0; }
-  .note { color: #ccc; font-size: 0.85rem; margin-top: 5px; }
-  table { width: 100%; margin-top: 20px; border-collapse: collapse; background-color: #f0f0f0; color: #000; }
-  th, td { padding: 8px; border: 1px solid #ccc; }
-  th { background-color: #00E5FF; color: #000; }
-  tr:nth-child(even) { background-color: #e0e0e0; }
-  .section { margin-bottom: 20px; }
-  .mapping-section { background: #4A6FA5; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
-  .mapping-section label { color: #fff; margin-left: 5px; }
-  .mapping-section div { color: #fff; margin-top: 5px; font-weight: bold; }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SheetPilot</title>
+  <style>
+    body {
+      background-color: #33658A;
+      color: #F5F5DC;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    select, input[type="text"], input[type="file"] {
+      width: 100%;
+      max-width: 400px;
+      padding: 8px;
+      margin-top: 6px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 1em;
+      box-sizing: border-box;
+      background-color: #a9c8e5;
+      color: #000;
+    }
+    button {
+      background-color: #00E5FF;
+      color: #000;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #00cce0;
+    }
+    .note {
+      color: #ccc;
+      font-size: 0.85rem;
+      margin-top: 5px;
+    }
+    table {
+      width: 100%;
+      margin-top: 20px;
+      border-collapse: collapse;
+      background-color: #f0f0f0;
+      color: #000;
+    }
+    th, td {
+      padding: 8px;
+      border: 1px solid #ccc;
+    }
+    th {
+      background-color: #00E5FF;
+      color: #000;
+    }
+    tr:nth-child(even) {
+      background-color: #e0e0e0;
+    }
+    .section {
+      margin-bottom: 20px;
+    }
+    .mapping-section {
+      background: #1E3A5F;
+      padding: 10px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    .mapping-section label, .mapping-section div {
+      color: #fff;
+      margin-top: 5px;
+      font-weight: bold;
+    }
+    .mapping-section input[type="text"] {
+      margin-top: 5px;
+    }
+  </style>
 </head>
 <body>
 
@@ -54,148 +121,116 @@
   <p>Use this section to map your spreadsheet columns to custom or suggested headers. Uncheck to hide columns you don’t want in the final table.</p>
   <div id="columnMappingContainer"></div>
   <button id="previewTableButton">Preview Table</button>
-  <span style="font-size: 0.85rem; margin-left: 10px;">If you make changes, press this button again to see the updated table.</span>
+  <span id="previewNote" style="font-size: 0.85rem; margin-left: 10px;">If you make changes, press this button again to see the updated table.</span>
   <div id="previewContainer" style="margin-top: 20px;"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-// Industry list (shortened for example; use your full list in production!)
-const industryMap = {
-  "Apparel & Fashion": ["Clothing Manufacturing", "Footwear Production"],
-  "Automotive": ["Vehicle Manufacturing", "Auto Repair"],
-  "Barbershop / Tattoo and Piercing": ["Barbershop", "Tattoo", "Piercing"],
-  "Education & Tutoring": ["Private Tutoring", "Test Prep"],
-  "Food & Beverage": ["Restaurants", "Catering"],
-  "Healthcare": ["Dental", "Physical Therapy", "Chiropractor"],
-  "Legal Services": ["Family Law", "Criminal Defense"],
-  "Real Estate": ["Residential", "Commercial"],
-  "Retail": ["Department Stores", "Online Retail"],
-  "Small Business": ["Local Shops", "Startups"],
-  "Transportation & Logistics": ["Trucking", "Courier Services"]
-  // Add the rest of your industries here!
-};
+  // Industry and Subcategory Mapping
+  const industryMap = {
+    "Retail": ["Clothing Stores", "Convenience Stores", "Online Retail", "Specialty Shops"],
+    "Food & Beverage": ["Restaurants", "Food Trucks", "Catering Services", "Bakeries"],
+    "Barbershop / Tattoo & Piercing": ["Barbershop", "Tattoo Studio", "Piercing Studio", "Nail Salon"],
+    "Cleaning Services": ["Residential Cleaning", "Commercial Cleaning", "Carpet Cleaning", "Window Cleaning"],
+    "Nail Salon & Beauty Services": ["Nail Salon", "Hair Salon", "Spa Services", "Makeup Artists"],
+    "Fitness & Personal Training": ["Gyms", "Personal Trainers", "Yoga Studios", "Pilates Studios"],
+    "Event Planning": ["Wedding Planning", "Corporate Events", "Party Planning", "Event Coordination"],
+    "Construction & Renovation": ["Residential Construction", "Commercial Construction", "Remodeling", "General Contractors"],
+    "Automotive Services": ["Auto Repair", "Car Wash", "Auto Detailing", "Tire Services"],
+    "Landscaping & Lawn Care": ["Lawn Maintenance", "Landscape Design", "Tree Services", "Irrigation Services"],
+    "Plumbing & HVAC": ["Plumbing Services", "HVAC Installation", "HVAC Repair", "Drain Cleaning"],
+    "Electrical Services": ["Residential Electricians", "Commercial Electricians", "Electrical Repair", "Lighting Installation"],
+    "Carpentry & Woodworking": ["Custom Furniture", "Cabinet Making", "Wood Flooring", "Deck Building"],
+    "Painting & Drywall": ["Interior Painting", "Exterior Painting", "Drywall Installation", "Drywall Repair"],
+    "Legal Services": ["Family Law", "Criminal Defense", "Corporate Law", "Estate Planning"],
+    "Financial & Tax Services": ["Accounting", "Tax Preparation", "Financial Planning", "Bookkeeping"],
+    "Marketing & Advertising": ["Digital Marketing", "SEO Services", "Social Media Management", "Content Creation"],
+    "Real Estate Services": ["Residential Sales", "Commercial Leasing", "Property Management", "Real Estate Investment"],
+    "Transportation & Logistics": ["Courier Services", "Freight Shipping", "Moving Services", "Logistics Management"],
+    "IT Services & Tech Support": ["Computer Repair", "Network Setup", "Software Installation", "Tech Consulting"],
+    "Consulting & Business Services": ["Business Strategy", "HR Consulting", "Operations Management", "Process Improvement"],
+    "Photography & Videography": ["Event Photography", "Portrait Photography", "Commercial Videography", "Drone Services"],
+    "Education & Tutoring": ["Test Prep", "Subject Tutoring", "Online Courses", "Language Instruction"],
+    "Healthcare & Personal Care": ["Massage Therapy", "Chiropractic Services", "Home Healthcare", "Physical Therapy"],
+    "Non-Profit & Community Services": ["Charitable Organizations", "Community Outreach", "Youth Programs", "Support Services"]
+  };
 
-function updateSubcategories() {
-  const industry = document.getElementById("industry").value;
-  const subcategory = document.getElementById("subcategory");
-  subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-  if (industryMap[industry]) {
-    industryMap[industry].forEach(option => {
-      const el = document.createElement("option");
-      el.value = option;
-      el.textContent = option;
-      subcategory.appendChild(el);
+  function updateSubcategories() {
+    const industry = document.getElementById("industry").value;
+    const subcategory = document.getElementById("subcategory");
+    subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
+    if (industryMap[industry]) {
+      industryMap[industry].forEach(option => {
+        const el = document.createElement("option");
+        el.value = option;
+        el.textContent = option;
+        subcategory.appendChild(el);
+      });
+    }
+  }
+
+  // Populate industries on load
+  window.onload = () => {
+    const industrySelect = document.getElementById("industry");
+    Object.keys(industryMap).forEach(industry => {
+      const option = document.createElement("option");
+      option.value = industry;
+      option.textContent = industry;
+      industrySelect.appendChild(option);
+    });
+  };
+
+  let parsedData;
+
+  document.getElementById('fileInput').addEventListener('change', () => {
+    const file = document.getElementById('fileInput').files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, { type: 'binary' });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      buildColumnMapping(parsedData[0] || []);
+    };
+    reader.readAsBinaryString(file);
+  });
+
+  function buildColumnMapping(headers) {
+    const container = document.getElementById('columnMappingContainer');
+    container.innerHTML = '';
+    headers.forEach(header => {
+      const section = document.createElement('div');
+      section.className = 'mapping-section';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = true;
+
+      const columnLabel = document.createElement('div');
+      columnLabel.textContent = header;
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Or enter custom label';
+      input.style.width = '100%';
+      input.style.marginTop = '5px';
+
+      section.appendChild(checkbox);
+      section.appendChild(columnLabel);
+      section.appendChild(input);
+      container.appendChild(section);
     });
   }
-}
 
-// Populate industries on load
-window.onload = () => {
-  const industrySelect = document.getElementById("industry");
-  Object.keys(industryMap).forEach(industry => {
-    const option = document.createElement("option");
-    option.value = industry;
-    option.textContent = industry;
-    industrySelect.appendChild(option);
-  });
-};
-
-let parsedData;
-
-document.getElementById('fileInput').addEventListener('change', () => {
-  const file = document.getElementById('fileInput').files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const data = e.target.result;
-    const workbook = XLSX.read(data, { type: 'binary' });
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-    buildColumnMapping(parsedData[0] || []);
-  };
-  reader.readAsBinaryString(file);
-});
-
-function buildColumnMapping(headers) {
-  const container = document.getElementById('columnMappingContainer');
-  container.innerHTML = '';
-  headers.forEach((header, index) => {
-    const section = document.createElement('div');
-    section.className = 'mapping-section';
-
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = true;
-
-    const label = document.createElement('label');
-    label.textContent = ' Include this column?';
-
-    const columnLabel = document.createElement('div');
-    columnLabel.textContent = header;
-
-    const select = document.createElement('select');
-    select.innerHTML = `<option value="${header}">${header}</option>`;
-    select.style.width = '100%';
-    select.style.marginTop = '5px';
-    select.style.backgroundColor = '#cce0ff'; // lighter blue
-    select.style.color = '#000';
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Or enter custom label';
-    input.style.width = '100%';
-    input.style.marginTop = '5px';
-
-    section.appendChild(checkbox);
-    section.appendChild(label);
-    section.appendChild(columnLabel);
-    section.appendChild(select);
-    section.appendChild(input);
-    container.appendChild(section);
-  });
-}
-
-document.getElementById('previewTableButton').addEventListener('click', () => {
-  const selectedIndices = [];
-  const selectedHeaders = [];
-  const mappingSections = document.getElementById('columnMappingContainer').children;
-  Array.from(mappingSections).forEach((section, index) => {
-    const includeCheckbox = section.querySelector('input[type="checkbox"]');
-    if (includeCheckbox.checked) {
-      selectedIndices.push(index);
-      const input = section.querySelector('input[type="text"]');
-      const customLabel = input.value.trim();
-      const defaultHeader = section.querySelector('select').value;
-      selectedHeaders.push(customLabel || defaultHeader);
-    }
-  });
-  const table = document.createElement('table');
-  const thead = document.createElement('thead');
-  const headerRow = document.createElement('tr');
-  selectedHeaders.forEach(header => {
-    const th = document.createElement('th');
-    th.textContent = header;
-    headerRow.appendChild(th);
-  });
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
-  const tbody = document.createElement('tbody');
-  parsedData.slice(1).forEach(rowData => {
-    const row = document.createElement('tr');
-    selectedIndices.forEach(i => {
-      const td = document.createElement('td');
-      td.textContent = rowData[i] || '';
-      row.appendChild(td);
-    });
-    tbody.appendChild(row);
-  });
-  table.appendChild(tbody);
-  const previewContainer = document.getElementById('previewContainer');
-  previewContainer.innerHTML = '';
-  previewContainer.appendChild(table);
-});
-</script>
-</body>
-</html>
+  document.getElementById('previewTableButton').addEventListener('click', () => {
+    const selectedIndices = [];
+    const selectedHeaders = [];
+    const mappingSections = document.getElementById('columnMappingContainer').children;
+    Array.from(mappingSections).forEach((section, index) => {
+      const includeCheckbox = section.querySelector('input[type="checkbox"]');
+      if (includeCheckbox.checked) {
+        selectedIndices.push(index);
+        const 
