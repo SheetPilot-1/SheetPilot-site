@@ -31,7 +31,7 @@
       border: none;
       font-size: 1em;
       box-sizing: border-box;
-      background-color: #ffffff; /* Lighter background for readability */
+      background-color: #ffffff; /* Lighter background */
       color: #000;
     }
     button {
@@ -122,7 +122,6 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-  // Define industries and subcategories
   const industryMap = {
     "Retail": ["Clothing Stores", "Convenience Stores", "Online Retail"],
     "Food & Beverage": ["Restaurants", "Food Trucks", "Catering Services"],
@@ -165,7 +164,6 @@
     }
   }
 
-  // Populate industries on load
   window.onload = () => {
     const industrySelect = document.getElementById("industry");
     Object.keys(industryMap).forEach(industry => {
@@ -205,22 +203,22 @@
       checkbox.checked = true;
 
       const select = document.createElement('select');
+      select.innerHTML = '<option value="">-- Choose Header --</option>';
+      Object.keys(industryMap).forEach(ind => {
+        const group = document.createElement('optgroup');
+        group.label = ind;
+        industryMap[ind].forEach(sub => {
+          const opt = document.createElement('option');
+          opt.value = sub;
+          opt.textContent = sub;
+          group.appendChild(opt);
+        });
+        select.appendChild(group);
+      });
       select.style.width = '100%';
       select.style.marginTop = '5px';
       select.style.backgroundColor = '#ffffff';
       select.style.color = '#000';
-      select.innerHTML = '<option value="">-- Choose Header --</option>';
-      Object.keys(industryMap).forEach(industry => {
-        const group = document.createElement('optgroup');
-        group.label = industry;
-        industryMap[industry].forEach(sub => {
-          const option = document.createElement('option');
-          option.value = sub;
-          option.textContent = sub;
-          group.appendChild(option);
-        });
-        select.appendChild(group);
-      });
 
       const input = document.createElement('input');
       input.type = 'text';
@@ -250,4 +248,31 @@
         selectedHeaders.push(customLabel || selectedLabel || parsedData[0][index]);
       }
     });
-    const table = document 
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    selectedHeaders.forEach(header => {
+      const th = document.createElement('th');
+      th.textContent = header;
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    parsedData.slice(1).forEach(rowData => {
+      const row = document.createElement('tr');
+      selectedIndices.forEach(i => {
+        const td = document.createElement('td');
+        td.textContent = rowData[i] || '';
+        row.appendChild(td);
+      });
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    const previewContainer = document.getElementById('previewContainer');
+    previewContainer.innerHTML = '';
+    previewContainer.appendChild(table);
+  });
+</script>
+</body>
+</html>
