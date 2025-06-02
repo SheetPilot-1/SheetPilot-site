@@ -104,6 +104,54 @@ function updateSubcategories() {
   <p class="note">Use this to upload additional data to the current table.</p>
 </div>
 
+<script>
+let parsedData = [];
+
+// Trigger file parsing on upload
+document.getElementById('fileInput').addEventListener('change', () => {
+  const file = document.getElementById('fileInput').files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const data = e.target.result;
+    const workbook = XLSX.read(data, { type: 'binary' });
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 }); // Grab ALL rows
+    buildColumnMapping(parsedData[0] || []); // Use only header row for mapping
+  };
+  reader.readAsBinaryString(file);
+});
+
+function buildColumnMapping(headers) {
+  const container = document.getElementById('columnMappingContainer');
+  container.innerHTML = ''; // Clear previous mapping, if any
+
+  headers.forEach(header => {
+    const section = document.createElement('div');
+    section.className = 'mapping-section';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = true;
+
+    const columnLabel = document.createElement('div');
+    columnLabel.textContent = header;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Or enter custom label';
+    input.style.width = '100%';
+    input.style.marginTop = '5px';
+
+    section.appendChild(checkbox);
+    section.appendChild(columnLabel);
+    section.appendChild(input);
+    container.appendChild(section);
+  });
+}
+</script>
 <!-- PHASE 2: BEGIN -->
 <div id="phase2" class="section" style="margin-top: 30px;">
   <h2>Map Your Columns</h2>
