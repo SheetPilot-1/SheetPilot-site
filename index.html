@@ -104,19 +104,55 @@ function updateSubcategories() {
   <p class="note">Use this to upload additional data to the current table.</p>
 </div>
 
-<script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SheetPilot Phase 2</title>
+<style>
+  body { background-color: #33658A; color: #F5F5DC; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+  h1 { font-size: 2rem; margin-bottom: 15px; }
+  label { display: block; margin-top: 12px; font-weight: bold; }
+  select, input[type="text"], input[type="file"] {
+    width: 100%; max-width: 400px; padding: 8px; margin-top: 6px; margin-bottom: 10px;
+    border-radius: 6px; border: none; font-size: 1em; box-sizing: border-box; background-color: #a9c8e5; color: #000;
+  }
+  button { background-color: #00E5FF; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+  button:hover { background-color: #00cce0; }
+  .mapping-section { background: #1E3A5F; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+  .mapping-section label, .mapping-section div { color: #fff; margin-top: 5px; font-weight: bold; }
+  .note { color: #ccc; font-size: 0.85rem; margin-top: 5px; }
+</style>
+</head>
+<body>
+
+<h1>SheetPilot</h1>
+
+<div class="section">
+  <label for="fileInput">Upload Your File:</label>
+  <input type="file" id="fileInput" />
+</div>
+
+<div id="phase2" class="section">
+  <h2>Map Your Columns</h2>
+  <p>Use this section to map your spreadsheet columns to the relevant fields for your industry/subcategory. Uncheck to exclude any columns you don’t want in the final table.</p>
+  <div id="columnMappingContainer"></div>
+  <button id="previewTableButton">Preview Table</button>
+  <div id="previewContainer" style="margin-top: 20px;"></div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-  // Example of dynamic header options per subcategory (replace with your actual mapping)
   const headerOptionsMap = {
     "Nail Salon": ["Client Name", "Service Date", "Amount", "Payment Status", "Technician"],
     "Gyms": ["Member Name", "Session Date", "Payment Amount", "Payment Status", "Trainer"],
-    // Add more mappings for your subcategories here...
+    "Convenience Stores": ["Product", "Quantity", "Price", "Sale Date", "Payment Status"],
+    // Add more mappings...
   };
 
   let parsedData = [];
 
-  // Listen for file upload
   document.getElementById('fileInput').addEventListener('change', () => {
     const file = document.getElementById('fileInput').files[0];
     if (!file) return;
@@ -133,36 +169,32 @@ function updateSubcategories() {
     reader.readAsBinaryString(file);
   });
 
-  // Build dynamic header mapping boxes
   function buildColumnMapping(headers) {
     const container = document.getElementById('columnMappingContainer');
-    container.innerHTML = ''; // clear old mappings
+    container.innerHTML = '';
 
-    // Determine selected subcategory
-    const subcategory = document.getElementById('subcategory').value;
+    // EXAMPLE: Let’s assume “Nail Salon” is the chosen subcategory for now:
+    const subcategory = "Nail Salon"; // Change to dynamic value if needed
     const headerOptions = headerOptionsMap[subcategory] || ["General", "Date", "Amount", "Notes"];
 
     headers.forEach((header) => {
       const section = document.createElement('div');
       section.className = 'mapping-section';
 
-      // Checkbox to include
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.checked = true;
 
-      // Column name from uploaded file
       const columnLabel = document.createElement('div');
       columnLabel.textContent = header;
 
-      // Dropdown for suggested header mapping
       const select = document.createElement('select');
       const defaultOption = document.createElement('option');
       defaultOption.value = '';
       defaultOption.textContent = '-- Choose Header --';
       select.appendChild(defaultOption);
 
-      headerOptions.forEach((opt) => {
+      headerOptions.forEach(opt => {
         const option = document.createElement('option');
         option.value = opt;
         option.textContent = opt;
@@ -172,7 +204,6 @@ function updateSubcategories() {
       select.style.width = '100%';
       select.style.marginTop = '5px';
 
-      // Or custom label
       const input = document.createElement('input');
       input.type = 'text';
       input.placeholder = 'Or enter custom label';
@@ -187,3 +218,5 @@ function updateSubcategories() {
     });
   }
 </script>
+</body>
+</html>
