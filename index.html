@@ -96,12 +96,25 @@ function updateSubcategories() {
 </body>
 </html>
 
+<!-- PHASE 1: END -->
+<div class="section">
+  <label for="fileInput">Upload Your File:</label>
+  <input type="file" id="fileInput" />
+  <button id="addReplaceButton">Add/Replace</button>
+  <p class="note">Use this to upload additional data to the current table.</p>
+</div>
+
+<!-- PHASE 2: BEGIN -->
 <div id="phase2" class="section" style="margin-top: 30px;">
   <h2>Map Your Columns</h2>
   <p>Use this section to map your spreadsheet columns to the relevant fields for your industry/subcategory. Uncheck to exclude any columns you don’t want in the final table.</p>
   <div id="columnMappingContainer"></div>
-  <button id="previewTableButton">Preview Table</button>
-  <span style="font-size: 0.85rem; margin-left: 10px;">If you make changes, press this button again to see the updated table.</span>
+
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <button id="previewTableButton">Preview Table</button>
+    <span style="font-size: 0.85rem;">If you make changes, press this button again to see the updated table.</span>
+  </div>
+
   <div id="previewContainer" style="margin-top: 20px;"></div>
 </div>
 
