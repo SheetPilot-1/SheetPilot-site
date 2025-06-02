@@ -105,130 +105,85 @@ function updateSubcategories() {
 </div>
 
 <script>
-let parsedData = [];
-
-// Trigger file parsing on upload
-document.getElementById('fileInput').addEventListener('change', () => {
-  const file = document.getElementById('fileInput').files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const data = e.target.result;
-    const workbook = XLSX.read(data, { type: 'binary' });
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 }); // Grab ALL rows
-    buildColumnMapping(parsedData[0] || []); // Use only header row for mapping
-  };
-  reader.readAsBinaryString(file);
-});
-
-function buildColumnMapping(headers) {
-  const container = document.getElementById('columnMappingContainer');
-  container.innerHTML = ''; // Clear previous mapping, if any
-
-  headers.forEach(header => {
-    const section = document.createElement('div');
-    section.className = 'mapping-section';
-
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = true;
-
-    const columnLabel = document.createElement('div');
-    columnLabel.textContent = header;
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Or enter custom label';
-    input.style.width = '100%';
-    input.style.marginTop = '5px';
-
-    section.appendChild(checkbox);
-    section.appendChild(columnLabel);
-    section.appendChild(input);
-    container.appendChild(section);
-  });
-}
-</script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-// 1️⃣ Predefined header options for demonstration (you can customize per industry/subcategory)
-const headerOptions = {
-  "Retail": ["Client Name", "Purchase Date", "Amount", "Status", "Notes"],
-  "Food & Beverage": ["Client Name", "Service Date", "Amount", "Payment Status", "Notes"],
-  "Fitness & Wellness": ["Client Name", "Session Date", "Amount", "Payment Status", "Trainer Name"],
-  // Add the rest of your industries/subcategories here!
-};
-
-let parsedData = [];
-
-// 2️⃣ On file upload
-document.getElementById('fileInput').addEventListener('change', () => {
-  const file = document.getElementById('fileInput').files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const data = e.target.result;
-    const workbook = XLSX.read(data, { type: 'binary' });
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-    buildColumnMapping(parsedData[0] || []);
+  // Example of dynamic header options per subcategory (replace with your actual mapping)
+  const headerOptionsMap = {
+    "Nail Salon": ["Client Name", "Service Date", "Amount", "Payment Status", "Technician"],
+    "Gyms": ["Member Name", "Session Date", "Payment Amount", "Payment Status", "Trainer"],
+    // Add more mappings for your subcategories here...
   };
-  reader.readAsBinaryString(file);
-});
 
-// 3️⃣ Build mapping dynamically with drop-downs
-function buildColumnMapping(headers) {
-  const container = document.getElementById('columnMappingContainer');
-  container.innerHTML = ''; // Clear previous mapping
+  let parsedData = [];
 
-  const selectedIndustry = document.getElementById("industry").value || "Retail"; // fallback
-  const optionsForIndustry = headerOptions[selectedIndustry] || [];
+  // Listen for file upload
+  document.getElementById('fileInput').addEventListener('change', () => {
+    const file = document.getElementById('fileInput').files[0];
+    if (!file) return;
 
-  headers.forEach(header => {
-    const section = document.createElement('div');
-    section.className = 'mapping-section';
-
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = true;
-
-    // The header itself
-    const columnLabel = document.createElement('div');
-    columnLabel.textContent = header;
-
-    // Drop-down for header mapping
-    const select = document.createElement('select');
-    const defaultOption = document.createElement('option');
-    defaultOption.value = '';
-    defaultOption.textContent = '-- Choose Header --';
-    select.appendChild(defaultOption);
-
-    optionsForIndustry.forEach(option => {
-      const opt = document.createElement('option');
-      opt.value = option;
-      opt.textContent = option;
-      select.appendChild(opt);
-    });
-    select.style.width = '100%';
-    select.style.marginTop = '5px';
-
-    // Or custom input
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Or enter custom label';
-    input.style.width = '100%';
-    input.style.marginTop = '5px';
-
-    section.appendChild(checkbox);
-    section.appendChild(columnLabel);
-    section.appendChild(select);
-    section.appendChild(input);
-    container.appendChild(section);
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, { type: 'binary' });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      buildColumnMapping(parsedData[0] || []);
+    };
+    reader.readAsBinaryString(file);
   });
-}
+
+  // Build dynamic header mapping boxes
+  function buildColumnMapping(headers) {
+    const container = document.getElementById('columnMappingContainer');
+    container.innerHTML = ''; // clear old mappings
+
+    // Determine selected subcategory
+    const subcategory = document.getElementById('subcategory').value;
+    const headerOptions = headerOptionsMap[subcategory] || ["General", "Date", "Amount", "Notes"];
+
+    headers.forEach((header) => {
+      const section = document.createElement('div');
+      section.className = 'mapping-section';
+
+      // Checkbox to include
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = true;
+
+      // Column name from uploaded file
+      const columnLabel = document.createElement('div');
+      columnLabel.textContent = header;
+
+      // Dropdown for suggested header mapping
+      const select = document.createElement('select');
+      const defaultOption = document.createElement('option');
+      defaultOption.value = '';
+      defaultOption.textContent = '-- Choose Header --';
+      select.appendChild(defaultOption);
+
+      headerOptions.forEach((opt) => {
+        const option = document.createElement('option');
+        option.value = opt;
+        option.textContent = opt;
+        select.appendChild(option);
+      });
+
+      select.style.width = '100%';
+      select.style.marginTop = '5px';
+
+      // Or custom label
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Or enter custom label';
+      input.style.width = '100%';
+      input.style.marginTop = '5px';
+
+      section.appendChild(checkbox);
+      section.appendChild(columnLabel);
+      section.appendChild(select);
+      section.appendChild(input);
+      container.appendChild(section);
+    });
+  }
 </script>
