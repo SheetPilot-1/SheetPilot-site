@@ -95,3 +95,125 @@ function updateSubcategories() {
 </script>
 </body>
 </html>
+
+<div id="phase2" class="section" style="margin-top: 30px;">
+  <h2>Map Your Columns</h2>
+  <p>Use this section to map your spreadsheet columns to the relevant fields for your industry/subcategory. Uncheck to exclude any columns you don’t want in the final table.</p>
+  <div id="columnMappingContainer"></div>
+  <button id="previewTableButton">Preview Table</button>
+  <span style="font-size: 0.85rem; margin-left: 10px;">If you make changes, press this button again to see the updated table.</span>
+  <div id="previewContainer" style="margin-top: 20px;"></div>
+</div>
+
+<script>
+// Example field definitions for each subcategory
+const subcategoryFields = {
+  "Clothing Stores": ["Item Name", "Size", "Color"],
+  "Food Trucks": ["Menu Item", "Serving Size", "Special Notes"],
+  "Auto Repair": ["Service Type", "Vehicle Model", "Technician"],
+  "Barbershop": ["Service Type", "Stylist", "Duration"],
+  "Consulting & Business Services": ["Service Type", "Consultant", "Session Date"],
+  // ... other subcategories here
+};
+
+// Universal payment fields to include if relevant
+const paymentFields = ["Amount", "Payment Status"];
+
+function buildColumnMapping(headers) {
+  const container = document.getElementById('columnMappingContainer');
+  container.innerHTML = '';
+
+  // Determine which fields to show based on subcategory
+  const industry = document.getElementById('industry').value;
+  const subcategory = document.getElementById('subcategory').value;
+  const dynamicFields = subcategoryFields[subcategory] || [];
+
+  // Determine if payment fields are needed
+  const paymentRelevant = ["Food Trucks", "Clothing Stores", "Auto Repair", "Barbershop", "Consulting & Business Services"];
+  let fieldsToShow = [...dynamicFields];
+  if (paymentRelevant.includes(subcategory)) {
+    fieldsToShow = [...fieldsToShow, ...paymentFields];
+  }
+
+  // Build mapping sections for each header
+  headers.forEach((header, index) => {
+    const section = document.createElement('div');
+    section.className = 'mapping-section';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = true;
+
+    const columnLabel = document.createElement('div');
+    columnLabel.textContent = `Column #${index + 1}: ${header}`;
+
+    const select = document.createElement('select');
+    select.style.width = '100%';
+    select.style.marginTop = '5px';
+    select.style.backgroundColor = '#cce6ff'; // lighter blue
+    select.style.color = '#000';
+    select.innerHTML = '<option value="">-- Choose field --</option>';
+    fieldsToShow.forEach(field => {
+      const opt = document.createElement('option');
+      opt.value = field;
+      opt.textContent = field;
+      select.appendChild(opt);
+    });
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Or enter custom label';
+    input.style.width = '100%';
+    input.style.marginTop = '5px';
+
+    section.appendChild(checkbox);
+    section.appendChild(columnLabel);
+    section.appendChild(select);
+    section.appendChild(input);
+    container.appendChild(section);
+  });
+}
+
+document.getElementById('previewTableButton').addEventListener('click', () => {
+  const selectedIndices = [];
+  const selectedHeaders = [];
+  const mappingSections = document.getElementById('columnMappingContainer').children;
+  Array.from(mappingSections).forEach((section, index) => {
+    const includeCheckbox = section.querySelector('input[type="checkbox"]');
+    if (includeCheckbox.checked) {
+      selectedIndices.push(index);
+      const input = section.querySelector('input[type="text"]');
+      const customLabel = input.value.trim();
+      const dropdownValue = section.querySelector('select').value;
+      selectedHeaders.push(customLabel || dropdownValue || `Column ${index + 1}`);
+    }
+  });
+
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  selectedHeaders.forEach(header => {
+    const th = document.createElement('th');
+    th.textContent = header;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  parsedData.slice(1).forEach(rowData => {
+    const row = document.createElement('tr');
+    selectedIndices.forEach(i => {
+      const td = document.createElement('td');
+      td.textContent = rowData[i] || '';
+      row.appendChild(td);
+    });
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+
+  const previewContainer = document.getElementById('previewContainer');
+  previewContainer.innerHTML = '';
+  previewContainer.appendChild(table);
+});
+</script>
