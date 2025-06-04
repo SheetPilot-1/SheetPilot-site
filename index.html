@@ -109,30 +109,7 @@ function updateSubcategories() {
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SheetPilot Phase 2</title>
-<style>
-  body { background-color: #33658A; color: #F5F5DC; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
-  h1 { font-size: 2rem; margin-bottom: 15px; }
-  label { display: block; margin-top: 12px; font-weight: bold; }
-  select, input[type="text"], input[type="file"] {
-    width: 100%; max-width: 400px; padding: 8px; margin-top: 6px; margin-bottom: 10px;
-    border-radius: 6px; border: none; font-size: 1em; box-sizing: border-box; background-color: #a9c8e5; color: #000;
-  }
-  button { background-color: #00E5FF; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-  button:hover { background-color: #00cce0; }
-  .mapping-section { background: #1E3A5F; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
-  .mapping-section label, .mapping-section div { color: #fff; margin-top: 5px; font-weight: bold; }
-  .note { color: #ccc; font-size: 0.85rem; margin-top: 5px; }
-</style>
-</head>
-<body>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SheetPilot Phase 2</title>
+<title>SheetPilot - Phase 2</title>
 <style>
   body { background-color: #33658A; color: #F5F5DC; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
   h1 { font-size: 2rem; margin-bottom: 15px; }
@@ -147,17 +124,14 @@ function updateSubcategories() {
     border: none;
     font-size: 1em;
     box-sizing: border-box;
-    background-color: #F5F5DC;
+    background-color: #ffffff; /* White fields */
     color: #000;
   }
-  input[type="file"] {
-    margin-top: 6px;
-    margin-bottom: 10px;
-  }
+  input[type="file"] { margin-top: 6px; margin-bottom: 10px; }
   button { background-color: #00E5FF; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
   button:hover { background-color: #00cce0; }
-  .mapping-section { background: #1E3A5F; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
-  .mapping-section div { color: #fff; margin-top: 5px; font-weight: bold; }
+  .mapping-section { background: #F5F5DC; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+  .mapping-section div { margin-top: 5px; font-weight: bold; color: #000; }
   .note { color: #ccc; font-size: 0.85rem; margin-top: 5px; }
   table { width: 100%; margin-top: 20px; border-collapse: collapse; background-color: #f0f0f0; color: #000; }
   th, td { padding: 8px; border: 1px solid #ccc; }
@@ -214,16 +188,12 @@ function updateSubcategories() {
       checkbox.type = 'checkbox';
       checkbox.checked = true;
 
-      const columnLabel = document.createElement('div');
-      columnLabel.textContent = header;
-
       const select = document.createElement('select');
       const defaultOption = document.createElement('option');
       defaultOption.value = '';
       defaultOption.textContent = '-- Choose Header --';
       select.appendChild(defaultOption);
 
-      // Example: Replace these with actual dynamic header options
       const headerOptions = ["Client Name", "Service Date", "Amount", "Payment Status", "Notes"];
       headerOptions.forEach(opt => {
         const option = document.createElement('option');
@@ -237,7 +207,6 @@ function updateSubcategories() {
       input.placeholder = 'Or enter custom label';
 
       section.appendChild(checkbox);
-      section.appendChild(columnLabel);
       section.appendChild(select);
       section.appendChild(input);
       container.appendChild(section);
@@ -256,7 +225,7 @@ function updateSubcategories() {
         const select = section.querySelector('select');
         const customLabelInput = section.querySelector('input[type="text"]');
         const customLabel = customLabelInput.value.trim();
-        const selectedHeader = select.value || header;
+        const selectedHeader = select.value;
         selectedHeaders.push(customLabel || selectedHeader || `Column ${index+1}`);
       }
     });
