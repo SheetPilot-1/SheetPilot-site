@@ -127,6 +127,53 @@ function updateSubcategories() {
 </head>
 <body>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SheetPilot Phase 2</title>
+<style>
+  body { background-color: #33658A; color: #F5F5DC; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 20px; }
+  h1 { font-size: 2rem; margin-bottom: 15px; }
+  label { display: block; margin-top: 12px; font-weight: bold; }
+  select, input[type="text"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: none;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: #F5F5DC;
+    color: #000;
+  }
+  input[type="file"] {
+    margin-top: 6px;
+    margin-bottom: 10px;
+  }
+  button { background-color: #00E5FF; color: #000; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+  button:hover { background-color: #00cce0; }
+  .mapping-section { background: #1E3A5F; padding: 10px; border-radius: 5px; margin-bottom: 10px; }
+  .mapping-section div { color: #fff; margin-top: 5px; font-weight: bold; }
+  .note { color: #ccc; font-size: 0.85rem; margin-top: 5px; }
+  table { width: 100%; margin-top: 20px; border-collapse: collapse; background-color: #f0f0f0; color: #000; }
+  th, td { padding: 8px; border: 1px solid #ccc; }
+  th { background-color: #00E5FF; color: #000; }
+  tr:nth-child(even) { background-color: #e0e0e0; }
+</style>
+</head>
+<body>
+
+<h1>SheetPilot</h1>
+
+<div class="section">
+  <label for="fileInput">Upload Your File:</label>
+  <input type="file" id="fileInput" />
+</div>
+
 <div id="phase2" class="section">
   <h2>Map Your Columns</h2>
   <p>Use this section to map your spreadsheet columns to the relevant fields for your industry/subcategory. Uncheck to exclude any columns you don’t want in the final table.</p>
@@ -137,13 +184,6 @@ function updateSubcategories() {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-  const headerOptionsMap = {
-    "Nail Salon": ["Client Name", "Service Date", "Amount", "Payment Status", "Technician"],
-    "Gyms": ["Member Name", "Session Date", "Payment Amount", "Payment Status", "Trainer"],
-    "Convenience Stores": ["Product", "Quantity", "Price", "Sale Date", "Payment Status"],
-    // Add more mappings...
-  };
-
   let parsedData = [];
 
   document.getElementById('fileInput').addEventListener('change', () => {
@@ -166,10 +206,6 @@ function updateSubcategories() {
     const container = document.getElementById('columnMappingContainer');
     container.innerHTML = '';
 
-    // EXAMPLE: Let’s assume “Nail Salon” is the chosen subcategory for now:
-    const subcategory = "Nail Salon"; // Change to dynamic value if needed
-    const headerOptions = headerOptionsMap[subcategory] || ["General", "Date", "Amount", "Notes"];
-
     headers.forEach((header) => {
       const section = document.createElement('div');
       section.className = 'mapping-section';
@@ -187,6 +223,8 @@ function updateSubcategories() {
       defaultOption.textContent = '-- Choose Header --';
       select.appendChild(defaultOption);
 
+      // Example: Replace these with actual dynamic header options
+      const headerOptions = ["Client Name", "Service Date", "Amount", "Payment Status", "Notes"];
       headerOptions.forEach(opt => {
         const option = document.createElement('option');
         option.value = opt;
@@ -194,14 +232,9 @@ function updateSubcategories() {
         select.appendChild(option);
       });
 
-      select.style.width = '100%';
-      select.style.marginTop = '5px';
-
       const input = document.createElement('input');
       input.type = 'text';
       input.placeholder = 'Or enter custom label';
-      input.style.width = '100%';
-      input.style.marginTop = '5px';
 
       section.appendChild(checkbox);
       section.appendChild(columnLabel);
@@ -210,6 +243,51 @@ function updateSubcategories() {
       container.appendChild(section);
     });
   }
+
+  document.getElementById('previewTableButton').addEventListener('click', () => {
+    const selectedIndices = [];
+    const selectedHeaders = [];
+    const mappingSections = document.getElementById('columnMappingContainer').children;
+
+    Array.from(mappingSections).forEach((section, index) => {
+      const includeCheckbox = section.querySelector('input[type="checkbox"]');
+      if (includeCheckbox.checked) {
+        selectedIndices.push(index);
+        const select = section.querySelector('select');
+        const customLabelInput = section.querySelector('input[type="text"]');
+        const customLabel = customLabelInput.value.trim();
+        const selectedHeader = select.value || header;
+        selectedHeaders.push(customLabel || selectedHeader || `Column ${index+1}`);
+      }
+    });
+
+    const table = document.createElement('table');
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    selectedHeaders.forEach(header => {
+      const th = document.createElement('th');
+      th.textContent = header;
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    parsedData.slice(1).forEach(rowData => {
+      const row = document.createElement('tr');
+      selectedIndices.forEach(i => {
+        const td = document.createElement('td');
+        td.textContent = rowData[i] || '';
+        row.appendChild(td);
+      });
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+
+    const previewContainer = document.getElementById('previewContainer');
+    previewContainer.innerHTML = '';
+    previewContainer.appendChild(table);
+  });
 </script>
 </body>
 </html>
