@@ -206,32 +206,41 @@ function updateSubcategories() {
     });
   }
 
-  
 document.getElementById('previewTableButton').addEventListener('click', () => {
   const mappingSections = document.getElementById('columnMappingContainer').children;
-  const headerMappings = []; // { label: "Client Name", index: 2 }
+  const selectedHeaders = [];
+  const selectedIndices = [];
 
+  // Build mapping: figure out which header each column should have and where to get data
   Array.from(mappingSections).forEach((section, index) => {
     const includeCheckbox = section.querySelector('input[type="checkbox"]');
     if (includeCheckbox.checked) {
-      const select = section.querySelector('select');
-      const input = section.querySelector('input[type="text"]');
-      const customLabel = input.value.trim();
-      const selectedLabel = select.value;
-      const finalLabel = customLabel || selectedLabel || `Column ${index+1}`;
-      headerMappings.push({
-        label: finalLabel,
-        index: index // this index is from the original data
-      });
+      const dropdown = section.querySelector('select');
+      const customInput = section.querySelector('input[type="text"]');
+      const headerName = customInput.value.trim() || dropdown.value;
+
+      // Save header name for display
+      selectedHeaders.push(headerName);
+
+      // Find which column in the uploaded data corresponds to this dropdown selection
+      const originalHeaders = parsedData[0]; // First row of file data is the header row
+      const targetIndex = originalHeaders.indexOf(dropdown.value); // get the column index in the file
+      if (targetIndex !== -1) {
+        selectedIndices.push(targetIndex);
+      } else {
+        // fallback to same index if dropdown header not found
+        selectedIndices.push(index);
+      }
     }
   });
 
+  // Build preview table
   const table = document.createElement('table');
   const thead = document.createElement('thead');
   const headerRow = document.createElement('tr');
-  headerMappings.forEach(mapping => {
+  selectedHeaders.forEach(header => {
     const th = document.createElement('th');
-    th.textContent = mapping.label;
+    th.textContent = header;
     headerRow.appendChild(th);
   });
   thead.appendChild(headerRow);
@@ -240,9 +249,9 @@ document.getElementById('previewTableButton').addEventListener('click', () => {
   const tbody = document.createElement('tbody');
   parsedData.slice(1).forEach(rowData => {
     const row = document.createElement('tr');
-    headerMappings.forEach(mapping => {
+    selectedIndices.forEach(i => {
       const td = document.createElement('td');
-      td.textContent = rowData[mapping.index] || '';
+      td.textContent = rowData[i] || '';
       row.appendChild(td);
     });
     tbody.appendChild(row);
@@ -252,6 +261,18 @@ document.getElementById('previewTableButton').addEventListener('click', () => {
   const previewContainer = document.getElementById('previewContainer');
   previewContainer.innerHTML = '';
   previewContainer.appendChild(table);
+
+  // Update note
+  const previewButton = document.getElementById('previewTableButton');
+  let note = document.getElementById('previewNote');
+  if (!note) {
+    note = document.createElement('span');
+    note.id = 'previewNote';
+    note.textContent = ' If you make changes, press this button again to see the updated table.';
+    note.style.fontSize = '0.85rem';
+    note.style.marginLeft = '10px';
+    previewButton.insertAdjacentElement('afterend', note);
+  }
 });
 </script>
 </body>
