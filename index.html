@@ -170,42 +170,51 @@ function updateSubcategories() {
   });
 
   function buildColumnMapping(headers) {
-    const container = document.getElementById('columnMappingContainer');
-    container.innerHTML = '';
+  const container = document.getElementById('columnMappingContainer');
+  container.innerHTML = '';
+  headers.forEach(header => {
+    const section = document.createElement('div');
+    section.className = 'mapping-section';
 
-    headers.forEach((header) => {
-      const section = document.createElement('div');
-      section.className = 'mapping-section';
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = true;
 
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = true;
+    // Create dropdown for header selection
+    const dropdown = document.createElement('select');
+    const emptyOption = document.createElement('option');
+    emptyOption.value = '';
+    emptyOption.textContent = '-- Choose Header --';
+    dropdown.appendChild(emptyOption);
 
-      const select = document.createElement('select');
-      const defaultOption = document.createElement('option');
-      defaultOption.value = '';
-      defaultOption.textContent = '-- Choose Header --';
-      select.appendChild(defaultOption);
-
-      const headerOptions = ["Client Name", "Service Date", "Amount", "Payment Status", "Notes"];
-      headerOptions.forEach(opt => {
-        const option = document.createElement('option');
-        option.value = opt;
-        option.textContent = opt;
-        select.appendChild(option);
-      });
-
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.placeholder = 'Or enter custom label';
-
-      section.appendChild(checkbox);
-      section.appendChild(select);
-      section.appendChild(input);
-      container.appendChild(section);
+    headers.forEach(h => {
+      const option = document.createElement('option');
+      option.value = h;
+      option.textContent = h;
+      dropdown.appendChild(option);
     });
-  }
 
+    // Auto-select the current header by default
+    const currentOption = Array.from(dropdown.options).find(opt => opt.value === header);
+    if (currentOption) {
+      currentOption.selected = true;
+    }
+
+    // Manual label input
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Or enter custom label';
+    input.style.width = '100%';
+    input.style.marginTop = '5px';
+
+    section.appendChild(checkbox);
+    section.appendChild(dropdown);
+    section.appendChild(input);
+    container.appendChild(section);
+  });
+}
+
+// Preview button logic
 document.getElementById('previewTableButton').addEventListener('click', () => {
   const mappingSections = document.getElementById('columnMappingContainer').children;
   const selectedHeaders = [];
