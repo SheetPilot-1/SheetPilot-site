@@ -206,50 +206,52 @@ function updateSubcategories() {
     });
   }
 
-  document.getElementById('previewTableButton').addEventListener('click', () => {
-    const selectedIndices = [];
-    const selectedHeaders = [];
-    const mappingSections = document.getElementById('columnMappingContainer').children;
+document.getElementById('previewTableButton').addEventListener('click', () => {
+  const mappingSections = document.getElementById('columnMappingContainer').children;
+  const headerMappings = []; // { label: "Client Name", index: 2 }
 
-    Array.from(mappingSections).forEach((section, index) => {
-      const includeCheckbox = section.querySelector('input[type="checkbox"]');
-      if (includeCheckbox.checked) {
-        selectedIndices.push(index);
-        const select = section.querySelector('select');
-        const customLabelInput = section.querySelector('input[type="text"]');
-        const customLabel = customLabelInput.value.trim();
-        const selectedHeader = select.value;
-        selectedHeaders.push(customLabel || selectedHeader || `Column ${index+1}`);
-      }
-    });
-
-    const table = document.createElement('table');
-    const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
-    selectedHeaders.forEach(header => {
-      const th = document.createElement('th');
-      th.textContent = header;
-      headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    const tbody = document.createElement('tbody');
-    parsedData.slice(1).forEach(rowData => {
-      const row = document.createElement('tr');
-      selectedIndices.forEach(i => {
-        const td = document.createElement('td');
-        td.textContent = rowData[i] || '';
-        row.appendChild(td);
+  Array.from(mappingSections).forEach((section, index) => {
+    const includeCheckbox = section.querySelector('input[type="checkbox"]');
+    if (includeCheckbox.checked) {
+      const select = section.querySelector('select');
+      const input = section.querySelector('input[type="text"]');
+      const customLabel = input.value.trim();
+      const selectedLabel = select.value;
+      const finalLabel = customLabel || selectedLabel || `Column ${index+1}`;
+      headerMappings.push({
+        label: finalLabel,
+        index: index // this index is from the original data
       });
-      tbody.appendChild(row);
-    });
-    table.appendChild(tbody);
-
-    const previewContainer = document.getElementById('previewContainer');
-    previewContainer.innerHTML = '';
-    previewContainer.appendChild(table);
+    }
   });
+
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  headerMappings.forEach(mapping => {
+    const th = document.createElement('th');
+    th.textContent = mapping.label;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  parsedData.slice(1).forEach(rowData => {
+    const row = document.createElement('tr');
+    headerMappings.forEach(mapping => {
+      const td = document.createElement('td');
+      td.textContent = rowData[mapping.index] || '';
+      row.appendChild(td);
+    });
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+
+  const previewContainer = document.getElementById('previewContainer');
+  previewContainer.innerHTML = '';
+  previewContainer.appendChild(table);
+});
 </script>
 </body>
 </html>
