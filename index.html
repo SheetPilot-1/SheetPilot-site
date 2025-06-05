@@ -209,59 +209,51 @@ function updateSubcategories() {
 document.getElementById('previewTableButton').addEventListener('click', () => {
   const mappingSections = document.getElementById('columnMappingContainer').children;
   const selectedHeaders = [];
-  const selectedIndices = [];
+  const columnIndices = [];
 
-  // Build mapping: figure out which header each column should have and where to get data
   Array.from(mappingSections).forEach((section, index) => {
     const includeCheckbox = section.querySelector('input[type="checkbox"]');
     if (includeCheckbox.checked) {
       const dropdown = section.querySelector('select');
-      const customInput = section.querySelector('input[type="text"]');
-      const headerName = customInput.value.trim() || dropdown.value;
-
-      // Save header name for display
-      selectedHeaders.push(headerName);
-
-      // Find which column in the uploaded data corresponds to this dropdown selection
-      const originalHeaders = parsedData[0]; // First row of file data is the header row
-      const targetIndex = originalHeaders.indexOf(dropdown.value); // get the column index in the file
-      if (targetIndex !== -1) {
-        selectedIndices.push(targetIndex);
-      } else {
-        // fallback to same index if dropdown header not found
-        selectedIndices.push(index);
+      const manualInput = section.querySelector('input[type="text"]:not([type="checkbox"])');
+      let headerLabel = dropdown.value;
+      if (manualInput.value.trim() !== '') {
+        headerLabel = manualInput.value.trim();
       }
+      selectedHeaders.push(headerLabel);
+      columnIndices.push(index);
     }
   });
 
-  // Build preview table
+  // Rebuild data rows
+  const dataRows = parsedData.slice(1).map(row => {
+    return columnIndices.map(i => row[i] !== undefined ? row[i] : '');
+  });
+
+  // Create table
   const table = document.createElement('table');
-  const thead = document.createElement('thead');
   const headerRow = document.createElement('tr');
   selectedHeaders.forEach(header => {
     const th = document.createElement('th');
     th.textContent = header;
     headerRow.appendChild(th);
   });
-  thead.appendChild(headerRow);
-  table.appendChild(thead);
+  table.appendChild(headerRow);
 
-  const tbody = document.createElement('tbody');
-  parsedData.slice(1).forEach(rowData => {
-    const row = document.createElement('tr');
-    selectedIndices.forEach(i => {
+  dataRows.forEach(row => {
+    const tr = document.createElement('tr');
+    row.forEach(cell => {
       const td = document.createElement('td');
-      td.textContent = rowData[i] || '';
-      row.appendChild(td);
+      td.textContent = cell;
+      tr.appendChild(td);
     });
-    tbody.appendChild(row);
+    table.appendChild(tr);
   });
-  table.appendChild(tbody);
 
   const previewContainer = document.getElementById('previewContainer');
   previewContainer.innerHTML = '';
   previewContainer.appendChild(table);
-
+});
   // Update note
   const previewButton = document.getElementById('previewTableButton');
   let note = document.getElementById('previewNote');
