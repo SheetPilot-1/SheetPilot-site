@@ -244,8 +244,8 @@ function buildColumnMapping(headers) {
 
 document.getElementById('previewTableButton').addEventListener('click', () => {
   const mappingSections = document.getElementById('columnMappingContainer').children;
+  const selectedIndices = [];
   const selectedHeaders = [];
-  const activeIndices = [];
 
   Array.from(mappingSections).forEach((section, index) => {
     const include = section.querySelector('input[type="checkbox"]').checked;
@@ -254,16 +254,17 @@ document.getElementById('previewTableButton').addEventListener('click', () => {
       const customInput = section.querySelector('input[type="text"]').value.trim();
       const headerLabel = customInput || dropdown.value || parsedData[0][index];
       selectedHeaders.push(headerLabel || `Column ${index+1}`);
-      activeIndices.push(index);
+      // IMPORTANT: record the **original index** of the data for this mapping
+      selectedIndices.push(index);
     }
   });
 
-  // Build data rows
+  // Rebuild the preview data **in the order of selectedIndices!**
   const previewData = parsedData.slice(1).map(row => {
-    return activeIndices.map(i => row[i] || '');
+    return selectedIndices.map(i => row[i] || '');
   });
 
-  // Render table
+  // Render the table
   const container = document.getElementById('previewContainer');
   container.innerHTML = '';
   const table = document.createElement('table');
