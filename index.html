@@ -3,268 +3,226 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot - Phase 1</title>
+  <title>SheetPilot</title>
   <style>
+    :root {
+      --bg: #33658A;
+      --text: #F5F5DC;
+      --cream: #F5F5DC;
+      --white: #ffffff;
+    }
     body {
-      background-color: #33658A;
-      color: #F5F5DC;
+      background-color: var(--bg);
+      color: var(--text);
       font-family: 'Segoe UI', sans-serif;
       margin: 0;
       padding: 20px;
     }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-    }
-    select, input[type="text"] {
-      background-color: #FFFFFF;
-      border: 2px solid #F5F5DC;
-      border-radius: 5px;
-      padding: 8px;
-      color: #000000;
+    h1 { font-size: 2rem; margin-bottom: 15px; }
+    label { display: block; margin-top: 12px; font-weight: bold; }
+    select, input[type="file"], input[type="text"] {
       width: 100%;
       max-width: 400px;
-      box-sizing: border-box;
+      padding: 8px;
       margin-top: 6px;
       margin-bottom: 10px;
+      border: 2px solid var(--cream);
+      border-radius: 6px;
+      background-color: var(--white);
+      color: #000;
+      font-size: 1em;
+      box-sizing: border-box;
     }
     button {
       background-color: #00E5FF;
       color: #000;
       border: none;
-      padding: 10px 20px;
       border-radius: 6px;
+      padding: 10px 20px;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 10px;
+      margin: 10px 0;
     }
-    button:hover {
-      background-color: #00cce0;
-    }
-  </style>
-</head>
-<body>
-
-<h1>SheetPilot - Phase 1</h1>
-
-<label for="industry">Select Your Industry:</label>
-<select id="industry" onchange="updateSubcategories()">
-  <option value="">-- Select Industry --</option>
-</select>
-
-<label for="subcategory">Select Your Subcategory:</label>
-<select id="subcategory">
-  <option value="">-- Choose Subcategory --</option>
-</select>
-
-<label for="customIndustry">Or Manually Enter Industry:</label>
-<input type="text" id="customIndustry" placeholder="Custom Industry" />
-
-<label for="customSubcategory">Or Manually Enter Subcategory:</label>
-<input type="text" id="customSubcategory" placeholder="Custom Subcategory" />
-
-<script>
-  const industryMap = {
-    "Retail": ["Clothing Stores", "Convenience Stores", "Online Retail"],
-    "Food & Beverage": ["Restaurants", "Food Trucks", "Catering Services"],
-    "Beauty Services": ["Nail Salon", "Hair Salon", "Spa Services"],
-    "Fitness & Wellness": ["Gyms", "Personal Trainers", "Yoga Studios"],
-    "Construction": ["General Contracting", "Remodeling", "Roofing"]
-  };
-
-  function updateSubcategories() {
-    const industry = document.getElementById("industry").value;
-    const subcategory = document.getElementById("subcategory");
-    subcategory.innerHTML = '<option value="">-- Choose Subcategory --</option>';
-    if (industryMap[industry]) {
-      industryMap[industry].forEach(option => {
-        const el = document.createElement("option");
-        el.value = option;
-        el.textContent = option;
-        subcategory.appendChild(el);
-      });
-    }
-  }
-
-  window.onload = () => {
-    const industrySelect = document.getElementById("industry");
-    Object.keys(industryMap).forEach(industry => {
-      const option = document.createElement("option");
-      option.value = industry;
-      option.textContent = industry;
-      industrySelect.appendChild(option);
-    });
-  };
-</script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot - Phase 2</title>
-  <style>
-    body {
-      background-color: #33658A;
-      color: #F5F5DC;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-top: 12px;
-      font-weight: bold;
-    }
-    select, input[type="text"], input[type="file"] {
-      background-color: #FFFFFF;
-      border: 2px solid #F5F5DC;
-      border-radius: 5px;
-      padding: 8px;
-      color: #000000;
-      width: 100%;
-      max-width: 400px;
-      box-sizing: border-box;
-      margin-top: 6px;
-      margin-bottom: 10px;
-    }
-    button {
-      background-color: #00E5FF;
-      color: #000;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    button:hover {
-      background-color: #00cce0;
-    }
+    button:hover { background-color: #00cce0; }
+    .note { color: #ccc; font-size: 0.85rem; }
     .mapping-section {
-      background: #1E3A5F;
+      background: var(--bg);
       padding: 10px;
       border-radius: 5px;
       margin-bottom: 10px;
     }
-    .mapping-section label, .mapping-section div {
-      color: #fff;
-      margin-top: 5px;
-      font-weight: bold;
+    .mapping-section input[type="checkbox"] {
+      transform: scale(1.2);
+      margin-right: 8px;
     }
+    .mapping-section label { margin-left: 4px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; }
+    th { background-color: #00E5FF; }
+    tr:nth-child(even) { background-color: #e0e0e0; }
   </style>
 </head>
 <body>
+  <h1>SheetPilot</h1>
 
-<h1>SheetPilot - Phase 2</h1>
+  <!-- Phase 1 -->
+  <div id="phase1">
+    <label for="industry">Select Industry:</label>
+    <select id="industry"></select>
 
-<label for="fileInput">Upload Your File:</label>
-<input type="file" id="fileInput" />
-<button id="addReplaceButton">Add/Replace</button>
+    <label for="subcategory">Select Subcategory:</label>
+    <select id="subcategory"></select>
+  </div>
 
-<h2>Map Your Columns</h2>
-<p>Use this section to map your spreadsheet columns to custom or suggested headers. Uncheck to exclude any columns you don’t want in the final table.</p>
+  <!-- Phase 2 -->
+  <div id="phase2">
+    <label for="fileInput">Upload Your File:</label>
+    <input type="file" id="fileInput" />
 
-<div id="columnMappingContainer"></div>
-<button id="previewTableButton">Preview Table</button>
-<div id="previewContainer" style="margin-top: 20px;"></div>
+    <div id="columnMappingContainer"></div>
+    <button id="previewTableButton">Preview Table</button>
+    <div id="previewContainer"></div>
+  </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-<script>
-  let parsedData;
-
-  document.getElementById('fileInput').addEventListener('change', () => {
-    const file = document.getElementById('fileInput').files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const data = e.target.result;
-      const workbook = XLSX.read(data, { type: 'binary' });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
-      parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-      buildColumnMapping(parsedData[0] || []);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script>
+    // 25 industries with 3 subcategories each
+    const industryMap = {
+      Retail: ["Clothing Stores", "Convenience Stores", "Online Retail"],
+      "Food & Beverage": ["Restaurants", "Food Trucks", "Bakeries"],
+      "Beauty Services": ["Nail Salon", "Hair Salon", "Spa"],
+      "Fitness & Wellness": ["Gyms", "Yoga Studios", "Personal Trainers"],
+      "Barbershop & Tattoo": ["Barbershop", "Tattoo Studio", "Piercing Studio"],
+      Cleaning: ["Residential Cleaning", "Commercial Cleaning", "Carpet Cleaning"],
+      "Construction & Renovation": ["Residential Construction", "Remodeling", "General Contractors"],
+      "Automotive Services": ["Auto Repair", "Car Wash", "Detailing"],
+      "Landscaping Services": ["Lawn Care", "Tree Services", "Irrigation"],
+      "Plumbing & HVAC": ["Plumbing", "HVAC Repair", "Drain Cleaning"],
+      "Electrical Services": ["Residential Electricians", "Commercial Electricians", "Lighting Installation"],
+      Carpentry: ["Custom Furniture", "Cabinet Making", "Deck Building"],
+      "Painting & Drywall": ["Interior Painting", "Exterior Painting", "Drywall Repair"],
+      "Legal Services": ["Family Law", "Criminal Defense", "Corporate Law"],
+      Accounting: ["Bookkeeping", "Tax Preparation", "Financial Planning"],
+      "Marketing Services": ["Digital Marketing", "SEO", "Social Media"],
+      "Real Estate": ["Residential Sales", "Property Management", "Leasing"],
+      "Transportation & Logistics": ["Courier Services", "Moving Services", "Freight Shipping"],
+      "IT Services": ["Network Setup", "Computer Repair", "Tech Consulting"],
+      Consulting: ["Business Strategy", "HR Consulting", "Operations"],
+      "Photography & Videography": ["Event Photography", "Portraits", "Drone Services"],
+      "Education & Tutoring": ["Test Prep", "Subject Tutoring", "Language Instruction"],
+      "Healthcare & Personal Care": ["Massage Therapy", "Chiropractic", "Physical Therapy"],
+      "Non‑Profit Services": ["Charitable Outreach", "Community Programs", "Support Services"],
+      Automotive: ["Dealerships", "Auto Parts", "Vehicle Maintenance"],
+      E‑commerce: ["Online Shops", "Dropshipping", "Digital Goods"]
     };
-    reader.readAsBinaryString(file);
-  });
 
-  function buildColumnMapping(headers) {
-    const container = document.getElementById('columnMappingContainer');
-    container.innerHTML = '';
-    headers.forEach(header => {
-      const section = document.createElement('div');
-      section.className = 'mapping-section';
-
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = true;
-
-      const dropdown = document.createElement('select');
-      dropdown.innerHTML = `<option value="">-- Choose Header --</option>
-                            <option>Client Name</option>
-                            <option>Service Date</option>
-                            <option>Amount</option>
-                            <option>Status</option>
-                            <option>Notes</option>
-                            <option>Payment Status</option>`;
-
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.placeholder = 'Or enter custom header';
-
-      section.appendChild(checkbox);
-      section.appendChild(dropdown);
-      section.appendChild(input);
-      container.appendChild(section);
-    });
-  }
-
-  document.getElementById('previewTableButton').addEventListener('click', () => {
-    const selectedIndices = [];
-    const selectedHeaders = [];
-    const mappingSections = document.getElementById('columnMappingContainer').children;
-    Array.from(mappingSections).forEach((section, index) => {
-      const includeCheckbox = section.querySelector('input[type="checkbox"]');
-      if (includeCheckbox.checked) {
-        selectedIndices.push(index);
-        const dropdownValue = section.querySelector('select').value.trim();
-        const customLabel = section.querySelector('input[type="text"]').value.trim();
-        selectedHeaders.push(customLabel || dropdownValue || parsedData[0][index]);
-      }
-    });
-
-    const table = document.createElement('table');
-    table.border = '1';
-    const headerRow = table.insertRow();
-    selectedHeaders.forEach(header => {
-      const cell = headerRow.insertCell();
-      cell.textContent = header;
-    });
-
-    parsedData.slice(1).forEach(row => {
-      const newRow = table.insertRow();
-      selectedIndices.forEach(i => {
-        const cell = newRow.insertCell();
-        cell.textContent = row[i] !== undefined ? row[i] : '';
+    function updateSubcategories() {
+      const sub = document.getElementById("subcategory");
+      sub.innerHTML = `<option value="">-- Select Subcategory --</option>`;
+      const ind = document.getElementById("industry").value;
+      (industryMap[ind] || []).forEach(sc => {
+        const o = document.createElement("option");
+        o.value = sc;
+        o.textContent = sc;
+        sub.appendChild(o);
       });
+    }
+
+    // Populate industry & setup subcategory
+    const indSel = document.getElementById("industry");
+    indSel.innerHTML = `<option value="">-- Select Industry --</option>`;
+    Object.keys(industryMap).forEach(ind => {
+      const o = document.createElement("option");
+      o.value = ind; o.textContent = ind;
+      indSel.appendChild(o);
+    });
+    indSel.addEventListener("change", () => updateSubcategories());
+
+    // ========== File parsing & mapping ========== //
+    let parsedData = [];
+    let sheetHeaders = [];
+
+    document.getElementById('fileInput').addEventListener('change', e => {
+      const f = e.target.files[0];
+      if (!f) return;
+      const r = new FileReader();
+      r.onload = evt => {
+        const wb = XLSX.read(evt.target.result, { type: 'binary' });
+        const sh = wb.Sheets[wb.SheetNames[0]];
+        parsedData = XLSX.utils.sheet_to_json(sh, { header: 1 });
+        sheetHeaders = parsedData[0] || [];
+        buildColumnMapping(sheetHeaders);
+      };
+      r.readAsBinaryString(f);
     });
 
-    const previewContainer = document.getElementById('previewContainer');
-    previewContainer.innerHTML = '';
-    previewContainer.appendChild(table);
-  });
-</script>
+    // Build mapping rows
+    function buildColumnMapping(headers) {
+      const container = document.getElementById("columnMappingContainer");
+      container.innerHTML = "";
+      headers.forEach((h, i) => {
+        const div = document.createElement("div");
+        div.className = "mapping-section";
+        div.dataset.index = i;
 
+        const cb = document.createElement("input");
+        cb.type = "checkbox";
+        cb.checked = true;
+
+        const dd = document.createElement("select");
+        dd.innerHTML = `<option value="">-- Choose Header --</option>`;
+        headers.forEach(x => {
+          const o = document.createElement("option");
+          o.value = x; o.textContent = x;
+          if (x === h) o.selected = true;
+          dd.appendChild(o);
+        });
+
+        const custom = document.createElement("input");
+        custom.type = "text";
+        custom.placeholder = "Or enter custom header";
+
+        div.append(cb, dd, custom);
+        container.appendChild(div);
+      });
+    }
+
+    // Render preview table
+    document.getElementById("previewTableButton").addEventListener("click", () => {
+      const map = Array.from(document.querySelectorAll(".mapping-section"))
+        .filter(div => div.querySelector("input[type=checkbox]").checked)
+        .map(div => {
+          const idx = +div.dataset.index;
+          const sel = div.querySelector("select").value;
+          const cust = div.querySelector("input[type=text]").value.trim();
+          return {
+            idx,
+            label: cust || sel || sheetHeaders[idx]
+          };
+        });
+
+      const table = document.createElement("table");
+      const thead = table.createTHead();
+      const thr = thead.insertRow();
+      map.forEach(m => {
+        const th = document.createElement("th");
+        th.textContent = m.label;
+        thr.appendChild(th);
+      });
+
+      const tbody = document.createElement("tbody");
+      parsedData.slice(1).forEach(row => {
+        const tr = tbody.insertRow();
+        map.forEach(m => {
+          const td = tr.insertCell();
+          td.textContent = row[m.idx] !== undefined ? row[m.idx] : "";
+        });
+      });
+
+      const pc = document.getElementById("previewContainer");
+      pc.innerHTML = "";
+      pc.appendChild(table);
+    });
+  </script>
 </body>
 </html>
