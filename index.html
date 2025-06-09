@@ -244,24 +244,25 @@ function buildColumnMapping(headers) {
 
 document.getElementById('previewTableButton').addEventListener('click', () => {
   const mappingSections = document.getElementById('columnMappingContainer').children;
-  const selectedIndices = [];
   const selectedHeaders = [];
+  const dataIndices = [];
 
   Array.from(mappingSections).forEach((section, index) => {
-    const include = section.querySelector('input[type="checkbox"]').checked;
-    if (include) {
+    const includeCheckbox = section.querySelector('input[type="checkbox"]');
+    if (includeCheckbox.checked) {
       const dropdown = section.querySelector('select');
-      const customInput = section.querySelector('input[type="text"]').value.trim();
-      const headerLabel = customInput || dropdown.value || parsedData[0][index];
-      selectedHeaders.push(headerLabel || `Column ${index+1}`);
-      // IMPORTANT: record the **original index** of the data for this mapping
-      selectedIndices.push(index);
+      const customInput = section.querySelector('input[type="text"]');
+      const headerLabel = customInput.value.trim() || dropdown.value || parsedData[0][index];
+
+      // This index is the original data index we must keep!
+      dataIndices.push(index);
+      selectedHeaders.push(headerLabel || `Column ${index + 1}`);
     }
   });
 
-  // Rebuild the preview data **in the order of selectedIndices!**
+  // Build new rows using the selected data indices
   const previewData = parsedData.slice(1).map(row => {
-    return selectedIndices.map(i => row[i] || '');
+    return dataIndices.map(i => row[i] !== undefined ? row[i] : '');
   });
 
   // Render the table
