@@ -242,34 +242,31 @@ function buildColumnMapping(headers) {
   });
 }
 
-document.getElementById('previewTableButton').addEventListener('click', () => {
+  document.getElementById('previewTableButton').addEventListener('click', () => {
   const mappingSections = document.getElementById('columnMappingContainer').children;
   const selectedHeaders = [];
-  const dataIndices = [];
+  const selectedIndices = [];
 
-  Array.from(mappingSections).forEach((section, index) => {
+  Array.from(mappingSections).forEach((section, originalIndex) => {
     const includeCheckbox = section.querySelector('input[type="checkbox"]');
     if (includeCheckbox.checked) {
       const dropdown = section.querySelector('select');
       const customInput = section.querySelector('input[type="text"]');
-      const headerLabel = customInput.value.trim() || dropdown.value || parsedData[0][index];
 
-      // This index is the original data index we must keep!
-      dataIndices.push(index);
-      selectedHeaders.push(headerLabel || `Column ${index + 1}`);
+      const headerLabel = customInput.value.trim() || dropdown.value || `Column ${originalIndex + 1}`;
+      selectedHeaders.push(headerLabel);
+
+      // Record the **original index** of the column, so data moves with the header
+      selectedIndices.push(originalIndex);
     }
   });
 
-  // Build new rows using the selected data indices
-  const previewData = parsedData.slice(1).map(row => {
-    return dataIndices.map(i => row[i] !== undefined ? row[i] : '');
-  });
-
-  // Render the table
+  // Now build the table by mapping data rows using these original indices
   const container = document.getElementById('previewContainer');
   container.innerHTML = '';
   const table = document.createElement('table');
 
+  // Create header row
   const headerRow = document.createElement('tr');
   selectedHeaders.forEach(header => {
     const th = document.createElement('th');
@@ -278,11 +275,12 @@ document.getElementById('previewTableButton').addEventListener('click', () => {
   });
   table.appendChild(headerRow);
 
-  previewData.forEach(row => {
+  // Create data rows
+  parsedData.slice(1).forEach(row => {
     const tr = document.createElement('tr');
-    row.forEach(cell => {
+    selectedIndices.forEach(index => {
       const td = document.createElement('td');
-      td.textContent = cell;
+      td.textContent = row[index] !== undefined ? row[index] : '';
       tr.appendChild(td);
     });
     table.appendChild(tr);
