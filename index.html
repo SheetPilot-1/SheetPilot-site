@@ -108,7 +108,7 @@ function updateSubcategories() {
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>SheetPilot - Phase 2</title>
 <style>
   body {
@@ -134,7 +134,7 @@ function updateSubcategories() {
     margin-top: 6px;
     margin-bottom: 10px;
     border-radius: 6px;
-    border: none;
+    border: 1px solid #ccc;
     font-size: 1em;
     box-sizing: border-box;
   }
@@ -151,6 +151,22 @@ function updateSubcategories() {
   button:hover {
     background-color: #00cce0;
   }
+  .mapping-section {
+    background: #f5f5dc;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  .mapping-section div {
+    color: #000;
+    margin-top: 5px;
+    font-weight: bold;
+  }
+  .note {
+    color: #ccc;
+    font-size: 0.85rem;
+    margin-top: 5px;
+  }
   table {
     width: 100%;
     margin-top: 20px;
@@ -164,147 +180,143 @@ function updateSubcategories() {
   }
   th {
     background-color: #00E5FF;
+    color: #000;
   }
   tr:nth-child(even) {
     background-color: #e0e0e0;
-  }
-  .mapping-section {
-    background: #f5f5dc;
-    color: #000;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 10px;
   }
 </style>
 </head>
 <body>
 
+<h1>SheetPilot - Phase 2</h1>
+
+<div class="section">
+  <label for="fileInput">Upload Your File:</label>
+  <input type="file" id="fileInput" />
+  <p class="note">Upload your file to begin mapping columns.</p>
+</div>
+
 <div id="phase2" class="section">
   <h2>Map Your Columns</h2>
-  <p>Use this section to map your spreadsheet columns to the relevant fields for your industry/subcategory. Uncheck to exclude any columns you don’t want in the final table.</p>
+  <p>Use this section to map your spreadsheet columns to custom or suggested headers. Uncheck to hide columns you don’t want in the final table.</p>
   <div id="columnMappingContainer"></div>
   <button id="previewTableButton">Preview Table</button>
+  <span id="previewNote" style="font-size: 0.85rem; margin-left: 10px;">If you make changes, press this button again to see the updated table.</span>
   <div id="previewContainer" style="margin-top: 20px;"></div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
-let parsedData;
+  let parsedData;
 
-document.getElementById('fileInput').addEventListener('change', () => {
-  const file = document.getElementById('fileInput').files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const data = e.target.result;
-    const workbook = XLSX.read(data, { type: 'binary' });
-    const sheetName = workbook.SheetNames[0];
-    const sheet = workbook.Sheets[sheetName];
-    parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-    buildColumnMapping(parsedData[0] || []);
-  };
-  reader.readAsBinaryString(file);
-});
-
-function buildColumnMapping(headers) {
-  const container = document.getElementById('columnMappingContainer');
-  container.innerHTML = '';
-  headers.forEach(header => {
-    const section = document.createElement('div');
-    section.className = 'mapping-section';
-
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.checked = true;
-
-    const select = document.createElement('select');
-    const defaultOption = document.createElement('option');
-    defaultOption.value = '';
-    defaultOption.textContent = '-- Choose Header --';
-    select.appendChild(defaultOption);
-
-    // Populate dropdown with original headers
-    headers.forEach(h => {
-      const option = document.createElement('option');
-      option.value = h;
-      option.textContent = h;
-      select.appendChild(option);
-    });
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.placeholder = 'Or enter custom label';
-
-    section.appendChild(checkbox);
-    section.appendChild(select);
-    section.appendChild(input);
-    container.appendChild(section);
+  // File upload to parse headers
+  document.getElementById('fileInput').addEventListener('change', () => {
+    const file = document.getElementById('fileInput').files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const data = e.target.result;
+      const workbook = XLSX.read(data, { type: 'binary' });
+      const sheetName = workbook.SheetNames[0];
+      const sheet = workbook.Sheets[sheetName];
+      parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+      buildColumnMapping(parsedData[0] || []);
+    };
+    reader.readAsBinaryString(file);
   });
-}
 
-<script>
-  <button id="addMappingButton">Add Another Column</button>
+  // Build header mapping interface
+  function buildColumnMapping(headers) {
+    const container = document.getElementById('columnMappingContainer');
+    container.innerHTML = '';
+    headers.forEach(header => {
+      const section = document.createElement('div');
+      section.className = 'mapping-section';
+
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = true;
+
+      const columnLabel = document.createElement('div');
+      columnLabel.textContent = header;
+
+      const select = document.createElement('select');
+      select.style.width = '100%';
+      select.style.marginTop = '5px';
+      select.style.backgroundColor = '#f5f5dc';
+      select.style.color = '#000';
+      select.style.border = '1px solid #ccc';
+      ['','Client Name','Service Date','Amount','Payment Status','Notes'].forEach(optText => {
+        const opt = document.createElement('option');
+        opt.value = optText;
+        opt.textContent = optText;
+        select.appendChild(opt);
+      });
+
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Or enter custom header';
+      input.style.width = '100%';
+      input.style.marginTop = '5px';
+
+      section.appendChild(checkbox);
+      section.appendChild(columnLabel);
+      section.appendChild(select);
+      section.appendChild(input);
+      container.appendChild(section);
+    });
+  }
+
+  // Preview table with dynamic header & data reordering
   document.getElementById('previewTableButton').addEventListener('click', () => {
-    const mappingSections = document.getElementById('columnMappingContainer').children;
-    const selectedHeaders = [];
     const selectedIndices = [];
+    const selectedHeaders = [];
+    const mappingSections = document.getElementById('columnMappingContainer').children;
 
-    Array.from(mappingSections).forEach((section, originalIndex) => {
+    Array.from(mappingSections).forEach((section, index) => {
       const includeCheckbox = section.querySelector('input[type="checkbox"]');
-      if (includeCheckbox && includeCheckbox.checked) {
-        const dropdown = section.querySelector('select');
-        const customInput = section.querySelector('input[type="text"]');
+      if (includeCheckbox.checked) {
+        selectedIndices.push(index);
 
-        const headerLabel = customInput.value.trim() || dropdown.value || `Column ${originalIndex + 1}`;
-        selectedHeaders.push(headerLabel);
+        const select = section.querySelector('select');
+        const dropdownVal = select.value;
+        const input = section.querySelector('input[type="text"]');
+        const manualVal = input.value.trim();
 
-        // Use original index of column data
-        selectedIndices.push(originalIndex);
+        const finalHeader = manualVal || dropdownVal || parsedData[0][index];
+        selectedHeaders.push(finalHeader);
       }
     });
 
-    // Build the preview table using dynamic indices
-    const container = document.getElementById('previewContainer');
-    container.innerHTML = '';
     const table = document.createElement('table');
-
-    // Create header row
+    const thead = document.createElement('thead');
     const headerRow = document.createElement('tr');
+
     selectedHeaders.forEach(header => {
       const th = document.createElement('th');
       th.textContent = header;
       headerRow.appendChild(th);
     });
-    table.appendChild(headerRow);
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
 
-    // Create data rows
+    const tbody = document.createElement('tbody');
     parsedData.slice(1).forEach(row => {
       const tr = document.createElement('tr');
-      selectedIndices.forEach(index => {
+      selectedIndices.forEach(idx => {
         const td = document.createElement('td');
-        td.textContent = row[index] !== undefined ? row[index] : '';
+        td.textContent = row[idx] || '';
         tr.appendChild(td);
       });
-      table.appendChild(tr);
+      tbody.appendChild(tr);
     });
 
-    container.appendChild(table);
-  });
-
-  // Add button for dynamically adding more mapping sections
-  document.getElementById('addMappingButton').addEventListener('click', () => {
-    const container = document.getElementById('columnMappingContainer');
-    const newSection = container.firstElementChild.cloneNode(true);
-
-    // Reset values
-    newSection.querySelector('input[type="checkbox"]').checked = true;
-    newSection.querySelector('select').selectedIndex = 0;
-    newSection.querySelector('input[type="text"]').value = '';
-    
-    container.appendChild(newSection);
+    table.appendChild(tbody);
+    const previewContainer = document.getElementById('previewContainer');
+    previewContainer.innerHTML = '';
+    previewContainer.appendChild(table);
   });
 </script>
-</script>
-
 </body>
 </html>
