@@ -242,52 +242,68 @@ function buildColumnMapping(headers) {
   });
 }
 
+<button id="addMappingButton">Add Another Column</button>
+<script>
   document.getElementById('previewTableButton').addEventListener('click', () => {
-  const mappingSections = document.getElementById('columnMappingContainer').children;
-  const selectedHeaders = [];
-  const selectedIndices = [];
+    const mappingSections = document.getElementById('columnMappingContainer').children;
+    const selectedHeaders = [];
+    const selectedIndices = [];
 
-  Array.from(mappingSections).forEach((section, originalIndex) => {
-    const includeCheckbox = section.querySelector('input[type="checkbox"]');
-    if (includeCheckbox.checked) {
-      const dropdown = section.querySelector('select');
-      const customInput = section.querySelector('input[type="text"]');
+    Array.from(mappingSections).forEach((section, originalIndex) => {
+      const includeCheckbox = section.querySelector('input[type="checkbox"]');
+      if (includeCheckbox && includeCheckbox.checked) {
+        const dropdown = section.querySelector('select');
+        const customInput = section.querySelector('input[type="text"]');
 
-      const headerLabel = customInput.value.trim() || dropdown.value || `Column ${originalIndex + 1}`;
-      selectedHeaders.push(headerLabel);
+        const headerLabel = customInput.value.trim() || dropdown.value || `Column ${originalIndex + 1}`;
+        selectedHeaders.push(headerLabel);
 
-      // Record the **original index** of the column, so data moves with the header
-      selectedIndices.push(originalIndex);
-    }
-  });
-
-  // Now build the table by mapping data rows using these original indices
-  const container = document.getElementById('previewContainer');
-  container.innerHTML = '';
-  const table = document.createElement('table');
-
-  // Create header row
-  const headerRow = document.createElement('tr');
-  selectedHeaders.forEach(header => {
-    const th = document.createElement('th');
-    th.textContent = header;
-    headerRow.appendChild(th);
-  });
-  table.appendChild(headerRow);
-
-  // Create data rows
-  parsedData.slice(1).forEach(row => {
-    const tr = document.createElement('tr');
-    selectedIndices.forEach(index => {
-      const td = document.createElement('td');
-      td.textContent = row[index] !== undefined ? row[index] : '';
-      tr.appendChild(td);
+        // Use original index of column data
+        selectedIndices.push(originalIndex);
+      }
     });
-    table.appendChild(tr);
+
+    // Build the preview table using dynamic indices
+    const container = document.getElementById('previewContainer');
+    container.innerHTML = '';
+    const table = document.createElement('table');
+
+    // Create header row
+    const headerRow = document.createElement('tr');
+    selectedHeaders.forEach(header => {
+      const th = document.createElement('th');
+      th.textContent = header;
+      headerRow.appendChild(th);
+    });
+    table.appendChild(headerRow);
+
+    // Create data rows
+    parsedData.slice(1).forEach(row => {
+      const tr = document.createElement('tr');
+      selectedIndices.forEach(index => {
+        const td = document.createElement('td');
+        td.textContent = row[index] !== undefined ? row[index] : '';
+        tr.appendChild(td);
+      });
+      table.appendChild(tr);
+    });
+
+    container.appendChild(table);
   });
 
-  container.appendChild(table);
-});
+  // Add button for dynamically adding more mapping sections
+  document.getElementById('addMappingButton').addEventListener('click', () => {
+    const container = document.getElementById('columnMappingContainer');
+    const newSection = container.firstElementChild.cloneNode(true);
+
+    // Reset values
+    newSection.querySelector('input[type="checkbox"]').checked = true;
+    newSection.querySelector('select').selectedIndex = 0;
+    newSection.querySelector('input[type="text"]').value = '';
+    
+    container.appendChild(newSection);
+  });
+</script>
 </script>
 
 </body>
