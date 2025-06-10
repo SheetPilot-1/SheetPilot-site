@@ -7,7 +7,7 @@
 <style>
   body {
     background-color: #2f5e88; /* Light blue background */
-    color: white;
+    color: #f5f5dc; /* Cream color for text */
     font-family: Arial, sans-serif;
   }
   .container {
@@ -21,11 +21,14 @@
   h1 {
     text-align: center;
     margin-bottom: 20px;
+    color: #f5f5dc; /* Cream color for logo */
+    font-weight: bold;
   }
   label {
     display: block;
     margin-top: 15px;
     font-weight: bold;
+    color: #f5f5dc; /* Cream color for labels */
   }
   select, input[type="text"] {
     width: 100%;
@@ -58,31 +61,35 @@
       <label for="industry">Select Your Industry:</label>
       <select id="industry" name="industry" required>
         <option value="">-- Select Industry --</option>
+        <!-- White Collar Industries -->
+        <option value="Finance">Finance</option>
+        <option value="Legal">Legal</option>
+        <option value="Healthcare">Healthcare</option>
+        <option value="Technology">Technology</option>
+        <option value="Education">Education</option>
+        <option value="Real Estate">Real Estate</option>
+        <option value="Insurance">Insurance</option>
+        <option value="Marketing">Marketing</option>
+        <option value="Human Resources">Human Resources</option>
+        <option value="Government">Government</option>
+
+        <!-- Small Business / Urban -->
         <option value="Retail">Retail</option>
         <option value="Food & Beverage">Food & Beverage</option>
-        <option value="Construction">Construction</option>
-        <option value="Healthcare">Healthcare</option>
-        <option value="Education">Education</option>
-        <option value="Transportation">Transportation</option>
-        <option value="Real Estate">Real Estate</option>
-        <option value="Finance">Finance</option>
-        <option value="Hospitality">Hospitality</option>
-        <option value="Manufacturing">Manufacturing</option>
-        <option value="Technology">Technology</option>
         <option value="Arts & Entertainment">Arts & Entertainment</option>
-        <option value="Government">Government</option>
         <option value="Nonprofit">Nonprofit</option>
-        <option value="Legal">Legal</option>
-        <option value="Agriculture">Agriculture</option>
-        <option value="Energy">Energy</option>
-        <option value="Utilities">Utilities</option>
-        <option value="Telecommunications">Telecommunications</option>
-        <option value="Marketing">Marketing</option>
-        <option value="Insurance">Insurance</option>
-        <option value="Human Resources">Human Resources</option>
-        <option value="Security">Security</option>
-        <option value="Cleaning Services">Cleaning Services</option>
         <option value="Fitness & Wellness">Fitness & Wellness</option>
+        <option value="Transportation">Transportation</option>
+        <option value="Hospitality">Hospitality</option>
+        <option value="Cleaning Services">Cleaning Services</option>
+
+        <!-- Blue Collar / Trade -->
+        <option value="Construction">Construction</option>
+        <option value="Manufacturing">Manufacturing</option>
+        <option value="Energy">Energy</option>
+        <option value="Agriculture">Agriculture</option>
+        <option value="Utilities">Utilities</option>
+        <option value="Security">Security</option>
       </select>
 
       <label for="subcategory">Select Your Subcategory:</label>
@@ -105,31 +112,32 @@
     const subcategorySelect = document.getElementById("subcategory");
 
     const subcategories = {
+      "Finance": ["Accountants", "Financial Advisors", "Tax Services"],
+      "Legal": ["Lawyers", "Paralegals", "Legal Consultants"],
+      "Healthcare": ["Doctors", "Dentists", "Clinics"],
+      "Technology": ["IT Support", "Software Development", "Web Design"],
+      "Education": ["Schools", "Tutoring", "Training Centers"],
+      "Real Estate": ["Agents", "Property Management", "Appraisal Services"],
+      "Insurance": ["Auto Insurance", "Home Insurance", "Life Insurance"],
+      "Marketing": ["Advertising", "Market Research", "PR Services"],
+      "Human Resources": ["Recruitment", "Staffing", "Training & Development"],
+      "Government": ["Public Services", "Municipal Services", "Administration"],
+
       "Retail": ["Clothing Stores", "Convenience Stores", "Online Retail"],
       "Food & Beverage": ["Restaurants", "Food Trucks", "Catering Services"],
-      "Construction": ["General Contractors", "Plumbers", "Electricians"],
-      "Healthcare": ["Doctors", "Dentists", "Clinics"],
-      "Education": ["Schools", "Tutoring", "Training Centers"],
-      "Transportation": ["Taxi Services", "Logistics", "Delivery Services"],
-      "Real Estate": ["Agents", "Property Management", "Appraisal Services"],
-      "Finance": ["Accountants", "Financial Advisors", "Tax Services"],
-      "Hospitality": ["Hotels", "Motels", "Bed & Breakfasts"],
-      "Manufacturing": ["Assembly", "Fabrication", "Production"],
-      "Technology": ["IT Support", "Software Development", "Web Design"],
       "Arts & Entertainment": ["Event Planning", "Photography", "Music Services"],
-      "Government": ["Public Services", "Municipal Services", "Administration"],
       "Nonprofit": ["Charities", "Foundations", "Volunteer Groups"],
-      "Legal": ["Lawyers", "Paralegals", "Legal Consultants"],
-      "Agriculture": ["Farming", "Ranching", "Forestry"],
-      "Energy": ["Renewable Energy", "Oil & Gas", "Utilities"],
-      "Utilities": ["Water Supply", "Waste Management", "Power Supply"],
-      "Telecommunications": ["Internet Providers", "Mobile Carriers", "Satellite Services"],
-      "Marketing": ["Advertising", "Market Research", "PR Services"],
-      "Insurance": ["Auto Insurance", "Home Insurance", "Life Insurance"],
-      "Human Resources": ["Recruitment", "Staffing", "Training & Development"],
-      "Security": ["Security Guards", "Alarm Systems", "Cybersecurity"],
+      "Fitness & Wellness": ["Gyms", "Yoga Studios", "Nutritionists"],
+      "Transportation": ["Taxi Services", "Logistics", "Delivery Services"],
+      "Hospitality": ["Hotels", "Motels", "Bed & Breakfasts"],
       "Cleaning Services": ["Residential Cleaning", "Commercial Cleaning", "Carpet Cleaning"],
-      "Fitness & Wellness": ["Gyms", "Yoga Studios", "Nutritionists"]
+
+      "Construction": ["General Contractors", "Plumbers", "Electricians"],
+      "Manufacturing": ["Assembly", "Fabrication", "Production"],
+      "Energy": ["Renewable Energy", "Oil & Gas", "Power Generation"],
+      "Agriculture": ["Farming", "Ranching", "Forestry"],
+      "Utilities": ["Water Supply", "Waste Management", "Power Supply"],
+      "Security": ["Security Guards", "Alarm Systems", "Cybersecurity"]
     };
 
     industrySelect.addEventListener("change", function() {
