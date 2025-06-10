@@ -162,3 +162,194 @@
   </script>
 </body>
 </html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SheetPilot</title>
+<style>
+  body {
+    background-color: #33658A;
+    color: #F5F5DC;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #F5F5DC;
+  }
+  label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+    color: #F5F5DC;
+  }
+  select, input[type="text"], input[type="file"] {
+    width: 100%;
+    max-width: 400px;
+    padding: 8px;
+    margin-top: 6px;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    border: 2px solid #F5F5DC;
+    font-size: 1em;
+    box-sizing: border-box;
+    background-color: #fff;
+    color: #000;
+  }
+  button {
+    background-color: #00E5FF;
+    color: #000;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  button:hover {
+    background-color: #00cce0;
+  }
+  .section {
+    margin-bottom: 20px;
+  }
+  .mapping-section {
+    background: #33658A;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  .mapping-section input[type="text"], .mapping-section select {
+    background-color: #fff;
+    border: 2px solid #F5F5DC;
+    color: #000;
+    width: 100%;
+    margin-top: 5px;
+    border-radius: 6px;
+  }
+  table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+    background-color: #f0f0f0;
+    color: #000;
+  }
+  th, td {
+    padding: 8px;
+    border: 1px solid #ccc;
+  }
+  th {
+    background-color: #00E5FF;
+    color: #000;
+  }
+  tr:nth-child(even) {
+    background-color: #e0e0e0;
+  }
+</style>
+</head>
+<body>
+
+<div class="section">
+  <h1>SheetPilot</h1>
+  <label for="fileInput">Upload Your File:</label>
+  <input type="file" id="fileInput" />
+</div>
+
+<div id="phase2" class="section" style="display:none;">
+  <h2 style="color: #F5F5DC;">Map Your Columns</h2>
+  <p style="color: #F5F5DC;">Use the dropdowns or enter custom labels. Data will shift based on header labels.</p>
+  <div id="columnMappingContainer"></div>
+  <button id="previewTableButton">Preview Table</button>
+  <span style="font-size: 0.85rem; margin-left: 10px; color: #ccc;">If you make changes, press this button again to see updates.</span>
+  <div id="previewContainer" style="margin-top: 20px;"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+let parsedData = [];
+
+document.getElementById('fileInput').addEventListener('change', () => {
+  const file = document.getElementById('fileInput').files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    const data = e.target.result;
+    const workbook = XLSX.read(data, { type: 'binary' });
+    const sheetName = workbook.SheetNames[0];
+    const sheet = workbook.Sheets[sheetName];
+    parsedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+    buildColumnMapping(parsedData[0] || []);
+    document.getElementById('phase2').style.display = 'block';
+  };
+  reader.readAsBinaryString(file);
+});
+
+function buildColumnMapping(headers) {
+  const container = document.getElementById('columnMappingContainer');
+  container.innerHTML = '';
+  headers.forEach(header => {
+    const section = document.createElement('div');
+    section.className = 'mapping-section';
+
+    const select = document.createElement('select');
+    select.innerHTML = `
+      <option value="${header}">${header}</option>
+      <option value="Client Name">Client Name</option>
+      <option value="Service Date">Service Date</option>
+      <option value="Amount">Amount</option>
+      <option value="Payment Status">Payment Status</option>
+    `;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = 'Or enter custom label';
+
+    section.appendChild(select);
+    section.appendChild(input);
+    container.appendChild(section);
+  });
+}
+
+document.getElementById('previewTableButton').addEventListener('click', () => {
+  const selectedHeaders = [];
+  const mappingSections = document.getElementById('columnMappingContainer').children;
+  Array.from(mappingSections).forEach(section => {
+    const selectValue = section.querySelector('select').value.trim();
+    const inputValue = section.querySelector('input').value.trim();
+    selectedHeaders.push(inputValue || selectValue);
+  });
+
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  selectedHeaders.forEach(header => {
+    const th = document.createElement('th');
+    th.textContent = header;
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  parsedData.slice(1).forEach(rowData => {
+    const row = document.createElement('tr');
+    Array.from(mappingSections).forEach((section, idx) => {
+      const td = document.createElement('td');
+      td.textContent = rowData[idx] || '';
+      row.appendChild(td);
+    });
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+
+  const previewContainer = document.getElementById('previewContainer');
+  previewContainer.innerHTML = '';
+  previewContainer.appendChild(table);
+});
+</script>
+</body>
+</html>
