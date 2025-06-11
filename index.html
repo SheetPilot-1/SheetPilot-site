@@ -183,100 +183,99 @@
   });
 
   function createMappingDropdowns(headers) {
-    const mappingSection = document.getElementById('mappingSection');
-    mappingSection.innerHTML = '';
-    headers.forEach((header, idx) => {
-      const container = document.createElement('div');
-      container.className = 'dropdown-container';
+  const mappingSection = document.getElementById('mappingSection');
+  mappingSection.innerHTML = '';
+  headers.forEach((header, idx) => {
+    const container = document.createElement('div');
+    container.className = 'dropdown-container';
 
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = true;
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.checked = true;
 
-      const label = document.createElement('label');
-      label.textContent = header;
+    const select = document.createElement('select');
+    const defaultOption = document.createElement('option');
+    defaultOption.value = '';
+    defaultOption.textContent = '-- Choose header to map --';
+    select.appendChild(defaultOption);
 
-      const select = document.createElement('select');
-      const defaultOption = document.createElement('option');
-      defaultOption.value = '';
-      defaultOption.textContent = '-- Select Header --';
-      select.appendChild(defaultOption);
-
-      originalHeaders.forEach((h) => {
-        const option = document.createElement('option');
-        option.value = h;
-        option.textContent = h;
-        select.appendChild(option);
-      });
-
-      const customLabel = document.createElement('input');
-      customLabel.type = 'text';
-      customLabel.placeholder = 'Or enter custom label';
-
-      container.appendChild(checkbox);
-      container.appendChild(label);
-      container.appendChild(select);
-      container.appendChild(customLabel);
-
-      mappingSection.appendChild(container);
-    });
-    document.getElementById('previewBtn').style.display = 'inline-block';
-  }
-
-  document.getElementById('previewBtn').addEventListener('click', () => {
-    const containers = document.querySelectorAll('.dropdown-container');
-    const newHeaders = [];
-    const sourceIndexes = [];
-
-    containers.forEach((container, idx) => {
-      const checkbox = container.querySelector('input[type="checkbox"]');
-      if (!checkbox.checked) return;
-
-      const selectValue = container.querySelector('select').value;
-      const customLabel = container.querySelector('input[type="text"]').value.trim();
-      const finalLabel = customLabel || selectValue || originalHeaders[idx];
-
-      newHeaders.push(finalLabel);
-
-      // Determine the original index of the selected header
-      let originalIndex;
-      if (selectValue) {
-        originalIndex = originalHeaders.indexOf(selectValue);
-      } else {
-        originalIndex = idx;
-      }
-      sourceIndexes.push(originalIndex);
+    headers.forEach((h) => {
+      const option = document.createElement('option');
+      option.value = h;
+      option.textContent = h;
+      select.appendChild(option);
     });
 
-    // Build the new table
-    const tableContainer = document.getElementById('tableContainer');
-    const table = document.createElement('table');
+    const customLabel = document.createElement('input');
+    customLabel.type = 'text';
+    customLabel.placeholder = 'Or enter custom label';
 
-    const thead = document.createElement('thead');
-    const headerRow = document.createElement('tr');
-    newHeaders.forEach((h) => {
-      const th = document.createElement('th');
-      th.textContent = h;
-      headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
+    container.appendChild(checkbox);
+    container.appendChild(select);
+    container.appendChild(customLabel);
 
-    const tbody = document.createElement('tbody');
-    workbookData.forEach((row) => {
-      const tr = document.createElement('tr');
-      sourceIndexes.forEach((originalIdx) => {
-        const td = document.createElement('td');
-        td.textContent = row[originalIdx] || '';
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
-    });
-    table.appendChild(tbody);
-
-    tableContainer.innerHTML = '';
-    tableContainer.appendChild(table);
+    mappingSection.appendChild(container);
   });
+  document.getElementById('previewBtn').style.display = 'inline-block';
+}
+
+document.getElementById('previewBtn').addEventListener('click', () => {
+  const containers = document.querySelectorAll('.dropdown-container');
+  const newHeaders = [];
+  const sourceIndexes = [];
+
+  containers.forEach((container, idx) => {
+    const checkbox = container.querySelector('input[type="checkbox"]');
+    if (!checkbox.checked) return;
+
+    const selectValue = container.querySelector('select').value;
+    const customLabel = container.querySelector('input[type="text"]').value.trim();
+    const finalLabel = customLabel || selectValue || '';
+
+    newHeaders.push(finalLabel);
+
+    // If the user did not select a dropdown value, push -1 as a flag for "empty data"
+    if (selectValue) {
+      const originalIndex = originalHeaders.indexOf(selectValue);
+      sourceIndexes.push(originalIndex);
+    } else {
+      sourceIndexes.push(-1); // no mapping, empty column
+    }
+  });
+
+  // Build table
+  const tableContainer = document.getElementById('tableContainer');
+  const table = document.createElement('table');
+
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  newHeaders.forEach((h) => {
+    const th = document.createElement('th');
+    th.textContent = h || ' ';
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  workbookData.forEach((row) => {
+    const tr = document.createElement('tr');
+    sourceIndexes.forEach((originalIdx) => {
+      const td = document.createElement('td');
+      if (originalIdx === -1) {
+        td.textContent = ''; // no data for this column
+      } else {
+        td.textContent = row[originalIdx] || '';
+      }
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+
+  tableContainer.innerHTML = '';
+  tableContainer.appendChild(table);
+});
 </script>
 
 </body>
