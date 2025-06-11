@@ -139,73 +139,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>SheetPilot - Phase 2</title>
+  <title>SheetPilot - Phase 2 (Dynamic Mapping)</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
   <style>
-    body {
-      background-color: #1f5f89;
-      color: #fff;
-      font-family: sans-serif;
-      padding: 20px;
-    }
-    h1 {
-      color: #f5deb3; /* Bold cream color */
-    }
-    .header-section, .mapping-section {
-      margin-bottom: 20px;
-    }
-    .dropdown-container {
-      background-color: #1f5f89;
-      border: 2px solid #f5deb3; /* Bold cream border */
-      border-radius: 5px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-    select, input[type="text"] {
-      background-color: #fff;
-      border: 1px solid #ccc;
-      padding: 5px;
-      width: 100%;
-      margin-top: 5px;
-      color: #000;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      background-color: #fff;
-      color: #000;
-    }
-    th, td {
-      border: 1px solid #000;
-      padding: 5px;
-    }
-    .btn {
-      background-color: #00bfff;
-      color: #000;
-      border: none;
-      padding: 10px 15px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+    body { background-color: #1f5f89; color: #fff; font-family: sans-serif; padding: 20px; }
+    h1 { color: #f5deb3; }
+    .dropdown-container { background: #1f5f89; border: 2px solid #f5deb3; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
+    select, input[type="text"] { background: #fff; border: 1px solid #ccc; width: 100%; margin-top: 5px; color: #000; }
+    table { border-collapse: collapse; width: 100%; background: #fff; color: #000; }
+    th, td { border: 1px solid #000; padding: 5px; }
+    .btn { background: #00bfff; color: #000; border: none; padding: 10px; cursor: pointer; font-weight: bold; }
   </style>
 </head>
 <body>
 
-<div class="header-section">
-  <label for="fileInput">Upload Your File:</label>
-  <input type="file" id="fileInput" accept=".xlsx" />
-</div>
+<h1>SheetPilot</h1>
 
-<div id="mappingSection" class="mapping-section"></div>
+<input type="file" id="fileInput" accept=".xlsx" />
+<div id="mappingSection"></div>
 
-<button id="previewBtn" class="btn" style="display: none;">Preview Table</button>
+<button id="previewBtn" class="btn" style="display:none;">Preview Table</button>
 <p>If you make changes, press this button again to see updates.</p>
 
 <div id="tableContainer"></div>
 
 <script>
+  let originalHeaders = [];
   let workbookData = [];
-  let headers = [];
 
   document.getElementById('fileInput').addEventListener('change', (e) => {
     const file = e.target.files[0];
@@ -213,12 +173,11 @@
     reader.onload = (evt) => {
       const data = new Uint8Array(evt.target.result);
       const workbook = XLSX.read(data, { type: 'array' });
-      const sheetName = workbook.SheetNames[0];
-      const sheet = workbook.Sheets[sheetName];
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
       const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
-      headers = json[0];
+      originalHeaders = json[0];
       workbookData = json.slice(1);
-      createMappingDropdowns(headers);
+      createMappingDropdowns(originalHeaders);
     };
     reader.readAsArrayBuffer(file);
   });
@@ -226,7 +185,6 @@
   function createMappingDropdowns(headers) {
     const mappingSection = document.getElementById('mappingSection');
     mappingSection.innerHTML = '';
-
     headers.forEach((header, idx) => {
       const container = document.createElement('div');
       container.className = 'dropdown-container';
@@ -244,7 +202,7 @@
       defaultOption.textContent = '-- Select Header --';
       select.appendChild(defaultOption);
 
-      headers.forEach((h) => {
+      originalHeaders.forEach((h) => {
         const option = document.createElement('option');
         option.value = h;
         option.textContent = h;
@@ -259,34 +217,44 @@
       container.appendChild(label);
       container.appendChild(select);
       container.appendChild(customLabel);
+
       mappingSection.appendChild(container);
     });
-
     document.getElementById('previewBtn').style.display = 'inline-block';
   }
 
   document.getElementById('previewBtn').addEventListener('click', () => {
     const containers = document.querySelectorAll('.dropdown-container');
-    const activeHeaders = [];
-    const headerMapping = {};
+    const newHeaders = [];
+    const sourceIndexes = [];
 
     containers.forEach((container, idx) => {
       const checkbox = container.querySelector('input[type="checkbox"]');
       if (!checkbox.checked) return;
 
-      const select = container.querySelector('select');
+      const selectValue = container.querySelector('select').value;
       const customLabel = container.querySelector('input[type="text"]').value.trim();
+      const finalLabel = customLabel || selectValue || originalHeaders[idx];
 
-      const finalLabel = customLabel || select.value || headers[idx];
-      activeHeaders.push(finalLabel);
-      headerMapping[finalLabel] = headers[idx];
+      newHeaders.push(finalLabel);
+
+      // Determine the original index of the selected header
+      let originalIndex;
+      if (selectValue) {
+        originalIndex = originalHeaders.indexOf(selectValue);
+      } else {
+        originalIndex = idx;
+      }
+      sourceIndexes.push(originalIndex);
     });
 
+    // Build the new table
     const tableContainer = document.getElementById('tableContainer');
     const table = document.createElement('table');
+
     const thead = document.createElement('thead');
     const headerRow = document.createElement('tr');
-    activeHeaders.forEach((h) => {
+    newHeaders.forEach((h) => {
       const th = document.createElement('th');
       th.textContent = h;
       headerRow.appendChild(th);
@@ -297,10 +265,9 @@
     const tbody = document.createElement('tbody');
     workbookData.forEach((row) => {
       const tr = document.createElement('tr');
-      activeHeaders.forEach((h) => {
+      sourceIndexes.forEach((originalIdx) => {
         const td = document.createElement('td');
-        const originalIndex = headers.indexOf(headerMapping[h]);
-        td.textContent = row[originalIndex] || '';
+        td.textContent = row[originalIdx] || '';
         tr.appendChild(td);
       });
       tbody.appendChild(tr);
