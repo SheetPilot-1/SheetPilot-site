@@ -21,10 +21,17 @@
       text-align: center;
     }
 
+    .logo {
+      width: 70px;
+      height: 70px;
+      margin-bottom: 10px;
+    }
+
     h1 {
-      font-size: 2rem;
+      font-size: 2.4rem;
       color: #ffffff;
-      margin-bottom: 1rem;
+      font-weight: bold;
+      margin: 0.3rem 0 0.5rem;
     }
 
     .tagline {
@@ -98,8 +105,14 @@
 </head>
 <body>
   <div class="container">
+    <!-- Logo Icon -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Font_Awesome_5_solid_plane.svg/512px-Font_Awesome_5_solid_plane.svg.png" alt="SheetPilot Logo" class="logo" />
+    
+    <!-- Branding -->
     <h1>SheetPilot</h1>
     <div class="tagline">We Build Your Systems, So You Don’t Have To</div>
+
+    <!-- Form -->
     <form action="#" method="POST" enctype="multipart/form-data">
       <label for="name">Full Name</label>
       <input type="text" id="name" name="name" required />
