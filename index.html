@@ -7,70 +7,99 @@
   <title>SheetPilot — We Build Your Systems, So You Don’t Have To</title>
   <style>
     body {
+      background-color: #6ec9f1;
       font-family: Arial, sans-serif;
-      background-color: #e7f0f7;
-      color: #333;
       margin: 0;
       padding: 0;
+      color: #002b45;
     }
+
     .container {
-      max-width: 700px;
-      margin: 40px auto;
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    h1 {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 2rem;
       text-align: center;
-      color: #0077cc;
     }
+
+    h1 {
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: #ffffff;
+      margin-bottom: 2rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      text-align: left;
+    }
+
     label {
-      display: block;
-      margin: 20px 0 8px;
       font-weight: bold;
+      color: #002b45;
     }
+
     input[type="text"],
     input[type="email"],
     textarea,
-    input[type="file"] {
-      width: 100%;
+    input[type="file"],
+    select {
       padding: 10px;
-      border: 1px solid #ccc;
+      border: 2px solid #002b45;
       border-radius: 6px;
-      font-size: 1em;
+      font-size: 1rem;
+      width: 100%;
     }
+
     textarea {
+      resize: vertical;
       height: 100px;
     }
+
     .radio-group {
       display: flex;
-      gap: 15px;
-      margin-top: 10px;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: -10px;
     }
-    .radio-group input {
-      margin-right: 5px;
+
+    .radio-group label {
+      font-weight: normal;
     }
+
+    small,
+    p {
+      font-size: 0.85rem;
+      color: #002b45;
+    }
+
     button {
-      display: block;
-      width: 100%;
-      background-color: #0077cc;
+      background-color: #002b45;
       color: white;
-      padding: 12px;
-      font-size: 16px;
       border: none;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: bold;
       border-radius: 6px;
       cursor: pointer;
-      margin-top: 30px;
+      margin-top: 10px;
     }
+
     button:hover {
-      background-color: #005fa3;
+      background-color: #001d30;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>SheetPilot — We Build Your Systems, So You Don’t Have To</h1>
+    <h1>SheetPilot</h1>
+    <div class="tagline">We Build Your Systems, So You Don’t Have To</div>
     <form action="#" method="POST" enctype="multipart/form-data">
       <label for="name">Full Name</label>
       <input type="text" id="name" name="name" required />
@@ -84,17 +113,10 @@
       <label for="description">Tell us about your business and what you need automated</label>
       <textarea id="description" name="description" placeholder="Feel free to use talk-to-text or type out details..."></textarea>
 
-  <div style="margin-top: 30px;">
-  <label for="sampleFile" style="font-weight: bold; color: #FDF6E3; font-size: 18px;">Optional: Upload a Sample of Your Data</label>
-  <input type="file" id="sampleFile" name="sampleFile" 
-         style="display: block; margin-top: 8px; background-color: white; border: 2px solid #FDF6E3; border-radius: 5px; padding: 10px; width: 100%; max-width: 400px;">
+      <label for="sampleFile">Optional: Upload a Sample of Your Data</label>
+      <input type="file" id="sampleFile" name="sampleFile" accept=".xlsx,.xls,.csv,.ods" />
+      <small>While this is optional, uploading a sample spreadsheet will greatly help your SheetPilot expert understand your data structure and ensure your system is sorted and built accurately from the start.<br/><em>We recommend removing or anonymizing any sensitive data before uploading.</em></small>
 
-  <p style="margin-top: 10px; color: #FDF6E3; font-size: 14px;">
-    While this is optional, uploading a sample spreadsheet will greatly help your SheetPilot expert understand your data structure 
-    and ensure your system is sorted and built accurately from the start.
-  </p>
-  <p style="font-size: 12px; color: #E0E0E0;"><em>We recommend removing or anonymizing any sensitive data before uploading.</em></p>
-</div>
       <label>Preferred Spreadsheet Platform</label>
       <div class="radio-group">
         <label><input type="radio" name="platform" value="Google Sheets" checked /> Google Sheets</label>
