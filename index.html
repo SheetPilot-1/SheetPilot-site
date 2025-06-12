@@ -163,7 +163,7 @@
       };
 
       try {
-        const response = await fetch('https://script.google.com/macros/s/AKfycbzek_kzijfosGnvebUZiBsyhJAubwdMy2yl8UMtrGnLZD4xWN8rcRpBw16MoelliV4L/exec', {
+        const response = await fetch('/api/submit', {
           method: 'POST',
           body: JSON.stringify(payload),
           headers: {
