@@ -176,9 +176,10 @@
       } else {
         alert('Error: ' + result.message);
       }
-    } catch (err) {
-      alert('Something went wrong: ' + err.message);
-    }
+   catch (err) {
+  console.error('Submission error:', err);
+  alert('Something went wrong. Check the console.');
+}
   });
 </script>
 </body>
