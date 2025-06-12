@@ -139,6 +139,7 @@
     </form>
   </div>
   <script>
+  <script>
   document.querySelector('form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -160,14 +161,13 @@
     };
 
     try {
-
-  const response = await fetch('https://script.google.com/macros/s/AKfycbzek_kzijfosGnvebUZiBsyhJAubwdMy2yl8UMtrGnLZD4xWN8rcRpBw16MoelliV4L/exec', {
-  method: 'POST',
-  body: JSON.stringify(payload),
-  headers: {
-    'Content-Type': 'application/json'
-  }
-});
+      const response = await fetch('https://script.google.com/macros/s/AKfycbzek_kzijfosGnvebUZiBsyhJAubwdMy2yl8UMtrGnLZD4xWN8rcRpBw16MoelliV4L/exec', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
 
       const result = await response.json();
 
@@ -177,10 +177,10 @@
       } else {
         alert('Error: ' + result.message);
       }
-   catch (err) {
-  console.error('Submission error:', err);
-  alert('Something went wrong. Check the console.');
-}
+    } catch (err) {
+      console.error('Submission error:', err);
+      alert('Something went wrong. Check the console.');
+    }
   });
 </script>
 </body>
