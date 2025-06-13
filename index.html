@@ -4,162 +4,129 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot — We Build Your Systems, So You Don’t Have To</title>
+  <title>SheetPilot Form</title>
   <style>
     body {
-      background-color: #6ec9f1;
+      background-color: #e6f0fa; /* light blue */
       font-family: Arial, sans-serif;
+      color: #003366; /* dark navy */
       margin: 0;
       padding: 0;
-      color: #002b45;
     }
-    .container {
+
+    .form-container {
       max-width: 600px;
-      margin: 0 auto;
-      padding: 2rem;
-      text-align: center;
+      margin: 40px auto;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
-    .logo {
-      width: 70px;
-      height: 70px;
-      margin-bottom: 10px;
-    }
+
     h1 {
-      font-size: 2.4rem;
-      color: #ffffff;
-      font-weight: bold;
-      margin: 0.3rem 0 0.5rem;
+      font-size: 28px;
+      color: #f9f3e8; /* cream header */
+      background-color: #003366;
+      padding: 16px;
+      border-radius: 8px 8px 0 0;
+      margin: -30px -30px 20px -30px;
     }
-    .tagline {
-      font-size: 1.2rem;
-      color: #ffffff;
-      margin-bottom: 2rem;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-      text-align: left;
-    }
+
     label {
+      display: block;
+      margin-bottom: 8px;
       font-weight: bold;
-      color: #002b45;
     }
-    input, textarea, select {
-      padding: 10px;
-      border: 2px solid #002b45;
-      border-radius: 6px;
-      font-size: 1rem;
+
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    select {
       width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
+
     textarea {
-      resize: vertical;
       height: 100px;
     }
+
     .radio-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-top: -10px;
+      gap: 10px;
+      margin-bottom: 20px;
     }
+
     .radio-group label {
-      font-weight: normal;
-    }
-    small, p {
-      font-size: 0.85rem;
-      color: #002b45;
-    }
-    button {
-      background-color: #002b45;
-      color: white;
-      border: none;
-      padding: 12px;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      font-size: 16px;
       cursor: pointer;
-      margin-top: 10px;
     }
+
+    .radio-group input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      margin-right: 10px;
+      accent-color: #003366;
+    }
+
+    .note {
+      font-size: 12px;
+      color: #666;
+      margin-top: -15px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #003366;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
     button:hover {
-      background-color: #001d30;
+      background-color: #00264d;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <img src="https://cdn-icons-png.flaticon.com/512/681/681494.png" alt="SheetPilot Logo" class="logo" />
-    <h1>SheetPilot</h1>
-    <div class="tagline">We Build Your Systems, So You Don’t Have To</div>
+  <div class="form-container">
+    <h1>SheetPilot — We Build Your Systems, So You Don’t Have To</h1>
+    <form action="/api/submit" method="POST" enctype="multipart/form-data">
+      <label for="name">Your Name</label>
+      <input type="text" name="name" required />
 
-      <form action="/api/submit" method="POST" enctype="multipart/form-data">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" required />
+      <label for="email">Email</label>
+      <input type="email" name="email" required />
 
       <label for="business">Business Name</label>
-      <input type="text" id="business" name="business" required />
+      <input type="text" name="business" required />
 
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" required />
+      <label for="description">Describe what you need</label>
+      <textarea name="description" required></textarea>
 
-      <label for="description">Tell us about your business and what you need automated</label>
-      <textarea id="description" name="description"></textarea>
-
-      <label for="sampleFile">Optional: Upload a Sample of Your Data</label>
-      <input type="file" id="sampleFile" name="sampleFile" accept=".xlsx,.xls,.csv,.ods" />
-
-      <label>Preferred Spreadsheet Platform</label>
+      <label>Preferred Platform</label>
       <div class="radio-group">
-        <label><input type="radio" name="platform" value="Google Sheets" checked /> Google Sheets</label>
-        <label><input type="radio" name="platform" value="Microsoft Excel" /> Microsoft Excel</label>
-        <label><input type="radio" name="platform" value="Not Sure" /> Not Sure</label>
+        <label><input type="radio" name="platform" value="Google Sheets" required />Google Sheets</label>
+        <label><input type="radio" name="platform" value="Microsoft Excel" />Microsoft Excel</label>
+        <label><input type="radio" name="platform" value="Not Sure" />Not Sure</label>
       </div>
 
-      <label for="notes">Optional Notes</label>
-      <textarea id="notes" name="notes" placeholder="Any additional info we should know?"></textarea>
+      <label for="notes">Anything else we should know? (Optional)</label>
+      <textarea name="notes"></textarea>
 
-      <button type="submit">Submit</button>
+      <label for="sampleFile">Upload Sample File (Optional)</label>
+      <input type="file" name="sampleFile" />
+      <p class="note">Your file is private and secure — only used to better understand your request.</p>
+
+      <button type="submit">Submit Request</button>
     </form>
   </div>
-
-<script>
-  document.querySelector('form').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const form = e.target;
-    const formData = new FormData(form);
-
-    try {
-      const response = await fetch('/api/submit', {
-        method: 'POST',
-        body: formData
-      });
-
-      const contentType = response.headers.get('content-type');
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        alert('Server error:\n' + errorText);
-        return;
-      }
-
-      if (contentType && contentType.includes('application/json')) {
-        const result = await response.json();
-
-        if (result.status === 'success') {
-          alert('Form submitted successfully! Folder created at:\n' + result.folderUrl);
-          form.reset();
-        } else {
-          alert('Error: ' + result.message);
-        }
-      } else {
-        const fallback = await response.text();
-        alert('Unexpected response:\n' + fallback);
-      }
-    } catch (err) {
-      console.error('Submission error:', err);
-      alert('Something went wrong:\n' + err.message);
-    }
-  });
-</script>
 </body>
 </html>
