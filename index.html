@@ -4,113 +4,173 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot</title>
+  <title>SheetPilot — We Build Your Systems, So You Don’t Have To</title>
   <style>
     body {
+      background-color: #6ec9f1;
       font-family: Arial, sans-serif;
-      background-color: #d7ecfa;
-      padding: 0;
       margin: 0;
+      padding: 0;
+      color: #002b45;
     }
-    header {
-      background-color: #003366;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-      font-weight: bold;
-      font-size: 22px;
-    }
-    form {
+
+    .container {
       max-width: 600px;
-      margin: 30px auto;
-      background-color: #fff;
-      padding: 20px;
-      border-radius: 6px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin: 0 auto;
+      padding: 2rem;
+      text-align: center;
     }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-      color: #003366;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 6px;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
-    .radio-group {
-      margin-top: 10px;
-    }
-    .radio-group label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 16px;
+
+    .logo {
+      width: 70px;
+      height: 70px;
       margin-bottom: 10px;
     }
-    .radio-group input[type="radio"] {
-      transform: scale(1.3);
-      accent-color: #003366;
+
+    h1 {
+      font-size: 2.4rem;
+      color: #ffffff;
+      font-weight: bold;
+      margin: 0.3rem 0 0.5rem;
     }
+
+    .tagline {
+      font-size: 1.2rem;
+      color: #ffffff;
+      margin-bottom: 2rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      text-align: left;
+    }
+
+    label {
+      font-weight: bold;
+      color: #002b45;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea,
+    input[type="file"],
+    select {
+      padding: 10px;
+      border: 2px solid #002b45;
+      border-radius: 6px;
+      font-size: 1rem;
+      width: 100%;
+    }
+
+    textarea {
+      resize: vertical;
+      height: 100px;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: -10px;
+    }
+
+    .radio-group label {
+      font-weight: normal;
+    }
+
+    small,
+    p {
+      font-size: 0.85rem;
+      color: #002b45;
+    }
+
     button {
-      background-color: #003366;
+      background-color: #002b45;
       color: white;
-      padding: 12px 20px;
       border: none;
-      border-radius: 5px;
-      margin-top: 20px;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 16px;
+      margin-top: 10px;
     }
+
     button:hover {
-      background-color: #002244;
+      background-color: #001d30;
     }
   </style>
 </head>
 <body>
-  <header>
-    SheetPilot — We Build Your Systems, So You Don’t Have To
-  </header>
-  <form id="sheetpilot-form">
-    <label for="name">Your Name</label>
-    <input type="text" name="name" required />
+  <div class="container">
+    <!-- Logo Icon -->
+    <img src="https://cdn-icons-png.flaticon.com/512/681/681494.png" alt="SheetPilot Logo" class="logo" />
+    
+    <!-- Branding -->
+    <h1>SheetPilot</h1>
+    <div class="tagline">We Build Your Systems, So You Don’t Have To</div>
 
-    <label for="email">Email</label>
-    <input type="email" name="email" required />
+    <!-- Form -->
+      <form id="sheetpilot-form" enctype="multipart/form-data">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required />
 
-    <label for="business">Business Name</label>
-    <input type="text" name="business" required />
+      <label for="business">Business Name</label>
+      <input type="text" id="business" name="business" required />
 
-    <label for="description">Describe what you need</label>
-    <textarea name="description" required></textarea>
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required />
+      <label for="description">Tell us about your business and what you need automated</label>
+      <textarea id="description" name="description" placeholder="Feel free to use talk-to-text or type out details..."></textarea>
+      <label for="sampleFile">Optional: Upload a Sample of Your Data</label>
+      <input type="file" id="sampleFile" name="sampleFile" accept=".xlsx,.xls,.csv,.ods" />
+      <small>While this is optional, uploading a sample spreadsheet will greatly help your SheetPilot expert understand your data structure and ensure your system is sorted and built accurately from the start.<br/><em>We recommend removing or anonymizing any sensitive data before uploading.</em></small>
+        <label>Preferred Spreadsheet Platform</label>
+      <div class="radio-group">
+        <label><input type="radio" name="platform" value="Google Sheets" checked /> Google Sheets</label>
+        <label><input type="radio" name="platform" value="Microsoft Excel" /> Microsoft Excel</label>
+        <label><input type="radio" name="platform" value="Not Sure" /> Not Sure</label>
+      </div>
 
-    <label>Preferred Platform</label>
-    <div class="radio-group">
-      <label><input type="radio" name="platform" value="Google Sheets" required /> Google Sheets</label>
-      <label><input type="radio" name="platform" value="Microsoft Excel" /> Microsoft Excel</label>
-      <label><input type="radio" name="platform" value="Not Sure" /> Not Sure</label>
-    </div>
+      <label for="notes">Optional Notes</label>
+      <textarea id="notes" name="notes" placeholder="Any additional info we should know?"></textarea>
 
-    <label for="notes">Anything else we should know? (Optional)</label>
-    <textarea name="notes"></textarea>
-
-    <button type="submit">Submit</button>
-  </form>
-
+      <button type="submit">Submit</button>
+    </form>
+  </div>
   <script>
-    document.getElementById('sheetpilot-form').addEventListener('submit', async (e) => {
+  window.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('clientForm');
+    if (!form) return;
+
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
 
-      const form = e.target;
-      const formData = new FormData(form);
+      const name = form.name.value.trim();
+      const business = form.business.value.trim();
+      const email = form.email.value.trim();
+      const platform = form.platform.value;
+      const description = form.description.value.trim();
+      const notes = form.notes.value.trim();
+
+      const payload = {
+        name,
+        business,
+        email,
+        platform,
+        description,
+        notes
+      };
 
       try {
         const response = await fetch('/api/submit', {
           method: 'POST',
-          body: formData
+          body: JSON.stringify(payload),
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
 
         const result = await response.json();
@@ -119,13 +179,15 @@
           alert('Form submitted successfully! Folder created at: ' + result.folderUrl);
           form.reset();
         } else {
-          alert('Server error:\n' + result.message + '\n\n' + (result.stack || 'No stack trace'));
+          alert('Error: ' + result.message);
         }
       } catch (err) {
         console.error('Submission error:', err);
-        alert('Something went wrong:\n' + err.message + '\n\n' + (err.stack || 'No stack trace'));
+        alert('Something went wrong. Check the console.');
       }
     });
-  </script>
+  });
+</script>
+  
 </body>
 </html>
