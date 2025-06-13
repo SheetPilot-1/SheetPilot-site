@@ -1,7 +1,8 @@
-const formidable = require('formidable');
-const { google } = require('googleapis');
-const fs = require('fs');
+import formidable from 'formidable';
+import { google } from 'googleapis';
+import fs from 'fs';
 
+// Disable Next.js body parser for file uploads
 export const config = {
   api: {
     bodyParser: false,
@@ -19,10 +20,10 @@ const auth = new google.auth.GoogleAuth({
 const drive = google.drive({ version: 'v3', auth });
 const sheets = google.sheets({ version: 'v4', auth });
 
-const SHEET_ID = '100nM9Rg1v-0W4PeLwq88iqhbu-CSV7vqbnzrElL_mXk';
-const PARENT_FOLDER_ID = '1Rvpj53IoFty6f36qegZIXdQeyoMyxAXP';
+const SHEET_ID = '100nM9Rg1v-0W4PeLwq88iqhbu-CSV7vqbnzrElL_mXk'; // SheetPilot Clients Sheet
+const PARENT_FOLDER_ID = '1Rvpj53IoFty6f36qegZIXdQeyoMyxAXP'; // SheetPilot Uploads Folder
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).send('Method Not Allowed');
   }
@@ -35,12 +36,13 @@ module.exports = async function handler(req, res) {
       return res.status(500).json({ status: 'error', message: 'Form parsing error' });
     }
 
-    const name = fields.name?.trim();
-    const business = fields.business?.trim();
-    const email = fields.email?.trim();
-    const platform = fields.platform?.trim();
-    const description = fields.description?.trim();
-    const notes = fields.notes?.trim();
+    // Safely extract field values
+    const name = Array.isArray(fields.name) ? fields.name[0].trim() : (fields.name || '').trim();
+    const business = Array.isArray(fields.business) ? fields.business[0].trim() : (fields.business || '').trim();
+    const email = Array.isArray(fields.email) ? fields.email[0].trim() : (fields.email || '').trim();
+    const platform = Array.isArray(fields.platform) ? fields.platform[0].trim() : (fields.platform || '').trim();
+    const description = Array.isArray(fields.description) ? fields.description[0].trim() : (fields.description || '').trim();
+    const notes = Array.isArray(fields.notes) ? fields.notes[0].trim() : (fields.notes || '').trim();
     const file = files.sampleFile;
 
     const clientFolderName = `${name.split(' ').slice(-1)[0]} - ${business}`;
@@ -60,7 +62,7 @@ module.exports = async function handler(req, res) {
       const folderId = folder.data.id;
       const folderUrl = `https://drive.google.com/drive/folders/${folderId}`;
 
-      // Upload file if present
+      // Upload file if provided
       if (file && file.filepath) {
         const fileMetadata = {
           name: file.originalFilename,
@@ -77,12 +79,12 @@ module.exports = async function handler(req, res) {
         });
       }
 
-      // Append to Google Sheet
+      // Append submission to Sheet
       const row = [
         new Date().toLocaleString(),
         name,
         business,
-        clientFolderName,
+        `${clientFolderName}`,
         folderId,
         platform,
         description,
@@ -100,13 +102,16 @@ module.exports = async function handler(req, res) {
         },
       });
 
-      return res.status(200).json({ status: 'success', folderUrl });
-    } catch (error) {
-      console.error('Submission error:', error);
+      return res.status(200).json({
+        status: 'success',
+        folderUrl,
+      });
+    } catch (e) {
+      console.error('Submission Error:', e);
       return res.status(500).json({
         status: 'error',
-        message: error.message || 'Unexpected error occurred.',
+        message: e.message || 'Unexpected error occurred.',
       });
     }
   });
-};
+}
