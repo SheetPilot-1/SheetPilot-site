@@ -8,6 +8,7 @@ export const config = {
     bodyParser: false,
   },
 };
+
 const SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets'];
 const CREDENTIALS = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS);
 
@@ -19,15 +20,15 @@ const auth = new google.auth.GoogleAuth({
 const drive = google.drive({ version: 'v3', auth });
 const sheets = google.sheets({ version: 'v4', auth });
 
-const SHEET_ID = '100nM9Rg1v-0W4PeLwq88iqhbu-CSV7vqbnzrElL_mXk'; // SheetPilot Clients Sheet
-const PARENT_FOLDER_ID = '1Rvpj53IoFty6f36qegZIXdQeyoMyxAXP'; // SheetPilot Uploads Folder
+const SHEET_ID = '100nM9Rg1v-0W4PeLwq88iqhbu-CSV7vqbnzrElL_mXk';
+const PARENT_FOLDER_ID = '1Rvpj53IoFty6f36qegZIXdQeyoMyxAXP';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).send('Method Not Allowed');
   }
 
-  const form = new formidable.IncomingForm({ keepExtensions: true });
+  const form = new IncomingForm({ keepExtensions: true });
   form.uploadDir = '/tmp';
 
   form.parse(req, async (err, fields, files) => {
@@ -35,7 +36,6 @@ export default async function handler(req, res) {
       return res.status(500).json({ status: 'error', message: 'Form parsing error' });
     }
 
-    // Safely extract field values
     const name = Array.isArray(fields.name) ? fields.name[0].trim() : (fields.name || '').trim();
     const business = Array.isArray(fields.business) ? fields.business[0].trim() : (fields.business || '').trim();
     const email = Array.isArray(fields.email) ? fields.email[0].trim() : (fields.email || '').trim();
@@ -78,12 +78,12 @@ export default async function handler(req, res) {
         });
       }
 
-      // Append submission to Sheet
+      // Append submission to Google Sheet
       const row = [
         new Date().toLocaleString(),
         name,
         business,
-        `${clientFolderName}`,
+        clientFolderName,
         folderId,
         platform,
         description,
@@ -96,15 +96,10 @@ export default async function handler(req, res) {
         range: 'Sheet1!A1',
         valueInputOption: 'RAW',
         insertDataOption: 'INSERT_ROWS',
-        resource: {
-          values: [row],
-        },
+        resource: { values: [row] },
       });
 
-      return res.status(200).json({
-        status: 'success',
-        folderUrl,
-      });
+      return res.status(200).json({ status: 'success', folderUrl });
     } catch (e) {
       console.error('Submission Error:', e);
       return res.status(500).json({
