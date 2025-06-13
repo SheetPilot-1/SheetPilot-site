@@ -107,11 +107,10 @@ export default async function handler(req, res) {
         folderUrl,
       });
     } catch (e) {
-      console.error('Submission Error:', e);
-      return res.status(500).json({
-        status: 'error',
-        message: e.message || 'An unexpected error occurred.',
-      });
-    }
+  console.error('Submission Error:', e); // This logs to Vercel’s internal logs
+  return res.status(500).json({
+    status: 'error',
+    message: e.message || 'An unexpected error occurred.',
+    stack: e.stack || 'No stack available',
   });
 }
