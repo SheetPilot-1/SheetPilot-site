@@ -113,7 +113,7 @@
     <div class="tagline">We Build Your Systems, So You Don’t Have To</div>
 
     <!-- Form -->
-      <form id="clientForm">
+      <form id="sheetpilot-form" enctype="multipart/form-data">
       <label for="name">Full Name</label>
       <input type="text" id="name" name="name" required />
 
@@ -122,10 +122,12 @@
 
       <label for="email">Email Address</label>
       <input type="email" id="email" name="email" required />
-
       <label for="description">Tell us about your business and what you need automated</label>
       <textarea id="description" name="description" placeholder="Feel free to use talk-to-text or type out details..."></textarea>
-      <label>Preferred Spreadsheet Platform</label>
+      <label for="sampleFile">Optional: Upload a Sample of Your Data</label>
+      <input type="file" id="sampleFile" name="sampleFile" accept=".xlsx,.xls,.csv,.ods" />
+      <small>While this is optional, uploading a sample spreadsheet will greatly help your SheetPilot expert understand your data structure and ensure your system is sorted and built accurately from the start.<br/><em>We recommend removing or anonymizing any sensitive data before uploading.</em></small>
+        <label>Preferred Spreadsheet Platform</label>
       <div class="radio-group">
         <label><input type="radio" name="platform" value="Google Sheets" checked /> Google Sheets</label>
         <label><input type="radio" name="platform" value="Microsoft Excel" /> Microsoft Excel</label>
