@@ -1,9 +1,7 @@
-import formidable from 'formidable';
-import { google } from 'googleapis';
-import fs from 'fs';
-import path from 'path';
+const formidable = require('formidable');
+const { google } = require('googleapis');
+const fs = require('fs');
 
-// Disable Next.js body parser for file uploads
 export const config = {
   api: {
     bodyParser: false,
@@ -11,7 +9,7 @@ export const config = {
 };
 
 const SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets'];
-const CREDENTIALS = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS); // Store your credentials JSON in env
+const CREDENTIALS = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS);
 
 const auth = new google.auth.GoogleAuth({
   credentials: CREDENTIALS,
@@ -21,10 +19,10 @@ const auth = new google.auth.GoogleAuth({
 const drive = google.drive({ version: 'v3', auth });
 const sheets = google.sheets({ version: 'v4', auth });
 
-const SHEET_ID = '100nM9Rg1v-0W4PeLwq88iqhbu-CSV7vqbnzrElL_mXk'; // Replace with your SheetPilot Clients Sheet ID
-const PARENT_FOLDER_ID = '1Rvpj53IoFty6f36qegZIXdQeyoMyxAXP'; // Replace with your SheetPilot Uploads Folder ID
+const SHEET_ID = '100nM9Rg1v-0W4PeLwq88iqhbu-CSV7vqbnzrElL_mXk';
+const PARENT_FOLDER_ID = '1Rvpj53IoFty6f36qegZIXdQeyoMyxAXP';
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).send('Method Not Allowed');
   }
@@ -79,12 +77,12 @@ export default async function handler(req, res) {
         });
       }
 
-      // Append data to Google Sheet
+      // Append to Google Sheet
       const row = [
         new Date().toLocaleString(),
         name,
         business,
-        `${clientFolderName}`,
+        clientFolderName,
         folderId,
         platform,
         description,
@@ -102,15 +100,13 @@ export default async function handler(req, res) {
         },
       });
 
-      return res.status(200).json({
-        status: 'success',
-        folderUrl,
+      return res.status(200).json({ status: 'success', folderUrl });
+    } catch (error) {
+      console.error('Submission error:', error);
+      return res.status(500).json({
+        status: 'error',
+        message: error.message || 'Unexpected error occurred.',
       });
-    } catch (e) {
-  console.error('Submission Error:', e); // This logs to Vercel’s internal logs
-  return res.status(500).json({
-    status: 'error',
-    message: e.message || 'An unexpected error occurred.',
-    stack: e.stack || 'No stack available',
+    }
   });
-}
+};
