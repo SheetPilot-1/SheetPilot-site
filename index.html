@@ -121,32 +121,45 @@
     </form>
   </div>
 
-  <script>
-    document.querySelector('#sheetpilot-form').addEventListener('submit', async function (e) {
-      e.preventDefault();
+<script>
+  document.querySelector('form').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-      const form = e.target;
-      const formData = new FormData(form);
+    const form = e.target;
+    const formData = new FormData(form);
 
-      try {
-        const response = await fetch('/api/submit', {
-          method: 'POST',
-          body: formData
-        });
+    try {
+      const response = await fetch('/api/submit', {
+        method: 'POST',
+        body: formData
+      });
 
+      const contentType = response.headers.get('content-type');
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        alert('Server error:\n' + errorText);
+        return;
+      }
+
+      if (contentType && contentType.includes('application/json')) {
         const result = await response.json();
 
         if (result.status === 'success') {
-          alert('Form submitted successfully! Folder created at: ' + result.folderUrl);
+          alert('Form submitted successfully! Folder created at:\n' + result.folderUrl);
           form.reset();
         } else {
           alert('Error: ' + result.message);
         }
-      } catch (err) {
-        console.error('Submission error:', err);
-        alert('Something went wrong. Check the console.');
+      } else {
+        const fallback = await response.text();
+        alert('Unexpected response:\n' + fallback);
       }
-    });
-  </script>
+    } catch (err) {
+      console.error('Submission error:', err);
+      alert('Something went wrong:\n' + err.message);
+    }
+  });
+</script>
 </body>
 </html>
