@@ -1,14 +1,13 @@
-import formidable from 'formidable';
+import { IncomingForm } from 'formidable';
 import { google } from 'googleapis';
 import fs from 'fs';
 
-// Disable Next.js body parser for file uploads
+// Disable Next.js body parser
 export const config = {
   api: {
     bodyParser: false,
   },
 };
-
 const SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets'];
 const CREDENTIALS = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS);
 
