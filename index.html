@@ -4,124 +4,128 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot Form</title>
+  <title>SheetPilot</title>
   <style>
     body {
-      background-color: #e6f0fa;
       font-family: Arial, sans-serif;
-      color: #003366;
-      margin: 0;
+      background-color: #d7ecfa;
       padding: 0;
+      margin: 0;
     }
-
-    .form-container {
-      max-width: 600px;
-      margin: 40px auto;
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      font-size: 28px;
-      color: #f9f3e8;
+    header {
       background-color: #003366;
-      padding: 16px;
-      border-radius: 8px 8px 0 0;
-      margin: -30px -30px 20px -30px;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-weight: bold;
+      font-size: 22px;
     }
-
+    form {
+      max-width: 600px;
+      margin: 30px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
     label {
       display: block;
-      margin-bottom: 8px;
+      margin-top: 15px;
       font-weight: bold;
+      color: #003366;
     }
-
-    input[type="text"],
-    input[type="email"],
-    textarea,
-    select {
+    input, textarea {
       width: 100%;
       padding: 10px;
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
+      margin-top: 6px;
       border-radius: 4px;
+      border: 1px solid #ccc;
     }
-
-    textarea {
-      height: 100px;
-    }
-
     .radio-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-bottom: 20px;
+      margin-top: 10px;
     }
-
     .radio-group label {
       display: flex;
       align-items: center;
+      gap: 8px;
       font-size: 16px;
-      cursor: pointer;
+      margin-bottom: 10px;
     }
-
     .radio-group input[type="radio"] {
-      width: 18px;
-      height: 18px;
-      margin-right: 10px;
+      transform: scale(1.3);
       accent-color: #003366;
     }
-
-    .note {
-      font-size: 12px;
-      color: #666;
-      margin-top: -15px;
-      margin-bottom: 20px;
-    }
-
     button {
       background-color: #003366;
-      color: #fff;
+      color: white;
       padding: 12px 20px;
       border: none;
-      border-radius: 4px;
+      border-radius: 5px;
+      margin-top: 20px;
       cursor: pointer;
+      font-size: 16px;
     }
-
     button:hover {
-      background-color: #00264d;
+      background-color: #002244;
     }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h1>SheetPilot — We Build Your Systems, So You Don’t Have To</h1>
-    <form action="/api/submit" method="POST" enctype="multipart/form-data">
-      <label for="name">Your Name</label>
-      <input type="text" name="name" required />
+  <header>
+    SheetPilot — We Build Your Systems, So You Don’t Have To
+  </header>
+  <form id="sheetpilot-form">
+    <label for="name">Your Name</label>
+    <input type="text" name="name" required />
 
-      <label for="email">Email</label>
-      <input type="email" name="email" required />
+    <label for="email">Email</label>
+    <input type="email" name="email" required />
 
-      <label for="business">Business Name</label>
-      <input type="text" name="business" required />
+    <label for="business">Business Name</label>
+    <input type="text" name="business" required />
 
-      <label for="description">Describe what you need</label>
-      <textarea name="description" required></textarea>
+    <label for="description">Describe what you need</label>
+    <textarea name="description" required></textarea>
 
-      <label>Preferred Platform</label>
-      <div class="radio-group">
-        <label><input type="radio" name="platform" value="Google Sheets" required />Google Sheets</label>
-        <label><input type="radio" name="platform" value="Microsoft Excel" />Microsoft Excel</label>
-        <label><input type="radio" name="platform" value="Not Sure" />Not Sure</label>
-      </div>
+    <label>Preferred Platform</label>
+    <div class="radio-group">
+      <label><input type="radio" name="platform" value="Google Sheets" required /> Google Sheets</label>
+      <label><input type="radio" name="platform" value="Microsoft Excel" /> Microsoft Excel</label>
+      <label><input type="radio" name="platform" value="Not Sure" /> Not Sure</label>
+    </div>
 
-      <label for="notes">Anything else we should know? (Optional)</label>
-      <textarea name="notes"></textarea>
-      <button type="submit">Submit Request</button>
-    </form>
-  </div>
+    <label for="notes">Anything else we should know? (Optional)</label>
+    <textarea name="notes"></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    document.getElementById('sheetpilot-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const form = e.target;
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('/api/submit', {
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+          alert('Form submitted successfully! Folder created at: ' + result.folderUrl);
+          form.reset();
+        } else {
+          alert('Server error:\n' + result.message + '\n\n' + (result.stack || 'No stack trace'));
+        }
+      } catch (err) {
+        console.error('Submission error:', err);
+        alert('Something went wrong:\n' + err.message + '\n\n' + (err.stack || 'No stack trace'));
+      }
+    });
+  </script>
 </body>
 </html>
