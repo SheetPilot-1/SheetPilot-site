@@ -2,6 +2,7 @@
   "name": "sheetpilot-site",
   "version": "1.0.0",
   "dependencies": {
-    "formidable": "^3.5.0"
+    "formidable": "^3.5.0",
+    "googleapis": "^133.0.0"
   }
 }
