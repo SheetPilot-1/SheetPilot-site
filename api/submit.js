@@ -1,111 +1,87 @@
-import { IncomingForm } from 'formidable';
 import { google } from 'googleapis';
-import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
 
-// Disable Next.js body parser for file uploads
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-const SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets'];
-const CREDENTIALS = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS);
-
-const auth = new google.auth.GoogleAuth({
-  credentials: CREDENTIALS,
-  scopes: SCOPES,
-});
-
-const drive = google.drive({ version: 'v3', auth });
-const sheets = google.sheets({ version: 'v4', auth });
-
-const SHEET_ID = '100nM9Rg1v-0W4PeLwq88iqhbu-CSV7vqbnzrElL_mXk';
-const PARENT_FOLDER_ID = '1Rvpj53IoFty6f36qegZIXdQeyoMyxAXP';
+// Load environment variables
+const {
+  GMAIL_CLIENT_ID,
+  GMAIL_CLIENT_SECRET,
+  GMAIL_REFRESH_TOKEN,
+  GMAIL_SENDER_EMAIL
+} = process.env;
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).send('Method Not Allowed');
+    return res.status(405).json({ status: 'error', message: 'Method not allowed' });
   }
 
-  const form = new IncomingForm({ keepExtensions: true });
-  form.uploadDir = '/tmp';
+  try {
+    const { name, email, business, platform, description, notes } = req.body;
 
-  form.parse(req, async (err, fields, files) => {
-    if (err) {
-      return res.status(500).json({ status: 'error', message: 'Form parsing error' });
-    }
+    // 1. Create Google Drive folder for this client
+    const auth = new google.auth.GoogleAuth({
+      scopes: ['https://www.googleapis.com/auth/drive']
+    });
+    const driveAuth = await auth.getClient();
+    const drive = google.drive({ version: 'v3', auth: driveAuth });
 
-    const name = Array.isArray(fields.name) ? fields.name[0].trim() : (fields.name || '').trim();
-    const business = Array.isArray(fields.business) ? fields.business[0].trim() : (fields.business || '').trim();
-    const email = Array.isArray(fields.email) ? fields.email[0].trim() : (fields.email || '').trim();
-    const platform = Array.isArray(fields.platform) ? fields.platform[0].trim() : (fields.platform || '').trim();
-    const description = Array.isArray(fields.description) ? fields.description[0].trim() : (fields.description || '').trim();
-    const notes = Array.isArray(fields.notes) ? fields.notes[0].trim() : (fields.notes || '').trim();
-    const file = files.sampleFile;
+    const folderMetadata = {
+      name: `${name} — ${business}`,
+      mimeType: 'application/vnd.google-apps.folder'
+    };
 
-    const clientFolderName = `${name.split(' ').slice(-1)[0]} - ${business}`;
+    const folder = await drive.files.create({
+      resource: folderMetadata,
+      fields: 'id'
+    });
 
-    try {
-      // Create folder in Drive
-      const folderMetadata = {
-        name: clientFolderName,
-        mimeType: 'application/vnd.google-apps.folder',
-        parents: [PARENT_FOLDER_ID],
-      };
-      const folder = await drive.files.create({
-        resource: folderMetadata,
-        fields: 'id',
-      });
+    const folderId = folder.data.id;
+    const folderUrl = `https://drive.google.com/drive/folders/${folderId}`;
 
-      const folderId = folder.data.id;
-      const folderUrl = `https://drive.google.com/drive/folders/${folderId}`;
+    // 2. Send confirmation email via Gmail API
+    const oauth2Client = new google.auth.OAuth2(
+      GMAIL_CLIENT_ID,
+      GMAIL_CLIENT_SECRET
+    );
+    oauth2Client.setCredentials({
+      refresh_token: GMAIL_REFRESH_TOKEN
+    });
 
-      // Upload file if provided
-      if (file && file.filepath) {
-        const fileMetadata = {
-          name: file.originalFilename,
-          parents: [folderId],
-        };
-        const media = {
-          mimeType: file.mimetype,
-          body: fs.createReadStream(file.filepath),
-        };
-        await drive.files.create({
-          resource: fileMetadata,
-          media,
-          fields: 'id',
-        });
+    const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
+
+    const messageParts = [
+      `To: ${email}`,
+      `Subject: Thanks for contacting SheetPilot!`,
+      `Content-Type: text/plain; charset=utf-8`,
+      ``,
+      `Hi ${name},`,
+      ``,
+      `Thanks for reaching out! We're excited to help you automate your spreadsheets.`,
+      ``,
+      `Here's your project folder for reference:`,
+      folderUrl,
+      ``,
+      `We’ll be in touch shortly.`,
+      ``,
+      `— SheetPilot Team`
+    ];
+
+    const rawMessage = Buffer.from(messageParts.join('\n')).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+    await gmail.users.messages.send({
+      userId: 'me',
+      requestBody: {
+        raw: rawMessage
       }
+    });
 
-      // Append submission to Google Sheet
-      const row = [
-        new Date().toLocaleString(),
-        name,
-        business,
-        clientFolderName,
-        folderId,
-        platform,
-        description,
-        notes,
-        folderUrl,
-      ];
+    // Respond success
+    return res.status(200).json({
+      status: 'success',
+      folderUrl
+    });
 
-      await sheets.spreadsheets.values.append({
-        spreadsheetId: SHEET_ID,
-        range: 'Sheet1!A1',
-        valueInputOption: 'RAW',
-        insertDataOption: 'INSERT_ROWS',
-        resource: { values: [row] },
-      });
-
-      return res.status(200).json({ status: 'success', folderUrl });
-    } catch (e) {
-      console.error('Submission Error:', e);
-      return res.status(500).json({
-        status: 'error',
-        message: e.message || 'Unexpected error occurred.',
-      });
-    }
-  });
+  } catch (error) {
+    console.error('Submission error:', error);
+    return res.status(500).json({ status: 'error', message: error.message });
+  }
 }
