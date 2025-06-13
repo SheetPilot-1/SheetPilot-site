@@ -150,53 +150,52 @@
     </form>
   </div>
   <script>
-  window.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('clientForm');
-    if (!form) return;
+window.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('sheetpilot-form'); // This must match the form ID
+  if (!form) return;
 
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault();
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-      const name = form.name.value.trim();
-      const business = form.business.value.trim();
-      const email = form.email.value.trim();
-      const platform = form.platform.value;
-      const description = form.description.value.trim();
-      const notes = form.notes.value.trim();
+    const name = form.name.value.trim();
+    const business = form.business.value.trim();
+    const email = form.email.value.trim();
+    const platform = form.platform.value;
+    const description = form.description.value.trim();
+    const notes = form.notes.value.trim();
 
-      const payload = {
-        name,
-        business,
-        email,
-        platform,
-        description,
-        notes
-      };
+    const payload = {
+      name,
+      business,
+      email,
+      platform,
+      description,
+      notes
+    };
 
-      try {
-        const response = await fetch('/api/submit', {
-          method: 'POST',
-          body: JSON.stringify(payload),
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        const result = await response.json();
-
-        if (result.status === 'success') {
-          alert('Form submitted successfully! Folder created at: ' + result.folderUrl);
-          form.reset();
-        } else {
-          alert('Error: ' + result.message);
+    try {
+      const response = await fetch('/api/submit', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+        headers: {
+          'Content-Type': 'application/json'
         }
-      } catch (err) {
-        console.error('Submission error:', err);
-        alert('Something went wrong. Check the console.');
+      });
+
+      const result = await response.json();
+
+      if (result.status === 'success') {
+        alert('Form submitted successfully! Folder created at: ' + result.folderUrl);
+        form.reset();
+      } else {
+        alert('Error: ' + result.message);
       }
-    });
+    } catch (err) {
+      console.error('Submission error:', err);
+      alert('Something went wrong. Check the console.');
+    }
   });
+});
 </script>
-  
 </body>
 </html>
