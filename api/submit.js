@@ -1,12 +1,11 @@
 import { google } from 'googleapis';
-import { v4 as uuidv4 } from 'uuid';
 
-// Load environment variables
 const {
   GMAIL_CLIENT_ID,
   GMAIL_CLIENT_SECRET,
   GMAIL_REFRESH_TOKEN,
-  GMAIL_SENDER_EMAIL
+  GMAIL_SENDER_EMAIL,
+  GOOGLE_SERVICE_ACCOUNT_CREDENTIALS
 } = process.env;
 
 export default async function handler(req, res) {
@@ -17,13 +16,16 @@ export default async function handler(req, res) {
   try {
     const { name, email, business, platform, description, notes } = req.body;
 
-    // 1. Create Google Drive folder for this client
+    // Auth for Google Drive
     const auth = new google.auth.GoogleAuth({
+      credentials: JSON.parse(GOOGLE_SERVICE_ACCOUNT_CREDENTIALS),
       scopes: ['https://www.googleapis.com/auth/drive']
     });
+
     const driveAuth = await auth.getClient();
     const drive = google.drive({ version: 'v3', auth: driveAuth });
 
+    // Create Drive folder
     const folderMetadata = {
       name: `${name} — ${business}`,
       mimeType: 'application/vnd.google-apps.folder'
@@ -37,7 +39,7 @@ export default async function handler(req, res) {
     const folderId = folder.data.id;
     const folderUrl = `https://drive.google.com/drive/folders/${folderId}`;
 
-    // 2. Send confirmation email via Gmail API
+    // Gmail send
     const oauth2Client = new google.auth.OAuth2(
       GMAIL_CLIENT_ID,
       GMAIL_CLIENT_SECRET
@@ -65,7 +67,11 @@ export default async function handler(req, res) {
       `— SheetPilot Team`
     ];
 
-    const rawMessage = Buffer.from(messageParts.join('\n')).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    const rawMessage = Buffer.from(messageParts.join('\n'))
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
 
     await gmail.users.messages.send({
       userId: 'me',
@@ -74,7 +80,6 @@ export default async function handler(req, res) {
       }
     });
 
-    // Respond success
     return res.status(200).json({
       status: 'success',
       folderUrl
