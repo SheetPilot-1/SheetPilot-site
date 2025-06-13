@@ -2,7 +2,7 @@ import { IncomingForm } from 'formidable';
 import { google } from 'googleapis';
 import fs from 'fs';
 
-// Disable Next.js body parser
+// Disable Next.js body parser for file uploads
 export const config = {
   api: {
     bodyParser: false,
