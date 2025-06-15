@@ -1,86 +1,65 @@
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot — We Build Your Systems, So You Don’t Have To</title>
-  <style>
-    body {
-      background-color: #6ec9f1;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      color: #002b45;
-    }
+<div style="background-color: #ADD8E6; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; font-family: sans-serif;">
+  <h1 style="color: navy; text-align: center; font-weight: bold;">SheetPilot</h1>
+  <h2 style="color: navy; text-align: center;">We Build Your Systems, So You Don’t Have To</h2>
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
-      text-align: center;
-    }
+  <form id="sheetPilotForm">
+    <label style="color: navy;">Name *</label><br>
+    <input type="text" name="name" required style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;"><br><br>
 
-    .logo {
-      width: 70px;
-      height: 70px;
-      margin-bottom: 10px;
-    }
+    <label style="color: navy;">Email *</label><br>
+    <input type="email" name="email" required style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;"><br><br>
 
-    h1 {
-      font-size: 2.4rem;
-      color: #ffffff;
-      font-weight: bold;
-      margin: 0.3rem 0 0.5rem;
-    }
+    <label style="color: navy;">Business Name</label><br>
+    <input type="text" name="business" style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;"><br><br>
 
-    .tagline {
-      font-size: 1.2rem;
-      color: #ffffff;
-      margin-bottom: 2rem;
-    }
+    <label style="color: navy;">Description *</label><br>
+    <textarea name="description" required rows="4" style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;"></textarea><br><br>
 
-    .form-wrapper {
-      background: white;
-      padding: 1rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
+    <label style="color: navy;">Preferred Platform *</label><br>
+    <input type="radio" name="platform" value="Google Sheets" required> Google Sheets<br>
+    <input type="radio" name="platform" value="Microsoft Excel" required> Microsoft Excel<br>
+    <input type="radio" name="platform" value="Not sure" required> Not sure<br><br>
 
-    iframe {
-      width: 100%;
-      border: none;
-    }
+    <label style="color: navy;">Optional Notes</label><br>
+    <textarea name="notes" rows="2" style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;"></textarea><br><br>
 
-    @media (min-width: 768px) {
-      iframe {
-        min-height: 1200px;
-      }
-    }
+    <button type="submit" style="background-color: navy; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
+  </form>
 
-    @media (max-width: 767px) {
-      iframe {
-        min-height: 1600px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <!-- Logo -->
-    <img src="https://cdn-icons-png.flaticon.com/512/681/681494.png" alt="SheetPilot Logo" class="logo" />
-    
-    <!-- Branding -->
-    <h1>SheetPilot</h1>
-    <div class="tagline">We Build Your Systems, So You Don’t Have To</div>
+  <p id="formStatus" style="color: navy; text-align: center; margin-top: 10px;"></p>
+</div>
 
-    <!-- Embedded Google Form -->
-    <div class="form-wrapper">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScaLCa5Sgvc0SKPdDrwQA9GK7NaPHVeMPkk1G1bL2M5BliM5A/viewform?embedded=true" 
-              frameborder="0" marginheight="0" marginwidth="0" loading="lazy">
-        Loading…
-      </iframe>
-    </div>
-  </div>
-</body>
-</html>
+<script>
+document.getElementById('sheetPilotForm').addEventListener('submit', async function(event) {
+  event.preventDefault();
+  
+  const form = event.target;
+  const data = {
+    name: form.name.value,
+    email: form.email.value,
+    business: form.business.value,
+    description: form.description.value,
+    platform: form.platform.value,
+    notes: form.notes.value
+  };
+
+  try {
+    const response = await fetch('/api/submit', {  // <-- Replace with your Vercel API route if different
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+      document.getElementById('formStatus').textContent = "✅ Submission successful!";
+      form.reset();
+    } else {
+      document.getElementById('formStatus').textContent = "⚠️ Submission failed. Please try again.";
+    }
+  } catch (error) {
+    console.error(error);
+    document.getElementById('formStatus').textContent = "⚠️ An error occurred. Please try again.";
+  }
+});
+</script>
