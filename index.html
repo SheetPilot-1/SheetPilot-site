@@ -1,43 +1,18 @@
 
-<div class="form-container">
-  <h1>SheetPilot</h1>
-  <h2>We Build Your Systems, So You Don’t Have To</h2>
-
-  <form id="sheetPilotForm">
-    <label>Full Name *</label>
-    <input type="text" name="name" required>
-
-    <label>Business Name</label>
-    <input type="text" name="business">
-
-    <label>Email Address *</label>
-    <input type="email" name="email" required>
-
-    <label>Tell us about your business and what you need automated *</label>
-    <textarea name="description" rows="4" required></textarea>
-
-    <label>Preferred Platform *</label>
-    <div class="radio-group">
-      <label><input type="radio" name="platform" value="Google Sheets" required> Google Sheets</label>
-      <label><input type="radio" name="platform" value="Microsoft Excel" required> Microsoft Excel</label>
-      <label><input type="radio" name="platform" value="Not Sure" required> Not Sure</label>
-    </div>
-
-    <label>Optional Notes</label>
-    <textarea name="notes" rows="2"></textarea>
-
-    <button type="submit">Submit</button>
-  </form>
-</div>
-
 <style>
-  .form-container {
+  body {
     background-color: #ADD8E6;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+
+  .form-container {
     padding: 24px;
     border-radius: 8px;
     max-width: 600px;
-    margin: 20px auto;
-    font-family: sans-serif;
+    margin: 40px auto;
+    background-color: #ADD8E6;
   }
 
   .form-container h1 {
@@ -94,6 +69,37 @@
     background-color: #000080;
   }
 </style>
+
+<div class="form-container">
+  <h1>SheetPilot</h1>
+  <h2>We Build Your Systems, So You Don’t Have To</h2>
+
+  <form id="sheetPilotForm">
+    <label>Full Name *</label>
+    <input type="text" name="name" required>
+
+    <label>Business Name</label>
+    <input type="text" name="business">
+
+    <label>Email Address *</label>
+    <input type="email" name="email" required>
+
+    <label>Tell us about your business and what you need automated *</label>
+    <textarea name="description" rows="4" required></textarea>
+
+    <label>Preferred Platform *</label>
+    <div class="radio-group">
+      <label><input type="radio" name="platform" value="Google Sheets" required> Google Sheets</label>
+      <label><input type="radio" name="platform" value="Microsoft Excel" required> Microsoft Excel</label>
+      <label><input type="radio" name="platform" value="Not Sure" required> Not Sure</label>
+    </div>
+
+    <label>Optional Notes</label>
+    <textarea name="notes" rows="2"></textarea>
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
 
 <script>
 document.getElementById('sheetPilotForm').addEventListener('submit', async function(event) {
