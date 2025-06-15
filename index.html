@@ -1,33 +1,31 @@
 
-<div style="background-color: #ADD8E6; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; font-family: sans-serif;">
+<div style="background-color: #ADD8E6; padding: 20px; border-radius: 8px; max-width: 600px; margin: 20px auto; font-family: sans-serif;">
   <h1 style="color: navy; text-align: center; font-weight: bold;">SheetPilot</h1>
-  <h2 style="color: navy; text-align: center;">We Build Your Systems, So You Don’t Have To</h2>
+  <h2 style="color: navy; text-align: center; font-weight: normal;">We Build Your Systems, So You Don’t Have To</h2>
 
   <form id="sheetPilotForm">
-    <label style="color: navy;">Name *</label><br>
-    <input type="text" name="name" required style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;"><br><br>
-
-    <label style="color: navy;">Email *</label><br>
-    <input type="email" name="email" required style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;"><br><br>
+    <label style="color: navy;">Full Name *</label><br>
+    <input type="text" name="name" required style="width: 100%; padding: 10px; margin: 6px 0 12px 0; border: 1px solid #ccc; border-radius: 4px; background-color: white;"><br>
 
     <label style="color: navy;">Business Name</label><br>
-    <input type="text" name="business" style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;"><br><br>
+    <input type="text" name="business" style="width: 100%; padding: 10px; margin: 6px 0 12px 0; border: 1px solid #ccc; border-radius: 4px; background-color: white;"><br>
 
-    <label style="color: navy;">Description *</label><br>
-    <textarea name="description" required rows="4" style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;"></textarea><br><br>
+    <label style="color: navy;">Email Address *</label><br>
+    <input type="email" name="email" required style="width: 100%; padding: 10px; margin: 6px 0 12px 0; border: 1px solid #ccc; border-radius: 4px; background-color: white;"><br>
+
+    <label style="color: navy;">Tell us about your business and what you need automated *</label><br>
+    <textarea name="description" required rows="4" style="width: 100%; padding: 10px; margin: 6px 0 12px 0; border: 1px solid #ccc; border-radius: 4px; background-color: white;"></textarea><br>
 
     <label style="color: navy;">Preferred Platform *</label><br>
     <input type="radio" name="platform" value="Google Sheets" required> Google Sheets<br>
     <input type="radio" name="platform" value="Microsoft Excel" required> Microsoft Excel<br>
-    <input type="radio" name="platform" value="Not sure" required> Not sure<br><br>
+    <input type="radio" name="platform" value="Not Sure" required> Not Sure<br><br>
 
     <label style="color: navy;">Optional Notes</label><br>
-    <textarea name="notes" rows="2" style="width: 100%; padding: 8px; margin-top: 4px; border: 1px solid #ccc; border-radius: 4px;"></textarea><br><br>
+    <textarea name="notes" rows="2" style="width: 100%; padding: 10px; margin: 6px 0 12px 0; border: 1px solid #ccc; border-radius: 4px; background-color: white;"></textarea><br>
 
-    <button type="submit" style="background-color: navy; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
+    <button type="submit" style="background-color: navy; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
   </form>
-
-  <p id="formStatus" style="color: navy; text-align: center; margin-top: 10px;"></p>
 </div>
 
 <script>
