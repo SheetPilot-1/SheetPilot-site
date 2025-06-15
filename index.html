@@ -1,63 +1,130 @@
 
-<div style="background-color: #ADD8E6; padding: 20px; border-radius: 8px; max-width: 600px; margin: 20px auto; font-family: sans-serif;">
-  <h1 style="color: navy; text-align: center; font-weight: bold;">SheetPilot</h1>
-  <h2 style="color: navy; text-align: center; font-weight: normal;">We Build Your Systems, So You Don’t Have To</h2>
+<div class="form-container">
+  <h1>SheetPilot</h1>
+  <h2>We Build Your Systems, So You Don’t Have To</h2>
 
   <form id="sheetPilotForm">
-    <label style="color: navy;">Full Name *</label><br>
-    <input type="text" name="name" required style="width: 100%; padding: 10px; margin: 6px 0 12px 0; border: 1px solid #ccc; border-radius: 4px; background-color: white;"><br>
+    <label>Full Name *</label>
+    <input type="text" name="name" required>
 
-    <label style="color: navy;">Business Name</label><br>
-    <input type="text" name="business" style="width: 100%; padding: 10px; margin: 6px 0 12px 0; border: 1px solid #ccc; border-radius: 4px; background-color: white;"><br>
+    <label>Business Name</label>
+    <input type="text" name="business">
 
-    <label style="color: navy;">Email Address *</label><br>
-    <input type="email" name="email" required style="width: 100%; padding: 10px; margin: 6px 0 12px 0; border: 1px solid #ccc; border-radius: 4px; background-color: white;"><br>
+    <label>Email Address *</label>
+    <input type="email" name="email" required>
 
-    <label style="color: navy;">Tell us about your business and what you need automated *</label><br>
-    <textarea name="description" required rows="4" style="width: 100%; padding: 10px; margin: 6px 0 12px 0; border: 1px solid #ccc; border-radius: 4px; background-color: white;"></textarea><br>
+    <label>Tell us about your business and what you need automated *</label>
+    <textarea name="description" rows="4" required></textarea>
 
-    <label style="color: navy;">Preferred Platform *</label><br>
-    <input type="radio" name="platform" value="Google Sheets" required> Google Sheets<br>
-    <input type="radio" name="platform" value="Microsoft Excel" required> Microsoft Excel<br>
-    <input type="radio" name="platform" value="Not Sure" required> Not Sure<br><br>
+    <label>Preferred Platform *</label>
+    <div class="radio-group">
+      <label><input type="radio" name="platform" value="Google Sheets" required> Google Sheets</label>
+      <label><input type="radio" name="platform" value="Microsoft Excel" required> Microsoft Excel</label>
+      <label><input type="radio" name="platform" value="Not Sure" required> Not Sure</label>
+    </div>
 
-    <label style="color: navy;">Optional Notes</label><br>
-    <textarea name="notes" rows="2" style="width: 100%; padding: 10px; margin: 6px 0 12px 0; border: 1px solid #ccc; border-radius: 4px; background-color: white;"></textarea><br>
+    <label>Optional Notes</label>
+    <textarea name="notes" rows="2"></textarea>
 
-    <button type="submit" style="background-color: navy; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer;">Submit</button>
+    <button type="submit">Submit</button>
   </form>
 </div>
+
+<style>
+  .form-container {
+    background-color: #ADD8E6;
+    padding: 24px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 20px auto;
+    font-family: sans-serif;
+  }
+
+  .form-container h1 {
+    color: navy;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  .form-container h2 {
+    color: navy;
+    text-align: center;
+    font-weight: normal;
+    margin-bottom: 20px;
+  }
+
+  form label {
+    color: navy;
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+  }
+
+  .radio-group label {
+    display: block;
+    margin-bottom: 6px;
+    color: navy;
+  }
+
+  button {
+    background-color: navy;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+    font-size: 16px;
+  }
+
+  button:hover {
+    background-color: #000080;
+  }
+</style>
 
 <script>
 document.getElementById('sheetPilotForm').addEventListener('submit', async function(event) {
   event.preventDefault();
-  
+
   const form = event.target;
   const data = {
     name: form.name.value,
-    email: form.email.value,
     business: form.business.value,
+    email: form.email.value,
     description: form.description.value,
     platform: form.platform.value,
     notes: form.notes.value
   };
 
   try {
-    const response = await fetch('/api/submit', {  // <-- Replace with your Vercel API route if different
+    const response = await fetch('/api/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
 
     if (response.ok) {
-      document.getElementById('formStatus').textContent = "✅ Submission successful!";
+      alert('✅ Submission successful!');
       form.reset();
     } else {
-      document.getElementById('formStatus').textContent = "⚠️ Submission failed. Please try again.";
+      alert('⚠️ Submission failed. Please try again.');
     }
   } catch (error) {
     console.error(error);
-    document.getElementById('formStatus').textContent = "⚠️ An error occurred. Please try again.";
+    alert('⚠️ An error occurred. Please try again.');
   }
 });
 </script>
