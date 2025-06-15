@@ -15,7 +15,7 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 2rem 1rem;
       text-align: center;
@@ -37,44 +37,49 @@
     .tagline {
       font-size: 1.2rem;
       color: #ffffff;
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .form-wrapper {
-      position: relative;
-      width: 100%;
-      padding-bottom: 150%; /* Maintains aspect ratio */
-      height: 0;
-      overflow: hidden;
+      background: white;
+      padding: 1rem;
       border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
-    .form-wrapper iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
+    iframe {
       width: 100%;
-      height: 100%;
-      border: 0;
+      border: none;
     }
 
     @media (min-width: 768px) {
-      .form-wrapper {
-        padding-bottom: 75%; /* Adjust height ratio for larger screens */
+      iframe {
+        min-height: 1200px;
+      }
+    }
+
+    @media (max-width: 767px) {
+      iframe {
+        min-height: 1600px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- Logo -->
     <img src="https://cdn-icons-png.flaticon.com/512/681/681494.png" alt="SheetPilot Logo" class="logo" />
+    
+    <!-- Branding -->
     <h1>SheetPilot</h1>
     <div class="tagline">We Build Your Systems, So You Don’t Have To</div>
 
+    <!-- Embedded Google Form -->
     <div class="form-wrapper">
-      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScaLCa5Sgvc0SKPdDrwQA9GK7NaPHVeMPkk1G1bL2M5BliM5A/viewform?embedded=true" allowfullscreen>Loading…</iframe>
+      <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScaLCa5Sgvc0SKPdDrwQA9GK7NaPHVeMPkk1G1bL2M5BliM5A/viewform?embedded=true" 
+              frameborder="0" marginheight="0" marginwidth="0" loading="lazy">
+        Loading…
+      </iframe>
     </div>
   </div>
 </body>
