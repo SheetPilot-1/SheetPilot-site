@@ -1,44 +1,195 @@
 
-<style>
-  .form-wrapper {
-    background-color: #ADD8E6;  /* Light blue site background */
-    padding: 16px;
-    border-radius: 10px;
-    max-width: 700px;
-    margin: 30px auto;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-  }
-
-  .form-wrapper iframe {
-    width: 100%;
-    min-height: 1200px;  /* Adjust if needed for no scroll */
-    border: none;
-    border-radius: 6px;
-  }
-
-  @media (max-width: 768px) {
-    .form-wrapper {
-      padding: 12px;
-      margin: 20px;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SheetPilot — Led by the Holy Spirit of God</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fdfdf8;
+      color: #1a1a1a;
     }
 
-    .form-wrapper iframe {
-      min-height: 1300px;
+    header {
+      background-color: #0e3b6f;
+      color: white;
+      padding: 1.5rem;
+      text-align: center;
     }
-  }
-</style>
 
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <title>Full Name</title>
-    <script async src="https://tally.so/widgets/embed.js"></script>
-    <style type="text/css">
-      html { margin: 0; height: 100%; overflow: hidden; }
-      iframe { position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; }
-    </style>
-  </head>
-  <body>
-    <iframe data-tally-src="https://tally.so/r/3xLeQG?transparentBackground=1" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0" title="Full Name"></iframe>
-  </body>
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #133b66;
+      padding: 0.75rem 1rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      padding: 3rem 1.5rem;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #0e3b6f;
+    }
+
+    .pricing-tier {
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      background-color: #ffffff;
+    }
+
+    .price {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #0e3b6f;
+    }
+
+    .faq {
+      margin-bottom: 1.5rem;
+    }
+
+    iframe {
+      width: 100%;
+      height: 1000px;
+      border: none;
+    }
+
+    footer {
+      background-color: #133b66;
+      color: white;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>SheetPilot</h1>
+    <p><em>Building Systems for People, Led by the Holy Spirit of God</em></p>
+  </header>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faqs">FAQs</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <section id="home">
+    <h2>What is SheetPilot?</h2>
+    <p>
+      SheetPilot is a Spirit-led business offering done-for-you spreadsheet automation services for Kingdom-minded entrepreneurs, ministries, and small businesses. Whether you're organizing data, creating dashboards, or integrating Google Drive and Gmail, SheetPilot builds your system — so you don’t have to.
+    </p>
+  </section>
+
+  <section id="pricing">
+    <h2>💸 Revised Economic Pricing Scale</h2>
+    <p><em>“Serve your clients well, and the provision will follow.”</em></p>
+
+    <div class="pricing-tier">
+      <h3>🟦 Basic Essentials – <span class="price">$99</span></h3>
+      <ul>
+        <li>30-minute discovery call</li>
+        <li>One spreadsheet automation (basic logic)</li>
+        <li>Email notifications or sorting system</li>
+        <li>One revision</li>
+        <li>Google Sheets only</li>
+      </ul>
+    </div>
+
+    <div class="pricing-tier">
+      <h3>🟨 Growth Package – <span class="price">$199</span></h3>
+      <ul>
+        <li>Everything in Basic</li>
+        <li>Form integration (Tally or Google Form)</li>
+        <li>Google Drive + Gmail automation (if needed)</li>
+        <li>Advanced sorting logic or simple dashboards</li>
+        <li>Two revisions</li>
+      </ul>
+    </div>
+
+    <div class="pricing-tier">
+      <h3>🟧 Business Systems – <span class="price">$299+</span></h3>
+      <ul>
+        <li>Everything in Growth</li>
+        <li>Multi-tab management & system organization</li>
+        <li>Scheduled automations</li>
+        <li>Custom email templates</li>
+        <li>7-day support window</li>
+        <li>Optional: Training call or walkthrough video</li>
+      </ul>
+    </div>
+
+    <div class="pricing-tier">
+      <h3>🔄 SheetPilot Care Plan – <span class="price">$49/mo</span></h3>
+      <ul>
+        <li>Bug fixes and small updates</li>
+        <li>Priority response time</li>
+        <li>First month FREE for Business Systems clients</li>
+      </ul>
+    </div>
+
+    <div class="pricing-tier">
+      <h3>✝️ Faith-Based Discount</h3>
+      <p>Churches, ministries, or mission-driven nonprofits may request a sliding scale quote based on need.</p>
+    </div>
+  </section>
+
+  <section id="faqs">
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq">
+      <strong>What platforms do you support?</strong>
+      <p>We build automations for Google Sheets and Microsoft Excel. Most clients use Google Workspace for easy integration.</p>
+    </div>
+
+    <div class="faq">
+      <strong>What happens after I submit the form?</strong>
+      <p>You’ll receive a confirmation email. We’ll review your submission and follow up to schedule a discovery call if needed.</p>
+    </div>
+
+    <div class="faq">
+      <strong>Do I need to know any code?</strong>
+      <p>Not at all. We do everything for you — from building the logic to automating your workflows.</p>
+    </div>
+
+    <div class="faq">
+      <strong>Do you offer ongoing support?</strong>
+      <p>Yes! Our optional support plan includes monthly maintenance, bug fixes, and priority response.</p>
+    </div>
+  </section>
+
+  <section id="contact">
+    <h2>Get Started Now</h2>
+    <p>If you're ready to streamline your workflow, start by submitting the form below.</p>
+
+    <!-- Replace the src URL below with your actual Tally form embed link -->
+    <iframe data-tally-src="https://tally.so/embed/3xLeQG?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="200" frameborder="0" marginheight="0" marginwidth="0" title="New Customer Submission Form"></iframe>
+<script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+  </section>
+
+  <footer>
+    <p>© 2025 SheetPilot • Built for the Kingdom • Powered by the Holy Spirit</p>
+  </footer>
+
+</body>
 </html>
