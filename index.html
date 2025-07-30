@@ -4,94 +4,121 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot — Led by the Holy Spirit</title>
+  <title>SheetPilot — Spirit-Led Systems for Business and Ministry</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      background-color: #fdfbf6; /* soft cream */
-      color: #1a1a1a;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #F9F7F2;
+      color: #2C2C2C;
     }
     header {
-      background-color: #002366; /* deep royal blue */
-      color: white;
-      padding: 1rem;
+      background-color: #031E47;
+      color: #ffffff;
+      padding: 1rem 2rem;
       text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      font-weight: 700;
+    }
+    header p {
+      font-style: italic;
+      font-size: 1rem;
+      margin-top: 0.25rem;
     }
     nav {
-      background-color: #002366;
-      text-align: center;
-      padding: 0.5rem;
+      display: flex;
+      justify-content: center;
+      background-color: #ffffff;
+      border-bottom: 1px solid #e0e0e0;
     }
     nav a {
-      color: white;
-      margin: 0 1rem;
+      padding: 1rem;
       text-decoration: none;
+      color: #031E47;
       font-weight: bold;
+    }
+    nav a:hover {
+      background-color: #f0f0f0;
     }
     section {
       padding: 2rem;
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
     }
-    h1, h2 {
-      color: #002366;
+    h2 {
+      color: #031E47;
     }
-    .pricing-tier {
-      background-color: white;
-      border-left: 6px solid #e0c55c; /* gold accent */
-      border-radius: 6px;
-      padding: 1rem 1.5rem;
+    .pricing {
+      background-color: #eef3f9;
+      border-radius: 10px;
+      padding: 2rem;
+    }
+    .package {
       margin-bottom: 2rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
-    .pricing-tier h3 {
-      margin-top: 0;
+    .package h3 {
+      color: #7A5400;
+    }
+    iframe {
+      width: 100%;
+      height: 1200px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 1rem;
     }
     footer {
-      background-color: #002366;
-      color: white;
       text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
+      padding: 1.5rem;
+      background-color: #031E47;
+      color: #ffffff;
+    }
+    .logo {
+      margin-top: 1rem;
+      max-height: 70px;
     }
   </style>
 </head>
 <body>
 
   <header>
+    <img src="https://i.ibb.co/JqzqtTb/sheetpilot-logo-transparent.png" alt="SheetPilot Logo" class="logo">
     <h1>SheetPilot</h1>
-    <p><em>Building Systems for People, Led by the Holy Spirit of God</em></p>
+    <p>Building Systems for People, Led by the Holy Spirit of God</p>
   </header>
 
   <nav>
-    <a href="#what">Home</a>
+    <a href="#home">Home</a>
+    <a href="#services">What We Do</a>
     <a href="#pricing">Pricing</a>
+    <a href="#form">Get Started</a>
     <a href="#faqs">FAQs</a>
     <a href="#contact">Contact</a>
   </nav>
 
-  <section id="what">
+  <section id="home">
     <h2>What is SheetPilot?</h2>
-    <p>
-      <strong>SheetPilot is a Christ-centered business providing done-for-you spreadsheet automation systems for entrepreneurs, ministries, nonprofits, and small businesses.</strong>
-      Whether you’re managing data, building dashboards, or streamlining workflows with Google Drive, Gmail, and Microsoft Excel, SheetPilot simplifies the process — so you don’t have to.
-    </p>
-    <p>
-      <strong>Led by the Holy Spirit of God, we approach every project with excellence, integrity, and a heart to serve.</strong>
-    </p>
+    <p><strong>SheetPilot</strong> is a Christ-centered business providing done-for-you spreadsheet automation systems for entrepreneurs, ministries, nonprofits, and small businesses. Whether you’re managing data, building dashboards, or streamlining workflows with Google Drive, Gmail, and Microsoft Excel, SheetPilot simplifies the process — so you don’t have to.</p>
+    <p><strong>Led by the Holy Spirit of God</strong>, we approach every project with excellence, integrity, and a heart to serve.</p>
   </section>
 
-  <section id="form">
-    <h2>🚀 Ready to Get Started?</h2>
-    <p><a href="https://tally.so/r/nGzvWo" target="_blank">Click here to fill out our intake form</a> and we’ll begin crafting your system.</p>
+  <section id="services">
+    <h2>What We Do</h2>
+    <ul>
+      <li>Custom spreadsheet automation for Google Sheets or Microsoft Excel</li>
+      <li>Email notifications, triggers, and scheduled tasks</li>
+      <li>Drive file management & form integrations (Google Forms or Tally)</li>
+      <li>Sorting, filtering, and organizing your data workflows</li>
+      <li>One-on-one support and walkthroughs to help you succeed</li>
+    </ul>
   </section>
 
-  <section id="pricing">
-    <h2>💸 Revised Economic Pricing Scale</h2>
-    <p><em>“Serve your clients well, and the provision will follow.”</em></p>
+  <section id="pricing" class="pricing">
+    <h2>💸 Pricing Packages</h2>
 
-    <div class="pricing-tier">
+    <div class="package">
       <h3>🟦 Basic Essentials – $99</h3>
       <ul>
         <li>30-minute discovery call</li>
@@ -102,58 +129,73 @@
       </ul>
     </div>
 
-    <div class="pricing-tier">
+    <div class="package">
       <h3>🟨 Growth Package – $199</h3>
       <ul>
-        <li>Everything in Basic</li>
+        <li>Includes Basic</li>
         <li>Form integration (Tally or Google Form)</li>
-        <li>Google Drive + Gmail automation (if needed)</li>
+        <li>Google Drive + Gmail automation</li>
         <li>Advanced sorting logic or simple dashboards</li>
         <li>Two revisions</li>
       </ul>
     </div>
 
-    <div class="pricing-tier">
-      <h3>🟧 Business Systems – $299+</h3>
+    <div class="package">
+      <h3>🟧 Business Systems – $299</h3>
       <ul>
-        <li>Everything in Growth</li>
+        <li>Includes Growth</li>
         <li>Multi-tab management & system organization</li>
         <li>Scheduled automations</li>
         <li>Custom email templates</li>
         <li>7-day support window</li>
-        <li>Optional: Training call or walkthrough video</li>
+        <li>Training call or walkthrough video</li>
       </ul>
     </div>
 
-    <div class="pricing-tier">
-      <h3>🔄 SheetPilot Care Plan – $49/month</h3>
+    <div class="package">
+      <h3>🔄 Support Add-On – $49/month</h3>
       <ul>
-        <li>Ongoing bug fixes and small updates</li>
+        <li>Bug fixes and small updates</li>
         <li>Priority response time</li>
-        <li><strong>First month FREE</strong> for Business Systems clients</li>
+        <li>First month FREE for Business Systems clients</li>
       </ul>
     </div>
 
-    <div class="pricing-tier">
+    <div class="package">
       <h3>✝️ Faith-Based Discount (for churches, ministries, and mission-led nonprofits)</h3>
       <p>Sliding scale or custom quote available — just let us know your needs.</p>
     </div>
   </section>
 
+  <section id="form">
+    <h2>🚀 Ready to Get Started?</h2>
+    <p>Fill out our discovery form and we’ll begin crafting your custom system:</p>
+    <iframe src="https://tally.so/r/3xLeQG" loading="lazy"></iframe>
+  </section>
+
   <section id="faqs">
-    <h2>FAQs</h2>
-    <p><strong>Do I need technical experience to work with SheetPilot?</strong><br>Nope. We handle the tech — you focus on your mission.</p>
-    <p><strong>How long does a typical build take?</strong><br>Most systems are delivered within 7 business days after consultation.</p>
-    <p><strong>What platforms do you support?</strong><br>We support Google Sheets, Microsoft Excel, Google Drive, Gmail, and Tally/Forms integrations.</p>
+    <h2>📌 Frequently Asked Questions</h2>
+    <h4>Do I need to know how to code?</h4>
+    <p>Not at all. We build everything for you — no tech knowledge required.</p>
+
+    <h4>What platforms do you support?</h4>
+    <p>We support Google Sheets, Microsoft Excel, Google Drive, Gmail, and common form tools like Tally and Google Forms.</p>
+
+    <h4>Do you work with faith-based clients only?</h4>
+    <p>SheetPilot is led by faith but open to serve anyone seeking excellence in their systems.</p>
+
+    <h4>How long does a project take?</h4>
+    <p>Most builds are completed within 3–5 business days after the discovery form is submitted.</p>
   </section>
 
   <section id="contact">
-    <h2>Contact</h2>
-    <p>For further inquiries, please contact us at: <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
+    <h2>📬 Contact</h2>
+    <p>For further inquiries, please contact us at:</p>
+    <p><strong>Email:</strong> <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
   </section>
 
   <footer>
-    <p>© 2025 SheetPilot. Built with purpose, led by the Spirit.</p>
+    <p>© 2025 SheetPilot. All rights reserved.</p>
   </footer>
 
 </body>
