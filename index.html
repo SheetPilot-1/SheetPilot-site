@@ -180,17 +180,41 @@
     <div class="tagline">Spirit-Led Systems for Business and Ministry</div>
   </div>
     <button class="menu-toggle" id="menu-toggle">&#9776;</button>
+<!-- HEADER -->
+<header style="background-color: #052c5c; color: white; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+  <div style="display: flex; align-items: center;">
+    <img src="https://raw.githubusercontent.com/SheetPilot-1/SheetPilot-site/refs/heads/main/sheetpilot-logo.png.PNG" alt="SheetPilot Logo" style="height: 96px; margin-right: 1rem;" />
+    <div style="font-size: 1.1rem;">Spirit-Led Systems for Business and Ministry</div>
+  </div>
+  <button class="menu-toggle" id="menu-toggle" style="background-color: #f0f0f0; color: #052c5c; border: none; border-radius: 12px; padding: 0.5rem 0.75rem; font-size: 1.2rem;">☰</button>
 </header>
- <nav id="navbar">
-  <a href="#home">Home</a>
-  <a href="#what-we-do">What We Do</a>
-  <a href="#prayer">Prayer</a>
-  <a href="#pricing">Pricing</a>
-  <a href="#form">Get Started</a>
-  <a href="#faqs">FAQs</a>
-  <a href="#contact">Contact</a>
+
+<!-- DROPDOWN MENU -->
+<nav class="dropdown-menu" id="dropdown-menu" style="display: none; flex-direction: column; position: absolute; right: 1rem; top: 6.5rem; background-color: #052c5c; padding: 1rem; border-radius: 10px; box-shadow: 0 8px 16px rgba(0,0,0,0.2); z-index: 1000;">
+  <a href="#home" style="color: white; text-decoration: none; padding: 0.5rem 0;">Home</a>
+  <a href="#pricing" style="color: white; text-decoration: none; padding: 0.5rem 0;">Pricing</a>
+  <a href="#prayer" style="color: white; text-decoration: none; padding: 0.5rem 0;">Prayer</a>
+  <a href="#get-started" style="color: white; text-decoration: none; padding: 0.5rem 0;">Ready to Get Started</a>
+  <a href="#faqs" style="color: white; text-decoration: none; padding: 0.5rem 0;">FAQs</a>
+  <a href="#contact" style="color: white; text-decoration: none; padding: 0.5rem 0;">Contact</a>
 </nav>
-  </header>
+
+<!-- MENU TOGGLE SCRIPT -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const toggle = document.getElementById("menu-toggle");
+    const menu = document.getElementById("dropdown-menu");
+
+    toggle.addEventListener("click", function () {
+      menu.classList.toggle("open");
+      if (menu.classList.contains("open")) {
+        menu.style.display = "flex";
+      } else {
+        menu.style.display = "none";
+      }
+    });
+  });
+</script>
 
   <section class="section" id="home">
     <h2> Building Systems for People, Led by the Holy Spirit of God</h2>
