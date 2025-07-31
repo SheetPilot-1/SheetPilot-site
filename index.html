@@ -32,10 +32,15 @@
       margin-right: 12px;
     }
 
+    .branding {
+      display: flex;
+      flex-direction: column;
+    }
+
     .slogan {
       font-size: 0.9rem;
       color: #cce2ff;
-      margin-left: 12px;
+      margin-top: 0.2rem;
     }
 
     nav {
@@ -79,38 +84,19 @@
       border-top: 1px solid #eee;
     }
 
-    .hero {
-      background-color: #eaf2ff;
-      text-align: center;
-    }
+    .hero { background-color: #eaf2ff; text-align: center; }
+    .whatwedo { background-color: #fffbe6; }
+    .prayer { background-color: #fcf4e6; }
+    .pricing { background-color: #f1f6ff; }
+    .faq { background-color: #f9f9fc; }
+    .contact { background-color: #f2f2ff; }
 
-    .hero h1 {
-      color: #052c5c;
-      margin-bottom: 1rem;
-    }
+    h2 { color: #052c5c; }
 
-    .whatwedo {
-      background-color: #fffbe6;
-    }
-
-    .prayer {
-      background-color: #fcf4e6;
-    }
-
-    .pricing {
-      background-color: #f1f6ff;
-    }
-
-    .faq {
-      background-color: #f9f9fc;
-    }
-
-    .contact {
-      background-color: #f2f2ff;
-    }
-
-    h2 {
-      color: #052c5c;
+    .faq, .contact {
+      border-radius: 12px;
+      margin: 0 1rem;
+      padding: 2rem;
     }
 
     ul {
@@ -126,17 +112,14 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     }
 
-    .faq, .contact {
-      border-radius: 12px;
-      margin: 0 1rem;
-      padding: 2rem;
-    }
-
     @media (max-width: 768px) {
       .slogan {
         margin-top: 0.5rem;
         margin-left: 0;
-        display: block;
+        text-align: center;
+      }
+
+      .branding {
         text-align: center;
       }
     }
@@ -146,7 +129,7 @@
   <header>
     <div class="logo-container">
       <img src="https://raw.githubusercontent.com/kristofercope/sheetpilot/main/logo.png" alt="SheetPilot Logo">
-      <div>
+      <div class="branding">
         <h1 style="margin: 0;">SheetPilot</h1>
         <div class="slogan">Spirit-Led Systems for Business and Ministry</div>
       </div>
@@ -257,7 +240,7 @@
 
     window.addEventListener('click', function(e) {
       const menu = document.getElementById('menuDropdown');
-      if (!e.target.matches('.menu-icon')) {
+      if (!e.target.closest('nav')) {
         menu.style.display = "none";
       }
     });
