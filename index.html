@@ -6,10 +6,11 @@
   <title>SheetPilot — Spirit-Led Systems for Business and Ministry</title>
   <style>
     body {
-      margin: 0;
       font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
       background-color: #fffdf6;
-      color: #1f1f1f;
+      color: #2e2e2e;
     }
 
     header {
@@ -29,221 +30,196 @@
 
     .logo-container img {
       height: 64px;
-      margin-right: 12px;
+      margin-right: 1rem;
     }
 
-    .branding {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .slogan {
+    .logo-container .tagline {
       font-size: 0.9rem;
-      color: #cce2ff;
-      margin-top: 0.2rem;
+      color: #ffffff;
+      margin-left: 1rem;
     }
 
     nav {
       position: relative;
     }
 
-    .menu-icon {
-      font-size: 2rem;
-      cursor: pointer;
+    .menu-toggle {
       background: none;
       border: none;
       color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
     }
 
     .dropdown {
       position: absolute;
-      top: 2.5rem;
+      top: 100%;
       right: 0;
       background-color: white;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
       display: none;
       flex-direction: column;
+      min-width: 180px;
+      border-radius: 6px;
       z-index: 1000;
     }
 
     .dropdown a {
-      padding: 0.75rem 1.25rem;
-      text-decoration: none;
       color: #052c5c;
+      padding: 0.75rem 1rem;
+      text-decoration: none;
+      display: block;
       font-weight: bold;
     }
 
     .dropdown a:hover {
+      background-color: #f2f2f2;
+    }
+
+    .show {
+      display: flex;
+    }
+
+    .section {
+      padding: 3rem 1.5rem;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #fefae8;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      margin-bottom: 2rem;
+    }
+
+    .hero {
+      background-color: #e6f0ff;
+      text-align: center;
+    }
+
+    .hero h1 {
+      color: #052c5c;
+    }
+
+    h2 {
+      color: #052c5c;
+    }
+
+    .faq {
+      background-color: #e6ecfc;
+    }
+
+    .contact {
       background-color: #f0f4ff;
     }
 
-    section {
-      padding: 2.5rem 1rem;
-      border-top: 1px solid #eee;
-    }
-
-    .hero { background-color: #eaf2ff; text-align: center; }
-    .whatwedo { background-color: #fffbe6; }
-    .prayer { background-color: #fcf4e6; }
-    .pricing { background-color: #f1f6ff; }
-    .faq { background-color: #f9f9fc; }
-    .contact { background-color: #f2f2ff; }
-
-    h2 { color: #052c5c; }
-
-    .faq, .contact {
-      border-radius: 12px;
-      margin: 0 1rem;
-      padding: 2rem;
-    }
-
-    ul {
-      list-style-type: disc;
-      padding-left: 1.5rem;
-    }
-
-    .package {
-      margin-bottom: 1.5rem;
-      padding: 1rem;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
     @media (max-width: 768px) {
-      .slogan {
-        margin-top: 0.5rem;
-        margin-left: 0;
-        text-align: center;
+      .logo-container {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
-      .branding {
-        text-align: center;
+      .logo-container .tagline {
+        margin-left: 0;
+        margin-top: 0.5rem;
       }
     }
   </style>
-</head>
-<body>
-  <header>
-    <div class="logo-container">
-      <img src="https://raw.githubusercontent.com/kristofercope/sheetpilot/main/logo.png" alt="SheetPilot Logo">
-      <div class="branding">
-        <h1 style="margin: 0;">SheetPilot</h1>
-        <div class="slogan">Spirit-Led Systems for Business and Ministry</div>
-      </div>
-    </div>
-    <nav>
-      <button class="menu-icon" onclick="toggleMenu()">☰</button>
-      <div class="dropdown" id="menuDropdown">
-        <a href="#whatwedo">What We Do</a>
-        <a href="#prayer">Prayer</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#getstarted">Get Started</a>
-        <a href="#faq">FAQs</a>
-        <a href="#contact">Contact</a>
-      </div>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <h1>SheetPilot: Building Systems for People, Led by the Holy Spirit of God</h1>
-    <p>SheetPilot is a Spirit-led consulting service that builds automated spreadsheet systems for businesses and ministries. Whether you're managing clients, sorting data, or tracking operations — we take the weight off your shoulders and build the backend for you. Our goal is to serve with excellence, precision, and care — whether you're a church, nonprofit, or entrepreneur. You don’t need to be tech-savvy — just tell us what you need, and we’ll handle the rest.</p>
-  </section>
-
-  <section class="whatwedo" id="whatwedo">
-    <h2>📊 What We Do</h2>
-    <ul>
-      <li>📈 Spreadsheet automation (Google Sheets & Excel)</li>
-      <li>🗂 Multi-tab management and system organization</li>
-      <li>📧 Email and Drive automation (Gmail + Google Drive)</li>
-      <li>📝 Data cleanup, logic sorting, and form triggers</li>
-      <li>🎥 Training videos, walkthroughs, and support docs</li>
-    </ul>
-  </section>
-
-  <section class="prayer" id="prayer">
-    <h2>🙏 Covered in Prayer</h2>
-    <p>At SheetPilot, every project is prayerfully considered and spiritually guided. We seek the wisdom of the Holy Spirit in every system we build, asking God to bless the work and those it serves. Whether you’re a business, ministry, or mission-led nonprofit, know that we will pray over your project and work with excellence unto the Lord.</p>
-  </section>
-
-  <section class="pricing" id="pricing">
-    <h2>💸 Pricing</h2>
-    <div class="package">
-      <strong>🟦 Basic Essentials – $99</strong>
-      <ul>
-        <li>30-minute discovery call</li>
-        <li>One spreadsheet automation (basic logic)</li>
-        <li>Email notifications or sorting system</li>
-        <li>One revision</li>
-        <li>Google Sheets only</li>
-      </ul>
-    </div>
-    <div class="package">
-      <strong>🟨 Growth Package – $199</strong>
-      <ul>
-        <li>Includes Basic</li>
-        <li>Form integration (Tally or Google Form)</li>
-        <li>Google Drive + Gmail automation</li>
-        <li>Advanced logic or dashboards</li>
-        <li>Two revisions</li>
-      </ul>
-    </div>
-    <div class="package">
-      <strong>🟧 Business Systems – $299</strong>
-      <ul>
-        <li>Includes Growth</li>
-        <li>Multi-tab systems + scheduling</li>
-        <li>Custom email templates</li>
-        <li>7-day support window</li>
-        <li>Walkthrough video or training call</li>
-      </ul>
-    </div>
-    <div class="package">
-      <strong>🔄 Support Add-On – $49/month</strong>
-      <ul>
-        <li>Bug fixes + small updates</li>
-        <li>Priority response time</li>
-        <li>1st month FREE for Business clients</li>
-      </ul>
-    </div>
-    <div class="package">
-      <strong>✝️ Faith-Based Discount</strong>
-      <ul>
-        <li>Custom pricing for churches & ministries</li>
-        <li>Sliding scale available</li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="section" id="getstarted">
-    <h2>📋 Ready to Get Started?</h2>
-    <iframe src="https://tally.so/r/3xLeQG" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0" title="SheetPilot Form">Loading…</iframe>
-  </section>
-
-  <section class="faq" id="faq">
-    <h2>❓ FAQs</h2>
-    <p>Coming soon. In the meantime, feel free to reach out with any questions!</p>
-  </section>
-
-  <section class="contact" id="contact">
-    <h2>📬 Contact</h2>
-    <p>Email us at <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
-  </section>
-
   <script>
-    function toggleMenu() {
-      const dropdown = document.getElementById("menuDropdown");
-      dropdown.style.display = dropdown.style.display === "flex" ? "none" : "flex";
+    function toggleDropdown() {
+      const dropdown = document.getElementById("dropdownMenu");
+      dropdown.classList.toggle("show");
     }
 
-    window.addEventListener('click', function(e) {
-      const menu = document.getElementById('menuDropdown');
-      if (!e.target.closest('nav')) {
-        menu.style.display = "none";
+    window.onclick = function(event) {
+      if (!event.target.matches('.menu-toggle')) {
+        const dropdowns = document.getElementsByClassName("dropdown");
+        for (let i = 0; i < dropdowns.length; i++) {
+          const openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+            openDropdown.classList.remove('show');
+          }
+        }
       }
-    });
+    }
   </script>
+</head>
+<body>
+
+<header>
+  <div class="logo-container">
+    <img src="https://raw.githubusercontent.com/yourusername/sheetpilot-assets/main/logo.png" alt="SheetPilot Logo" />
+    <div>
+      <div style="font-size: 1.5rem; font-weight: bold;">SheetPilot</div>
+      <div class="tagline">Spirit-Led Systems for Business and Ministry</div>
+    </div>
+  </div>
+  <nav>
+    <button class="menu-toggle" onclick="toggleDropdown()">☰</button>
+    <div class="dropdown" id="dropdownMenu">
+      <a href="#whatwedo">What We Do</a>
+      <a href="#prayer">Prayer</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#getstarted">Get Started</a>
+      <a href="#faq">FAQs</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<section class="section hero">
+  <h1>SheetPilot: Building Systems for People, Led by the Holy Spirit of God</h1>
+  <p>
+    SheetPilot is a Spirit-led consulting service that builds automated spreadsheet systems for businesses and ministries. 
+    Whether you're managing clients, sorting data, or tracking operations — we take the weight off your shoulders and build the backend for you. 
+    Our goal is to serve with excellence, precision, and care — whether you're a church, nonprofit, or entrepreneur. 
+    Just tell us what you need, and we’ll handle the rest.
+  </p>
+</section>
+
+<section class="section" id="whatwedo">
+  <h2>📊 What We Do</h2>
+  <ul>
+    <li>📈 Spreadsheet automation (Google Sheets & Excel)</li>
+    <li>🗂️ Multi-tab management and system organization</li>
+    <li>📧 Email and Drive automation (Gmail + Google Drive)</li>
+    <li>🧹 Data cleanup, logic sorting, and form triggers</li>
+    <li>🎥 Training videos, walkthroughs, and support docs</li>
+  </ul>
+</section>
+
+<section class="section" id="prayer" style="background-color:#fff7d1;">
+  <h2>🙏 Covered in Prayer</h2>
+  <p>
+    At SheetPilot, every project is prayerfully considered and spiritually guided. 
+    We seek the wisdom of the Holy Spirit in every system we build, asking God to bless the work and those it serves. 
+    Whether you’re a business, ministry, or mission-led nonprofit, know that we will pray over your project and work with excellence unto the Lord.
+  </p>
+</section>
+
+<section class="section" id="pricing">
+  <h2>💸 Pricing</h2>
+  <ul>
+    <li>🟦 Basic Essentials – $99</li>
+    <li>🟨 Growth Package – $199</li>
+    <li>🟧 Business Systems – $299</li>
+    <li>🔄 Support Add-On – $49/month</li>
+    <li>✝️ Faith-Based Discount Available</li>
+  </ul>
+</section>
+
+<section class="section" id="getstarted">
+  <h2>🚀 Ready to Get Started?</h2>
+  <iframe src="https://tally.so/r/3xLeQG" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0" title="SheetPilot Form">Loading…</iframe>
+</section>
+
+<section class="section faq" id="faq">
+  <h2>❓ FAQs</h2>
+  <p>Coming soon. In the meantime, feel free to reach out with any questions!</p>
+</section>
+
+<section class="section contact" id="contact">
+  <h2>📬 Contact</h2>
+  <p>Email us at <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
+</section>
+
 </body>
 </html>
