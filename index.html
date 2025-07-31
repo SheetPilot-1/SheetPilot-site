@@ -55,16 +55,16 @@
     }
 
     nav {
-  display: none;
-  flex-direction: column;
-  background-color: var(--navy);
-  position: absolute;
-  top: 64px; /* locks dropdown just below fixed header */
-  right: 0;
-  width: 100%;
-  z-index: 1000;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 0 0 8px 8px;
+      display: none;
+      flex-direction: column;
+      background-color: var(--navy);
+      position: absolute;
+      top: 64px;
+      right: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      border-radius: 0 0 8px 8px;
     }
 
     nav a {
@@ -72,7 +72,6 @@
       text-decoration: none;
       padding: 1rem;
       border-top: 1px solid rgba(255, 255, 255, 0.1);
-      transition: background 0.3s ease;
     }
 
     nav a:hover {
@@ -80,21 +79,18 @@
     }
 
     .section {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-  padding: 2.5rem 1.5rem;
-  max-width: 900px;
-  margin: 2rem auto;
-  line-height: 1.6;
-}
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      padding: 2.5rem 1.5rem;
+      max-width: 900px;
+      margin: 2rem auto;
+      line-height: 1.6;
+    }
+
     .section h2 {
       color: var(--navy);
       margin-bottom: 1rem;
-    }
-
-    .section:not(:last-child) {
-      border-bottom: 1px solid #ddd;
     }
 
     .pricing-tier {
@@ -131,6 +127,8 @@
         position: static;
         width: auto;
         background: none;
+        box-shadow: none;
+        border-radius: 0;
       }
 
       nav a {
@@ -171,8 +169,8 @@
       <a href="#home">Home</a>
       <a href="#pricing">Pricing</a>
       <a href="#faqs">FAQs</a>
-      <a href="#contact">Contact</a>
       <a href="#prayer">Prayer</a>
+      <a href="#contact">Contact</a>
     </nav>
   </header>
 
@@ -184,11 +182,11 @@
   <section class="section">
     <h2>What Can SheetPilot Do?</h2>
     <ul>
-      <li>Automated Google Sheets and Excel workflows</li>
-      <li>Email & file handling integrations with Gmail and Drive</li>
-      <li>Data cleaning, sorting, filtering, and visual dashboards</li>
-      <li>Scheduling triggers and smart reminders</li>
-      <li>Faith-based or nonprofit system support</li>
+      <li>📊 Spreadsheet automation (Google Sheets & Excel)</li>
+      <li>📋 Multi-tab management and system organization</li>
+      <li>📧 Email and Drive automation (Gmail + Google Drive)</li>
+      <li>🧹 Data cleanup, logic sorting, and form triggers</li>
+      <li>📚 Training videos, walkthroughs, and support docs</li>
     </ul>
   </section>
 
@@ -230,15 +228,9 @@
     </div>
 
     <div class="pricing-tier">
-      <h3>🔄 Support Add-On — $49/month</h3>
-      <ul>
-        <li>Bug fixes and small updates</li>
-        <li>Priority response time</li>
-        <li>First month FREE for Business Systems clients</li>
-      </ul>
+      <h3>✝️ Faith-Based Discount</h3>
+      <p>Sliding scale or custom quote available for churches, ministries, or mission-led projects.</p>
     </div>
-
-    <p><strong>✝️ Faith-Based Discount:</strong> Sliding scale or custom quote for churches/ministries.</p>
   </section>
 
   <section class="section" id="form">
@@ -254,15 +246,14 @@
     <p><strong>What if I don’t know exactly what I need?</strong> No problem — that’s what the discovery form and call are for.</p>
   </section>
 
-  <section class="section" id="contact">
-    <h2>Contact</h2>
-    <p>Email: <a href="mailto:sheetpilotsystems@gmail.com">sheetpilotsystems@gmail.com</a></p>
-    <p>Instagram: <a href="https://instagram.com/sheetpilot" target="_blank">@sheetpilot</a></p>
-  </section>
-
   <section class="section" id="prayer">
     <h2>Prayer</h2>
     <p>We believe in the power of prayer and would be honored to pray for you or your business. Feel free to include a prayer request when filling out the form or email us directly.</p>
+  </section>
+
+  <section class="section" id="contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:sheetpilotsystems@gmail.com">sheetpilotsystems@gmail.com</a></p>
   </section>
 
   <footer>
