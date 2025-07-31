@@ -125,21 +125,23 @@
     <a href="#contact">Contact</a>
   </nav>
 </header>
+
 <script>
   function toggleMenu() {
-    document.body.classList.toggle("menu-open");
+    const menu = document.getElementById("navMenu");
+    menu.style.display = (menu.style.display === "flex") ? "none" : "flex";
   }
 
-  // Optional: Close menu when clicking a link
+  // Optional: close menu when a link is clicked
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("nav a").forEach(link =>
       link.addEventListener("click", () => {
-        document.body.classList.remove("menu-open");
+        const menu = document.getElementById("navMenu");
+        if (menu) menu.style.display = "none";
       })
     );
   });
 </script>
-
 <!-- Everything else stays below this -->
 <!-- Your existing "What We Do", "Pricing", "Form", etc. sections -->
 
