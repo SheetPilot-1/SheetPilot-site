@@ -26,11 +26,19 @@
       align-items: center;
     }
     .logo-container img {
-      height: 72px;
+      height: 64px;
       margin-right: 1rem;
     }
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .logo-text h1 {
+      margin: 0;
+      font-size: 1.6rem;
+    }
     .tagline {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #dcdcdc;
     }
     nav {
@@ -93,6 +101,9 @@
         flex-direction: column;
         align-items: flex-start;
       }
+      .logo-text {
+        margin-top: 0.5rem;
+      }
     }
   </style>
   <script>
@@ -106,9 +117,9 @@
 
 <header>
   <div class="logo-container">
-    <img src="https://raw.githubusercontent.com/sheetpilot/assets/main/sheetpilot-logo.png" alt="SheetPilot Logo">
-    <div>
-      <h1 style="margin: 0;">SheetPilot</h1>
+    <img src="https://raw.githubusercontent.com/sheetpilot/assets/main/sheetpilot-logo-transparent.png" alt="SheetPilot Logo">
+    <div class="logo-text">
+      <h1>SheetPilot</h1>
       <div class="tagline">Spirit-Led Systems for Business and Ministry</div>
     </div>
   </div>
@@ -178,7 +189,12 @@
 
 <section class="section faq" id="faq">
   <h2>❓ FAQs</h2>
-  <p>Coming soon. In the meantime, feel free to reach out with any questions!</p>
+  <ul>
+    <li><strong>Do I need to know how to code?</strong><br>Nope! That’s what we’re here for. Just tell us what you want automated, and we’ll build it for you.</li>
+    <li><strong>What platforms do you support?</strong><br>We build systems in Google Sheets and Microsoft Excel, with optional form, email, and Drive integration.</li>
+    <li><strong>Can I request updates later?</strong><br>Yes! You can add our $49/month support plan anytime — first month is free for Business Systems clients.</li>
+    <li><strong>What if I need something custom?</strong><br>We’ll quote it out for you — or suggest a simpler solution. Just fill out the form and we’ll advise accordingly.</li>
+  </ul>
 </section>
 
 <section class="section contact" id="contact">
