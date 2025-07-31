@@ -21,7 +21,6 @@
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
-      position: relative;
     }
 
     .logo-container {
@@ -30,14 +29,14 @@
     }
 
     .logo-container img {
-      height: 80px;
+      height: 64px;
       margin-right: 1rem;
     }
 
     .header-text {
       font-size: 1.2rem;
       font-weight: bold;
-      max-width: 180px;
+      max-width: 160px;
     }
 
     .menu-toggle {
@@ -53,8 +52,8 @@
     nav {
       display: none;
       flex-direction: column;
-      width: 100%;
       margin-top: 1rem;
+      width: 100%;
     }
 
     nav a {
@@ -90,8 +89,6 @@
 
     section {
       margin-bottom: 4rem;
-      padding-bottom: 2rem;
-      border-bottom: 1px solid #eee;
     }
 
     h1, h2 {
@@ -120,148 +117,172 @@
     .quote {
       font-style: italic;
       text-align: center;
-      font-size: 1.2rem;
       margin-top: 2rem;
     }
 
-    .footer {
+    footer {
+      background-color: #f1f1f1;
       text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .light-bg {
+      background-color: #fffbe6;
       padding: 2rem;
-      background-color: #f9f9f9;
-      border-top: 2px solid #eee;
-      color: #777;
+      border-radius: 10px;
+    }
+
+    .form-embed {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    .form-embed iframe {
+      width: 100%;
+      max-width: 700px;
+      height: 700px;
+      border: none;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="logo-container">
-      <img src="https://i.ibb.co/tCW5YKn/sheetpilot-logo-gold.png" alt="SheetPilot Logo" />
-      <div class="header-text">Spirit-Led Systems for Business and Ministry</div>
+<header>
+  <div class="logo-container">
+    <img src="https://i.imgur.com/3zFQk2O.png" alt="SheetPilot Logo">
+    <div class="header-text">Spirit-Led Systems for<br>Business and Ministry</div>
+  </div>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <nav id="navMenu">
+    <a href="#what">What We Do</a>
+    <a href="#prayer">Prayer</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#form">Get Started</a>
+    <a href="#faq">FAQs</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Building Systems for People, Led by the Holy Spirit of God</h2>
+    <p>SheetPilot exists to serve businesses and ministries by creating simple, streamlined spreadsheet systems that save time and multiply impact. From basic automation to complete workflow orchestration in both Google Sheets and Microsoft Excel — we deliver Kingdom-minded excellence in every build.</p>
+  </section>
+
+  <section id="what">
+    <h2>What We Do</h2>
+    <ul>
+      <li>📊 Spreadsheet automation (Google Sheets & Excel)</li>
+      <li>📋 Multi-tab management and system organization</li>
+      <li>✉️ Email and Drive automation (Gmail + Google Drive)</li>
+      <li>🧹 Data cleanup, logic sorting, and form triggers</li>
+      <li>🎓 Training videos, walkthroughs, and support docs</li>
+    </ul>
+  </section>
+
+  <section id="prayer" class="light-bg">
+    <h2>🙏 Covered in Prayer</h2>
+    <p>At SheetPilot, every project is prayerfully considered and spiritually guided. We seek the wisdom of the Holy Spirit in every system we build, asking God to bless the work and those it serves. Whether you’re a business, ministry, or mission-led nonprofit, know that we will pray over your project and work with excellence unto the Lord.</p>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing</h2>
+
+    <div class="pricing-block">
+      <h3>🟦 Basic Essentials – $99</h3>
+      <ul>
+        <li>30-minute discovery call</li>
+        <li>One spreadsheet automation (basic logic)</li>
+        <li>Email notifications or sorting system</li>
+        <li>One revision</li>
+        <li>Google Sheets only</li>
+      </ul>
     </div>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <nav id="navMenu">
-      <a href="#services">What We Do</a>
-      <a href="#prayer">Prayer</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#form">Get Started</a>
-      <a href="#faq">FAQs</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
 
-  <script>
-    function toggleMenu() {
-      const menu = document.getElementById("navMenu");
-      menu.style.display = (menu.style.display === "flex") ? "none" : "flex";
+    <div class="pricing-block">
+      <h3>🟨 Growth Package – $199</h3>
+      <ul>
+        <li>Everything in Basic</li>
+        <li>Form integration (Tally or Google Form)</li>
+        <li>Google Drive + Gmail automation (if needed)</li>
+        <li>Advanced sorting logic or simple dashboards</li>
+        <li>Two revisions</li>
+      </ul>
+    </div>
+
+    <div class="pricing-block">
+      <h3>🟧 Business Systems – $299</h3>
+      <ul>
+        <li>Everything in Growth</li>
+        <li>Multi-tab automation</li>
+        <li>Scheduled workflows</li>
+        <li>Custom email templates</li>
+        <li>7-day support window + walkthrough</li>
+      </ul>
+    </div>
+
+    <div class="pricing-block">
+      <h3>🔄 Support Add-On – $49/month</h3>
+      <ul>
+        <li>Bug fixes and minor updates</li>
+        <li>Priority support response time</li>
+        <li>Free first month with Business Systems</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="form">
+    <h2>Ready to Get Started?</h2>
+    <p class="quote">“Serve your clients well, and the provision will follow.”</p>
+    <div class="form-embed">
+      <iframe src="https://tally.so/r/3xLeQG" title="SheetPilot Discovery Form"></iframe>
+    </div>
+  </section>
+
+  <section id="faq">
+    <h2>FAQs</h2>
+    <ul>
+      <li><strong>What platforms do you support?</strong><br>We support both Google Sheets (Apps Script) and Microsoft Excel (VBA or Office Script).</li>
+      <li><strong>Do I need to know how to code?</strong><br>Nope! That’s our job — you provide the vision and we build it out for you.</li>
+      <li><strong>Can you integrate with my existing forms or tools?</strong><br>Yes! We support Google Forms, Tally, Gmail, Drive, and more.</li>
+      <li><strong>How long does a typical project take?</strong><br>Most builds are completed within 5–10 business days after kickoff.</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>Questions? Reach out via <a href="mailto:hello@sheetpilot.net">hello@sheetpilot.net</a>.</p>
+  </section>
+</main>
+
+<footer>
+  © 2025 SheetPilot. Built to serve, led by the Spirit.
+</footer>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById("navMenu");
+    if (menu.style.display === "flex" || menu.style.display === "block") {
+      menu.style.display = "none";
+    } else {
+      menu.style.display = "block";
     }
+  }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll("nav a").forEach(link => {
-        link.addEventListener("click", () => {
-          const menu = document.getElementById("navMenu");
-          if (menu && window.innerWidth < 768) menu.style.display = "none";
-        });
+  // Optional: close menu on nav link click (mobile)
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("nav a").forEach(link => {
+      link.addEventListener("click", () => {
+        const menu = document.getElementById("navMenu");
+        if (window.innerWidth < 768) {
+          menu.style.display = "none";
+        }
       });
     });
-  </script>
-
-  <main>
-    <section>
-      <h2>Building Systems for People, Led by the Holy Spirit of God</h2>
-      <p>SheetPilot exists to serve businesses and ministries by creating simple, streamlined spreadsheet systems that save time and multiply impact. From basic automation to complete workflow orchestration in both Google Sheets and Microsoft Excel — we deliver Kingdom-minded excellence in every build.</p>
-    </section>
-
-    <section id="services">
-      <h2>What We Do</h2>
-      <ul>
-        <li>📊 Spreadsheet automation (Google Sheets & Excel)</li>
-        <li>📋 Multi-tab management and system organization</li>
-        <li>✉️ Email and Drive automation (Gmail + Google Drive)</li>
-        <li>🧹 Data cleanup, logic sorting, and form triggers</li>
-        <li>📚 Training videos, walkthroughs, and support docs</li>
-      </ul>
-    </section>
-
-    <section id="prayer" style="background-color: #fffbe6;">
-      <h2>🙏 Covered in Prayer</h2>
-      <p>At SheetPilot, every project is prayerfully considered and spiritually guided. We seek the wisdom of the Holy Spirit in every system we build, asking God to bless the work and those it serves. Whether you’re a business, ministry, or mission-led nonprofit, know that we will pray over your project and work with excellence unto the Lord.</p>
-    </section>
-
-    <section id="pricing">
-      <h2>Pricing</h2>
-
-      <div class="pricing-block">
-        <h3>🟦 Basic Essentials – $99</h3>
-        <ul>
-          <li>30-minute discovery call</li>
-          <li>One spreadsheet automation (basic logic)</li>
-          <li>Email notifications or sorting system</li>
-          <li>One revision</li>
-          <li>Google Sheets only</li>
-        </ul>
-      </div>
-
-      <div class="pricing-block">
-        <h3>🟨 Growth Package – $199</h3>
-        <p><em>For growing teams or small businesses</em></p>
-        <ul>
-          <li>Everything in Basic</li>
-          <li>Form integration (Tally or Google Form)</li>
-          <li>Google Drive + Gmail automation (if needed)</li>
-          <li>Advanced sorting logic or simple dashboards</li>
-          <li>Two revisions</li>
-        </ul>
-      </div>
-
-      <div class="pricing-block">
-        <h3>🟧 Business Systems – $299</h3>
-        <p><em>For established businesses needing reliable, ongoing workflows</em></p>
-        <ul>
-          <li>Everything in Growth</li>
-          <li>Multi-tab automation</li>
-          <li>Scheduled workflows</li>
-          <li>Custom email templates</li>
-          <li>7-day support window + walkthrough</li>
-        </ul>
-      </div>
-
-      <div class="pricing-block">
-        <h3>🌀 Support Add-On – $49/month</h3>
-        <p><em>For ongoing maintenance & updates</em></p>
-        <ul>
-          <li>Bug fixes and minor updates</li>
-          <li>Priority support response time</li>
-          <li>Free first month with Business Systems</li>
-        </ul>
-      </div>
-    </section>
-
-    <section id="form">
-      <h2>Ready to Get Started?</h2>
-      <p class="quote">“Serve your clients well, and the provision will follow.”</p>
-      <iframe src="https://tally.so/r/3xLeQG" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0" title="SheetPilot Discovery Form">Loading…</iframe>
-    </section>
-
-    <section id="faq">
-      <h2>FAQs</h2>
-      <ul>
-        <li><strong>What platforms do you build for?</strong><br>We support both Google Sheets (with Apps Script) and Microsoft Excel (with VBA or Office Scripts).</li>
-        <li><strong>How long does it take?</strong><br>Most builds are completed within 3–10 days, depending on complexity.</li>
-        <li><strong>Is this a subscription?</strong><br>No — you pay once for the build. Ongoing support is optional.</li>
-      </ul>
-    </section>
-
-    <section id="contact">
-      <h2>Contact</h2>
-      <p>Email: <a href="mailto:hello@sheetpilot.net">hello@sheetpilot.net</a></p>
-    </section>
-  </main>
-
-  <footer class="footer">
-    &copy; 2025 SheetPilot — All rights reserved.
-  </footer>
+  });
+</script>
 
 </body>
 </html>
