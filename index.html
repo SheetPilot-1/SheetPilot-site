@@ -16,236 +16,188 @@
     header {
       background-color: #052c5c;
       color: white;
-      padding: 1rem 2rem;
+      padding: 0.5rem 1rem;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       flex-wrap: wrap;
     }
 
-    .logo-row {
+    .logo-container {
       display: flex;
       align-items: center;
-      gap: 1rem;
     }
 
-    .logo-row img {
-      height: 96px;
+    .logo-container img {
+      height: 64px;
+      margin-right: 1rem;
     }
 
     .tagline {
-      font-size: 1.2rem;
-      font-weight: 500;
+      color: white;
+      font-size: 1rem;
     }
 
     .menu-button {
-      background-color: #fff;
-      color: #052c5c;
-      padding: 0.5rem 0.75rem;
-      border-radius: 2rem;
-      font-size: 1.5rem;
-      cursor: pointer;
+      background-color: white;
       border: none;
+      border-radius: 50%;
+      padding: 0.5rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+      z-index: 20;
     }
 
-    nav {
+    nav ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0.5rem 0;
       display: none;
       flex-direction: column;
-      background-color: #052c5c;
       position: absolute;
-      top: 100px;
-      right: 0;
-      z-index: 1000;
-      width: 100%;
+      top: 80px;
+      right: 1rem;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 10;
     }
 
-    nav a {
-      padding: 1rem 2rem;
-      color: white;
+    nav ul li {
+      padding: 0.5rem 1.5rem;
+    }
+
+    nav ul li a {
       text-decoration: none;
-      border-top: 1px solid #fff4;
+      color: #052c5c;
+      font-weight: bold;
     }
 
-    nav a:hover {
-      background-color: #064089;
-    }
-
-    section {
-      padding: 2rem 1.5rem;
-      margin: 0 auto;
-      max-width: 900px;
+    .section {
+      padding: 1.5rem 1rem;
+      margin: 1rem;
+      border-radius: 12px;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
 
     h2 {
-      font-size: 1.75rem;
-      margin-bottom: 0.5rem;
+      margin-top: 0;
     }
 
-    .section-title {
-      margin-bottom: 1rem;
+    .yellow-section {
+      background-color: #fff6cc;
     }
 
-    .highlight {
-      font-weight: bold;
-      color: #052c5c;
+    .lightblue-section {
+      background-color: #d9f3ff;
     }
 
-    .pricing-tier {
-      margin-bottom: 1.5rem;
-    }
-
-    .shadow-box {
-      background: white;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-      border-radius: 10px;
-      padding: 1.5rem;
-    }
-
-    footer {
-      background-color: #052c5c;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.9rem;
-    }
-
-    /* Reduce white space */
-    section:not(:first-of-type) {
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
-    }
-
-    @media (min-width: 768px) {
-      nav {
-        display: flex !important;
-        position: static;
-        flex-direction: row;
-        background-color: transparent;
-        width: auto;
-      }
-
-      nav a {
-        border: none;
-        color: white;
-      }
-
-      .menu-button {
-        display: none;
-      }
-
-      header {
-        flex-wrap: nowrap;
-      }
+    .nav-active {
+      display: flex !important;
     }
   </style>
 </head>
 <body>
-
   <header>
-    <div class="logo-row">
-      <img src="https://raw.githubusercontent.com/sheetpilot/assets/main/logo-gold.png" alt="SheetPilot logo">
+    <div class="logo-container">
+      <img src="https://raw.githubusercontent.com/SheetPilot-1/SheetPilot-site/refs/heads/main/sheetpilot-logo.png.PNG" alt="SheetPilot Logo">
       <div class="tagline">Spirit-Led Systems for Business and Ministry</div>
     </div>
     <button class="menu-button" onclick="toggleMenu()">☰</button>
-    <nav id="nav-menu">
-      <a href="#home">Home</a>
-      <a href="#whatwedo">What We Do</a>
-      <a href="#prayer">Prayer</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#getstarted">Ready to Get Started?</a>
-      <a href="#faqs">FAQs</a>
-      <a href="#contact">Contact</a>
+    <nav>
+      <ul id="dropdownMenu">
+        <li><a href="#what">What We Do</a></li>
+        <li><a href="#prayer">Prayer</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#ready">Get Started</a></li>
+        <li><a href="#faq">FAQs</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </nav>
   </header>
 
-  <section id="home">
-    <h2 class="section-title">✝️ <span class="highlight">Building Systems for People, Led by the Holy Spirit of God</span></h2>
+  <section class="section" id="hero">
+    <h2>✝️ Building Systems for People, Led by the Holy Spirit of God</h2>
     <p>We build Christ-centered spreadsheet systems tailored to each client’s needs—designed with excellence, delivered with prayer.</p>
   </section>
 
-  <section id="whatwedo">
-    <h2 class="section-title">📊 <span class="highlight">What We Do</span></h2>
+  <section class="section" id="what">
+    <h2>📊 What We Do</h2>
     <ul>
       <li>📉 Spreadsheet automation (Google Sheets & Excel)</li>
       <li>📋 Multi-tab management and system organization</li>
       <li>📧 Email and Drive automation (Gmail + Google Drive)</li>
-      <li>📅 Scheduled triggers and workflow orchestration</li>
-      <li>📽️ Video walkthroughs and support calls</li>
+      <li>📅 Scheduled triggers and workflow</li>
     </ul>
   </section>
 
-  <section id="prayer" style="background: #fff6ce; border-radius: 10px;">
-    <h2 class="section-title">🙏 <span class="highlight">Covered in Prayer</span></h2>
-    <p>Each system is built with care and prayer. We serve churches, ministries, nonprofits, and Kingdom-led entrepreneurs who want Spirit-filled solutions built with excellence.</p>
+  <section class="section yellow-section" id="prayer">
+    <h2>🙏 Covered in Prayer</h2>
+    <p>Every build is covered in prayer. We don’t just automate systems—we seek the Lord’s wisdom for each one.</p>
   </section>
 
-  <section id="pricing">
-    <h2 class="section-title">💸 <span class="highlight">Pricing</span></h2>
-
-    <div class="pricing-tier">
-      <strong>🟦 Basic Essentials — $99</strong>
-      <ul>
-        <li>30-minute discovery call</li>
-        <li>One spreadsheet automation (basic logic)</li>
-        <li>Email notifications or sorting system</li>
-        <li>One revision</li>
-        <li>Google Sheets only</li>
-      </ul>
-    </div>
-
-    <div class="pricing-tier">
-      <strong>🟨 Growth Package — $199</strong>
-      <ul>
-        <li>Includes Basic</li>
-        <li>Form integration (Tally or Google Form)</li>
-        <li>Google Drive + Gmail automation</li>
-        <li>Advanced sorting logic or dashboards</li>
-        <li>Two revisions</li>
-      </ul>
-    </div>
-
-    <div class="pricing-tier">
-      <strong>🟧 Business Systems — $299</strong>
-      <ul>
-        <li>Includes Growth</li>
-        <li>Multi-tab management & system organization</li>
-        <li>Scheduled automations</li>
-        <li>Custom email templates</li>
-        <li>7-day support window</li>
-        <li>Training call or walkthrough video</li>
-      </ul>
-    </div>
-
-    <div class="pricing-tier">
-      <strong>📋 Faith-Based Discount</strong>
-      <p>Sliding scale or custom quote available for churches, ministries, or mission-led projects.</p>
-    </div>
+  <section class="section" id="pricing">
+    <h2>💸 Pricing</h2>
+    <h3>🟦 Basic Essentials — $99</h3>
+    <ul>
+      <li>30-minute discovery call</li>
+      <li>One spreadsheet automation (basic logic)</li>
+      <li>Email notifications or sorting system</li>
+      <li>One revision</li>
+      <li>Google Sheets only</li>
+    </ul>
+    <h3>🟨 Growth Package — $199</h3>
+    <ul>
+      <li>Includes Basic</li>
+      <li>Form integration (Tally or Google Form)</li>
+      <li>Google Drive + Gmail automation</li>
+      <li>Advanced sorting logic or dashboards</li>
+      <li>Two revisions</li>
+    </ul>
+    <h3>🟧 Business Systems — $299</h3>
+    <ul>
+      <li>Includes Growth</li>
+      <li>Multi-tab management & system organization</li>
+      <li>Scheduled automations</li>
+      <li>Custom email templates</li>
+      <li>7-day support window</li>
+      <li>Training call or walkthrough video</li>
+    </ul>
+    <h3>📋 Faith-Based Discount</h3>
+    <p>Sliding scale or custom quote available for churches, ministries, or mission-led projects.</p>
   </section>
 
-  <section id="getstarted">
-    <h2 class="section-title">✈️ <span class="highlight">Ready to Get Started?</span></h2>
-    <iframe src="https://tally.so/r/3xLeQG" width="100%" height="800" frameborder="0" marginheight="0" marginwidth="0" title="SheetPilot Form">Loading…</iframe>
+  <section class="section lightblue-section" id="ready">
+    <h2>✈️ Ready to Get Started?</h2>
+    <iframe src="https://tally.so/r/3xLeQG" width="100%" height="650" frameborder="0" marginheight="0" marginwidth="0" title="SheetPilot Discovery Form"></iframe>
   </section>
 
-  <section id="faqs">
-    <h2 class="section-title">❓ <span class="highlight">FAQs</span></h2>
+  <section class="section" id="faq">
+    <h2>❓ FAQs</h2>
     <p>Coming soon. In the meantime, feel free to reach out with any questions!</p>
   </section>
 
-  <section id="contact">
-    <h2 class="section-title">📬 <span class="highlight">Contact</span></h2>
+  <section class="section" id="contact">
+    <h2>📬 Contact</h2>
     <p>Email us at <a href="mailto:sheetpilotapp@gmail.com">sheetpilotapp@gmail.com</a></p>
   </section>
 
-  <footer>
-    &copy; 2025 SheetPilot — Built to Serve with Excellence
-  </footer>
-
   <script>
     function toggleMenu() {
-      const menu = document.getElementById("nav-menu");
-      menu.style.display = menu.style.display === "flex" ? "none" : "flex";
+      const menu = document.getElementById('dropdownMenu');
+      menu.classList.toggle('nav-active');
     }
+
+    // Close menu when clicking outside
+    document.addEventListener('click', function(event) {
+      const menu = document.getElementById('dropdownMenu');
+      const button = document.querySelector('.menu-button');
+      if (!menu.contains(event.target) && !button.contains(event.target)) {
+        menu.classList.remove('nav-active');
+      }
+    });
   </script>
 </body>
 </html>
