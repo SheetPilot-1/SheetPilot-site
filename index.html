@@ -23,11 +23,12 @@
       flex-wrap: wrap;
     }
 
-    .logo-container {
-      display: flex;
-      align-items: center;
-    }
-
+   .logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
     .logo-container img {
       height: 72px;
       margin-right: 1rem;
@@ -142,24 +143,21 @@
 </head>
 <body>
 
-  <header>
-    <div class="logo-container">
-      <img src="https://raw.githubusercontent.com/SheetPilot-1/SheetPilot-site/refs/heads/main/sheetpilot-logo.png.PNG" alt="SheetPilot Logo">
-      <div class="logo-tagline">
-        <h1>SheetPilot</h1>
-        <p>Spirit-Led Systems for Business and Ministry</p>
-      </div>
-    </div>
-    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-    <nav class="dropdown-menu" id="dropdownMenu">
-      <a href="#what">What We Do</a>
-      <a href="#prayer">Prayer</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#start">Ready to Start</a>
-      <a href="#faq">FAQs</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+<header>
+  <div class="logo-container">
+    <img src="https://raw.githubusercontent.com/SheetPilot-1/SheetPilot-site/refs/heads/main/sheetpilot-logo.png.PNG" alt="SheetPilot Logo">
+    <p style="margin-left: 1rem; font-size: 1rem; color: #dbe9ff;">Spirit-Led Systems for Business and Ministry</p>
+  </div>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <nav class="dropdown-menu" id="dropdownMenu">
+    <a href="#what">What We Do</a>
+    <a href="#prayer">Prayer</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#start">Ready to Start</a>
+    <a href="#faq">FAQs</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
 
   <section class="section" id="hero">
     <h2 style="color: #052c5c;">SheetPilot: Building Systems for People, Led by the Holy Spirit of God</h2>
