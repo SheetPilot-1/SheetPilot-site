@@ -143,24 +143,33 @@
 </head>
 <body>
 
-<header>
-  <div class="logo-container">
-    <img src="https://raw.githubusercontent.com/SheetPilot-1/SheetPilot-site/refs/heads/main/sheetpilot-logo.png.PNG" alt="SheetPilot Logo">
-    <p style="margin-left: 1rem; font-size: 1rem; color: #dbe9ff;">Spirit-Led Systems for Business and Ministry</p>
+<header style="background-color: #052c5c; color: white; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+  <div style="display: flex; align-items: center;">
+    <img src="https://raw.githubusercontent.com/SheetPilot-1/SheetPilot-site/main/sheetpilot-logo.png" alt="SheetPilot Logo" style="height: 64px; margin-right: 1rem;">
+    <div style="font-size: 1rem; color: #dbe9ff;">Spirit-Led Systems for Business and Ministry</div>
   </div>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  <nav class="dropdown-menu" id="dropdownMenu">
-    <a href="#what">What We Do</a>
-    <a href="#prayer">Prayer</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#start">Ready to Start</a>
-    <a href="#faq">FAQs</a>
-    <a href="#contact">Contact</a>
+  <button class="menu-toggle" onclick="toggleMenu()" style="font-size: 1.5rem; background: none; border: none; color: white; cursor: pointer;">
+    ☰
+  </button>
+  <nav class="dropdown-menu" id="dropdownMenu" style="display: none; flex-direction: column; background-color: #052c5c; position: absolute; top: 100%; right: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 6px; padding: 0.5rem 0;">
+    <a href="#what" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">What We Do</a>
+    <a href="#prayer" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Prayer</a>
+    <a href="#pricing" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Pricing</a>
+    <a href="#start" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Ready to Start</a>
+    <a href="#faq" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">FAQs</a>
+    <a href="#contact" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Contact</a>
   </nav>
 </header>
 
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('dropdownMenu');
+    menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+  }
+</script>
+
   <section class="section" id="hero">
-    <h2 style="color: #052c5c;">SheetPilot: Building Systems for People, Led by the Holy Spirit of God</h2>
+    <h2 style="color: #052c5c;"> Building Systems for People, Led by the Holy Spirit of God</h2>
     <p>We help businesses, ministries, and everyday people get their spreadsheet workflows running smoothly. From automated emails to smart sorting systems, we handle the backend — so you can focus on what matters.</p>
   </section>
 
