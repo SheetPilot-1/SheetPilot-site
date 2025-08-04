@@ -143,23 +143,32 @@
 </head>
 <body>
 
-<header style="background-color: #052c5c; color: white; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+<header style="background-color: #052c5c; color: white; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; position: relative;">
   <div style="display: flex; align-items: center;">
     <img src="https://raw.githubusercontent.com/SheetPilot-1/SheetPilot-site/main/sheetpilot-logo.png" alt="SheetPilot Logo" style="height: 64px; margin-right: 1rem;">
     <div style="font-size: 1rem; color: #dbe9ff;">Spirit-Led Systems for Business and Ministry</div>
   </div>
-  <button class="menu-toggle" onclick="toggleMenu()" style="font-size: 1.5rem; background: none; border: none; color: white; cursor: pointer;">
-    ☰
-  </button>
-  <nav class="dropdown-menu" id="dropdownMenu" style="display: none; flex-direction: column; background-color: #052c5c; position: absolute; top: 100%; right: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 6px; padding: 0.5rem 0;">
-    <a href="#what" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">What We Do</a>
-    <a href="#prayer" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Prayer</a>
-    <a href="#pricing" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Pricing</a>
-    <a href="#start" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Ready to Start</a>
-    <a href="#faq" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">FAQs</a>
-    <a href="#contact" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Contact</a>
-  </nav>
+  <div style="margin-left: auto;">
+    <button class="menu-toggle" onclick="toggleMenu()" style="font-size: 1.5rem; background: none; border: none; color: white; cursor: pointer;">
+      ☰
+    </button>
+    <nav class="dropdown-menu" id="dropdownMenu" style="display: none; flex-direction: column; background-color: #052c5c; position: absolute; top: 100%; right: 2rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); border-radius: 6px; padding: 0.5rem 0; z-index: 10;">
+      <a href="#what" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">What We Do</a>
+      <a href="#prayer" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Prayer</a>
+      <a href="#pricing" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Pricing</a>
+      <a href="#start" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Ready to Start</a>
+      <a href="#faq" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">FAQs</a>
+      <a href="#contact" style="padding: 0.5rem 1rem; color: white; text-decoration: none;">Contact</a>
+    </nav>
+  </div>
 </header>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('dropdownMenu');
+    menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+  }
+</script>
 
 <script>
   function toggleMenu() {
