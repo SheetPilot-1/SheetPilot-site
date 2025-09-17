@@ -271,6 +271,21 @@
   border-radius: 8px;
   padding: 2rem 1rem;
 }
+
+    :root { --page-bg: #fffdf6; } /* match your site cream */
+
+section#difference,
+section#difference.card,
+section#difference .card,
+section#difference .content,
+section#difference .callout {
+  background-color: var(--page-bg) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  border-radius: 12px;
+}
+
+/* tighten spacing so it reads like a card */
+section#difference { padding: 2rem 1.25rem; }
   </style>
 </head>
 <body>
