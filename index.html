@@ -145,147 +145,55 @@
   <title>SheetPilot — Spirit-Led Systems for Business and Ministry</title>
   <style>
     /* your existing CSS... */
+/* ================================
+   SHEETPILOT DIFFERENCE SECTION
+   ================================ */
 
-  /* --- SheetPilot Difference card --- */
-#difference.sp-card{
-  /* center like your other sections */
-  max-width: 980px;          /* match your page content width */
-  margin: 2rem auto;         /* centers the card */
-  background: #fff;          /* same card background */
+section#difference {
+  /* Match your site’s cream background */
+  background-color: #fffdf6 !important;
+
+  /* Card styling for consistency */
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.06);
-  padding: 1.5rem 1.25rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+
+  /* Keep spacing in line with other cards */
+  padding: 2rem 1.5rem;
+  margin: 2rem auto;
+  max-width: 900px;   /* keeps it centered and readable */
 }
 
-#difference h2{
-  color:#0c2a55;             /* your navy */
-  margin:0 0 .75rem;
+/* Ensure all text inherits the right color */
+section#difference,
+section#difference p,
+section#difference li,
+section#difference h2,
+section#difference h3 {
+  color: #052c5c;  /* navy tone for readability */
 }
 
-#difference .lead{ 
-  margin:.5rem 0;
-  color:#2e2e2e;
+/* Bullet point styling */
+section#difference ul {
+  padding-left: 1.25rem;
+  margin: 1rem 0;
 }
 
-#difference .sp-list{
-  margin:.5rem 0 1.1rem 1.25rem;
-}
-
-#difference .sp-list li{
-  line-height:1.5;
-  margin:.3rem 0;
-}
-
-/* red bullets for the pain list, green for the solution list */
-#difference .sp-list.bad li::marker{ color:#cc3b3b; }
-#difference .sp-list.good li::marker{ color:#1f8a4c; }
-
-#difference .cta{
-  margin-top:.75rem;
-  font-weight:600;
-  color:#0c2a55;
-}
-
-/* keep it tight on very small screens */
-@media (max-width: 480px){
-  #difference.sp-card{ padding:1rem; }
-}
-
-    /* ===== SheetPilot Difference card ===== */
-.sp-section.sp-difference{
-  max-width: 860px;          /* keeps it centered/narrow on desktop */
-  margin: 2rem auto;         /* centers within the page */
-  padding: 2rem 1.75rem;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 8px 28px rgba(0,0,0,0.08);
-}
-
-.sp-difference h2{
-  margin: 0 0 1rem 0;
-  color: #0b2d5c;            /* same navy tone as the site */
-  font-weight: 800;
-  line-height: 1.2;
-}
-
-.sp-difference .lead{
-  margin: 0.5rem 0 0.75rem 0;
-  color: #333;
-  font-size: 1.05rem;
-  line-height: 1.65;
-}
-
-.sp-list{
-  margin: 0 0 1rem 0;
-  padding-left: 1.1rem;      /* nice indent for bullets */
-}
-
-.sp-list li{
-  margin: 0.4rem 0;
+section#difference li {
+  margin-bottom: 0.5rem;
   line-height: 1.6;
 }
 
-/* red dots for “problem” list, green dots for “benefits” list */
-.sp-list--problems li{
-  list-style: disc;
-}
-.sp-list--problems li::marker{
-  color: #d43b3b;
-}
-.sp-list--benefits li{
-  list-style: disc;
-}
-.sp-list--benefits li::marker{
-  color: #2e9e5a;
-}
-
-/* friendly callout bar at the bottom */
-.sp-callout{
-  margin-top: 1rem;
-  padding: 0.9rem 1rem;
-  border-left: 5px solid #2e9e5a;
-  background: #f3fbf6;
-  color: #0b2d5c;
-  font-weight: 700;
-  border-radius: 10px;
-}
-
-/* ===== Responsive tweaks ===== */
-@media (min-width: 900px){
-  .sp-section.sp-difference{ padding: 2.25rem; }
-  .sp-difference .lead, .sp-list li{ font-size: 1.05rem; }
-}
-@media (max-width: 600px){
-  .sp-section.sp-difference{
-    margin: 1.25rem auto;
-    padding: 1.25rem 1rem;
-    border-radius: 14px;
-  }
-  .sp-difference h2{ font-size: 1.6rem; }
-  .sp-difference .lead, .sp-list li{ font-size: 1rem; }
-  .sp-callout{ font-size: 0.98rem; }
-}
-    #difference {
-  background: #fffdf6;    /* your site’s cream color */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05); 
-  border-radius: 8px;
-  padding: 2rem 1rem;
-}
-
-    :root { --page-bg: #fffdf6; } /* match your site cream */
-
-section#difference,
-section#difference.card,
-section#difference .card,
-section#difference .content,
+/* Callout box at the bottom */
 section#difference .callout {
-  background-color: var(--page-bg) !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-  border-radius: 12px;
+  background-color: #f8f3e8;  /* subtle pale gold tone */
+  border-left: 5px solid #052c5c;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  font-weight: 600;
+  color: #052c5c;
 }
 
-/* tighten spacing so it reads like a card */
-section#difference { padding: 2rem 1.25rem; }
   </style>
 </head>
 <body>
