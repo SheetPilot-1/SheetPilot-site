@@ -160,25 +160,32 @@
     }
 
     .demo-box {
-      flex: 1;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-      padding: 1rem;
-      text-align: center;
-      min-width: 280px;
-    }
+  flex: 1;
+  background: #fdfcf8; /* light cream */
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  padding: 1.2rem;
+  text-align: center;
+  min-width: 280px;
+  transition: transform 0.2s ease;
+}
 
-    .demo-box h3 {
-      color: #052c5c;
-      margin-bottom: 10px;
-    }
+.demo-box:hover {
+  transform: translateY(-5px);
+}
 
-    .demo-box img {
-      max-width: 100%;
-      border-radius: 6px;
-      margin-top: 10px;
-    }
+.demo-box h3 {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.demo-box.before h3 {
+  color: #c0392b; /* red tone */
+}
+
+.demo-box.after h3 {
+  color: #2e8b57; /* green tone */
+}
   </style>
 </head>
 <body>
@@ -239,43 +246,46 @@
     </ul>
   </section>
 
-  <section class="section demo-examples" id="demos">
+  <section class="section demo-examples" id="demo">
   <h2>✨ See the SheetPilot Difference</h2>
   <p>Here’s how SheetPilot transforms messy spreadsheets into clean, automated systems that save you time and stress:</p>
 
-  <!-- Sales Tracker Example -->
   <div class="demo-pair">
-    <div class="demo-box">
-      <h3>Before</h3>
+    <div class="demo-box before">
+      <h3>❌ Before</h3>
       <img src="before-sales.png" alt="Messy Sales Spreadsheet">
+      <p>Messy Sales Spreadsheet</p>
     </div>
-    <div class="demo-box">
-      <h3>After</h3>
+    <div class="demo-box after">
+      <h3>✅ After</h3>
       <img src="after-sales.png" alt="Clean Automated Sales Tracker">
+      <p>Clean Automated Sales Tracker</p>
     </div>
   </div>
 
-  <!-- Prayer Tracker Example -->
   <div class="demo-pair">
-    <div class="demo-box">
-      <h3>Before</h3>
+    <div class="demo-box before">
+      <h3>❌ Before</h3>
       <img src="before-prayer.png" alt="Unorganized Prayer Requests">
+      <p>Unorganized Prayer Requests</p>
     </div>
-    <div class="demo-box">
-      <h3>After</h3>
+    <div class="demo-box after">
+      <h3>✅ After</h3>
       <img src="after-prayer.png" alt="Organized Prayer Tracker">
+      <p>Organized Prayer Tracker</p>
     </div>
   </div>
 
-  <!-- Client Workflow Example -->
   <div class="demo-pair">
-    <div class="demo-box">
-      <h3>Before</h3>
+    <div class="demo-box before">
+      <h3>❌ Before</h3>
       <img src="before-client.png" alt="Manual Client Onboarding">
+      <p>Manual Client Onboarding</p>
     </div>
-    <div class="demo-box">
-      <h3>After</h3>
+    <div class="demo-box after">
+      <h3>✅ After</h3>
       <img src="after-client.png" alt="Automated Client Onboarding">
+      <p>Automated Client Onboarding</p>
     </div>
   </div>
 </section>
