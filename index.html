@@ -190,6 +190,81 @@
 @media (max-width: 480px){
   #difference.sp-card{ padding:1rem; }
 }
+
+    /* ===== SheetPilot Difference card ===== */
+.sp-section.sp-difference{
+  max-width: 860px;          /* keeps it centered/narrow on desktop */
+  margin: 2rem auto;         /* centers within the page */
+  padding: 2rem 1.75rem;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.08);
+}
+
+.sp-difference h2{
+  margin: 0 0 1rem 0;
+  color: #0b2d5c;            /* same navy tone as the site */
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.sp-difference .lead{
+  margin: 0.5rem 0 0.75rem 0;
+  color: #333;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.sp-list{
+  margin: 0 0 1rem 0;
+  padding-left: 1.1rem;      /* nice indent for bullets */
+}
+
+.sp-list li{
+  margin: 0.4rem 0;
+  line-height: 1.6;
+}
+
+/* red dots for “problem” list, green dots for “benefits” list */
+.sp-list--problems li{
+  list-style: disc;
+}
+.sp-list--problems li::marker{
+  color: #d43b3b;
+}
+.sp-list--benefits li{
+  list-style: disc;
+}
+.sp-list--benefits li::marker{
+  color: #2e9e5a;
+}
+
+/* friendly callout bar at the bottom */
+.sp-callout{
+  margin-top: 1rem;
+  padding: 0.9rem 1rem;
+  border-left: 5px solid #2e9e5a;
+  background: #f3fbf6;
+  color: #0b2d5c;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+/* ===== Responsive tweaks ===== */
+@media (min-width: 900px){
+  .sp-section.sp-difference{ padding: 2.25rem; }
+  .sp-difference .lead, .sp-list li{ font-size: 1.05rem; }
+}
+@media (max-width: 600px){
+  .sp-section.sp-difference{
+    margin: 1.25rem auto;
+    padding: 1.25rem 1rem;
+    border-radius: 14px;
+  }
+  .sp-difference h2{ font-size: 1.6rem; }
+  .sp-difference .lead, .sp-list li{ font-size: 1rem; }
+  .sp-callout{ font-size: 0.98rem; }
+}
   </style>
 </head>
 <body>
@@ -250,30 +325,32 @@
     </ul>
   </section>
 
- <section id="difference" class="sp-card">
+<section class="sp-section sp-difference">
   <h2>✈️ See the SheetPilot Difference</h2>
 
   <p class="lead">
     Most businesses waste hours every week fixing spreadsheets by hand. That means:
   </p>
 
-  <ul class="sp-list bad">
+  <ul class="sp-list sp-list--problems">
     <li>Copy-pasting data</li>
     <li>Sorting through messy entries</li>
     <li>Sending emails one by one</li>
     <li>Struggling to stay organized</li>
   </ul>
 
-  <p class="lead">With <strong>SheetPilot</strong>, we turn that chaos into systems:</p>
+  <p class="lead"><strong>With SheetPilot</strong>, we turn that chaos into systems:</p>
 
-  <ul class="sp-list good">
+  <ul class="sp-list sp-list--benefits">
     <li><strong>Automation that frees you</strong> — reports, emails, and updates happen on their own.</li>
     <li><strong>Integration that connects your tools</strong> — Google Sheets talks to Gmail, Drive, and Forms.</li>
     <li><strong>Clarity that saves time</strong> — dashboards and trackers replace messy manual work.</li>
     <li><strong>Peace of mind that lasts</strong> — your systems run in the background while you focus on what matters.</li>
   </ul>
 
-  <p class="cta">✅ The hours you once spent fighting spreadsheets now become hours invested in your business, ministry, and mission.</p>
+  <div class="sp-callout">
+    ✅ The hours you once spent fighting spreadsheets now become hours invested in your business, ministry, and mission.
+  </div>
 </section>
   <section class="section" id="prayer">
     <h2>🙏 Covered in Prayer</h2>
