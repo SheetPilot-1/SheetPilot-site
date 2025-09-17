@@ -146,65 +146,39 @@
   <style>
     /* your existing CSS... */
 
-    /* Demo Section Styles */
-   /* ===== SheetPilot Difference (scoped) ===== */
+  /* ===== SheetPilot Difference (clean style) ===== */
 #difference.card {
   background: #fff;
   border-radius: 12px;
-  box-shadow: 0 8px 28px rgba(0,0,0,.07);
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
   padding: 1.5rem;
   margin: 2rem 0;
 }
 
 #difference h2 {
-  color: #0c2a55; /* your navy */
+  color: #0c2a55;
   margin-bottom: .75rem;
 }
 
-#difference .lede {
-  margin: .5rem 0 .75rem;
-  color: #28323d;
+#difference p {
+  margin: .6rem 0;
+  color: #2e2e2e;
 }
 
 #difference .bullets {
-  margin: 0 0 1rem 1.25rem;
+  margin: .5rem 0 1rem 1.25rem;
 }
 
 #difference .bullets li {
-  margin: .35rem 0;
+  margin: .3rem 0;
   line-height: 1.45;
 }
 
-#difference .bullets.bad li::marker { color: #cc3b3b; }     /* problem list */
-#difference .bullets.good li::marker { color: #1f8a4c; }    /* solution list */
-
-#difference .divider {
-  margin: .9rem 0 .9rem;
-  text-align: center;
-  color: #6b7785;
-  position: relative;
-}
-
-#difference .divider:before,
-#difference .divider:after {
-  content: "";
-  height: 1px;
-  background: rgba(0,0,0,.08);
-  position: absolute;
-  top: 50%;
-  width: 36%;
-}
-
-#difference .divider:before { left: 0; }
-#difference .divider:after { right: 0; }
-
-#difference .divider span {
-  background: #fff;
-  padding: 0 .5rem;
-}
+#difference .bullets.bad li::marker { color: #cc3b3b; }   /* red markers */
+#difference .bullets.good li::marker { color: #1f8a4c; }  /* green markers */
 
 #difference .cta-note {
-  margin-top: .75rem;
+  margin-top: 1rem;
   font-weight: 600;
   color: #0c2a55;
 }
@@ -268,14 +242,13 @@
     </ul>
   </section>
 
-  <!-- =========================
-     SEE THE SHEETPILOT DIFFERENCE
-     Place this before the Pricing section
+ <!-- =========================
+     SEE THE SHEETPILOT DIFFERENCE (clean version)
 ========================= -->
 <section id="difference" class="card difference">
   <h2>✈️ See the SheetPilot Difference</h2>
 
-  <p class="lede">
+  <p>
     Most businesses waste hours every week fixing spreadsheets by hand. That means:
   </p>
 
@@ -286,9 +259,10 @@
     <li>Struggling to stay organized</li>
   </ul>
 
-  <p class="divider"><span>That’s the problem.</span></p>
+  <p>
+    With <strong>SheetPilot</strong>, we turn that chaos into systems:
+  </p>
 
-  <p class="lede"><strong>Here’s the SheetPilot difference:</strong></p>
   <ul class="bullets good">
     <li><strong>Automation that frees you</strong> — reports, emails, and updates happen on their own.</li>
     <li><strong>Integration that connects your tools</strong> — Google Sheets talks to Gmail, Drive, and Forms.</li>
@@ -296,7 +270,9 @@
     <li><strong>Peace of mind that lasts</strong> — your systems run in the background while you focus on what matters.</li>
   </ul>
 
-  <p class="cta-note">✅ With SheetPilot, the hours you spent fighting spreadsheets turn into hours invested in your business, ministry, and mission.</p>
+  <p class="cta-note">
+    ✅ The hours you once spent fighting spreadsheets now become hours invested in your business, ministry, and mission.
+  </p>
 </section>
 
   <section class="section" id="prayer">
