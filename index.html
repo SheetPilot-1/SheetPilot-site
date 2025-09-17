@@ -146,41 +146,49 @@
   <style>
     /* your existing CSS... */
 
-  /* ===== SheetPilot Difference (clean style) ===== */
-#difference.card {
-  background: #fff;
+  /* --- SheetPilot Difference card --- */
+#difference.sp-card{
+  /* center like your other sections */
+  max-width: 980px;          /* match your page content width */
+  margin: 2rem auto;         /* centers the card */
+  background: #fff;          /* same card background */
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0,0,0,.06);
-  padding: 1.5rem;
-  margin: 2rem 0;
+  padding: 1.5rem 1.25rem;
 }
 
-#difference h2 {
-  color: #0c2a55;
-  margin-bottom: .75rem;
+#difference h2{
+  color:#0c2a55;             /* your navy */
+  margin:0 0 .75rem;
 }
 
-#difference p {
-  margin: .6rem 0;
-  color: #2e2e2e;
+#difference .lead{ 
+  margin:.5rem 0;
+  color:#2e2e2e;
 }
 
-#difference .bullets {
-  margin: .5rem 0 1rem 1.25rem;
+#difference .sp-list{
+  margin:.5rem 0 1.1rem 1.25rem;
 }
 
-#difference .bullets li {
-  margin: .3rem 0;
-  line-height: 1.45;
+#difference .sp-list li{
+  line-height:1.5;
+  margin:.3rem 0;
 }
 
-#difference .bullets.bad li::marker { color: #cc3b3b; }   /* red markers */
-#difference .bullets.good li::marker { color: #1f8a4c; }  /* green markers */
+/* red bullets for the pain list, green for the solution list */
+#difference .sp-list.bad li::marker{ color:#cc3b3b; }
+#difference .sp-list.good li::marker{ color:#1f8a4c; }
 
-#difference .cta-note {
-  margin-top: 1rem;
-  font-weight: 600;
-  color: #0c2a55;
+#difference .cta{
+  margin-top:.75rem;
+  font-weight:600;
+  color:#0c2a55;
+}
+
+/* keep it tight on very small screens */
+@media (max-width: 480px){
+  #difference.sp-card{ padding:1rem; }
 }
   </style>
 </head>
@@ -242,39 +250,31 @@
     </ul>
   </section>
 
- <!-- =========================
-     SEE THE SHEETPILOT DIFFERENCE (clean version)
-========================= -->
-<section id="difference" class="card difference">
+ <section id="difference" class="sp-card">
   <h2>✈️ See the SheetPilot Difference</h2>
 
-  <p>
+  <p class="lead">
     Most businesses waste hours every week fixing spreadsheets by hand. That means:
   </p>
 
-  <ul class="bullets bad">
+  <ul class="sp-list bad">
     <li>Copy-pasting data</li>
     <li>Sorting through messy entries</li>
     <li>Sending emails one by one</li>
     <li>Struggling to stay organized</li>
   </ul>
 
-  <p>
-    With <strong>SheetPilot</strong>, we turn that chaos into systems:
-  </p>
+  <p class="lead">With <strong>SheetPilot</strong>, we turn that chaos into systems:</p>
 
-  <ul class="bullets good">
+  <ul class="sp-list good">
     <li><strong>Automation that frees you</strong> — reports, emails, and updates happen on their own.</li>
     <li><strong>Integration that connects your tools</strong> — Google Sheets talks to Gmail, Drive, and Forms.</li>
     <li><strong>Clarity that saves time</strong> — dashboards and trackers replace messy manual work.</li>
     <li><strong>Peace of mind that lasts</strong> — your systems run in the background while you focus on what matters.</li>
   </ul>
 
-  <p class="cta-note">
-    ✅ The hours you once spent fighting spreadsheets now become hours invested in your business, ministry, and mission.
-  </p>
+  <p class="cta">✅ The hours you once spent fighting spreadsheets now become hours invested in your business, ministry, and mission.</p>
 </section>
-
   <section class="section" id="prayer">
     <h2>🙏 Covered in Prayer</h2>
     <p>At SheetPilot, we pray over every system we build. This isn’t just a service — it’s a ministry. We believe the Holy Spirit guides every build, and we ask God to use these tools to bring order, clarity, and peace. Whether you're a business owner or ministry leader, know that your project is being lifted up in prayer.</p>
