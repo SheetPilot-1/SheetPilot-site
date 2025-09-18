@@ -143,7 +143,82 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>SheetPilot — Spirit-Led Systems for Business and Ministry</title>
-  <style>
+ /* ===== Desktop Polish Pack (add near end of your <style>) ===== */
+:root{
+  --sp-cream:#fffdf6;
+  --sp-card:#faf7ef;
+  --sp-navy:#052c5c;
+  --sp-shadow-1: 0 1px 2px rgba(5,44,92,.06);
+  --sp-shadow-2: 0 8px 24px rgba(5,44,92,.10);
+  --sp-shadow-3: 0 20px 40px rgba(5,44,92,.08);
+}
+
+@media (min-width: 992px){
+  /* Subtle radial glow to break flatness */
+  body{
+    background:
+      radial-gradient(900px 300px at 50% -100px, rgba(255,228,170,.25), transparent 60%),
+      radial-gradient(600px 200px at 5% 20%, rgba(255,228,170,.12), transparent 60%),
+      var(--sp-cream);
+  }
+
+  /* Center lane + breathing room */
+  .section{
+    max-width: 980px;            /* a touch wider on desktop */
+    margin: 2.75rem auto;        /* more spacing between cards */
+    padding: 2.75rem 2.25rem;    /* roomier content */
+    background: var(--sp-card);
+    border: 1px solid rgba(5,44,92,.06);
+    box-shadow: var(--sp-shadow-1), var(--sp-shadow-2); /* layered depth */
+    border-radius: 14px;
+  }
+
+  /* Make the first paragraph in a card feel like a lead */
+  .section p:first-of-type{
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color:#2b2b2b;
+  }
+
+  /* Headings: slightly larger & tighter */
+  .section h2{
+    font-size: clamp(1.6rem, 1.2rem + 1vw, 2rem);
+    letter-spacing: .2px;
+    margin-bottom: 1.1rem;
+    position: relative;
+    padding-left: .2rem;
+  }
+  /* Accent bar under headings for “pop” */
+  .section h2::after{
+    content:"";
+    display:block;
+    width: 72px;
+    height: 3px;
+    margin-top: .6rem;
+    background: linear-gradient(90deg, #e6b347, #f0c76e);
+    border-radius: 2px;
+    opacity:.9;
+  }
+
+  /* Lists: better rhythm */
+  .section ul{ margin: .9rem 0 0 1.15rem; }
+  .section li{ margin: .55rem 0; }
+
+  /* Callouts within Difference section */
+  .sp-callout{
+    background: #f6efe1;
+    border: 1px solid rgba(5,44,92,.08);
+    border-left: 6px solid #e6b347;
+    box-shadow: var(--sp-shadow-1), var(--sp-shadow-3);
+    font-weight: 600;
+  }
+
+  /* Make the Difference card match others, but stand out a hair */
+  .sp-section.sp-difference{
+    box-shadow: var(--sp-shadow-1), var(--sp-shadow-2), inset 0 0 0 0 rgba(0,0,0,0);
+  }
+}
+    <style>
     /* your existing CSS... */
 /* ================================
    SHEETPILOT DIFFERENCE SECTION
