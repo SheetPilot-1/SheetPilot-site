@@ -213,10 +213,28 @@
   font-weight: 600;
   color: #052c5c;
 }
-  /* Make the logo bigger on desktops */
+  /* Desktop logo + tagline adjustments */
 @media (min-width: 1024px) {
+  .logo-container {
+    flex-direction: row;       /* side by side */
+    align-items: center;
+    gap: 1.5rem;               /* space between logo and tagline */
+  }
+
   .logo-container img {
-    height: 150px; /* adjust as needed (try 100–110px) */
+    height: 120px;             /* larger logo for PC */
+    margin: 0;
+  }
+
+  .logo-tagline {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* vertically aligned with logo */
+  }
+
+  .logo-tagline p {
+    font-size: 1.2rem;         /* slightly larger tagline for balance */
+    margin: 0;
   }
 }
     <style>
