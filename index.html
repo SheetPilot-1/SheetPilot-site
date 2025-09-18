@@ -148,49 +148,45 @@
 /* ================================
    SHEETPILOT DIFFERENCE SECTION
    ================================ */
-
-section#difference {
-  /* Match your site’s cream background */
-  background-color: #fffdf6 !important;
-
-  /* Card styling for consistency */
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-
-  /* Keep spacing in line with other cards */
-  padding: 2rem 1.5rem;
+/* SheetPilot Difference Section */
+.difference-section {
+  max-width: 900px;
   margin: 2rem auto;
-  max-width: 900px;   /* keeps it centered and readable */
+  padding: 2rem;
+  background-color: #fffdf6; /* same as site background */
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  text-align: left;
 }
 
-/* Ensure all text inherits the right color */
-section#difference,
-section#difference p,
-section#difference li,
-section#difference h2,
-section#difference h3 {
-  color: #052c5c;  /* navy tone for readability */
+/* Title */
+.difference-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #052c5c; /* navy accent */
 }
 
-/* Bullet point styling */
-section#difference ul {
-  padding-left: 1.25rem;
+/* Lists */
+.difference-section ul {
   margin: 1rem 0;
+  padding-left: 1.2rem;
 }
 
-section#difference li {
-  margin-bottom: 0.5rem;
+.difference-section ul li {
+  margin: 0.5rem 0;
+  font-size: 1rem;
   line-height: 1.6;
 }
 
-/* Callout box at the bottom */
-section#difference .callout {
-  background-color: #f8f3e8;  /* subtle pale gold tone */
+/* Highlight sentence at the bottom */
+.difference-highlight {
+  background: #f0f8ff;
   border-left: 5px solid #052c5c;
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
+  padding: 1rem;
   margin-top: 1.5rem;
-  font-weight: 600;
+  border-radius: 6px;
+  font-weight: bold;
   color: #052c5c;
 }
 
@@ -255,7 +251,7 @@ section#difference .callout {
   </section>
 
 <section class="sp-section sp-difference">
-  <h2>✈️ See the SheetPilot Difference</h2>
+  <h2>✈️ The Difference</h2>
 
   <p class="lead">
     Most businesses waste hours every week fixing spreadsheets by hand. That means:
