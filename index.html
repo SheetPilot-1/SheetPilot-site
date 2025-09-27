@@ -428,292 +428,65 @@
   </section>
 
  <!-- ========== OUR PACKAGES (SheetPilot) ========== -->
+<section id="pricing">
+  <h2>Pricing</h2>
 
-<!-- ===== Our Packages (SheetPilot) ===== -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SheetPilot — Spirit-Led Systems for Business and Ministry</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #fffdf6;
-      color: #2e2e2e;
-    }
-
-    header {
-      background-color: #052c5c;
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-    }
-
-    .logo-container {
-      display: flex;
-      align-items: center;
-    }
-
-    .logo-container img {
-      height: 64px;
-      margin-right: 1rem;
-    }
-
-    .header-text {
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-
-    .menu-toggle {
-      background-color: white;
-      color: #052c5c;
-      border: none;
-      border-radius: 8px;
-      padding: 0.5rem 0.75rem;
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
-
-    nav {
-      display: none;
-      flex-direction: column;
-      margin-top: 1rem;
-      width: 100%;
-    }
-
-    nav a {
-      text-decoration: none;
-      padding: 0.5rem 0;
-      color: #052c5c;
-      font-weight: 600;
-    }
-
-    nav a:hover {
-      color: #be9e44;
-    }
-
-    @media(min-width: 768px) {
-      nav {
-        display: flex !important;
-        flex-direction: row;
-        gap: 1.5rem;
-        width: auto;
-        margin-top: 0;
-      }
-      .menu-toggle {
-        display: none;
-      }
-    }
-
-    main {
-      padding: 2rem 1rem 3rem;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    section {
-      background: white;
-      padding: 2rem;
-      margin-bottom: 3rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    }
-
-    h1, h2 {
-      color: #052c5c;
-      margin-bottom: 1rem;
-    }
-
-    ul {
-      list-style-type: disc;
-      padding-left: 1.25rem;
-    }
-
-    li {
-      margin-bottom: 0.75rem;
-    }
-
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-
-    .pricing-card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      padding: 1.5rem;
-    }
-
-    .pricing-card h3 {
-      margin: 0 0 0.5rem;
-      color: #052c5c;
-      font-size: 1.3rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .pricing-card p {
-      margin: 0.5rem 0 1rem;
-      font-style: italic;
-      color: #555;
-    }
-
-    .pricing-card ul {
-      margin: 0;
-      padding-left: 1.25rem;
-    }
-
-    .pricing-card li {
-      margin-bottom: 0.5rem;
-    }
-
-    .quote {
-      font-style: italic;
-      text-align: center;
-      margin: 2rem 0;
-      color: #444;
-    }
-  </style>
-</head>
-<body>
-<header>
-  <div class="logo-container">
-    <img src="https://raw.githubusercontent.com/SheetPilot-1/SheetPilot-site/refs/heads/main/sheetpilot-logo.png.PNG" alt="SheetPilot Logo">
-    <div class="header-text">Spirit-Led Systems for Business and Ministry</div>
+  <div class="pricing-card">
+    <h3>📄 Basic Essentials – $100</h3>
+    <p>A simple starting point to experience the value of SheetPilot.</p>
+    <ul>
+      <li>📝 We set up one spreadsheet that replaces a paper process.</li>
+      <li>📊 Keeps track of things neatly (like names, numbers, totals).</li>
+      <li>📧 Sends you a simple email update or sorts info automatically.</li>
+      <li>🔄 Includes one change/revision after setup.</li>
+      <li>🌐 Works in Google Sheets.</li>
+    </ul>
   </div>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  <nav id="navMenu">
-    <a href="#services">What We Do</a>
-    <a href="#prayer">Prayer</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#form">Get Started</a>
-    <a href="#faq">FAQs</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
 
-<script>
-  function toggleMenu() {
-    const menu = document.getElementById("navMenu");
-    if (menu.style.display === "flex") {
-      menu.style.display = "none";
-    } else {
-      menu.style.display = "flex";
-    }
-  }
-</script>
+  <hr>
 
-<main>
-  <section>
-    <h2>Building Systems for People, Led by the Holy Spirit of God</h2>
-    <p>SheetPilot exists to serve businesses and ministries by creating simple, streamlined spreadsheet systems that save time and multiply impact. From basic automation to complete workflow orchestration in both Google Sheets and Microsoft Excel — we deliver Kingdom-minded excellence in every build.</p>
-  </section>
-
-  <section id="services">
-    <h2>What We Do</h2>
+  <div class="pricing-card">
+    <h3>📈 Growth Package – $200</h3>
+    <p>For small teams or organizations ready to scale up.</p>
     <ul>
-      <li>📊 Spreadsheet automation (Google Sheets & Excel)</li>
-      <li>📋 Multi-tab management and system organization</li>
-      <li>📩 Email and Drive automation (Gmail + Google Drive)</li>
-      <li>🧹 Data cleanup, logic sorting, and form triggers</li>
-      <li>📚 Training videos, walkthroughs, and support docs</li>
+      <li>📋 Includes everything in Basic Essentials.</li>
+      <li>🖊️ Add a custom form (Google Form or Tally) that feeds your sheet.</li>
+      <li>📂 Connects with Google Drive & Gmail to save files and send updates.</li>
+      <li>📊 Adds advanced sorting logic or simple dashboards.</li>
+      <li>✏️ Includes two revisions to fine-tune your setup.</li>
     </ul>
-  </section>
+  </div>
 
-  <section id="prayer">
-    <h2>🙏 Covered in Prayer</h2>
-    <p>At SheetPilot, every project is prayerfully considered and spiritually guided. We seek the wisdom of the Holy Spirit in every system we build, asking God to bless the work and those it serves. Whether you’re a business, ministry, or mission-led nonprofit, know that we will pray over your project and work with excellence unto the Lord.</p>
-  </section>
+  <hr>
 
-  <section id="pricing">
-    <h2>Pricing</h2>
-    <div class="pricing-grid">
-      <div class="pricing-card">
-        <h3>📘 Basic Essentials – $100</h3>
-        <p>A simple starting point to experience the value of SheetPilot.</p>
-        <ul>
-          <li>We set up one spreadsheet that replaces a paper process</li>
-          <li>Keeps track of things neatly (like names, numbers, totals)</li>
-          <li>Sends you a simple email update or sorts info automatically</li>
-          <li>Includes one change/revision after setup</li>
-          <li>Works in Google Sheets</li>
-        </ul>
-      </div>
-
-      <div class="pricing-card">
-        <h3>📗 Growth Package – $200</h3>
-        <p>For growing teams or small businesses ready to do more.</p>
-        <ul>
-          <li>Everything in Basic</li>
-          <li>Adds form integration (Tally or Google Form)</li>
-          <li>Automation with Gmail + Google Drive if needed</li>
-          <li>Advanced sorting logic or simple dashboards</li>
-          <li>Two revisions included</li>
-        </ul>
-      </div>
-
-      <div class="pricing-card">
-        <h3>📙 Business Systems – $300</h3>
-        <p>For established businesses needing reliable, ongoing workflows.</p>
-        <ul>
-          <li>Everything in Growth</li>
-          <li>Multi-tab automation and system organization</li>
-          <li>Scheduled workflows that run automatically</li>
-          <li>Custom email templates</li>
-          <li>7-day support window + walkthrough</li>
-        </ul>
-      </div>
-
-      <div class="pricing-card">
-        <h3>🔄 Support Add-On – $49/month</h3>
-        <p>Keep your systems running smoothly with ongoing care.</p>
-        <ul>
-          <li>Fixes bugs or issues if something breaks</li>
-          <li>Small updates like adjusting formulas, reports, or triggers</li>
-          <li>Priority response time</li>
-          <li>First month free with Business Systems</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <section id="form">
-    <h2>Ready to Get Started?</h2>
-    <p class="quote">“Serve your clients well, and the provision will follow.”</p>
-    <iframe data-tally-src="https://tally.so/r/3xLeQG" loading="lazy" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0" title="SheetPilot Discovery Form"></iframe>
-    <script>
-      var d=document,s=d.createElement("script");s.src="https://tally.so/widgets/embed.js";
-      s.onload=function(){Tally.loadEmbeds();};
-      d.body.appendChild(s);
-    </script>
-  </section>
-
-  <section id="faq">
-    <h2>Frequently Asked Questions</h2>
+  <div class="pricing-card">
+    <h3>🗂️ Business Systems – $300</h3>
+    <p>For established organizations that need reliable, ongoing workflows.</p>
     <ul>
-      <li><strong>Q: Do I need any tech background?</strong><br>A: Nope. We’ll walk you through everything you need to know.</li>
-      <li><strong>Q: Can you build in Microsoft Excel instead of Google Sheets?</strong><br>A: Yes, we support both platforms.</li>
-      <li><strong>Q: What happens after I submit the form?</strong><br>A: You’ll receive a confirmation email, and we’ll follow up shortly.</li>
+      <li>✅ Includes everything in Growth Package.</li>
+      <li>🗃️ Manage multiple tabs or departments in one system.</li>
+      <li>⏰ Automations run on a schedule (daily, weekly, etc.).</li>
+      <li>✉️ Build custom email templates for better communication.</li>
+      <li>🎥 Includes a training call or walkthrough video.</li>
+      <li>🛡️ Comes with a 7-day support window after delivery.</li>
     </ul>
-  </section>
+  </div>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>For further inquiries, please contact:</p>
-    <p><strong>📧 sheetpilotapp@gmail.com</strong></p>
-  </section>
-</main>
-</body>
-</html>
+  <hr>
+
+  <div class="pricing-card">
+    <h3>🛠️ Ongoing Support Add-On – $50/month</h3>
+    <p>Keep your system running smoothly with ongoing care.</p>
+    <ul>
+      <li>🔧 Covers bug fixes and small updates (like adjusting formulas).</li>
+      <li>🔄 Add minor improvements as your needs grow.</li>
+      <li>⚡ Priority response when you need help.</li>
+      <li>🎁 First month is FREE with Business Systems.</li>
+    </ul>
+  </div>
+</section>
+<!-- ===== Our Packages (SheetPilot) ===== -->
+
 <!-- ===== /Our Packages ===== -->
 <!-- ========== /OUR PACKAGES ========== -->
   <section class="section" id="start">
