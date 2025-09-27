@@ -237,47 +237,88 @@
     margin: 0;
   }
 }
-/* ---- SheetPilot Packages (refactor) ----------------------------- */
-:root{
-  --sp-navy:#0b2f5b;
-  --sp-gold:#cba04b;
-  --sp-cream:#f7f1e3;
-  --sp-ink:#13243a;
-  --sp-muted:#6a7686;
-  --sp-radius:16px;
-  --sp-gap:18px;
-  --sp-shadow:0 10px 28px rgba(11,47,91,.08);
+/* ===== Our Packages section (mobile-friendly) ===== */
+.section--packages {
+  background: var(--cream-2);            /* soft tint to separate section */
+  padding-block: 48px;                   /* top/bottom breathing room */
 }
 
-.packages{margin:56px auto; max-width:1100px}
-.pack-grid{
-  display:grid; gap:var(--sp-gap);
-  grid-template-columns:repeat(2, minmax(0,1fr));
+.section--packages .section-head {
+  max-width: 72rem;
+  margin: 0 auto 20px;
+  padding-inline: var(--container-pad, 20px);
 }
-@media (max-width:860px){ .pack-grid{grid-template-columns:1fr} }
 
-.pack-card{
-  background:#fff; border-radius:var(--sp-radius);
-  box-shadow:var(--sp-shadow); overflow:hidden;
-  border:1px solid rgba(11,47,91,.08)
+.packages-grid {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding-inline: var(--container-pad, 20px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
 }
-.pack-head{
-  background:var(--sp-navy); color:#fff; padding:16px 18px;
-  font-weight:800; font-size:1.05rem; letter-spacing:.2px;
+
+/* Card */
+.pkg-card {
+  background: #fff;
+  border: 1px solid var(--cream-4);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(5, 44, 92, 0.06);
+  padding: 18px 20px 22px;
 }
-.pack-head .price{opacity:.85; font-weight:700}
-.pack-body{padding:18px 18px 12px; color:var(--sp-ink)}
-.pack-body p{margin:.4rem 0 .9rem}
-.pack-body .kicker{font-weight:800}
-.ex-badge{
-  display:inline-block; margin:.1rem 0 .5rem;
-  background:var(--sp-gold); color:#212529;
-  font-weight:700; font-size:.78rem; padding:.25rem .55rem;
-  border-radius:999px;
+
+.pkg-card h3 {
+  font-size: 1.15rem;
+  line-height: 1.2;
+  margin: 0 0 10px;
+  color: var(--navy);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-.pack-list{margin:.35rem 0 .75rem; padding-left:1.1rem}
-.pack-list li{margin:.45rem 0}
-.pack-list b{font-weight:800}
+
+.pkg-badge {
+  background: var(--navy);
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: .85rem;
+  padding: 6px 10px;
+}
+
+.pkg-what, .pkg-examples {
+  margin: 10px 0 0;
+}
+
+.pkg-examples .label {
+  display: inline-block;
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--navy);
+  background: var(--gold-10, #f1e3bf);
+  border: 1px solid var(--gold-20, #e6d5a2);
+  border-radius: 999px;
+  padding: 4px 10px;
+  margin: 8px 0 6px;
+}
+
+/* Tight, readable bullets */
+.pkg-card ul { margin: 8px 0 0; padding-left: 1.15rem; }
+.pkg-card li { margin: 6px 0; }
+
+/* --- Mobile improvements --- */
+@media (max-width: 768px) {
+  .section--packages { padding-block: 36px; }
+  .packages-grid { grid-template-columns: 1fr; gap: 18px; }
+  .pkg-card { padding: 16px 16px 18px; border-radius: 14px; }
+  .pkg-card h3 { font-size: 1.05rem; }
+  .pkg-badge { font-size: .8rem; padding: 5px 9px; }
+  /* visual separators from adjacent sections */
+  .section--packages {
+    border-top: 1px solid var(--cream-4);
+    border-bottom: 1px solid var(--cream-4);
+  }
+}/* ---- SheetPilot Packages (
     /* your existing CSS... */
 /* ================================
    SHEETPILOT DIFFERENCE SECTION
