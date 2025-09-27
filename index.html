@@ -428,65 +428,109 @@
   </section>
 
  <!-- ========== OUR PACKAGES (SheetPilot) ========== -->
-<section id="pricing">
-  <h2>Pricing</h2>
+<!-- ===== Our Packages (SheetPilot) ===== -->
+<style>
+  #pricing {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
 
-  <div class="pricing-card">
-    <h3>📄 Basic Essentials – $100</h3>
-    <p>A simple starting point to experience the value of SheetPilot.</p>
-    <ul>
-      <li>📝 We set up one spreadsheet that replaces a paper process.</li>
-      <li>📊 Keeps track of things neatly (like names, numbers, totals).</li>
-      <li>📧 Sends you a simple email update or sorts info automatically.</li>
-      <li>🔄 Includes one change/revision after setup.</li>
-      <li>🌐 Works in Google Sheets.</li>
-    </ul>
-  </div>
+  @media (min-width: 768px) {
+    #pricing {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
 
-  <hr>
+  .pricing-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
 
-  <div class="pricing-card">
-    <h3>📈 Growth Package – $200</h3>
-    <p>For small teams or organizations ready to scale up.</p>
-    <ul>
-      <li>📋 Includes everything in Basic Essentials.</li>
-      <li>🖊️ Add a custom form (Google Form or Tally) that feeds your sheet.</li>
-      <li>📂 Connects with Google Drive & Gmail to save files and send updates.</li>
-      <li>📊 Adds advanced sorting logic or simple dashboards.</li>
-      <li>✏️ Includes two revisions to fine-tune your setup.</li>
-    </ul>
-  </div>
+  .pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  }
 
-  <hr>
+  .pricing-card h3 {
+    color: #052c5c;
+    margin-bottom: 0.5rem;
+  }
 
-  <div class="pricing-card">
-    <h3>🗂️ Business Systems – $300</h3>
-    <p>For established organizations that need reliable, ongoing workflows.</p>
-    <ul>
-      <li>✅ Includes everything in Growth Package.</li>
-      <li>🗃️ Manage multiple tabs or departments in one system.</li>
-      <li>⏰ Automations run on a schedule (daily, weekly, etc.).</li>
-      <li>✉️ Build custom email templates for better communication.</li>
-      <li>🎥 Includes a training call or walkthrough video.</li>
-      <li>🛡️ Comes with a 7-day support window after delivery.</li>
-    </ul>
-  </div>
+  .pricing-card p {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    color: #444;
+  }
 
-  <hr>
+  .pricing-card ul {
+    padding-left: 1.25rem;
+    margin: 0;
+  }
 
-  <div class="pricing-card">
-    <h3>🛠️ Ongoing Support Add-On – $50/month</h3>
-    <p>Keep your system running smoothly with ongoing care.</p>
-    <ul>
-      <li>🔧 Covers bug fixes and small updates (like adjusting formulas).</li>
-      <li>🔄 Add minor improvements as your needs grow.</li>
-      <li>⚡ Priority response when you need help.</li>
-      <li>🎁 First month is FREE with Business Systems.</li>
-    </ul>
+  .pricing-card li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+</style>
+
+<section>
+  <h2 style="text-align:center; margin-bottom: 2rem;">Pricing</h2>
+
+  <div id="pricing">
+    <div class="pricing-card">
+      <h3>📄 Basic Essentials – $100</h3>
+      <p>A simple starting point to experience the value of SheetPilot.</p>
+      <ul>
+        <li>📝 We set up one spreadsheet that replaces a paper process.</li>
+        <li>📊 Keeps track of things neatly (like names, numbers, totals).</li>
+        <li>📧 Sends you a simple email update or sorts info automatically.</li>
+        <li>🔄 Includes one change/revision after setup.</li>
+        <li>🌐 Works in Google Sheets.</li>
+      </ul>
+    </div>
+
+    <div class="pricing-card">
+      <h3>📈 Growth Package – $200</h3>
+      <p>For small teams or organizations ready to scale up.</p>
+      <ul>
+        <li>📋 Includes everything in Basic Essentials.</li>
+        <li>🖊️ Add a custom form (Google Form or Tally) that feeds your sheet.</li>
+        <li>📂 Connects with Google Drive & Gmail to save files and send updates.</li>
+        <li>📊 Adds advanced sorting logic or simple dashboards.</li>
+        <li>✏️ Includes two revisions to fine-tune your setup.</li>
+      </ul>
+    </div>
+
+    <div class="pricing-card">
+      <h3>🗂️ Business Systems – $300</h3>
+      <p>For established organizations that need reliable, ongoing workflows.</p>
+      <ul>
+        <li>✅ Includes everything in Growth Package.</li>
+        <li>🗃️ Manage multiple tabs or departments in one system.</li>
+        <li>⏰ Automations run on a schedule (daily, weekly, etc.).</li>
+        <li>✉️ Build custom email templates for better communication.</li>
+        <li>🎥 Includes a training call or walkthrough video.</li>
+        <li>🛡️ Comes with a 7-day support window after delivery.</li>
+      </ul>
+    </div>
+
+    <div class="pricing-card">
+      <h3>🛠️ Ongoing Support Add-On – $50/month</h3>
+      <p>Keep your system running smoothly with ongoing care.</p>
+      <ul>
+        <li>🔧 Covers bug fixes and small updates (like adjusting formulas).</li>
+        <li>🔄 Add minor improvements as your needs grow.</li>
+        <li>⚡ Priority response when you need help.</li>
+        <li>🎁 First month is FREE with Business Systems.</li>
+      </ul>
+    </div>
   </div>
 </section>
-<!-- ===== Our Packages (SheetPilot) ===== -->
-
 <!-- ===== /Our Packages ===== -->
 <!-- ========== /OUR PACKAGES ========== -->
   <section class="section" id="start">
