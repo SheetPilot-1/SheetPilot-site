@@ -237,111 +237,103 @@
     margin: 0;
   }
 }
-/* ===== Our Packages section (mobile-friendly) ===== */
-.section--packages {
-  background: var(--cream-2);            /* soft tint to separate section */
-  padding-block: 48px;                   /* top/bottom breathing room */
+/* ===== SheetPilot — Packages ===== */
+:root{
+  --sp-cream: #F6F0DF;
+  --sp-navy:  #0B2D5C;
+  --sp-gold:  #C9A13E;
+  --sp-ink:   #162138;
+  --sp-card:  #ffffff;
+  --sp-radius: 14px;
+  --sp-shadow: 0 6px 18px rgba(11,45,92,0.08);
 }
 
-.section--packages .section-head {
-  max-width: 72rem;
-  margin: 0 auto 20px;
-  padding-inline: var(--container-pad, 20px);
+/* Section wrapper + header */
+.section--packages{
+  background: var(--sp-cream);
+  padding: 48px 0;
 }
-
-.packages-grid {
-  max-width: 72rem;
+.section--packages .container{
+  width: min(1120px, 90vw);
   margin: 0 auto;
-  padding-inline: var(--container-pad, 20px);
+}
+.section--packages .section-head{
+  display: flex; align-items: center; gap: 12px;
+  margin: 0 0 18px 0;
+}
+.section--packages .section-head h2{
+  margin: 0;
+  font-size: clamp(28px, 3.8vw, 40px);
+  line-height: 1.1;
+  color: var(--sp-navy);
+}
+.section--packages .section-sub{
+  margin: 6px 0 28px 0;
+  color: var(--sp-ink);
+  font-size: clamp(15px, 2vw, 18px);
+}
+.section--packages .section-sub b{ color: var(--sp-navy); }
+
+/* Grid */
+.packages-grid{
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 22px;
+}
+@media (max-width: 820px){
+  .packages-grid{ grid-template-columns: 1fr; }
 }
 
 /* Card */
-.pkg-card {
-  background: #fff;
-  border: 1px solid var(--cream-4);
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(5, 44, 92, 0.06);
-  padding: 18px 20px 22px;
+.package-card{
+  background: var(--sp-card);
+  border-radius: var(--sp-radius);
+  box-shadow: var(--sp-shadow);
+  overflow: hidden;
+  border: 1px solid rgba(11,45,92,0.08);
 }
 
-.pkg-card h3 {
-  font-size: 1.15rem;
-  line-height: 1.2;
-  margin: 0 0 10px;
-  color: var(--navy);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.pkg-badge {
-  background: var(--navy);
+/* Title bar */
+.package-card .card-bar{
+  background: var(--sp-navy);
   color: #fff;
-  border-radius: 10px;
+  padding: 12px 16px;
   font-weight: 700;
-  font-size: .85rem;
-  padding: 6px 10px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+.package-card .price{
+  color: #fff; font-weight: 700;
 }
 
-.pkg-what, .pkg-examples {
-  margin: 10px 0 0;
+/* Body */
+.package-card .card-body{
+  padding: 18px 18px 20px;
+  color: var(--sp-ink);
+  font-size: 16px;
 }
+.package-card .card-body h4{
+  margin: 10px 0 8px; font-size: 16px; color: var(--sp-ink);
+}
+.package-card .muted{ color: #5c6678; }
+.package-card ul{ margin: 10px 0 0 20px; }
+.package-card li{ margin: 8px 0; }
 
-.pkg-examples .label {
+/* “Examples” pill */
+.examples-pill{
   display: inline-block;
-  font-size: .8rem;
-  font-weight: 700;
-  color: var(--navy);
-  background: var(--gold-10, #f1e3bf);
-  border: 1px solid var(--gold-20, #e6d5a2);
-  border-radius: 999px;
+  margin: 10px 0 4px;
   padding: 4px 10px;
-  margin: 8px 0 6px;
+  background: #fff4d6;
+  color: #6b5208;
+  border: 1px solid #f0d68a;
+  border-radius: 999px;
+  font-size: 12px; font-weight: 700;
 }
 
-/* Tight, readable bullets */
-.pkg-card ul { margin: 8px 0 0; padding-left: 1.15rem; }
-.pkg-card li { margin: 6px 0; }
-
-/* --- Mobile improvements --- */
-@media (max-width: 768px) {
-  .section--packages { padding-block: 36px; }
-  .packages-grid { grid-template-columns: 1fr; gap: 18px; }
-  .pkg-card { padding: 16px 16px 18px; border-radius: 14px; }
-  .pkg-card h3 { font-size: 1.05rem; }
-  .pkg-badge { font-size: .8rem; padding: 5px 9px; }
-  /* visual separators from adjacent sections */
-  .section--packages {
-    border-top: 1px solid var(--cream-4);
-    border-bottom: 1px solid var(--cream-4);
-  }
-}/* ---- SheetPilot Packages (
-    /* your existing CSS... */
-/*.cream-header {
-  background-color: #fffdf6; /* your brand cream */
-  text-align: center;
-  padding: 2rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
+/* Extra breathing room on mobile */
+@media (max-width: 480px){
+  .package-card .card-body{ padding: 16px; }
 }
-
-.cream-header h2 {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #052c5c; /* navy */
-  margin-bottom: 0.5rem;
-}
-
-.cream-header .subtitle {
-  font-size: 1rem;
-  color: #052c5c; /* navy for consistency */
-} ================================
-   SHEETPILOT DIFFERENCE SECTION
-   ================================ */
-
   </style>
 </head>
 <body>
@@ -434,75 +426,104 @@
     <h2>🙏 Covered in Prayer</h2>
     <p>At SheetPilot, we pray over every system we build. This isn’t just a service — it’s a ministry. We believe the Holy Spirit guides every build, and we ask God to use these tools to bring order, clarity, and peace. Whether you're a business owner or ministry leader, know that your project is being lifted up in prayer.</p>
   </section>
-<section class="packages">
-  <div class="section-header cream-header">
-    <h2>📦 Our Packages</h2>
-    <p class="subtitle">
-      Pick the level that fits today — upgrade anytime.  
-      All options work with <strong>Google Sheets</strong> or <strong>Microsoft Excel</strong>.
+
+  <section class="section section--packages" id="packages">
+  <div class="container">
+    <div class="section-head">
+      <h2>📦 Our Packages</h2>
+    </div>
+    <p class="section-sub">
+      Pick the level that fits today — upgrade anytime. All options work with
+      <b>Google Sheets</b> or <b>Microsoft Excel</b>.
     </p>
-  </div>
 
-  <div class="packages-grid">
-    <!-- Starter -->
-    <div class="package-card">
-      <h3>Starter Project — $99</h3>
-      <p><strong>What it means:</strong> One simple, time-saving automation.  
-      No more copy-pasting or doing math by hand.</p>
-      <span class="examples-label">Examples</span>
-      <ul>
-        <li><strong>Church/Ministry:</strong> Prayer-request form → tidy sheet.</li>
-        <li><strong>Small Business:</strong> Sales log with auto totals.</li>
-        <li><strong>Non-Profit:</strong> Event sign-up → clean attendee list.</li>
-        <li><strong>Corporate:</strong> HR intake → one clean sheet.</li>
-      </ul>
-    </div>
+    <div class="packages-grid">
+      <!-- Starter -->
+      <article class="package-card">
+        <div class="card-bar">
+          <span>Starter Project</span>
+          <span class="price">$99</span>
+        </div>
+        <div class="card-body">
+          <h4>What it means:</h4>
+          <p class="muted">One simple, time-saving automation. No more copy-pasting or doing math by hand.</p>
 
-    <!-- Growth -->
-    <div class="package-card">
-      <h3>Growth Package — $199</h3>
-      <p><strong>What it means:</strong> Email/file integrations + simple dashboards  
-      (single-page views that track one process).</p>
-      <span class="examples-label">Examples</span>
-      <ul>
-        <li><strong>Church:</strong> Weekly devotionals auto-emailed.</li>
-        <li><strong>Small Business:</strong> Intake → confirmation email → pipeline dashboard.</li>
-        <li><strong>Non-Profit:</strong> Donations sorted by donor + thank-you emails.</li>
-        <li><strong>Corporate:</strong> Project tracker with task updates + live dashboard.</li>
-      </ul>
-    </div>
+          <span class="examples-pill">Examples</span>
+          <ul>
+            <li><b>Church/Ministry:</b> Prayer-request form → tidy sheet.</li>
+            <li><b>Small Business:</b> Sales log with auto totals.</li>
+            <li><b>Non-Profit:</b> Event sign-up → clean attendee list.</li>
+            <li><b>Corporate:</b> HR intake → one clean sheet.</li>
+          </ul>
+        </div>
+      </article>
 
-    <!-- Business -->
-    <div class="package-card">
-      <h3>Business Systems — $299</h3>
-      <p><strong>What it means:</strong> Full custom systems with automations,  
-      dashboards, and training. Multi-tab or multi-department.</p>
-      <span class="examples-label">Examples</span>
-      <ul>
-        <li><strong>Church:</strong> Membership + offerings + group comms in one hub.</li>
-        <li><strong>Small Business:</strong> Inventory auto-updates + emailed reports.</li>
-        <li><strong>Non-Profit:</strong> Grant tracking with deadlines + reminders.</li>
-        <li><strong>Corporate:</strong> Roll-up dashboards integrating HR/finance/ops.</li>
-      </ul>
-    </div>
+      <!-- Growth -->
+      <article class="package-card">
+        <div class="card-bar">
+          <span>Growth Package</span>
+          <span class="price">$199</span>
+        </div>
+        <div class="card-body">
+          <h4>What it means:</h4>
+          <p class="muted">
+            Email/file integrations + simple dashboards (single-page views that track one process).
+          </p>
 
-    <!-- Support -->
-    <div class="package-card">
-      <h3>Support Add-On — $49/month per project</h3>
-      <p><strong>What it means:</strong> Ongoing updates + priority care so  
-      your system grows with you.</p>
-      <span class="examples-label">What’s included</span>
-      <ul>
-        <li><strong>Updates:</strong> New fields, form tweaks, extra columns/tabs.</li>
-        <li><strong>Fixes:</strong> Broken formulas or file paths repaired fast.</li>
-        <li><strong>Enhancements:</strong> New views, filters, or email rules as you evolve.</li>
-        <li><strong>Priority Help:</strong> Jump-the-line support when something can’t wait.</li>
-      </ul>
+          <span class="examples-pill">Examples</span>
+          <ul>
+            <li><b>Church:</b> Weekly devotionals auto-emailed to the member list.</li>
+            <li><b>Small Business:</b> Intake form → confirmation email → live pipeline dashboard.</li>
+            <li><b>Non-Profit:</b> Donations sorted by donor + auto thank-you emails.</li>
+            <li><b>Corporate:</b> Dept project tracker with task-update emails + live dashboard.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Business Systems -->
+      <article class="package-card">
+        <div class="card-bar">
+          <span>Business Systems</span>
+          <span class="price">$299</span>
+        </div>
+        <div class="card-body">
+          <h4>What it means:</h4>
+          <p class="muted">
+            Full custom systems with scheduled automations, multi-tab dashboards, and training.
+          </p>
+
+          <span class="examples-pill">Examples</span>
+          <ul>
+            <li><b>Church:</b> Membership + offerings + groups + newsletters in one hub.</li>
+            <li><b>Small Business:</b> Auto-updating inventory, weekly emailed reports, manager dashboard.</li>
+            <li><b>Non-Profit:</b> Grant tracking with deadlines, reporting data, reminder emails.</li>
+            <li><b>Corporate:</b> Roll-up dashboards integrating HR/finance/ops with scheduled reporting.</li>
+          </ul>
+        </div>
+      </article>
+
+      <!-- Support Add-On -->
+      <article class="package-card">
+        <div class="card-bar">
+          <span>Support Add-On</span>
+          <span class="price">$49/mo per project</span>
+        </div>
+        <div class="card-body">
+          <h4>What it means:</h4>
+          <p class="muted">Ongoing updates + priority care so your system keeps pace as you grow.</p>
+
+          <h4>What’s included</h4>
+          <ul>
+            <li><b>Updates:</b> New fields, form tweaks, extra columns/tabs.</li>
+            <li><b>Fixes:</b> Broken formulas or changed file paths repaired fast.</li>
+            <li><b>Enhancements:</b> New views, filters, or email rules as your process evolves.</li>
+            <li><b>Priority help:</b> Jump-the-line support when something can’t wait.</li>
+          </ul>
+        </div>
+      </article>
     </div>
   </div>
 </section>
- 
-  
 </section>
   <section class="section" id="start">
     <h2>🛫 Ready to Get Started?</h2>
