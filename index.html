@@ -320,7 +320,25 @@
   }
 }/* ---- SheetPilot Packages (
     /* your existing CSS... */
-/* ================================
+/*.cream-header {
+  background-color: #fffdf6; /* your brand cream */
+  text-align: center;
+  padding: 2rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.cream-header h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #052c5c; /* navy */
+  margin-bottom: 0.5rem;
+}
+
+.cream-header .subtitle {
+  font-size: 1rem;
+  color: #052c5c; /* navy for consistency */
+} ================================
    SHEETPILOT DIFFERENCE SECTION
    ================================ */
 
@@ -416,83 +434,74 @@
     <h2>🙏 Covered in Prayer</h2>
     <p>At SheetPilot, we pray over every system we build. This isn’t just a service — it’s a ministry. We believe the Holy Spirit guides every build, and we ask God to use these tools to bring order, clarity, and peace. Whether you're a business owner or ministry leader, know that your project is being lifted up in prayer.</p>
   </section>
-<section id="packages" class="section section--packages">
-  <header class="section-head">
-    <h2>Our Packages</h2>
-    <p>Pick the level that fits today—upgrade anytime. Works with <strong>Google Sheets</strong> or <strong>Microsoft Excel</strong>.</p>
-  </header>
+<section class="packages">
+  <div class="section-header cream-header">
+    <h2>📦 Our Packages</h2>
+    <p class="subtitle">
+      Pick the level that fits today — upgrade anytime.  
+      All options work with <strong>Google Sheets</strong> or <strong>Microsoft Excel</strong>.
+    </p>
+  </div>
 
   <div class="packages-grid">
     <!-- Starter -->
-    <article class="pkg-card">
-      <h3>Starter Project <span class="pkg-badge">$99</span></h3>
-      <div class="pkg-what">
-        <p><strong>What it means:</strong> One simple, time-saving automation. No more copy-pasting or doing math by hand.</p>
-      </div>
-      <div class="pkg-examples">
-        <span class="label">Examples</span>
-        <ul>
-          <li><strong>Church/Ministry:</strong> Prayer-request form → tidy sheet.</li>
-          <li><strong>Small Business:</strong> Sales log with auto totals.</li>
-          <li><strong>Non-Profit:</strong> Event sign-up → clean attendee list.</li>
-          <li><strong>Corporate:</strong> Simple HR intake → one clean sheet.</li>
-        </ul>
-      </div>
-    </article>
+    <div class="package-card">
+      <h3>Starter Project — $99</h3>
+      <p><strong>What it means:</strong> One simple, time-saving automation.  
+      No more copy-pasting or doing math by hand.</p>
+      <span class="examples-label">Examples</span>
+      <ul>
+        <li><strong>Church/Ministry:</strong> Prayer-request form → tidy sheet.</li>
+        <li><strong>Small Business:</strong> Sales log with auto totals.</li>
+        <li><strong>Non-Profit:</strong> Event sign-up → clean attendee list.</li>
+        <li><strong>Corporate:</strong> HR intake → one clean sheet.</li>
+      </ul>
+    </div>
 
     <!-- Growth -->
-    <article class="pkg-card">
-      <h3>Growth Package <span class="pkg-badge">$199</span></h3>
-      <div class="pkg-what">
-        <p><strong>What it means:</strong> Email/file integrations + simple dashboards (single-page views that track one process).</p>
-      </div>
-      <div class="pkg-examples">
-        <span class="label">Examples</span>
-        <ul>
-          <li><strong>Church:</strong> Weekly devotionals auto-emailed to members.</li>
-          <li><strong>Small Business:</strong> Intake → confirmation email → live pipeline dashboard.</li>
-          <li><strong>Non-Profit:</strong> Donations sorted by donor + thank-you emails.</li>
-          <li><strong>Corporate:</strong> Project tracker with task-update emails + live dashboard.</li>
-        </ul>
-      </div>
-    </article>
+    <div class="package-card">
+      <h3>Growth Package — $199</h3>
+      <p><strong>What it means:</strong> Email/file integrations + simple dashboards  
+      (single-page views that track one process).</p>
+      <span class="examples-label">Examples</span>
+      <ul>
+        <li><strong>Church:</strong> Weekly devotionals auto-emailed.</li>
+        <li><strong>Small Business:</strong> Intake → confirmation email → pipeline dashboard.</li>
+        <li><strong>Non-Profit:</strong> Donations sorted by donor + thank-you emails.</li>
+        <li><strong>Corporate:</strong> Project tracker with task updates + live dashboard.</li>
+      </ul>
+    </div>
 
-    <!-- Business Systems -->
-    <article class="pkg-card">
-      <h3>Business Systems <span class="pkg-badge">$299</span></h3>
-      <div class="pkg-what">
-        <p><strong>What it means:</strong> Full systems: scheduled automations, multi-tab/department dashboards, and training.</p>
-      </div>
-      <div class="pkg-examples">
-        <span class="label">Examples</span>
-        <ul>
-          <li><strong>Church:</strong> Membership, offerings, newsletters, group comms.</li>
-          <li><strong>Small Business:</strong> Auto-updating inventory + weekly emailed reports + manager dashboard.</li>
-          <li><strong>Non-Profit:</strong> Grant tracking with deadlines, reporting data, reminders.</li>
-          <li><strong>Corporate:</strong> Roll-up dashboards integrating HR/finance/ops with scheduled reporting.</li>
-        </ul>
-      </div>
-    </article>
+    <!-- Business -->
+    <div class="package-card">
+      <h3>Business Systems — $299</h3>
+      <p><strong>What it means:</strong> Full custom systems with automations,  
+      dashboards, and training. Multi-tab or multi-department.</p>
+      <span class="examples-label">Examples</span>
+      <ul>
+        <li><strong>Church:</strong> Membership + offerings + group comms in one hub.</li>
+        <li><strong>Small Business:</strong> Inventory auto-updates + emailed reports.</li>
+        <li><strong>Non-Profit:</strong> Grant tracking with deadlines + reminders.</li>
+        <li><strong>Corporate:</strong> Roll-up dashboards integrating HR/finance/ops.</li>
+      </ul>
+    </div>
 
-    <!-- Support Add-On -->
-    <article class="pkg-card">
-      <h3>Support Add-On <span class="pkg-badge">$49/mo</span></h3>
-      <div class="pkg-what">
-        <p><strong>What it means:</strong> Ongoing updates & priority care so your system keeps pace as you grow.</p>
-      </div>
-      <div class="pkg-examples">
-        <span class="label">What’s included</span>
-        <ul>
-          <li><strong>Updates:</strong> New fields, form tweaks, extra columns/tabs.</li>
-          <li><strong>Fixes:</strong> Broken formulas or changed file paths repaired fast.</li>
-          <li><strong>Enhancements:</strong> New views, filters, or email rules as processes evolve.</li>
-          <li><strong>Priority help:</strong> Jump-the-line support when something can’t wait.</li>
-        </ul>
-      </div>
-    </article>
+    <!-- Support -->
+    <div class="package-card">
+      <h3>Support Add-On — $49/month per project</h3>
+      <p><strong>What it means:</strong> Ongoing updates + priority care so  
+      your system grows with you.</p>
+      <span class="examples-label">What’s included</span>
+      <ul>
+        <li><strong>Updates:</strong> New fields, form tweaks, extra columns/tabs.</li>
+        <li><strong>Fixes:</strong> Broken formulas or file paths repaired fast.</li>
+        <li><strong>Enhancements:</strong> New views, filters, or email rules as you evolve.</li>
+        <li><strong>Priority Help:</strong> Jump-the-line support when something can’t wait.</li>
+      </ul>
+    </div>
   </div>
 </section>
-
+ 
   
 </section>
   <section class="section" id="start">
