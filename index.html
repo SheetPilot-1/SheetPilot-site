@@ -509,6 +509,7 @@
     gap: 1rem;
   }
 
+/* General pricing card styles */
 .pricing-card {
   background-color: #fffdf6;
   border-radius: 10px;
@@ -516,23 +517,15 @@
   margin: 1.5rem auto;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  max-width: 100%; /* default for mobile */
+  width: 100%;        /* full width inside container */
+  max-width: 900px;   /* match "Why Choose" + "Prayer" cards */
 }
 
 /* Desktop adjustments */
 @media(min-width: 1024px) {
   .pricing-card {
-    max-width: 1000px;  /* wider so they don’t look tiny */
-    padding: 2.5rem;    /* give them more space inside */
-    font-size: 1.05rem; /* slightly larger text */
-  }
-}
-
-/* Hover pop only on desktop */
-@media(hover: hover) {
-  .pricing-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    padding: 2.25rem;
+    font-size: 1.05rem;
   }
 }
 
