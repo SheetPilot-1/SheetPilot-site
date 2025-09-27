@@ -237,59 +237,82 @@
     margin: 0;
   }
 }
-/* ---- Packages ---- */
-.packages {
+/* ---- SheetPilot Packages (refactor) ----------------------------- */
+:root{
+  --brand-navy: var(--sp-navy, #0b2e59);
+  --brand-gold: var(--sp-gold, #c79a2b);
+  --brand-cream: var(--sp-cream, #f5f1e3);
+  --ink: var(--sp-ink, #17212b);
+  --muted: var(--sp-muted, #5a6a7a);
+  --radius: 14px;
+  --shadow: 0 12px 24px rgba(0,0,0,.08);
+}
+
+.section--packages{
+  background: var(--brand-cream);
+  padding: clamp(28px, 6vw, 56px) 0;
+}
+
+.packages-grid{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: 1fr;
+  gap: clamp(16px, 2.6vw, 28px);
+}
+@media (min-width: 960px){
+  .packages-grid{ grid-template-columns: repeat(2, 1fr); }
 }
 
-.package-card {
-  background: #fffdf6;            /* cream */
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.1);
-  overflow: hidden;
+.plan-card{
+  background:#fff;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: clamp(18px, 2.4vw, 28px);
+  border: 1px solid rgba(0,0,0,.06);
 }
 
-.package-card h3 {
+.plan-header{
+  background: var(--brand-navy);
+  color:#fff;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: -6px 0 16px 0;
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+.plan-title{
+  font-weight:800; letter-spacing:.2px; font-size: clamp(18px, 2.2vw, 22px);
+}
+.plan-price{
+  font-weight:700; opacity:.9;
+}
+
+.plan-meaning{
+  margin: 10px 0 14px 0;
+  color: var(--ink);
+  line-height:1.55;
+}
+.examples-label{
+  display:inline-block;
+  background: var(--brand-gold);
+  color:#fff;
+  font-weight:700;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: .9rem;
+  margin: 6px 0 10px 0;
+}
+.plan-list{
   margin: 0;
-  background: #052c5c;            /* navy */
-  color: #fff;
-  padding: 12px 16px;
-  font-size: 1.2rem;
-  line-height: 1.25;
-}
-
-.package-card .content {
-  padding: 16px;
-  color: #2e2e2e;
-  font-size: 0.95rem;
-  line-height: 1.55;
-}
-
-.package-card .content p {
-  margin: 0 0 0.65rem;
-}
-
-.package-card .content ul {
-  margin: 0.25rem 0 0;
   padding-left: 1.1rem;
 }
-
-.package-card .content li + li {
-  margin-top: .4rem;
+.plan-list > li{
+  margin: 8px 0;
+  line-height:1.55;
 }
-
-.package-card .label {
-  display: inline-block;
-  font-weight: 700;
-  color: #052c5c;                  /* navy accent */
-}
-
-.package-card .note {
-  font-size: .9rem;
-  color: #585858;
-  margin-top: .35rem;
+.plan-list b{ color: var(--ink); }
+.plan-note{
+  color: var(--muted);
+  font-size: .95rem;
+  margin: 8px 0 4px 0;
 }
     /* your existing CSS... */
 /* ================================
@@ -389,66 +412,88 @@
     <p>At SheetPilot, we pray over every system we build. This isn’t just a service — it’s a ministry. We believe the Holy Spirit guides every build, and we ask God to use these tools to bring order, clarity, and peace. Whether you're a business owner or ministry leader, know that your project is being lifted up in prayer.</p>
   </section>
 
-<section class="packages">
+<section class="section section--packages" id="packages">
+  <div class="container">
+    <header style="margin-bottom:18px;">
+      <h2 class="h2">Our Packages</h2>
+      <p class="lead">
+        Pick the level that fits today—upgrade anytime. All options work with
+        <strong>Google Sheets</strong> or <strong>Microsoft Excel</strong>.
+      </p>
+    </header>
 
-  <!-- Starter -->
-  <article class="package-card">
-    <h3>Starter Project — $99</h3>
-    <div class="content">
-      <p><span class="label">What it means:</span> One simple, time-saving automation in Google Sheets or Microsoft Excel. No more copy-pasting or doing math by hand.</p>
-      <ul>
-        <li><strong>Church/Ministry:</strong> Prayer-request form that neatly fills a spreadsheet.</li>
-        <li><strong>Small Business:</strong> Sales log that totals daily sales automatically.</li>
-        <li><strong>Non-Profit:</strong> Event sign-up form that creates a clean attendee list.</li>
-        <li><strong>Corporate:</strong> Simple HR intake that collects new-hire info into one sheet.</li>
-      </ul>
+    <div class="packages-grid">
+      <!-- Starter -->
+      <article class="plan-card" id="plan-starter">
+        <div class="plan-header">
+          <div class="plan-title">Starter Project</div>
+          <div class="plan-price">— $99</div>
+        </div>
+        <p class="plan-meaning"><strong>What it means:</strong> One simple, time-saving automation. No more copy-pasting or doing math by hand.</p>
+        <span class="examples-label">Examples</span>
+        <ul class="plan-list">
+          <li><b>Church/Ministry:</b> Prayer-request form that neatly fills a spreadsheet.</li>
+          <li><b>Small Business:</b> Sales log that totals daily sales automatically.</li>
+          <li><b>Non-Profit:</b> Event sign-up that creates a clean attendee list.</li>
+          <li><b>Corporate:</b> Simple HR intake that collects new-hire info into one sheet.</li>
+        </ul>
+      </article>
+
+      <!-- Growth -->
+      <article class="plan-card" id="plan-growth">
+        <div class="plan-header">
+          <div class="plan-title">Growth Package</div>
+          <div class="plan-price">— $199</div>
+        </div>
+        <p class="plan-meaning">
+          <strong>What it means:</strong> We connect your spreadsheets to emails/files and build simple dashboards.
+          <span class="plan-note">Dashboards here are usually single-page views that track one process (e.g., sales pipeline or donation totals).</span>
+        </p>
+        <span class="examples-label">Examples</span>
+        <ul class="plan-list">
+          <li><b>Church:</b> Weekly devotionals/announcements emailed automatically to the member list.</li>
+          <li><b>Small Business:</b> Intake form → confirmation email → updates a live sales-pipeline dashboard.</li>
+          <li><b>Non-Profit:</b> Donation tracker that sorts by donor and auto-sends thank-you emails.</li>
+          <li><b>Corporate:</b> Department project tracker that emails task updates and shows a live dashboard.</li>
+        </ul>
+      </article>
+
+      <!-- Business Systems -->
+      <article class="plan-card" id="plan-business">
+        <div class="plan-header">
+          <div class="plan-title">Business Systems</div>
+          <div class="plan-price">— $299</div>
+        </div>
+        <p class="plan-meaning">
+          <strong>What it means:</strong> Custom, full-system builds with scheduled automations, dashboards, and training.
+          <span class="plan-note">Dashboards here are multi-tab or cross-department hubs (HR/finance/sales/ministry) with scheduled reports.</span>
+        </p>
+        <span class="examples-label">Examples</span>
+        <ul class="plan-list">
+          <li><b>Church:</b> Membership + offerings + newsletters + group comms in one system.</li>
+          <li><b>Small Business:</b> Auto-updating inventory, weekly emailed reports, multi-tab manager dashboard.</li>
+          <li><b>Non-Profit:</b> Grant tracking with deadlines, reporting data, and reminder emails.</li>
+          <li><b>Corporate:</b> Roll-up dashboards integrating HR, finance, and operations with scheduled reporting.</li>
+        </ul>
+      </article>
+
+      <!-- Support Add-On -->
+      <article class="plan-card" id="plan-support">
+        <div class="plan-header">
+          <div class="plan-title">Support Add-On</div>
+          <div class="plan-price">— $49/mo per project</div>
+        </div>
+        <p class="plan-meaning"><strong>What it means:</strong> We keep your system fresh and resilient.</p>
+        <span class="examples-label">What’s included</span>
+        <ul class="plan-list">
+          <li><b>Updates:</b> New fields, form tweaks, extra columns/tabs.</li>
+          <li><b>Fixes:</b> Broken formulas or changed file paths repaired fast.</li>
+          <li><b>Enhancements:</b> New views, filters, or email rules as your process grows.</li>
+          <li><b>Priority help:</b> Jump-the-line support when something can’t wait.</li>
+        </ul>
+      </article>
     </div>
-  </article>
-
-  <!-- Growth -->
-  <article class="package-card">
-    <h3>Growth Package — $199</h3>
-    <div class="content">
-      <p><span class="label">What it means:</span> We connect your spreadsheets to emails/files and build simple dashboards (single-page views of one process such as sales or donations).</p>
-      <p class="note"><strong>Dashboard scope:</strong> one page focused on a single workflow (e.g., pipeline totals, weekly giving).</p>
-      <ul>
-        <li><strong>Church/Ministry:</strong> Weekly devotionals/announcements emailed automatically to the member list.</li>
-        <li><strong>Small Business:</strong> Intake form ➝ confirmation email ➝ sales pipeline dashboard.</li>
-        <li><strong>Non-Profit:</strong> Donation tracker that sorts by donor and auto-sends thank-you emails.</li>
-        <li><strong>Corporate:</strong> Department project tracker that emails task updates and shows a live departmental dashboard.</li>
-      </ul>
-    </div>
-  </article>
-
-  <!-- Business Systems -->
-  <article class="package-card">
-    <h3>Business Systems — $299</h3>
-    <div class="content">
-      <p><span class="label">What it means:</span> Custom, full-system builds with scheduled automations, dashboards, and training. Works with Google or Microsoft tools.</p>
-      <p class="note"><strong>Dashboard scope:</strong> multi-tab or cross-department views (HR/finance/ops/sales) with scheduled email/PDF snapshots.</p>
-      <ul>
-        <li><strong>Church/Ministry:</strong> Membership, offerings, newsletters, and group comms in one system.</li>
-        <li><strong>Small Business:</strong> Auto-updating inventory, weekly emailed reports, multi-tab manager dashboard.</li>
-        <li><strong>Non-Profit:</strong> Grant tracking with deadlines, reporting data, and reminder emails.</li>
-        <li><strong>Corporate:</strong> Roll-up dashboards integrating HR, finance, and operations with scheduled reporting.</li>
-      </ul>
-    </div>
-  </article>
-
-  <!-- Support Add-On -->
-  <article class="package-card">
-    <h3>Support Add-On — $49/month per project</h3>
-    <div class="content">
-      <p><span class="label">What it means:</span> Ongoing updates, fast fixes, and priority help so your system always feels “new.”</p>
-      <ul>
-        <li><strong>Updates:</strong> New fields, form tweaks, extra columns/tabs, new filters.</li>
-        <li><strong>Fixes:</strong> Broken formulas or changed file paths repaired fast.</li>
-        <li><strong>Enhancements:</strong> New views, email rules, or process changes as your needs grow.</li>
-        <li><strong>Priority help:</strong> Jump-the-line support when something can’t wait.</li>
-      </ul>
-    </div>
-  </article>
-
+  </div>
 </section>
   <section class="section" id="start">
     <h2>🛫 Ready to Get Started?</h2>
