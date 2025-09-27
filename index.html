@@ -429,59 +429,54 @@
 
  <!-- ========== OUR PACKAGES (SheetPilot) ========== -->
 <!-- ===== Our Packages (SheetPilot) ===== -->
+<!-- PRICING STYLES -->
 <style>
-  #pricing {
+  /* grid layout */
+  .pricing-grid {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    margin-top: 2rem;
+    grid-template-columns: 1fr;         /* mobile: single column */
+    gap: 1.5rem;
+    margin-top: 1rem;
   }
-
-  @media (min-width: 768px) {
-    #pricing {
-      grid-template-columns: repeat(2, 1fr);
+  @media (min-width: 900px) {           /* desktop/tablet: two columns */
+    .pricing-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 
+  /* card look to match site panels */
   .pricing-card {
-    background: #fff;
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: #fff7e6;                /* warm cream tone */
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.06);
+    transition: transform .18s ease, box-shadow .18s ease;
   }
-
   .pricing-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
   }
 
   .pricing-card h3 {
+    margin: 0 0 .5rem 0;
     color: #052c5c;
-    margin-bottom: 0.5rem;
   }
-
   .pricing-card p {
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
+    margin: 0 0 .75rem 0;
     color: #444;
   }
-
   .pricing-card ul {
-    padding-left: 1.25rem;
+    padding-left: 1.15rem;
     margin: 0;
   }
-
-  .pricing-card li {
-    margin-bottom: 0.5rem;
-    line-height: 1.5;
-  }
+  .pricing-card li { margin: .45rem 0; line-height: 1.5; }
 </style>
 
-<section>
-  <h2 style="text-align:center; margin-bottom: 2rem;">Pricing</h2>
+<section id="pricing-section">
+  <h2 style="text-align:center; margin-bottom: 1rem;">Pricing</h2>
 
-  <div id="pricing">
+  <div class="pricing-grid">
     <div class="pricing-card">
       <h3>📄 Basic Essentials – $100</h3>
       <p>A simple starting point to experience the value of SheetPilot.</p>
