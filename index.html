@@ -430,174 +430,290 @@
  <!-- ========== OUR PACKAGES (SheetPilot) ========== -->
 
 <!-- ===== Our Packages (SheetPilot) ===== -->
-<style id="sp-packages-css">
-  :root{
-    --sp-cream:#FBF5E6;      /* lighter cream to match brand body */
-    --sp-navy:#0C2F55;       /* brand navy */
-    --sp-navy-700:#103861;
-    --sp-gold:#D4AF37;       /* brand gold */
-    --sp-ink:#1F2937;        /* body text */
-    --sp-muted:#5B6472;      /* muted text */
-    --sp-card:#FFFFFF;
-    --sp-radius:14px;
-    --sp-shadow:0 6px 20px rgba(16,56,97,.08);
-    --sp-shadow-soft:0 2px 10px rgba(16,56,97,.06);
-    --sp-max:860px;          /* keeps desktop from stretching too wide */
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SheetPilot — Spirit-Led Systems for Business and Ministry</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fffdf6;
+      color: #2e2e2e;
+    }
 
-  /* Section wrapper */
-  .sp-packages{
-    background:var(--sp-cream);
-    padding:56px 20px 48px;
-  }
-  .sp-wrap{max-width:var(--sp-max); margin:0 auto;}
+    header {
+      background-color: #052c5c;
+      color: white;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
 
-  /* Intro banner */
-  .sp-intro{
-    background:var(--sp-navy);
-    color:#fff;
-    border-radius:var(--sp-radius);
-    box-shadow:var(--sp-shadow);
-    padding:22px 20px;
-    margin-bottom:18px;
-  }
-  .sp-intro h2{
-    margin:0 0 8px 0;
-    font-size:28px; line-height:1.2; letter-spacing:.2px;
-  }
-  .sp-intro p{margin:0; font-size:16px; opacity:.95;}
-  .sp-intro b{color:#fff; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px;}
+    .logo-container {
+      display: flex;
+      align-items: center;
+    }
 
-  /* Card */
-  .sp-card{
-    background:var(--sp-card);
-    border-radius:var(--sp-radius);
-    box-shadow:var(--sp-shadow-soft);
-    border:1px solid rgba(12,47,85,.08);
-    overflow:hidden;
-    margin:18px 0;
-  }
-  .sp-head{
-    background:var(--sp-navy-700);
-    color:#fff;
-    display:flex; align-items:center;
-    padding:14px 16px;
-  }
-  .sp-title{font-weight:800; letter-spacing:.2px;}
-  .sp-price{
-    margin-left:auto;
-    background:#fff; color:var(--sp-navy);
-    padding:6px 12px;
-    border-radius:999px;
-    font-weight:800; font-size:14px;
-    box-shadow:0 1px 6px rgba(16,56,97,.18) inset;
-  }
-  .sp-body{padding:16px 18px 18px; color:var(--sp-ink);}
-  .sp-body h4{margin:0 0 10px; font-size:15px; color:var(--sp-muted);}
-  .sp-chip{
-    display:inline-block; background:var(--sp-gold); color:#162132;
-    border-radius:999px; font-weight:800; font-size:12px;
-    padding:6px 10px; margin:4px 0 10px;
-  }
-  .sp-list{margin:8px 0 0 0; padding-left:20px;}
-  .sp-list li{margin:8px 0;}
-  .sp-list b{font-weight:800;}
-  .sp-sub{display:block; color:var(--sp-muted); margin-top:3px; font-size:14px; line-height:1.35;}
+    .logo-container img {
+      height: 64px;
+      margin-right: 1rem;
+    }
 
-  /* Keep everything single-column everywhere */
-  /* (We already constrain width with --sp-max) */
+    .header-text {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
 
-  /* Small tweaks for very small screens */
-  @media (max-width:400px){
-    .sp-intro h2{font-size:24px}
-    .sp-price{font-size:13px; padding:5px 10px}
-  }
-</style>
+    .menu-toggle {
+      background-color: white;
+      color: #052c5c;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 0.75rem;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
 
-<section class="sp-packages" aria-labelledby="sp-packages-title">
-  <div class="sp-wrap">
-    <div class="sp-intro">
-      <h2 id="sp-packages-title">📦 Our Packages</h2>
-      <p>Pick the level that fits today — upgrade anytime. All options work with <b>Google&nbsp;Sheets</b> or <b>Microsoft&nbsp;Excel</b>.</p>
-    </div>
+    nav {
+      display: none;
+      flex-direction: column;
+      margin-top: 1rem;
+      width: 100%;
+    }
 
-    <!-- Starter -->
-    <article class="sp-card">
-      <header class="sp-head">
-        <div class="sp-title">Starter Project</div>
-        <div class="sp-price">$99</div>
-      </header>
-      <div class="sp-body">
-        <h4>What it means:</h4>
-        <p>One simple, time-saving automation. No more copy-pasting or doing math by hand.</p>
-        <span class="sp-chip">Examples</span>
-        <ul class="sp-list">
-          <li><b>Church/Ministry:</b> Prayer-request form → tidy sheet.<span class="sp-sub">Every request lands neatly in one place you can filter or share.</span></li>
-          <li><b>Small Business:</b> Sales log with auto totals.<span class="sp-sub">Enter sales once; daily/weekly totals calculate automatically.</span></li>
-          <li><b>Non-Profit:</b> Event sign-up → clean attendee list.<span class="sp-sub">No manual copying; names and emails are ready to use.</span></li>
-          <li><b>Corporate:</b> HR intake → one clean sheet.<span class="sp-sub">Collect new-hire details in a standard, searchable format.</span></li>
-        </ul>
-      </div>
-    </article>
+    nav a {
+      text-decoration: none;
+      padding: 0.5rem 0;
+      color: #052c5c;
+      font-weight: 600;
+    }
 
-    <!-- Growth -->
-    <article class="sp-card">
-      <header class="sp-head">
-        <div class="sp-title">Growth Package</div>
-        <div class="sp-price">$199</div>
-      </header>
-      <div class="sp-body">
-        <h4>What it means:</h4>
-        <p>Adds email/file integrations + simple dashboards (single-page views of one process, like sales or donations).</p>
-        <span class="sp-chip">Examples</span>
-        <ul class="sp-list">
-          <li><b>Church:</b> Weekly devotionals/announcements auto-emailed to the member list.</li>
-          <li><b>Small Business:</b> Intake form → confirmation email → live pipeline dashboard.</li>
-          <li><b>Non-Profit:</b> Donations sorted by donor + auto thank-you emails.</li>
-          <li><b>Corporate:</b> Project tracker that emails task updates and shows a live departmental dashboard.</li>
-        </ul>
-      </div>
-    </article>
+    nav a:hover {
+      color: #be9e44;
+    }
 
-    <!-- Business Systems -->
-    <article class="sp-card">
-      <header class="sp-head">
-        <div class="sp-title">Business Systems</div>
-        <div class="sp-price">$299</div>
-      </header>
-      <div class="sp-body">
-        <h4>What it means:</h4>
-        <p>Custom, full-system builds with scheduled automations, dashboards, and training. Dashboards can be multi-tab or multi-department.</p>
-        <span class="sp-chip">Examples</span>
-        <ul class="sp-list">
-          <li><b>Church:</b> Membership, offerings, newsletters, and organized group communication — all in one hub.</li>
-          <li><b>Small Business:</b> Auto-updating inventory, weekly emailed reports, multi-tab manager dashboard.</li>
-          <li><b>Non-Profit:</b> Grant tracking with deadlines, reporting data, and reminder emails.</li>
-          <li><b>Corporate:</b> Roll-up dashboards integrating HR/finance/ops with scheduled reporting.</li>
-        </ul>
-      </div>
-    </article>
+    @media(min-width: 768px) {
+      nav {
+        display: flex !important;
+        flex-direction: row;
+        gap: 1.5rem;
+        width: auto;
+        margin-top: 0;
+      }
+      .menu-toggle {
+        display: none;
+      }
+    }
 
-    <!-- Support Add-On -->
-    <article class="sp-card">
-      <header class="sp-head">
-        <div class="sp-title">Support Add-On</div>
-        <div class="sp-price">$49/mo per project</div>
-      </header>
-      <div class="sp-body">
-        <h4>What it means:</h4>
-        <p>Ongoing updates and priority care so your system keeps pace as you grow.</p>
-        <span class="sp-chip">What’s included</span>
-        <ul class="sp-list">
-          <li><b>Updates:</b> New fields, form tweaks, extra columns/tabs.</li>
-          <li><b>Fixes:</b> Broken formulas or changed file paths repaired fast.</li>
-          <li><b>Enhancements:</b> New views, filters, or email rules as your process evolves.</li>
-          <li><b>Priority help:</b> Jump-the-line support when something can’t wait.</li>
-        </ul>
-      </div>
-    </article>
+    main {
+      padding: 2rem 1rem 3rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    section {
+      background: white;
+      padding: 2rem;
+      margin-bottom: 3rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    h1, h2 {
+      color: #052c5c;
+      margin-bottom: 1rem;
+    }
+
+    ul {
+      list-style-type: disc;
+      padding-left: 1.25rem;
+    }
+
+    li {
+      margin-bottom: 0.75rem;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .pricing-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 1.5rem;
+    }
+
+    .pricing-card h3 {
+      margin: 0 0 0.5rem;
+      color: #052c5c;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pricing-card p {
+      margin: 0.5rem 0 1rem;
+      font-style: italic;
+      color: #555;
+    }
+
+    .pricing-card ul {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+
+    .pricing-card li {
+      margin-bottom: 0.5rem;
+    }
+
+    .quote {
+      font-style: italic;
+      text-align: center;
+      margin: 2rem 0;
+      color: #444;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="logo-container">
+    <img src="https://raw.githubusercontent.com/SheetPilot-1/SheetPilot-site/refs/heads/main/sheetpilot-logo.png.PNG" alt="SheetPilot Logo">
+    <div class="header-text">Spirit-Led Systems for Business and Ministry</div>
   </div>
-</section>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <nav id="navMenu">
+    <a href="#services">What We Do</a>
+    <a href="#prayer">Prayer</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#form">Get Started</a>
+    <a href="#faq">FAQs</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById("navMenu");
+    if (menu.style.display === "flex") {
+      menu.style.display = "none";
+    } else {
+      menu.style.display = "flex";
+    }
+  }
+</script>
+
+<main>
+  <section>
+    <h2>Building Systems for People, Led by the Holy Spirit of God</h2>
+    <p>SheetPilot exists to serve businesses and ministries by creating simple, streamlined spreadsheet systems that save time and multiply impact. From basic automation to complete workflow orchestration in both Google Sheets and Microsoft Excel — we deliver Kingdom-minded excellence in every build.</p>
+  </section>
+
+  <section id="services">
+    <h2>What We Do</h2>
+    <ul>
+      <li>📊 Spreadsheet automation (Google Sheets & Excel)</li>
+      <li>📋 Multi-tab management and system organization</li>
+      <li>📩 Email and Drive automation (Gmail + Google Drive)</li>
+      <li>🧹 Data cleanup, logic sorting, and form triggers</li>
+      <li>📚 Training videos, walkthroughs, and support docs</li>
+    </ul>
+  </section>
+
+  <section id="prayer">
+    <h2>🙏 Covered in Prayer</h2>
+    <p>At SheetPilot, every project is prayerfully considered and spiritually guided. We seek the wisdom of the Holy Spirit in every system we build, asking God to bless the work and those it serves. Whether you’re a business, ministry, or mission-led nonprofit, know that we will pray over your project and work with excellence unto the Lord.</p>
+  </section>
+
+  <section id="pricing">
+    <h2>Pricing</h2>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>📘 Basic Essentials – $100</h3>
+        <p>A simple starting point to experience the value of SheetPilot.</p>
+        <ul>
+          <li>We set up one spreadsheet that replaces a paper process</li>
+          <li>Keeps track of things neatly (like names, numbers, totals)</li>
+          <li>Sends you a simple email update or sorts info automatically</li>
+          <li>Includes one change/revision after setup</li>
+          <li>Works in Google Sheets</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <h3>📗 Growth Package – $200</h3>
+        <p>For growing teams or small businesses ready to do more.</p>
+        <ul>
+          <li>Everything in Basic</li>
+          <li>Adds form integration (Tally or Google Form)</li>
+          <li>Automation with Gmail + Google Drive if needed</li>
+          <li>Advanced sorting logic or simple dashboards</li>
+          <li>Two revisions included</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <h3>📙 Business Systems – $300</h3>
+        <p>For established businesses needing reliable, ongoing workflows.</p>
+        <ul>
+          <li>Everything in Growth</li>
+          <li>Multi-tab automation and system organization</li>
+          <li>Scheduled workflows that run automatically</li>
+          <li>Custom email templates</li>
+          <li>7-day support window + walkthrough</li>
+        </ul>
+      </div>
+
+      <div class="pricing-card">
+        <h3>🔄 Support Add-On – $49/month</h3>
+        <p>Keep your systems running smoothly with ongoing care.</p>
+        <ul>
+          <li>Fixes bugs or issues if something breaks</li>
+          <li>Small updates like adjusting formulas, reports, or triggers</li>
+          <li>Priority response time</li>
+          <li>First month free with Business Systems</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="form">
+    <h2>Ready to Get Started?</h2>
+    <p class="quote">“Serve your clients well, and the provision will follow.”</p>
+    <iframe data-tally-src="https://tally.so/r/3xLeQG" loading="lazy" width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0" title="SheetPilot Discovery Form"></iframe>
+    <script>
+      var d=document,s=d.createElement("script");s.src="https://tally.so/widgets/embed.js";
+      s.onload=function(){Tally.loadEmbeds();};
+      d.body.appendChild(s);
+    </script>
+  </section>
+
+  <section id="faq">
+    <h2>Frequently Asked Questions</h2>
+    <ul>
+      <li><strong>Q: Do I need any tech background?</strong><br>A: Nope. We’ll walk you through everything you need to know.</li>
+      <li><strong>Q: Can you build in Microsoft Excel instead of Google Sheets?</strong><br>A: Yes, we support both platforms.</li>
+      <li><strong>Q: What happens after I submit the form?</strong><br>A: You’ll receive a confirmation email, and we’ll follow up shortly.</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>For further inquiries, please contact:</p>
+    <p><strong>📧 sheetpilotapp@gmail.com</strong></p>
+  </section>
+</main>
+</body>
+</html>
 <!-- ===== /Our Packages ===== -->
 <!-- ========== /OUR PACKAGES ========== -->
   <section class="section" id="start">
