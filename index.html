@@ -430,56 +430,15 @@
  <!-- ========== OUR PACKAGES (SheetPilot) ========== -->
 <!-- ===== Our Packages (SheetPilot) ===== -->
 <!-- PRICING STYLES -->
-<style>
-  /* grid layout */
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: 1fr;         /* mobile: single column */
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-  @media (min-width: 900px) {           /* desktop/tablet: two columns */
-    .pricing-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  /* card look to match site panels */
-  .pricing-card {
-    background: #fff7e6;                /* warm cream tone */
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-    border: 1px solid rgba(0,0,0,0.06);
-    transition: transform .18s ease, box-shadow .18s ease;
-  }
-  .pricing-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 22px rgba(0,0,0,0.12);
-  }
-
-  .pricing-card h3 {
-    margin: 0 0 .5rem 0;
-    color: #052c5c;
-  }
-  .pricing-card p {
-    margin: 0 0 .75rem 0;
-    color: #444;
-  }
-  .pricing-card ul {
-    padding-left: 1.15rem;
-    margin: 0;
-  }
-  .pricing-card li { margin: .45rem 0; line-height: 1.5; }
-</style>
-
-<section id="pricing-section">
-  <h2 style="text-align:center; margin-bottom: 1rem;">Pricing</h2>
+<!-- PRICING (stacked, light cards, navy title) -->
+<section id="pricing" class="pricing-section">
+  <h2 class="pricing-title">💳 Pricing</h2>
 
   <div class="pricing-grid">
-    <div class="pricing-card">
+    <!-- Basic -->
+    <article class="pricing-card">
       <h3>📄 Basic Essentials – $100</h3>
-      <p>A simple starting point to experience the value of SheetPilot.</p>
+      <p class="sub">A simple starting point to experience the value of SheetPilot.</p>
       <ul>
         <li>📝 We set up one spreadsheet that replaces a paper process.</li>
         <li>📊 Keeps track of things neatly (like names, numbers, totals).</li>
@@ -487,11 +446,12 @@
         <li>🔄 Includes one change/revision after setup.</li>
         <li>🌐 Works in Google Sheets.</li>
       </ul>
-    </div>
+    </article>
 
-    <div class="pricing-card">
+    <!-- Growth -->
+    <article class="pricing-card">
       <h3>📈 Growth Package – $200</h3>
-      <p>For small teams or organizations ready to scale up.</p>
+      <p class="sub">For small teams or organizations ready to scale up.</p>
       <ul>
         <li>📋 Includes everything in Basic Essentials.</li>
         <li>🖊️ Add a custom form (Google Form or Tally) that feeds your sheet.</li>
@@ -499,11 +459,12 @@
         <li>📊 Adds advanced sorting logic or simple dashboards.</li>
         <li>✏️ Includes two revisions to fine-tune your setup.</li>
       </ul>
-    </div>
+    </article>
 
-    <div class="pricing-card">
+    <!-- Business -->
+    <article class="pricing-card">
       <h3>🗂️ Business Systems – $300</h3>
-      <p>For established organizations that need reliable, ongoing workflows.</p>
+      <p class="sub">For established organizations that need reliable, ongoing workflows.</p>
       <ul>
         <li>✅ Includes everything in Growth Package.</li>
         <li>🗃️ Manage multiple tabs or departments in one system.</li>
@@ -512,20 +473,68 @@
         <li>🎥 Includes a training call or walkthrough video.</li>
         <li>🛡️ Comes with a 7-day support window after delivery.</li>
       </ul>
-    </div>
+    </article>
 
-    <div class="pricing-card">
+    <!-- Support -->
+    <article class="pricing-card">
       <h3>🛠️ Ongoing Support Add-On – $50/month</h3>
-      <p>Keep your system running smoothly with ongoing care.</p>
+      <p class="sub">Keep your system running smoothly with ongoing care.</p>
       <ul>
         <li>🔧 Covers bug fixes and small updates (like adjusting formulas).</li>
         <li>🔄 Add minor improvements as your needs grow.</li>
         <li>⚡ Priority response when you need help.</li>
         <li>🎁 First month is FREE with Business Systems.</li>
       </ul>
-    </div>
+    </article>
   </div>
 </section>
+
+<style>
+  /* Pricing section styling to match site cards */
+  .pricing-section {
+    margin: 3rem auto 4rem;
+    max-width: 900px;                  /* keeps same readable width */
+    padding: 0 1rem;
+  }
+  .pricing-title {
+    color: #052c5c;                    /* navy to match the rest */
+    margin: 0 0 1rem 0;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr;        /* always stacked */
+    gap: 1rem;
+  }
+
+  .pricing-card {
+    background: #ffffff;               /* same light card tone */
+    border: 1px solid #eeeeee;         /* subtle border like other cards */
+    border-radius: 12px;
+    padding: 1.25rem 1.25rem 1rem;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.06);  /* soft shadow to match */
+  }
+
+  .pricing-card h3 {
+    margin: 0 0 .25rem 0;
+    color: #052c5c;
+  }
+  .pricing-card .sub {
+    margin: 0 0 .75rem 0;
+    color: #555;
+    font-size: 0.98rem;
+  }
+  .pricing-card ul {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+  .pricing-card li {
+    margin: 0 0 .5rem 0;
+    line-height: 1.5;
+  }
+</style>
 <!-- ===== /Our Packages ===== -->
 <!-- ========== /OUR PACKAGES ========== -->
   <section class="section" id="start">
