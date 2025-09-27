@@ -428,153 +428,177 @@
   </section>
 
  <!-- ========== OUR PACKAGES (SheetPilot) ========== -->
-<section class="packages-section">
-  <div class="packages-header">
-    <h2><span class="emoji">📦</span> Our Packages</h2>
-    <p>Pick the level that fits today — upgrade anytime. All options work with 
-      <strong>Google Sheets</strong> or <strong>Microsoft Excel</strong>.
-    </p>
-  </div>
 
-  <div class="package-card">
-    <div class="card-header">
-      <h3>Starter Project</h3>
-      <span class="price-tag">$99</span>
-    </div>
-    <p><strong>What it means:</strong> One simple, time-saving automation. No more copy-pasting or doing math by hand.</p>
-    <span class="examples-label">Examples</span>
-    <ul>
-      <li><strong>Church/Ministry:</strong> Prayer-request form → tidy sheet. Every request lands neatly in one place you can filter or share.</li>
-      <li><strong>Small Business:</strong> Sales log with auto totals. Enter sales once; daily/weekly totals calculate automatically.</li>
-      <li><strong>Non-Profit:</strong> Event sign-up → clean attendee list. No manual copying; names and emails are ready to use.</li>
-      <li><strong>Corporate:</strong> HR intake → one clean sheet. Collect new-hire details in a standard, searchable format.</li>
-    </ul>
-  </div>
+<!-- ===== Our Packages (SheetPilot) ===== -->
+<style id="sp-packages-css">
+  :root{
+    --sp-cream:#FBF5E6;      /* lighter cream to match brand body */
+    --sp-navy:#0C2F55;       /* brand navy */
+    --sp-navy-700:#103861;
+    --sp-gold:#D4AF37;       /* brand gold */
+    --sp-ink:#1F2937;        /* body text */
+    --sp-muted:#5B6472;      /* muted text */
+    --sp-card:#FFFFFF;
+    --sp-radius:14px;
+    --sp-shadow:0 6px 20px rgba(16,56,97,.08);
+    --sp-shadow-soft:0 2px 10px rgba(16,56,97,.06);
+    --sp-max:860px;          /* keeps desktop from stretching too wide */
+  }
 
-  <div class="package-card">
-    <div class="card-header">
-      <h3>Growth Package</h3>
-      <span class="price-tag">$199</span>
-    </div>
-    <p><strong>What it means:</strong> Email/file integrations + simple dashboards (single-page views that track one process, like sales or donations).</p>
-    <span class="examples-label">Examples</span>
-    <ul>
-      <li><strong>Church:</strong> Weekly devotionals auto-emailed to the member list.</li>
-      <li><strong>Small Business:</strong> Intake form → confirmation email → live pipeline dashboard.</li>
-      <li><strong>Non-Profit:</strong> Donations sorted by donor + auto thank-you emails.</li>
-      <li><strong>Corporate:</strong> Project tracker with task-update emails + live dashboard.</li>
-    </ul>
-  </div>
+  /* Section wrapper */
+  .sp-packages{
+    background:var(--sp-cream);
+    padding:56px 20px 48px;
+  }
+  .sp-wrap{max-width:var(--sp-max); margin:0 auto;}
 
-  <div class="package-card">
-    <div class="card-header">
-      <h3>Business Systems</h3>
-      <span class="price-tag">$299</span>
-    </div>
-    <p><strong>What it means:</strong> Full custom builds with scheduled automations, dashboards, and training. Multi-tab or multi-department dashboards integrating HR, finance, sales, or ministry operations into one hub.</p>
-    <span class="examples-label">Examples</span>
-    <ul>
-      <li><strong>Church:</strong> Manage membership, track offerings, send newsletters, and organize groups — all in one system.</li>
-      <li><strong>Small Business:</strong> Inventory that updates automatically, weekly reports emailed out, and a multi-tab dashboard for managers.</li>
-      <li><strong>Non-Profit:</strong> Grant-tracking with deadlines, reporting data, and reminder emails.</li>
-      <li><strong>Corporate:</strong> Multi-departmental dashboard that integrates HR, finance, and operations data with scheduled reporting.</li>
-    </ul>
-  </div>
+  /* Intro banner */
+  .sp-intro{
+    background:var(--sp-navy);
+    color:#fff;
+    border-radius:var(--sp-radius);
+    box-shadow:var(--sp-shadow);
+    padding:22px 20px;
+    margin-bottom:18px;
+  }
+  .sp-intro h2{
+    margin:0 0 8px 0;
+    font-size:28px; line-height:1.2; letter-spacing:.2px;
+  }
+  .sp-intro p{margin:0; font-size:16px; opacity:.95;}
+  .sp-intro b{color:#fff; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:3px;}
 
-  <div class="package-card">
-    <div class="card-header">
-      <h3>Support Add-On</h3>
-      <span class="price-tag">$49/mo per project</span>
+  /* Card */
+  .sp-card{
+    background:var(--sp-card);
+    border-radius:var(--sp-radius);
+    box-shadow:var(--sp-shadow-soft);
+    border:1px solid rgba(12,47,85,.08);
+    overflow:hidden;
+    margin:18px 0;
+  }
+  .sp-head{
+    background:var(--sp-navy-700);
+    color:#fff;
+    display:flex; align-items:center;
+    padding:14px 16px;
+  }
+  .sp-title{font-weight:800; letter-spacing:.2px;}
+  .sp-price{
+    margin-left:auto;
+    background:#fff; color:var(--sp-navy);
+    padding:6px 12px;
+    border-radius:999px;
+    font-weight:800; font-size:14px;
+    box-shadow:0 1px 6px rgba(16,56,97,.18) inset;
+  }
+  .sp-body{padding:16px 18px 18px; color:var(--sp-ink);}
+  .sp-body h4{margin:0 0 10px; font-size:15px; color:var(--sp-muted);}
+  .sp-chip{
+    display:inline-block; background:var(--sp-gold); color:#162132;
+    border-radius:999px; font-weight:800; font-size:12px;
+    padding:6px 10px; margin:4px 0 10px;
+  }
+  .sp-list{margin:8px 0 0 0; padding-left:20px;}
+  .sp-list li{margin:8px 0;}
+  .sp-list b{font-weight:800;}
+  .sp-sub{display:block; color:var(--sp-muted); margin-top:3px; font-size:14px; line-height:1.35;}
+
+  /* Keep everything single-column everywhere */
+  /* (We already constrain width with --sp-max) */
+
+  /* Small tweaks for very small screens */
+  @media (max-width:400px){
+    .sp-intro h2{font-size:24px}
+    .sp-price{font-size:13px; padding:5px 10px}
+  }
+</style>
+
+<section class="sp-packages" aria-labelledby="sp-packages-title">
+  <div class="sp-wrap">
+    <div class="sp-intro">
+      <h2 id="sp-packages-title">📦 Our Packages</h2>
+      <p>Pick the level that fits today — upgrade anytime. All options work with <b>Google&nbsp;Sheets</b> or <b>Microsoft&nbsp;Excel</b>.</p>
     </div>
-    <p><strong>What it means:</strong> Ongoing updates and priority care so your system keeps pace as you grow.</p>
-    <span class="examples-label">What’s included</span>
-    <ul>
-      <li><strong>Updates:</strong> New fields, form tweaks, extra columns/tabs.</li>
-      <li><strong>Fixes:</strong> Broken formulas or changed file paths repaired fast.</li>
-      <li><strong>Enhancements:</strong> New views, filters, or email rules as your process evolves.</li>
-      <li><strong>Priority help:</strong> Jump-the-line support when something can’t wait.</li>
-    </ul>
+
+    <!-- Starter -->
+    <article class="sp-card">
+      <header class="sp-head">
+        <div class="sp-title">Starter Project</div>
+        <div class="sp-price">$99</div>
+      </header>
+      <div class="sp-body">
+        <h4>What it means:</h4>
+        <p>One simple, time-saving automation. No more copy-pasting or doing math by hand.</p>
+        <span class="sp-chip">Examples</span>
+        <ul class="sp-list">
+          <li><b>Church/Ministry:</b> Prayer-request form → tidy sheet.<span class="sp-sub">Every request lands neatly in one place you can filter or share.</span></li>
+          <li><b>Small Business:</b> Sales log with auto totals.<span class="sp-sub">Enter sales once; daily/weekly totals calculate automatically.</span></li>
+          <li><b>Non-Profit:</b> Event sign-up → clean attendee list.<span class="sp-sub">No manual copying; names and emails are ready to use.</span></li>
+          <li><b>Corporate:</b> HR intake → one clean sheet.<span class="sp-sub">Collect new-hire details in a standard, searchable format.</span></li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- Growth -->
+    <article class="sp-card">
+      <header class="sp-head">
+        <div class="sp-title">Growth Package</div>
+        <div class="sp-price">$199</div>
+      </header>
+      <div class="sp-body">
+        <h4>What it means:</h4>
+        <p>Adds email/file integrations + simple dashboards (single-page views of one process, like sales or donations).</p>
+        <span class="sp-chip">Examples</span>
+        <ul class="sp-list">
+          <li><b>Church:</b> Weekly devotionals/announcements auto-emailed to the member list.</li>
+          <li><b>Small Business:</b> Intake form → confirmation email → live pipeline dashboard.</li>
+          <li><b>Non-Profit:</b> Donations sorted by donor + auto thank-you emails.</li>
+          <li><b>Corporate:</b> Project tracker that emails task updates and shows a live departmental dashboard.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- Business Systems -->
+    <article class="sp-card">
+      <header class="sp-head">
+        <div class="sp-title">Business Systems</div>
+        <div class="sp-price">$299</div>
+      </header>
+      <div class="sp-body">
+        <h4>What it means:</h4>
+        <p>Custom, full-system builds with scheduled automations, dashboards, and training. Dashboards can be multi-tab or multi-department.</p>
+        <span class="sp-chip">Examples</span>
+        <ul class="sp-list">
+          <li><b>Church:</b> Membership, offerings, newsletters, and organized group communication — all in one hub.</li>
+          <li><b>Small Business:</b> Auto-updating inventory, weekly emailed reports, multi-tab manager dashboard.</li>
+          <li><b>Non-Profit:</b> Grant tracking with deadlines, reporting data, and reminder emails.</li>
+          <li><b>Corporate:</b> Roll-up dashboards integrating HR/finance/ops with scheduled reporting.</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- Support Add-On -->
+    <article class="sp-card">
+      <header class="sp-head">
+        <div class="sp-title">Support Add-On</div>
+        <div class="sp-price">$49/mo per project</div>
+      </header>
+      <div class="sp-body">
+        <h4>What it means:</h4>
+        <p>Ongoing updates and priority care so your system keeps pace as you grow.</p>
+        <span class="sp-chip">What’s included</span>
+        <ul class="sp-list">
+          <li><b>Updates:</b> New fields, form tweaks, extra columns/tabs.</li>
+          <li><b>Fixes:</b> Broken formulas or changed file paths repaired fast.</li>
+          <li><b>Enhancements:</b> New views, filters, or email rules as your process evolves.</li>
+          <li><b>Priority help:</b> Jump-the-line support when something can’t wait.</li>
+        </ul>
+      </div>
+    </article>
   </div>
 </section>
-  /* Packages Section */
-.packages-section {
-  background: #fffdf6; /* match rest of site */
-  padding: 3rem 1rem;
-  border-radius: 12px;
-  margin: 2rem auto;
-  max-width: 900px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-.packages-header {
-  background: #052c5c;
-  color: #fffdf6; /* light cream text */
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.packages-header h2 {
-  margin: 0;
-  font-size: 1.8rem;
-}
-
-.packages-header p {
-  margin: 0.5rem 0 0;
-  font-size: 1rem;
-}
-
-.package-card {
-  background: #fff;
-  border-radius: 8px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
-}
-
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.card-header h3 {
-  margin: 0;
-  color: #052c5c;
-}
-
-.price-tag {
-  background: #052c5c;
-  color: #fffdf6;
-  padding: 0.4rem 0.8rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: bold;
-}
-
-.examples-label {
-  display: inline-block;
-  background: #d4af37;
-  color: #fff;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 0.3rem 0.6rem;
-  border-radius: 6px;
-  margin: 0.5rem 0;
-}
-
-.package-card ul {
-  margin: 0.8rem 0 0 1.2rem;
-  padding: 0;
-}
-
-.package-card ul li {
-  margin-bottom: 0.6rem;
-  line-height: 1.4;
-}
-      
+<!-- ===== /Our Packages ===== -->
 <!-- ========== /OUR PACKAGES ========== -->
   <section class="section" id="start">
     <h2>🛫 Ready to Get Started?</h2>
