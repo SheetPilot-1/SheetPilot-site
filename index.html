@@ -514,26 +514,29 @@
   border-radius: 10px;
   padding: 1.75rem;
   margin: 1.5rem auto;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* slightly deeper shadow */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  max-width: 100%; /* default for mobile */
 }
 
-/* Make them wider + pop more on larger screens */
+/* Desktop adjustments */
 @media(min-width: 1024px) {
   .pricing-card {
-    max-width: 850px;  /* wider cards for PC */
-    padding: 2rem;     /* give them more breathing room */
+    max-width: 1000px;  /* wider so they don’t look tiny */
+    padding: 2.5rem;    /* give them more space inside */
+    font-size: 1.05rem; /* slightly larger text */
   }
 }
 
-/* Add a subtle hover effect (desktop only) */
+/* Hover pop only on desktop */
 @media(hover: hover) {
   .pricing-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.15);
   }
-
 }
+
+
   .pricing-card h3 {
     margin: 0 0 .25rem 0;
     color: #052c5c;
