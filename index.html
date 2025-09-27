@@ -237,6 +237,67 @@
     margin: 0;
   }
 }
+  /* Brand tokens */
+:root{
+  --sp-cream:#F6F0E1;          /* page bg */
+  --sp-navy:#0F2E54;           /* text / accents */
+  --sp-gold:#C59A2B;           /* accents */
+  --sp-ink:#0F2E54;            /* primary text (navy) */
+  --sp-muted:#3C4B67;          /* secondary text */
+  --sp-card-bg:#FFFFFF;
+  --sp-card-radius:16px;
+  --sp-shadow:0 8px 24px rgba(15,46,84,.08);
+  --sp-gap:22px;
+}
+
+.sp-packages{
+  background:var(--sp-cream);
+  padding:48px 20px;
+  color:var(--sp-ink);
+  line-height:1.55;
+}
+
+.sp-packages__intro{
+  max-width:1100px; margin:0 auto 28px;
+}
+.sp-packages__intro h2{
+  margin:0 0 6px; font-size:clamp(28px,2.6vw,34px); color:var(--sp-navy);
+}
+.sp-packages__intro p{
+  margin:0; color:var(--sp-muted);
+}
+
+/* Grid */
+.sp-packages__grid{
+  max-width:1100px; margin:0 auto;
+  display:grid; gap:var(--sp-gap);
+  grid-template-columns:1fr;          /* mobile */
+}
+@media (min-width:900px){
+  .sp-packages__grid{ grid-template-columns:1fr 1fr; }
+}
+
+/* Cards */
+.sp-card{
+  background:var(--sp-card-bg);
+  border-radius:var(--sp-card-radius);
+  box-shadow:var(--sp-shadow);
+  padding:22px 22px 20px;
+}
+.sp-card__header{
+  display:flex; align-items:center; gap:12px; margin-bottom:10px;
+}
+.sp-card__header h3{
+  margin:0; font-size:clamp(20px,2vw,22px); color:var(--sp-navy);
+}
+.sp-dot{ width:18px; height:18px; border-radius:6px; display:inline-block; }
+.sp-dot--navy{ background:var(--sp-navy); }
+.sp-dot--gold{ background:var(--sp-gold); }
+
+.sp-lead{ margin:.25rem 0 .5rem; color:var(--sp-muted); }
+.sp-bullets{ margin:.25rem 0 0 0; padding-left:1.1rem; }
+.sp-bullets li{ margin:.35rem 0; }
+.sp-bullets strong{ color:var(--sp-ink); }
     <style>
     /* your existing CSS... */
 /* ================================
@@ -336,98 +397,74 @@
     <p>At SheetPilot, we pray over every system we build. This isn’t just a service — it’s a ministry. We believe the Holy Spirit guides every build, and we ask God to use these tools to bring order, clarity, and peace. Whether you're a business owner or ministry leader, know that your project is being lifted up in prayer.</p>
   </section>
 
-<!-- =========================
-     OUR PACKAGES
-     ========================= -->
-<section id="packages" class="section" aria-labelledby="packages-title">
-  <header class="packages-header">
-    <h2 id="packages-title">Our Packages</h2>
-    <p class="lead">
-      Pick the level that fits today—upgrade anytime. All options work with
-      <strong>Google Sheets or Microsoft Excel</strong>.
-    </p>
-  </header>
+<section class="sp-packages" id="packages">
+  <div class="sp-packages__intro">
+    <h2>Our Packages</h2>
+    <p>Pick the level that fits today—upgrade anytime. All options work with <strong>Google Sheets</strong> or <strong>Microsoft Excel</strong>.</p>
+  </div>
 
-  <!-- STARTER -->
-  <article class="card">
-    <div class="badge"><i></i> Starter Project — $99</div>
-    <p><strong>What it means:</strong> We set up one simple, time-saving automation in Google Sheets or Excel.
-      No more copy-pasting or doing math by hand.</p>
-    <ul>
-      <li class="icon-bullet"><strong>Church/Ministry:</strong> A Google Form for prayer requests that neatly fills into a spreadsheet.</li>
-      <li class="icon-bullet"><strong>Small Business:</strong> A sales log that totals daily sales automatically.</li>
-      <li class="icon-bullet"><strong>Non-Profit:</strong> Event registration that flows into an organized attendee list.</li>
-      <li class="icon-bullet"><strong>Corporate:</strong> A simple HR intake that collects new-hire info into one clean sheet.</li>
-    </ul>
-  </article>
+  <div class="sp-packages__grid">
+    <!-- Starter -->
+    <article class="sp-card">
+      <header class="sp-card__header">
+        <span class="sp-dot sp-dot--navy" aria-hidden="true"></span>
+        <h3>Starter Project — $99</h3>
+      </header>
+      <p class="sp-lead"><strong>What it means:</strong> One simple, time-saving automation. No more copy-pasting or doing math by hand.</p>
+      <ul class="sp-bullets">
+        <li><strong>Church/Ministry:</strong> Prayer-request form that neatly fills a spreadsheet.</li>
+        <li><strong>Small Business:</strong> Sales log that totals daily sales automatically.</li>
+        <li><strong>Non-Profit:</strong> Event sign-up form that creates a clean attendee list.</li>
+        <li><strong>Corporate:</strong> Simple HR intake that collects new-hire info into one sheet.</li>
+      </ul>
+    </article>
 
-  <!-- GROWTH -->
-  <article class="card">
-    <div class="badge"><i></i> Growth Package — $199</div>
-    <p><strong>What it means:</strong> We connect your spreadsheets to emails/files and build simple dashboards
-      (single-page views of one process like sales or donations).</p>
-    <ul>
-      <li class="icon-bullet"><strong>Church:</strong> Weekly devotionals or announcements emailed automatically to members.</li>
-      <li class="icon-bullet"><strong>Small Business:</strong> Intake form → sheet → confirmation email → sales pipeline dashboard.</li>
-      <li class="icon-bullet"><strong>Non-Profit:</strong> Donation tracker that sorts by donor and auto-sends thank-you emails.</li>
-      <li class="icon-bullet"><strong>Corporate:</strong> Department project tracker that emails task updates and shows a live dashboard.</li>
-    </ul>
-    <p class="muted"><strong>Dashboard scope:</strong> one page focused on a single workflow (e.g., pipeline totals, weekly giving).</p>
-  </article>
+    <!-- Growth -->
+    <article class="sp-card">
+      <header class="sp-card__header">
+        <span class="sp-dot sp-dot--gold" aria-hidden="true"></span>
+        <h3>Growth Package — $199</h3>
+      </header>
+      <p class="sp-lead"><strong>What it means:</strong> We connect your spreadsheets to emails/files and build simple dashboards (single-page views of one process such as donations or sales).</p>
+      <ul class="sp-bullets">
+        <li><strong>Church:</strong> Weekly devotionals/announcements emailed automatically.</li>
+        <li><strong>Small Business:</strong> Intake form → confirmation email → sales pipeline dashboard.</li>
+        <li><strong>Non-Profit:</strong> Donation tracker that sorts by donor and sends thank-you emails.</li>
+        <li><strong>Corporate:</strong> Project tracker that emails task updates + live departmental dashboard.</li>
+      </ul>
+    </article>
 
-  <!-- BUSINESS SYSTEMS -->
-  <article class="card">
-    <div class="badge"><i></i> Business Systems — $299</div>
-    <p><strong>What it means:</strong> Custom, full-system builds with scheduled automations, dashboards, and training.
-      Dashboards can be multi-tab or multi-departmental across Google or Microsoft tools.</p>
-    <ul>
-      <li class="icon-bullet"><strong>Church:</strong> Membership + offerings + group comms with scheduled newsletters.</li>
-      <li class="icon-bullet"><strong>Small Business:</strong> Auto-updating inventory, weekly emailed reports, multi-tab manager dashboard.</li>
-      <li class="icon-bullet"><strong>Non-Profit:</strong> Grant tracking with deadlines, reporting data, and reminder emails.</li>
-      <li class="icon-bullet"><strong>Corporate:</strong> Roll-up dashboards integrating HR, finance, and operations with scheduled reporting.</li>
-    </ul>
-    <p class="muted"><strong>Dashboard scope:</strong> multi-tab, cross-department views with scheduled email/PDF snapshots.</p>
-  </article>
+    <!-- Business Systems -->
+    <article class="sp-card">
+      <header class="sp-card__header">
+        <span class="sp-dot sp-dot--navy" aria-hidden="true"></span>
+        <h3>Business Systems — $299</h3>
+      </header>
+      <p class="sp-lead"><strong>What it means:</strong> Full custom systems with scheduled automations, multi-tab dashboards, and training.</p>
+      <ul class="sp-bullets">
+        <li><strong>Church:</strong> Membership, offerings, newsletters, and group comms in one system.</li>
+        <li><strong>Small Business:</strong> Auto-updating inventory, weekly emailed reports, manager dashboard.</li>
+        <li><strong>Non-Profit:</strong> Grant tracking with deadlines, reporting data, and reminder emails.</li>
+        <li><strong>Corporate:</strong> Cross-department dashboard (HR/finance/ops) with scheduled reporting.</li>
+      </ul>
+    </article>
 
-  <!-- SUPPORT ADD-ON -->
-  <article class="card">
-    <div class="badge"><i></i> Support Add-On — $49/month per project</div>
-    <p><strong>What it means:</strong> We keep your system healthy and improving. Fast help, small changes, and proactive checks.</p>
-    <ul>
-      <li class="icon-bullet"><strong>Typical updates:</strong> add a field to forms, tweak a formula, new chart on a dashboard, update email text/logo.</li>
-      <li class="icon-bullet"><strong>Reliability:</strong> monthly checkups, broken-link fixes, and backup exports.</li>
-      <li class="icon-bullet"><strong>Priority:</strong> your requests jump the line—most tweaks done in a day or two.</li>
-      <li class="icon-bullet"><strong>Savings:</strong> no new quotes for small changes; predictable monthly cost.</li>
-    </ul>
-  </article>
+    <!-- Support Add-On -->
+    <article class="sp-card">
+      <header class="sp-card__header">
+        <span class="sp-dot sp-dot--gold" aria-hidden="true"></span>
+        <h3>Support Add-On — $49/mo per project</h3>
+      </header>
+      <p class="sp-lead"><strong>What it means:</strong> Ongoing care so your system always feels “new.”</p>
+      <ul class="sp-bullets">
+        <li><strong>Updates:</strong> New fields, form tweaks, extra columns/tabs.</li>
+        <li><strong>Fixes:</strong> Broken formulas or changed file paths repaired fast.</li>
+        <li><strong>Enhancements:</strong> New views, filters, or email rules as your process grows.</li>
+        <li><strong>Priority help:</strong> Jump-the-line support when something can’t wait.</li>
+      </ul>
+    </article>
+  </div>
 </section>
-
-<!-- Scoped styles (safe to keep even if tokens already exist) -->
-<style>
-  :root{
-    --sp-cream:#F6F0E0; --sp-navy:#0B2C55; --sp-gold:#C89A2B;
-    --sp-ink:#1C2B39; --sp-muted:#5C6B7A; --sp-card:#FFFFFF;
-    --sp-radius:14px; --sp-gap:1.1rem; --sp-pad:1.25rem; --sp-shadow:0 6px 20px rgba(12,35,64,.08);
-  }
-  .section{background:var(--sp-cream); padding:2.25rem 1.25rem;}
-  .packages-header{max-width:920px; margin:0 auto 1rem;}
-  .packages-header h2{color:var(--sp-navy); font-size:1.9rem; margin:0 0 .25rem;}
-  .packages-header .lead{color:var(--sp-muted); margin:0;}
-
-  #packages{max-width:920px; margin:0 auto; display:grid; grid-template-columns:1fr; gap:var(--sp-gap);}
-  #packages .card{background:var(--sp-card); border-radius:var(--sp-radius); padding:var(--sp-pad) calc(var(--sp-pad)*1.2); box-shadow:var(--sp-shadow); border:1px solid rgba(11,44,85,.06);}
-  #packages .badge{display:flex; align-items:center; gap:.6rem; font-weight:800; color:var(--sp-navy); margin-bottom:.35rem;}
-  #packages .badge i{width:18px; height:18px; background:linear-gradient(180deg, var(--sp-navy), #133661); border-radius:4px; display:inline-block; box-shadow:inset 0 1px 0 rgba(255,255,255,.35);}
-  #packages p{color:var(--sp-ink); margin:.35rem 0 .5rem;}
-  #packages p.muted{color:var(--sp-muted); margin-top:.35rem;}
-  #packages ul{margin:.25rem 0 .25rem 0; padding-left:0; list-style:none;}
-  #packages li{color:var(--sp-ink); margin:.45rem 0; line-height:1.45;}
-  #packages .icon-bullet{position:relative; padding-left:1.25rem;}
-  #packages .icon-bullet::before{content:""; position:absolute; left:0; top:.45rem; width:.55rem; height:.55rem; border-radius:2px; background:var(--sp-gold); box-shadow:0 1px 0 rgba(0,0,0,.06);}
-  @media (min-width:900px){
-    #packages{grid-template-columns:1fr 1fr;}
-  }
-</style>
   <section class="section" id="start">
     <h2>🛫 Ready to Get Started?</h2>
     <script type="text/javascript" src="https://form.jotform.com/jsform/252426659248062"></script>
