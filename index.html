@@ -431,111 +431,110 @@
 <!-- ===== Our Packages (SheetPilot) ===== -->
 <!-- PRICING STYLES -->
 <!-- PRICING (stacked, light cards, navy title) -->
-<section id="pricing" class="card-cream">
+<!-- ===== Pricing Section ===== -->
+<section class="card-cream" id="pricing">
   <h2>💳 Pricing</h2>
 
-  <div class="pricing-tiles-wrap">
-    <div class="pricing-tile">
-      <h3>📄 Basic Essentials – $100</h3>
-      <p>A simple starting point to experience the value of SheetPilot.</p>
-      <ul>
-        <li>📝 We set up one spreadsheet that replaces a paper process.</li>
-        <li>📊 Keeps track of things neatly (like names, numbers, totals).</li>
-        <li>📧 Sends you a simple email update or sorts info automatically.</li>
-        <li>🔄 Includes one change/revision after setup.</li>
-        <li>🌐 Works in Google Sheets.</li>
-      </ul>
-    </div>
+  <div class="package">
+    <h3>📄 Basic Essentials – $100</h3>
+    <p>A simple starting point to experience the value of SheetPilot.</p>
+    <ul>
+      <li>📝 We set up one spreadsheet that replaces a paper process.</li>
+      <li>📊 Keeps track of things neatly (like names, numbers, totals).</li>
+      <li>📧 Sends you a simple email update or sorts info automatically.</li>
+      <li>🔄 Includes one change/revision after setup.</li>
+      <li>🌐 Works in Google Sheets.</li>
+    </ul>
+  </div>
 
-    <div class="pricing-tile">
-      <h3>📈 Growth Package – $200</h3>
-      <p>For small teams or organizations ready to scale up.</p>
-      <ul>
-        <li>📋 Includes everything in Basic Essentials.</li>
-        <li>🖊️ Add a custom form (Google Form or Tally) that feeds your sheet.</li>
-        <li>📂 Connects with Google Drive & Gmail to save files and send updates.</li>
-        <li>📊 Adds advanced sorting logic or simple dashboards.</li>
-        <li>✏️ Includes two revisions to fine-tune your setup.</li>
-      </ul>
-    </div>
+  <hr>
 
-    <div class="pricing-tile">
-      <h3>🗂️ Business Systems – $300</h3>
-      <p>For established organizations that need reliable, ongoing workflows.</p>
-      <ul>
-        <li>✅ Includes everything in Growth Package.</li>
-        <li>🗃️ Manage multiple tabs or departments in one system.</li>
-        <li>⏰ Automations run on a schedule (daily, weekly, etc.).</li>
-        <li>✉️ Build custom email templates for better communication.</li>
-        <li>🎥 Includes a training call or walkthrough video.</li>
-        <li>🛡️ Comes with a 7-day support window after delivery.</li>
-      </ul>
-    </div>
+  <div class="package">
+    <h3>📈 Growth Package – $200</h3>
+    <p>For small teams or organizations ready to scale up.</p>
+    <ul>
+      <li>📋 Includes everything in Basic Essentials.</li>
+      <li>🖊️ Add a custom form (Google Form or Tally) that feeds your sheet.</li>
+      <li>📂 Connects with Google Drive & Gmail to save files and send updates.</li>
+      <li>📊 Adds advanced sorting logic or simple dashboards.</li>
+      <li>✏️ Includes two revisions to fine-tune your setup.</li>
+    </ul>
+  </div>
 
-    <div class="pricing-tile">
-      <h3>🛠️ Ongoing Support Add-On – $50/month</h3>
-      <p>Keep your system running smoothly with ongoing care.</p>
-      <ul>
-        <li>🔧 Covers bug fixes and small updates (like adjusting formulas).</li>
-        <li>🔄 Add minor improvements as your needs grow.</li>
-        <li>⚡ Priority response when you need help.</li>
-        <li>🎁 First month is FREE with Business Systems.</li>
-      </ul>
-    </div>
+  <hr>
+
+  <div class="package">
+    <h3>🗂️ Business Systems – $300</h3>
+    <p>For established organizations that need reliable, ongoing workflows.</p>
+    <ul>
+      <li>✅ Includes everything in Growth Package.</li>
+      <li>🗃️ Manage multiple tabs or departments in one system.</li>
+      <li>⏰ Automations run on a schedule (daily, weekly, etc.).</li>
+      <li>✉️ Build custom email templates for better communication.</li>
+      <li>🎥 Includes a training call or walkthrough video.</li>
+      <li>🛡️ Comes with a 7-day support window after delivery.</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <div class="package">
+    <h3>🛠️ Ongoing Support Add-On – $50/month</h3>
+    <p>Keep your system running smoothly with ongoing care.</p>
+    <ul>
+      <li>🔧 Covers bug fixes and small updates (like adjusting formulas).</li>
+      <li>🔄 Add minor improvements as your needs grow.</li>
+      <li>⚡ Priority response when you need help.</li>
+      <li>🎁 First month is FREE with Business Systems.</li>
+    </ul>
   </div>
 </section>
-
 <style>
-  /* --- Card look used across the site --- */
+ /* Pricing section uses same card style as other sections */
 .card-cream {
-  background: #fff7e6;                 /* same cream as other cards */
+  background: #fff7e6;
   border: 1px solid rgba(0,0,0,0.06);
   border-radius: 14px;
-  padding: 24px;
-  box-shadow:
-    0 12px 28px rgba(0,0,0,0.08),
-    0 2px 6px rgba(0,0,0,0.04);
-  max-width: 920px;                     /* matches other sections */
-  margin: 32px auto;                    /* centered block like others */
+  padding: 28px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08),
+              0 2px 6px rgba(0,0,0,0.04);
+  max-width: 920px;
+  margin: 32px auto;
 }
 
-/* Section title inside the card */
-.card-cream > h2 {
-  margin: 0 0 16px 0;
-  color: #052c5c;                       /* site navy */
+.card-cream h2 {
+  margin: 0 0 20px 0;
+  color: #052c5c;
   font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
-/* Individual pricing tiles */
-.pricing-tile {
-  background: #fffaf0;                  /* very light cream (same family) */
-  border: 1px solid rgba(0,0,0,0.06);
-  border-radius: 10px;
-  padding: 18px 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  margin: 14px 0;
-}
-
-/* Tile title */
-.pricing-tile h3 {
-  margin: 0 0 6px 0;
+.card-cream .package h3 {
   color: #052c5c;
+  margin: 0 0 8px 0;
 }
 
-/* Description + bullets */
-.pricing-tile p { margin: 0 0 10px 0; color: #3a3a3a; }
-.pricing-tile ul { margin: 0; padding-left: 20px; }
-.pricing-tile li { margin: 6px 0; }
+.card-cream p {
+  margin: 0 0 10px 0;
+  color: #3a3a3a;
+}
 
-/* Desktop: align inner tiles slightly left like other content */
-@media (min-width: 900px) {
-  .pricing-tiles-wrap {
-    max-width: 880px;                   /* slightly narrower than the card */
-    margin-left: 8px;                   /* subtle left alignment */
-  }
+.card-cream ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.card-cream li {
+  margin: 6px 0;
+}
+
+/* Divider between packages */
+.card-cream hr {
+  border: none;
+  border-top: 1px solid #e0e0e0;
+  margin: 20px 0;
 }
   </style>
 
