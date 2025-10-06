@@ -710,78 +710,44 @@
     .sp-grid{grid-template-columns:1fr}
   }
 <style>
-@media (max-width: 480px){
+/* ---- FINAL MOBILE TWEAKS (<=480px) ---- */
+@media (max-width:480px){
 
-  /* Keep section color consistent site-wide */
-  .sp-contact.clean{
-    --band:#faf8ef;
-    --card:#ffffff;
-  }
+  /* let value column actually shrink across ALL rows */
+  .sp-contact.clean .sp-row .sp-val{ min-width:0; }
 
-  /* Fix email line overflow — smaller text and smooth wrapping */
-  .sp-contact.clean .sp-row:nth-child(3) .sp-val{
-    font-size: 0.82rem;         /* smaller text */
-    line-height: 1.25;
-    word-break: break-word;
-    overflow-wrap: anywhere;
-    padding-right: 10px;        /* breathing room */
-  }
-
-  /* Tighten all pills slightly for cleaner mobile view */
+  /* tighter columns so values sit closer to labels */
   .sp-contact.clean .sp-row{
-    min-height: 32px;
-    padding: .12rem .2rem;
+    grid-template-columns: 30px 70px 1fr;   /* icon | label | value */
+    column-gap:.22rem;
+    min-height:32px;
   }
 
-  /* Refine gold CTA button proportions */
-  .sp-contact.clean .sp-btn{
-    width: 100%;
-    text-align: center;
-    padding: 0.48rem 0.8rem;     /* balanced height */
-    font-size: 0.8rem;
-    font-weight: 800;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(214,177,90,.25);
-  }
-}
-/* Mobile-only refinements */
-@media (max-width: 480px){
-
-  /* Let the value column actually shrink so long text can wrap */
-  .sp-contact.clean .sp-row .sp-val{
-    min-width: 0;               /* ← the key fix */
-  }
-
-  /* Pull value a bit left to give more room overall */
-  .sp-contact.clean .sp-row{
-    grid-template-columns: 30px 72px 1fr; /* was 32 / 80 / 1fr */
-    column-gap: .24rem;
-  }
-
-  /* EMAIL line: force wrapping inside the pill */
+  /* EMAIL row: 2-line, clean wrap, no edge collisions */
+  .sp-contact.clean .sp-row:nth-child(3){ align-items:start; min-height:40px; }
   .sp-contact.clean .sp-row:nth-child(3) .sp-val,
   .sp-contact.clean .sp-row:nth-child(3) .sp-val a{
-    font-size: .8rem;
-    line-height: 1.25;
-    display: inline-block;
-    max-width: 100%;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    padding-right: 10px;
+    font-size:.80rem;              /* smaller, readable */
+    line-height:1.22;
+    display:block;                 /* allows natural multi-line layout */
+    white-space:normal;
+    overflow-wrap:anywhere;        /* wrap at @ or . if needed */
+    word-break:break-word;
+    padding-right:10px;            /* breathing room inside pill */
+    margin-top:2px;                /* optical align with label */
   }
 
-  /* Button proportions */
+  /* CTA button: tidy proportions */
   .sp-contact.clean .sp-btn{
-    width: 100%;
-    text-align: center;
-    padding: .46rem .8rem;
-    font-size: .95rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(214,177,90,.25);
+    width:100%;
+    text-align:center;
+    padding:.46rem .8rem;
+    font-size:.94rem;
+    border-radius:10px;
+    box-shadow:0 4px 10px rgba(214,177,90,.25);
   }
 }
 </style>
-
 <script>
   /* Smooth-scroll to your Jotform (works even if the ID differs) */
   (function(){
