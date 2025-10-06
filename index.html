@@ -712,70 +712,23 @@
 /* ===== Mobile polish for Contact (≤480px) ===== */
 @media (max-width: 480px){
 
-  .sp-contact.clean .sp-card{
-    padding: .75rem;
-    border-radius: 12px;
-    box-shadow: 0 6px 16px rgba(12,35,64,.10);
+  /* --- EMAIL line fix --- */
+  .sp-contact.clean .sp-row:nth-child(3) .sp-val {
+    /* the email row: give it more horizontal room */
+    grid-column: 3 / span 1;
+    font-size: .95rem;
+    line-height: 1.25;
+    margin-left: -4px;       /* nudge text slightly left */
+    letter-spacing: -0.2px;  /* visually tightens spacing */
   }
 
-  .sp-contact.clean h2{
-    font-size: 1.55rem;
-    margin-bottom: .2rem;
-  }
-  .sp-contact.clean .sp-intro{
-    font-size: .98rem;
-    line-height: 1.35;
-    margin-bottom: .6rem;
-  }
-
-  /* single column but with *tight* rows, values pulled LEFT */
-  .sp-contact.clean .sp-grid{
-    grid-template-columns: 1fr;
-    gap: .25rem;
-  }
-
-  .sp-contact.clean .sp-row{
-    grid-template-columns: 32px 82px 1fr; /* icon | label | value */
-    column-gap: .25rem;
-    min-height: 28px;
-    padding: .10rem .14rem;
-    border-radius: 12px;
-    background: linear-gradient(180deg, rgba(214,177,90,.04), rgba(214,177,90,0));
-    border: 1px solid rgba(12,35,64,.06);
-  }
-
-  /* gold icons smaller so the pills don’t look chunky */
-  .sp-contact.clean .sp-badge{
-    width: 30px; height: 30px;
-    box-shadow: 0 4px 10px rgba(214,177,90,.30), inset 0 0 0 1px rgba(255,255,255,.45);
-  }
-  .sp-contact.clean .sp-badge svg{ width:16px; height:16px; }
-
-  .sp-contact.clean .sp-label{
-    font-size: .96rem;
-    font-weight: 800;
-  }
-  .sp-contact.clean .sp-val{
-    font-size: .96rem;
-    overflow-wrap: anywhere;  /* keep long emails from pushing layout */
-    word-break: break-word;
-  }
-  .sp-contact.clean .sp-val a{
-    border-bottom-width: 1px;
-  }
-
-  /* Heart & CTA compact */
-  .sp-contact.clean .sp-heart{ margin-top: .6rem; }
-  .sp-contact.clean .sp-heart h3{ font-size: 1.02rem; margin-bottom: .18rem; }
-  .sp-contact.clean .sp-heart p{ font-size: .98rem; line-height: 1.45; }
-
-  .sp-contact.clean .sp-cta{ margin-top: .7rem; }
+  /* --- Button tighten-up --- */
   .sp-contact.clean .sp-btn{
-    width: 100%;                 /* full-width button feels intentional on mobile */
-    text-align: center;
-    padding: .55rem .8rem;
-    border-radius: 12px;
-    box-shadow: 0 5px 14px rgba(214,177,90,.32);
+    padding: .45rem .75rem;       /* less height */
+    border-radius: 8px;           /* slimmer corners */
+    font-size: .95rem;
+    font-weight: 800;
+    box-shadow: 0 4px 10px rgba(214,177,90,.3);
   }
 }
 </style>
