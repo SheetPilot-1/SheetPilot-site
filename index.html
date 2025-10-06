@@ -744,6 +744,42 @@
     box-shadow: 0 4px 10px rgba(214,177,90,.25);
   }
 }
+/* Mobile-only refinements */
+@media (max-width: 480px){
+
+  /* Let the value column actually shrink so long text can wrap */
+  .sp-contact.clean .sp-row .sp-val{
+    min-width: 0;               /* ← the key fix */
+  }
+
+  /* Pull value a bit left to give more room overall */
+  .sp-contact.clean .sp-row{
+    grid-template-columns: 30px 72px 1fr; /* was 32 / 80 / 1fr */
+    column-gap: .24rem;
+  }
+
+  /* EMAIL line: force wrapping inside the pill */
+  .sp-contact.clean .sp-row:nth-child(3) .sp-val,
+  .sp-contact.clean .sp-row:nth-child(3) .sp-val a{
+    font-size: .8rem;
+    line-height: 1.25;
+    display: inline-block;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    padding-right: 10px;
+  }
+
+  /* Button proportions */
+  .sp-contact.clean .sp-btn{
+    width: 100%;
+    text-align: center;
+    padding: .46rem .8rem;
+    font-size: .95rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(214,177,90,.25);
+  }
+}
 </style>
 
 <script>
