@@ -777,80 +777,48 @@
 
 /* ===================== MOBILE FIXES ===================== */
 @media (max-width:480px){
-  .sp-contact.clean .sp-grid{grid-template-columns:1fr}
 
-  /* pull values ~2 clicks left on phones */
+  /* Give rows slightly more vertical air and wider gap */
   .sp-contact.clean .sp-row{
-    grid-template-columns:28px 66px 1fr;   /* was 30/70/1fr */
-    column-gap:.22rem;
-  }
-  .sp-contact.clean .sp-row .sp-val{min-width:0;}
-
-  /* EMAIL line only — wrap cleanly inside the pill */
-  .sp-contact.clean .sp-row:nth-child(3){align-items:start;min-height:40px;}
-  .sp-contact.clean .sp-row:nth-child(3) .sp-val,
-  .sp-contact.clean .sp-row:nth-child(3) .sp-val a{
-    display:block;
-    font-size:.78rem;               /* small + readable */
-    line-height:1.25;
-    white-space:normal;
-    overflow-wrap:anywhere;
-    word-break:break-word;
-    hyphens:auto;
-    padding-right:12px;             /* extra breathing room on the right */
-    letter-spacing:-0.1px;
-    margin-top:2px;
+    min-height:42px;             /* was 38px */
+    padding:.22rem .3rem;
+    column-gap:.38rem;           /* roomier spacing */
   }
 
-  /* Button — balanced but not bulky */
-  .sp-contact.clean .sp-btn{
-    width:100%; text-align:center;
-    padding:.46rem .8rem;
-    font-size:.94rem;
-    border-radius:10px;
-    box-shadow:0 4px 10px rgba(214,177,90,.25);
-  }
-}
-<style>
-@media (max-width:480px){
-
-  /* Smooth, even padding for all rows */
-  .sp-contact.clean .sp-row{
-    min-height:38px;              /* just a bit taller for comfort */
-    padding:.18rem .26rem;
-    column-gap:.34rem;
-  }
-
-  /* Adjust the icon size and centering */
+  /* Icons a touch smaller and perfectly centered */
   .sp-contact.clean .sp-badge{
-    width:34px;height:34px;
-    box-shadow:0 4px 10px rgba(214,177,90,.28),
+    width:33px;height:33px;
+    display:grid;place-items:center;
+    margin-top:1px;              /* visually center with text */
+    box-shadow:0 4px 10px rgba(214,177,90,.26),
                inset 0 0 0 1px rgba(255,255,255,.45);
   }
   .sp-contact.clean .sp-badge svg{
-    width:17px;height:17px;
+    width:16.5px;height:16.5px;
   }
 
-  /* Email row — cleaner wrap, better spacing */
+  /* Email readability refinement */
   .sp-contact.clean .sp-row:nth-child(3) .sp-val,
   .sp-contact.clean .sp-row:nth-child(3) .sp-val a{
-    font-size:.80rem;
-    line-height:1.35;             /* more open spacing */
-    font-weight:400;              /* normal (not bold) */
-    padding-right:14px;
+    font-size:.82rem;
+    line-height:1.32;
+    font-weight:400;
+    white-space:normal;
     overflow-wrap:anywhere;
     word-break:break-word;
-    white-space:normal;
+    padding-right:14px;
   }
 
-  /* Button — slightly shorter and proportionate */
+  /* Button fit & polish */
   .sp-contact.clean .sp-btn{
     width:100%;
     text-align:center;
-    padding:.42rem .75rem;        /* reduced height */
-    font-size:.92rem;
-    border-radius:9px;
-    box-shadow:0 3px 8px rgba(214,177,90,.25);
+    padding:.4rem .7rem;         /* tighter vertically */
+    font-size:.9rem;
+    border-radius:8px;           /* matches card curves */
+    box-shadow:0 3px 8px rgba(214,177,90,.22);
+    display:block;
+    margin-top:.55rem;
   }
 }
 </style>
