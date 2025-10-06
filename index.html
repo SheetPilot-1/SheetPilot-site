@@ -709,34 +709,36 @@
   @media (max-width:740px){
     .sp-grid{grid-template-columns:1fr}
   }
-/* ===== Mobile refinements (email wrap + lighter band) ===== */
+<style>
 @media (max-width: 480px){
 
-  /* Lighter background band + lighter card for mobile */
+  /* lighter mobile background to stay consistent site-wide */
   .sp-contact.clean{
-    --band: #fbf7ec;   /* lighter cream */
-    --card: #ffffff;   /* almost-white card */
+    --band:#fcf9f1;
+    --card:#ffffff;
   }
 
-  /* Tighter pills so long text fits without touching the edge */
-  .sp-contact.clean .sp-row{
-    grid-template-columns: 32px 80px 1fr;  /* pulls value further left */
-    column-gap: .24rem;
-    padding: .10rem .20rem;                /* add right padding */
-    min-height: 30px;
+  /* email pill — fit text naturally inside the box */
+  .sp-contact.clean .sp-row:nth-child(3){
+    grid-template-columns:32px 74px 1fr; /* pull value left a bit more */
   }
-
-  /* EMAIL row only */
   .sp-contact.clean .sp-row:nth-child(3) .sp-val{
-    font-size: .92rem;           /* slight downsize for long address */
-    line-height: 1.25;
-    padding-right: 6px;          /* breathing room inside the pill */
-    overflow-wrap: anywhere;     /* wrap cleanly instead of overflowing */
-    word-break: break-word;
+    font-size:.9rem;
+    line-height:1.25;
+    padding-right:8px;
+    word-break:break-word;
+    overflow-wrap:anywhere;
   }
 
-  /* Optional: make all value text track a touch tighter on mobile */
-  .sp-contact.clean .sp-val{ letter-spacing:-0.1px; }
+  /* tighten CTA button proportions */
+  .sp-contact.clean .sp-btn{
+    padding:.42rem .75rem;
+    font-size:.94rem;
+    border-radius:9px;
+    width:100%;
+    text-align:center;
+    box-shadow:0 4px 10px rgba(214,177,90,.28);
+  }
 }
 </style>
 
