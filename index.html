@@ -629,44 +629,24 @@
 
 <style>
   /* Light, airy palette to match your other sections */
+  <style>
+  /* FINAL TOUCHES */
   .sp-contact.v4{
-    --navy:#0c2340;
-    --section:#f3eddc;   /* lighter cream band (like your screenshot) */
-    --card:#fffef9;      /* almost white card */
-    --gold:#d6b15a;
-    --gold-deep:#bf9b43;
-    background:var(--section);
-    padding:clamp(1.2rem,3vw,2.2rem) 1rem;
+    /* lighter band to match the sections above */
+    --section: #f6f0e1;      /* was #f3eddc */
+    --card:    #fffdf8;      /* slightly lighter card */
   }
-  .sp-wrap{max-width:920px;margin:0 auto}
-  .sp-contact.v4 h2{color:var(--navy);margin:0 0 .25rem;font-size:clamp(1.7rem,3vw,2.2rem)}
-  .sp-intro{color:var(--navy);opacity:.9;margin:0 0 .7rem;line-height:1.4}
-
   .sp-card{
-    background:var(--card);
-    border:1px solid rgba(12,35,64,.08);
-    border-radius:14px;
-    box-shadow:0 8px 22px rgba(12,35,64,.10);
-    padding:clamp(.85rem,2vw,1.15rem);
-  }
-
-  /* Tighter, left-aligned rows; value pulled closer to label */
-  .sp-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:.35rem .8rem;
+    padding: clamp(.8rem, 1.8vw, 1.05rem); /* a hair tighter */
   }
   .sp-row{
-    display:grid;
-    grid-template-columns:36px 96px minmax(0,1fr); /* smaller label column */
-    column-gap:.5rem;                               /* pulls value left */
-    align-items:center;
-    min-height:32px;                                /* tighter vertical rhythm */
-    padding:.15rem .2rem;
-    border-radius:10px;
-    background:linear-gradient(180deg, rgba(214,177,90,.05), rgba(214,177,90,0));
-    border:1px solid rgba(12,35,64,.06);
+    /* shift values left ~2 clicks */
+    grid-template-columns: 36px 88px minmax(0,1fr); /* label from 96px → 88px */
+    column-gap: .35rem;                              /* .50rem → .35rem */
+    min-height: 31px;                                /* slightly tighter vertical rhythm */
+    padding: .12rem .18rem;
   }
+</style>
   .sp-span2{grid-column:1 / -1}
 
   .sp-label{font-weight:800;color:var(--navy)}
