@@ -712,32 +712,36 @@
 <style>
 @media (max-width: 480px){
 
-  /* lighter mobile background to stay consistent site-wide */
+  /* Keep section color consistent site-wide */
   .sp-contact.clean{
-    --band:#fcf9f1;
+    --band:#faf8ef;
     --card:#ffffff;
   }
 
-  /* email pill — fit text naturally inside the box */
-  .sp-contact.clean .sp-row:nth-child(3){
-    grid-template-columns:32px 74px 1fr; /* pull value left a bit more */
-  }
+  /* Fix email line overflow — smaller text and smooth wrapping */
   .sp-contact.clean .sp-row:nth-child(3) .sp-val{
-    font-size:.9rem;
-    line-height:1.25;
-    padding-right:8px;
-    word-break:break-word;
-    overflow-wrap:anywhere;
+    font-size: 0.82rem;         /* smaller text */
+    line-height: 1.25;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    padding-right: 10px;        /* breathing room */
   }
 
-  /* tighten CTA button proportions */
+  /* Tighten all pills slightly for cleaner mobile view */
+  .sp-contact.clean .sp-row{
+    min-height: 32px;
+    padding: .12rem .2rem;
+  }
+
+  /* Refine gold CTA button proportions */
   .sp-contact.clean .sp-btn{
-    padding:.42rem .75rem;
-    font-size:.94rem;
-    border-radius:9px;
-    width:100%;
-    text-align:center;
-    box-shadow:0 4px 10px rgba(214,177,90,.28);
+    width: 100%;
+    text-align: center;
+    padding: 0.48rem 0.8rem;     /* balanced height */
+    font-size: 0.95rem;
+    font-weight: 800;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(214,177,90,.25);
   }
 }
 </style>
