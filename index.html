@@ -811,35 +811,46 @@
     box-shadow:0 4px 10px rgba(214,177,90,.25);
   }
 }
+<style>
 @media (max-width:480px){
 
-  /* 1) Pill breathing room + less cramped icons */
+  /* Smooth, even padding for all rows */
   .sp-contact.clean .sp-row{
-    min-height: 36px;            /* was 32px */
-    padding: .16rem .22rem;      /* a touch more vertical air */
-    column-gap: .30rem;          /* more space between icon/label/value */
-  }
-  .sp-contact.clean .sp-badge{
-    width: 32px;                 /* was 36px */
-    height: 32px;
-    box-shadow: 0 4px 10px rgba(214,177,90,.30), inset 0 0 0 1px rgba(255,255,255,.45);
-  }
-  .sp-contact.clean .sp-badge svg{
-    width: 16px; height: 16px;
+    min-height:38px;              /* just a bit taller for comfort */
+    padding:.18rem .26rem;
+    column-gap:.34rem;
   }
 
-  /* 2) Email readability: a bit bigger/clearer with comfy wrap */
+  /* Adjust the icon size and centering */
+  .sp-contact.clean .sp-badge{
+    width:34px;height:34px;
+    box-shadow:0 4px 10px rgba(214,177,90,.28),
+               inset 0 0 0 1px rgba(255,255,255,.45);
+  }
+  .sp-contact.clean .sp-badge svg{
+    width:17px;height:17px;
+  }
+
+  /* Email row — cleaner wrap, better spacing */
   .sp-contact.clean .sp-row:nth-child(3) .sp-val,
   .sp-contact.clean .sp-row:nth-child(3) .sp-val a{
-    font-size: .84rem;           /* up from .78rem */
-    font-weight: 600;            /* clearer on small screens */
-    line-height: 1.32;
-    letter-spacing: 0;           /* crisp characters */
-    padding-right: 12px;         /* room before pill edge */
-    display: block;
-    white-space: normal;
-    overflow-wrap: anywhere;
-    word-break: break-word;
+    font-size:.80rem;
+    line-height:1.35;             /* more open spacing */
+    font-weight:400;              /* normal (not bold) */
+    padding-right:14px;
+    overflow-wrap:anywhere;
+    word-break:break-word;
+    white-space:normal;
+  }
+
+  /* Button — slightly shorter and proportionate */
+  .sp-contact.clean .sp-btn{
+    width:100%;
+    text-align:center;
+    padding:.42rem .75rem;        /* reduced height */
+    font-size:.92rem;
+    border-radius:9px;
+    box-shadow:0 3px 8px rgba(214,177,90,.25);
   }
 }
 </style>
