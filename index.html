@@ -811,6 +811,37 @@
     box-shadow:0 4px 10px rgba(214,177,90,.25);
   }
 }
+@media (max-width:480px){
+
+  /* 1) Pill breathing room + less cramped icons */
+  .sp-contact.clean .sp-row{
+    min-height: 36px;            /* was 32px */
+    padding: .16rem .22rem;      /* a touch more vertical air */
+    column-gap: .30rem;          /* more space between icon/label/value */
+  }
+  .sp-contact.clean .sp-badge{
+    width: 32px;                 /* was 36px */
+    height: 32px;
+    box-shadow: 0 4px 10px rgba(214,177,90,.30), inset 0 0 0 1px rgba(255,255,255,.45);
+  }
+  .sp-contact.clean .sp-badge svg{
+    width: 16px; height: 16px;
+  }
+
+  /* 2) Email readability: a bit bigger/clearer with comfy wrap */
+  .sp-contact.clean .sp-row:nth-child(3) .sp-val,
+  .sp-contact.clean .sp-row:nth-child(3) .sp-val a{
+    font-size: .84rem;           /* up from .78rem */
+    font-weight: 600;            /* clearer on small screens */
+    line-height: 1.32;
+    letter-spacing: 0;           /* crisp characters */
+    padding-right: 12px;         /* room before pill edge */
+    display: block;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
 </style>
 <script>
   /* Smooth-scroll to your Jotform (works even if the ID differs) */
