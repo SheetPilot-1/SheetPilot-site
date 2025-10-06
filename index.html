@@ -709,27 +709,34 @@
   @media (max-width:740px){
     .sp-grid{grid-template-columns:1fr}
   }
-/* ===== Mobile polish for Contact (≤480px) ===== */
+/* ===== Mobile refinements (email wrap + lighter band) ===== */
 @media (max-width: 480px){
 
-  /* --- EMAIL line fix --- */
-  .sp-contact.clean .sp-row:nth-child(3) .sp-val {
-    /* the email row: give it more horizontal room */
-    grid-column: 3 / span 1;
-    font-size: .95rem;
-    line-height: 1.25;
-    margin-left: -4px;       /* nudge text slightly left */
-    letter-spacing: -0.2px;  /* visually tightens spacing */
+  /* Lighter background band + lighter card for mobile */
+  .sp-contact.clean{
+    --band: #fbf7ec;   /* lighter cream */
+    --card: #ffffff;   /* almost-white card */
   }
 
-  /* --- Button tighten-up --- */
-  .sp-contact.clean .sp-btn{
-    padding: .45rem .75rem;       /* less height */
-    border-radius: 8px;           /* slimmer corners */
-    font-size: .95rem;
-    font-weight: 800;
-    box-shadow: 0 4px 10px rgba(214,177,90,.3);
+  /* Tighter pills so long text fits without touching the edge */
+  .sp-contact.clean .sp-row{
+    grid-template-columns: 32px 80px 1fr;  /* pulls value further left */
+    column-gap: .24rem;
+    padding: .10rem .20rem;                /* add right padding */
+    min-height: 30px;
   }
+
+  /* EMAIL row only */
+  .sp-contact.clean .sp-row:nth-child(3) .sp-val{
+    font-size: .92rem;           /* slight downsize for long address */
+    line-height: 1.25;
+    padding-right: 6px;          /* breathing room inside the pill */
+    overflow-wrap: anywhere;     /* wrap cleanly instead of overflowing */
+    word-break: break-word;
+  }
+
+  /* Optional: make all value text track a touch tighter on mobile */
+  .sp-contact.clean .sp-val{ letter-spacing:-0.1px; }
 }
 </style>
 
