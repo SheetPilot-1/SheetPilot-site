@@ -710,34 +710,94 @@
     .sp-grid{grid-template-columns:1fr}
   }
 <style>
-/* ---- FINAL MOBILE TWEAKS (<=480px) ---- */
+/* ===================== FINAL CONTACT STYLE (DESKTOP + MOBILE) ===================== */
+.sp-contact.clean{
+  --navy:#0c2340;
+  --band:#faf8ef;
+  --card:#ffffff;
+  --gold:#d6b15a;
+  --gold-deep:#bf9b43;
+  background:var(--band);
+  padding:clamp(1.2rem,3vw,2.2rem) 1rem;
+}
+.sp-wrap{max-width:920px;margin:0 auto}
+.sp-contact.clean h2{color:var(--navy);margin:0 0 .25rem;font-size:clamp(1.7rem,3vw,2.2rem)}
+.sp-intro{color:var(--navy);opacity:.9;margin:0 0 .7rem;line-height:1.4}
+
+.sp-card{
+  background:var(--card);
+  border:1px solid rgba(12,35,64,.08);
+  border-radius:14px;
+  box-shadow:0 8px 22px rgba(12,35,64,.10);
+  padding:clamp(.85rem,2vw,1.1rem);
+}
+
+.sp-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.32rem .8rem;
+}
+.sp-row{
+  display:grid;
+  grid-template-columns:36px 84px minmax(0,1fr);
+  column-gap:.3rem;
+  align-items:center;
+  min-height:32px;
+  padding:.12rem .18rem;
+  border-radius:10px;
+  background:linear-gradient(180deg, rgba(214,177,90,.05), rgba(214,177,90,0));
+  border:1px solid rgba(12,35,64,.06);
+}
+.sp-span2{grid-column:1 / -1}
+.sp-label{font-weight:800;color:var(--navy)}
+.sp-val{color:var(--navy);min-width:0;}
+.sp-val a{color:var(--navy);text-decoration:none;border-bottom:1px solid rgba(214,177,90,.35)}
+.sp-val a:hover{border-bottom-color:var(--gold)}
+
+.sp-badge{
+  width:36px;height:36px;border-radius:50%;
+  display:grid;place-items:center;color:#fff;
+  background:radial-gradient(100% 100% at 30% 30%, #f4dc8e 0%, var(--gold) 55%, var(--gold-deep) 100%);
+  box-shadow:0 5px 14px rgba(214,177,90,.35), inset 0 0 0 1px rgba(255,255,255,.45);
+}
+.sp-badge svg{width:18px;height:18px;stroke:#fff;fill:none}
+
+.sp-heart{margin:.7rem 0 0}
+.sp-heart h3{margin:0 0 .18rem;color:var(--navy);font-size:clamp(1.05rem,2vw,1.2rem)}
+.sp-heart p{margin:0;color:var(--navy);opacity:.95;line-height:1.5}
+
+.sp-cta{margin:.75rem 0 0}
+.sp-btn{
+  display:inline-block;padding:.48rem .85rem;border-radius:10px;font-weight:800;
+  background:linear-gradient(180deg,var(--gold),var(--gold-deep));
+  color:var(--navy);text-decoration:none;box-shadow:0 6px 16px rgba(214,177,90,.38);
+}
+.sp-btn:hover{filter:brightness(.96)}
+.sp-btn:active{transform:translateY(1px)}
+
+/* ===================== MOBILE FIXES ===================== */
 @media (max-width:480px){
-
-  /* let value column actually shrink across ALL rows */
-  .sp-contact.clean .sp-row .sp-val{ min-width:0; }
-
-  /* tighter columns so values sit closer to labels */
+  .sp-contact.clean .sp-grid{grid-template-columns:1fr}
   .sp-contact.clean .sp-row{
-    grid-template-columns: 30px 70px 1fr;   /* icon | label | value */
-    column-gap:.22rem;
-    min-height:32px;
+    grid-template-columns:30px 70px 1fr;
+    column-gap:.24rem;
   }
-
-  /* EMAIL row: 2-line, clean wrap, no edge collisions */
-  .sp-contact.clean .sp-row:nth-child(3){ align-items:start; min-height:40px; }
+  .sp-contact.clean .sp-row .sp-val{min-width:0;}
+  /* EMAIL line only */
+  .sp-contact.clean .sp-row:nth-child(3){
+    align-items:start;min-height:40px;
+  }
   .sp-contact.clean .sp-row:nth-child(3) .sp-val,
   .sp-contact.clean .sp-row:nth-child(3) .sp-val a{
-    font-size:.80rem;              /* smaller, readable */
-    line-height:1.22;
-    display:block;                 /* allows natural multi-line layout */
+    display:block;
+    font-size:.78rem;
+    line-height:1.25;
     white-space:normal;
-    overflow-wrap:anywhere;        /* wrap at @ or . if needed */
+    overflow-wrap:anywhere;
     word-break:break-word;
-    padding-right:10px;            /* breathing room inside pill */
-    margin-top:2px;                /* optical align with label */
+    padding-right:8px;
   }
-
-  /* CTA button: tidy proportions */
+  /* Button */
   .sp-contact.clean .sp-btn{
     width:100%;
     text-align:center;
