@@ -800,9 +800,11 @@
   }
 
   /* Email line: normal weight, readable wrap inside pill */
-  .sp-contact.clean .sp-row:nth-child(3) .sp-val,
-  .sp-contact.clean .sp-row:nth-child(3) .sp-val a{
-    display: block !important;
+<span class="sp-val">
+  <a href="mailto:customersupport@sheetpilot.net">
+    customersupport<wbr>@<wbr>sheetpilot<wbr>.<wbr>net
+  </a>
+</span>
     font-size: .82rem !important;
     line-height: 1.32 !important;
     font-weight: 400 !important;
@@ -855,6 +857,27 @@
     border-radius:12px !important;
     box-shadow:0 4px 10px rgba(214,177,90,.25);
     margin-top:.65rem !important;
+  }
+}
+@media (max-width:480px){
+  /* Ensure the email respects manual breaks */
+  .sp-contact.clean .sp-row:nth-child(3) .sp-val a{
+    white-space: normal;
+    word-break: normal;      /* don't split inside words */
+    overflow-wrap: anywhere; /* allow breaks at the <wbr> points */
+    hyphens: manual;
+  }
+
+  /* Button: fit card width and look balanced */
+  .sp-contact.clean .sp-btn{
+    display:block;
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+    padding:.44rem .85rem;   /* comfortable height */
+    font-size:.93rem;
+    border-radius:12px;
+    margin-top:.65rem;
   }
 }
 </style>
