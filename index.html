@@ -713,7 +713,7 @@
 /* ===================== FINAL CONTACT STYLE (DESKTOP + MOBILE) ===================== */
 .sp-contact.clean{
   --navy:#0c2340;
-  --band:#faf8ef;
+  --band:#fdfbf4;              /* was #faf8ef → lighter to match other sections */
   --card:#ffffff;
   --gold:#d6b15a;
   --gold-deep:#bf9b43;
@@ -726,9 +726,9 @@
 
 .sp-card{
   background:var(--card);
-  border:1px solid rgba(12,35,64,.08);
+  border:1px solid rgba(12,35,64,.06);   /* was .08 → a bit softer */
   border-radius:14px;
-  box-shadow:0 8px 22px rgba(12,35,64,.10);
+  box-shadow:0 4px 12px rgba(12,35,64,.06); /* was 0 8px 22px .10 → lighter */
   padding:clamp(.85rem,2vw,1.1rem);
 }
 
@@ -778,29 +778,33 @@
 /* ===================== MOBILE FIXES ===================== */
 @media (max-width:480px){
   .sp-contact.clean .sp-grid{grid-template-columns:1fr}
+
+  /* pull values ~2 clicks left on phones */
   .sp-contact.clean .sp-row{
-    grid-template-columns:30px 70px 1fr;
-    column-gap:.24rem;
+    grid-template-columns:28px 66px 1fr;   /* was 30/70/1fr */
+    column-gap:.22rem;
   }
   .sp-contact.clean .sp-row .sp-val{min-width:0;}
-  /* EMAIL line only */
-  .sp-contact.clean .sp-row:nth-child(3){
-    align-items:start;min-height:40px;
-  }
+
+  /* EMAIL line only — wrap cleanly inside the pill */
+  .sp-contact.clean .sp-row:nth-child(3){align-items:start;min-height:40px;}
   .sp-contact.clean .sp-row:nth-child(3) .sp-val,
   .sp-contact.clean .sp-row:nth-child(3) .sp-val a{
     display:block;
-    font-size:.78rem;
+    font-size:.78rem;               /* small + readable */
     line-height:1.25;
     white-space:normal;
     overflow-wrap:anywhere;
     word-break:break-word;
-    padding-right:8px;
+    hyphens:auto;
+    padding-right:12px;             /* extra breathing room on the right */
+    letter-spacing:-0.1px;
+    margin-top:2px;
   }
-  /* Button */
+
+  /* Button — balanced but not bulky */
   .sp-contact.clean .sp-btn{
-    width:100%;
-    text-align:center;
+    width:100%; text-align:center;
     padding:.46rem .8rem;
     font-size:.94rem;
     border-radius:10px;
